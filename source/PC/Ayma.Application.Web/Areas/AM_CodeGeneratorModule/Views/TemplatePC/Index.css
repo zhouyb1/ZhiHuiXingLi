@@ -1,0 +1,198 @@
+﻿.am-layout-wrap {
+    padding-top:0!important;
+}
+.am-cover-box {
+    position:relative;
+    float: left;
+    height: 250px;
+    width: 235px;
+    border: 1px solid #cccccc;
+    margin:20px 0 20px 20px;
+    padding:9px;
+    border-radius: 2px;
+}
+.am-uitheme-accordion .am-cover-box {
+    border-radius: 0;
+}
+.am-uitheme-default .am-cover-box {
+    border-radius: 3px;
+}
+.am-uitheme-windos .am-cover-box {
+    border-radius: 3px;
+}
+
+.am-cover-box:hover {
+    border:1px solid #156edb;
+    -moz-box-shadow: 0px 0px 5px #cccccc;/* 老的 Firefox */
+    box-shadow: 5px 5px 10px #cccccc;
+}
+.am-uitheme-accordion .am-cover-box:hover {
+    border:1px solid #3286ed;
+}
+.am-uitheme-windos .am-cover-box:hover {
+    border:1px solid #24A1E7;
+}
+.am-uitheme-default .am-cover-box:hover {
+    border:1px solid #2F94EE;
+}
+.am-cover-box:hover * {
+    cursor: pointer;
+}
+.am-cover-box:hover .am-cover-img1 {
+    display: none;
+}
+.am-cover-box:hover .am-cover-img2 {
+    display: block;
+}
+.am-cover-box:hover .am-cover-img {
+    background: -webkit-linear-gradient(left,rgba(36,142,217,0.8), #156edb); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right,rgba(36,142,217,0.8), #156edb); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right,rgba(36,142,217,0.8), #156edb); /* Firefox 3.6 - 15 */
+    background: linear-gradient(right,rgba(36,142,217,0.8), #156edb); /* 标准的语法 */
+}
+.am-uitheme-accordion .am-cover-box:hover .am-cover-img {
+    background: -webkit-linear-gradient(left,rgba(36,142,217,0.8), #3286ed); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right,rgba(36,142,217,0.8), #3286ed); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right,rgba(36,142,217,0.8), #3286ed); /* Firefox 3.6 - 15 */
+    background: linear-gradient(right,rgba(36,142,217,0.8), #3286ed); /* 标准的语法 */
+}
+.am-uitheme-windos .am-cover-box:hover .am-cover-img {
+    background: -webkit-linear-gradient(left,rgba(36,142,217,0.8), #24A1E7); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right,rgba(36,142,217,0.8), #24A1E7); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right,rgba(36,142,217,0.8), #24A1E7); /* Firefox 3.6 - 15 */
+    background: linear-gradient(right,rgba(36,142,217,0.8), #24A1E7); /* 标准的语法 */
+}
+.am-uitheme-default .am-cover-box:hover .am-cover-img {
+    background: -webkit-linear-gradient(left,rgba(36,142,217,0.8), #2F94EE); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right,rgba(36,142,217,0.8), #2F94EE); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right,rgba(36,142,217,0.8), #2F94EE); /* Firefox 3.6 - 15 */
+    background: linear-gradient(right,rgba(36,142,217,0.8), #2F94EE); /* 标准的语法 */
+}
+.am-cover-box:hover .am-cover-img h4{
+    color: #fff;
+}
+.am-cover-box:hover .am-cover-button .btn{
+    background-color: #156edb;
+    color: #fff;
+    border: 1px solid #156edb;
+}
+.am-uitheme-accordion .am-cover-box:hover .am-cover-button .btn{
+    background-color: #3286ed;
+    color: #fff;
+    border: 1px solid #3286ed;
+}
+.am-uitheme-windos .am-cover-box:hover .am-cover-button .btn{
+    background-color: #24A1E7;
+    color: #fff;
+    border: 1px solid #24A1E7;
+}
+.am-uitheme-default .am-cover-box:hover .am-cover-button .btn{
+    background-color: #2F94EE;
+    color: #fff;
+    border: 1px solid #2F94EE;
+}
+.am-cover-box:hover .am-cover-info * {
+    color: #156edb;
+}
+.am-uitheme-windos .am-cover-box:hover .am-cover-info * {
+    color: #24A1E7;
+}
+.am-uitheme-default .am-cover-box:hover .am-cover-info * {
+    color: #2F94EE;
+}
+.am-cover-img {
+    height: 140px;
+    background-color: #efefef;
+    width:100%;
+    text-align: center;
+    padding-top:40px;
+    margin-bottom: 10px;
+}
+.am-uitheme-accordion .am-cover-img {
+    border-radius: 0px;
+}
+.am-uitheme-windos .am-cover-img {
+    border-radius: 3px;
+}
+.am-uitheme-default .am-cover-img {
+    border-radius: 3px;
+}
+.am-cover-img img {
+    width:60px;
+    height:60px;
+    position: absolute;
+    left:20px;
+    border-radius: 2px;
+}
+
+.am-cover-img .am-cover-img2 {
+    display: none;
+}
+.am-cover-img h4 {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 14px;
+    padding-left: 45px;
+    color: #393939;
+    font-weight: 400;
+}
+.am-cover-button {
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:40px;
+    /*background-color: #f6f6f6;*/
+    border-radius: 0 0 5px 5px;
+    /*border-top: 1px solid #e7e7e7;*/
+    box-shadow: 0 1px 0 0 #fff inset;
+    padding: 4px 5px;
+    text-align: right;
+}
+.am-cover-button .btn {
+    font-size:12px;
+    width: 48px;
+    height: 24px;
+    line-height:24px;
+    margin-top: 5px;
+    margin-right: 4px;
+    padding: 0;
+    border-radius: 2px;
+    color: #787878;
+    background-color: #fff;
+    border: 1px solid #c3c3c3;
+}
+.am-uitheme-accordion .am-cover-button .btn {
+    border-radius: 0;
+}
+
+.am-uitheme-windos .am-cover-button .btn {
+    border-radius: 3px;
+}
+.am-uitheme-default .am-cover-button .btn {
+    border-radius: 3px;
+}
+
+.am-cover-info {
+    position: relative;
+    padding: 6px 0 0 15px;
+    width:100%;
+    overflow: hidden;
+}
+.am-cover-info h4 {
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: keep-all;
+    white-space: nowrap;
+    display: block;
+    font-weight: bold;
+    line-height: 18px;
+    margin-top: 7px;
+    margin-bottom: 5px;
+    color: #8b8b8c;
+}
+.am-cover-info small {
+    color: #838383;
+    padding-bottom: 10px;
+}

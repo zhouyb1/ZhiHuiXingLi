@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "数据库表编辑";
+    Layout = "~/Views/Shared/_GirdForm.cshtml";
+}
+@Html.AppendCssFile("/Areas/AM_SystemModule/Views/DatabaseTable/EditTableForm.css")
+
+<div class="am-form-layout">
+    <div class="am-form-layout-header" id="form">
+        <div class="col-xs-12 am-form-item">
+            <div class="am-form-item-title">表名<font face="宋体">*</font></div>
+            <input id="tableName" type="text" class="form-control am-input-underline" placeholder="请输入表名" isvalid="yes" checkexpession="NotNull" />
+        </div>
+        <div class="col-xs-12 am-form-item">
+            <div class="am-form-item-title">表备注<font face="宋体">*</font></div>
+            <input id="remark" type="text" class="form-control am-input-underline" placeholder="添加表备注"  isvalid="yes" checkexpession="NotNull"/>
+        </div>
+    </div>
+    <div class="am-form-layout-body">
+        <div class="am-form-layout-body-title">
+            <div class="am-form-jfgrid-btns">
+                <a id="am_copytable" class="btn btn-primary">复制表</a>
+                <a id="am_copyrow" class="btn btn-info">复制行</a>
+                <a id="am_commonfield" class="btn btn-primary">常用字段</a>
+                <a id="am_draft" class="btn btn-danger">导入草稿</a>
+
+                <a id="am_savedraft" class="btn btn-warning">保存草稿</a>
+                <a id="am_release" class="btn btn-success">发布</a>
+            </div>
+            <span>表字段设置</span>
+        </div>
+        <div id="gridtable"></div>
+    </div>
+</div>
+@Html.AppendJsFile("/Areas/AM_SystemModule/Views/DatabaseTable/EditTableForm.js")

@@ -1,0 +1,22 @@
+﻿/*自定义查询*/
+.am-custmer-search {
+    position:relative;
+    float:left;
+    width:200px;
+    height:28px;
+}
+.am-custmer-search-text {
+    position:relative;
+    float:left;
+    width:100%;
+    height:100%;
+    line-height:26px;
+    cursor:pointer;
+    border: 1px solid #ccc;
+    border-radius:4px;
+    padding-left:5px;
+    background:#fff url(/Content/images/aymaselect/icon.png) no-repeat right center;
+}
+.am-custmer-search-text:hover {
+    color:#3498DB;
+}

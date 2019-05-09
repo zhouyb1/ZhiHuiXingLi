@@ -1,0 +1,15 @@
+﻿@using Ayma.Util
+@{
+    ViewBag.Title = Config.GetValue("SystemName");
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+@Html.AppendCssFile("/Views/Home/AdminAccordion/index.css")
+<div class="am-frame-top">
+    <a class="am-logo-title" style="font-family: Microsoft Yahei;font-size: 16px"><img src="~/Content/images/logo.png" /> @Config.GetValue("SystemName")</a>
+</div>
+<div class="am-frame-menu-btn" id="am_frame_menu_btn"><i class="fa fa-fw fa-dedent"></i></div>
+@Html.AppendJsFile("/Views/Home/AdminAccordion/index.js")
+
+
+
+

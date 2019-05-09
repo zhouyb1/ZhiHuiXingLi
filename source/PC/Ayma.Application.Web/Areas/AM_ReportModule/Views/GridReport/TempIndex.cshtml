@@ -1,0 +1,1472 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>报表Demo</title>
+    <script src="~/Content/gridreport/CreateControl.js" type="text/javascript"></script>
+    <script src="~/Content/gridreport/GRInstall.js" type="text/javascript"></script>
+    <style type="text/css">
+        h1 {
+            text-align: center;
+            margin-top: -12px;
+            margin-bottom: 4px;
+        }
+
+        h2 {
+            margin-bottom: 0px;
+        }
+
+        h3 {
+            color: white;
+            background-color: #487417;
+            height: 1.6em;
+            padding-top: 0.5em;
+            margin-bottom: 0;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .text-content {
+            font-size: 10pt;
+        }
+
+        .table-report {
+            width: 100%;
+            font-size: 10pt;
+            border: black medium solid;
+            border-collapse: collapse;
+        }
+
+        .table-title-row {
+            background-color: #e6e6fa;
+            text-align: center;
+            font-weight: bold;
+            height: 32px;
+        }
+
+        th {
+            border: black thin solid;
+        }
+
+        .table-data-row {
+            height: 21px;
+        }
+
+        td {
+            border: black thin solid;
+        }
+    </style>
+
+    <script language="javascript" type="text/javascript">
+        Install_InsertReport();
+        function openPrintReport(report, data) {
+            var url = "/AM_ReportModule/GridReport/PrintReport?report=" + report;
+
+            if (data) {
+                url += "&data=" + data;
+            }
+            window.open(url, "_blank");
+        }
+
+        function openDisplayReport(report, data) {
+            var url = "/AM_ReportModule/GridReport/DisplayReport?report=" + report;
+
+            if (data) {
+                url += "&data=" + data;
+            }
+            window.open(url, "_blank");
+        }
+
+        function openDesignReport(report, data) {
+            var url = "/AM_ReportModule/GridReport/DesignReport?report=" + report;
+
+            if (data) {
+                url += "&data=" + data;
+            }
+            window.open(url, "_blank");
+        }
+
+        function openData(data) {
+            window.open("/Report/data/DataCenter.ashx?data=" + data, "_blank");
+        }
+    </script>
+
+</head>
+<body>
+    <script type="text/javascript">
+        var Installed = Install_Detect();
+        if (Installed)
+            CreateReport("Report");
+    </script>
+   
+   
+    <h2>一、各种格式报表演示</h2>
+    <p class="text-content ">
+        下面演示各种格式的报表，Grid++Report报表展现分两种模式：报表打印展现与报表查询展现。点击报表名称列下的链接文字进入对应报表的打印展现模式。点击图标[查询]列下的链接图标进入对应报表的查询展现模式。报表查询展现模式一般用于明细表格类的报表展现，以连续不分页的方式查阅报表数据。
+    </p>
+
+    <h3>各种基础报表</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=5% />
+            <col width=5% />
+            <col width="10%" />
+            <col width="20%" />
+            <col width=40% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>报表(打印预览)</th>
+            <th>查询显示</th>
+            <th>报表设计</th>
+            <th>报表模板</th>
+            <th>报表数据</th>
+            <th>说明</th>
+        </tr>
+
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1a', 'Customer');">1a.简单表格</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('1a', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('1a', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/1a.grf" target="_blank">grf/1a.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>一个简单的表格报表。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1b', 'Customer');">1b.双层表头</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('1b', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('1b', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/1b.grf" target="_blank">grf/1b.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>双层表头报表，明细网格标题行可以定义任意多层的表头。在设计器‘列标题布局...’界面中在设计时定义多层标头。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1c', 'Customer');">1c.锁定列</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('1c', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('1c', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/1c.grf" target="_blank">grf/1c.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>明细网格锁定列，通过设定明细网格的“锁定列数(FixCols)”属性值为2，指定报表在查询显示时明细网格最左边的两列不进行水平滚动，总是显示在最左边。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1d', 'Customer');">1d.多栏报表</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('1d', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/1d.grf" target="_blank">grf/1d.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>多栏报表：通过定义明细网格的“页栏数(PageColumnCount)”属性报表的栏数。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1e');">1e.图像</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('1e');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('1e');">[设计]</a></td>
+            <td><a href="../grf/1e.grf" target="_blank">grf/1e.grf</a></td>
+            <td></td>
+            <td>演示报表中图像的各种显示方式，以及内建系统图像与可复用的集合图像。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1f', 'Picture');">1f.表格中图像与文字</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('1f', 'Picture');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('1f', 'Picture');">[设计]</a></td>
+            <td><a href="../grf/1f.grf" target="_blank">grf/1f.grf</a></td>
+            <td><a href="javascript:openData('Picture');">/data/DataCenter.ashx?data=Picture</a></td>
+            <td>演示报表中的混和显示文字与图像，将明细网格的内容格设为自由格，实现图像与文字的混合排列。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1g', 'Customer');">1g.条形码与二维码</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('1g', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('1g', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/1g.grf" target="_blank">grf/1g.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>演示条形码与二维码，条形码数据将来自于关联的字段值。支持各种条常用的条形码与二维码。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1h', 'RTFSample');">1h.RTF格式文本</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('1h', 'RTFSample');">[设计]</a></td>
+            <td><a href="../grf/1h.grf" target="_blank">grf/1h.grf</a></td>
+            <td><a href="javascript:openData('RTFSample');">/data/DataCenter.ashx?data=RTFSample</a></td>
+            <td>演示RTF文本框，RTF文本框不仅能显示RTF格式数据，而且可以在文字中包含数据域，数据域在运行时会被替换为关联数据项的显示文字。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1i', 'Customer');">1i.演示部件框自动布局</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('1i', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('1i', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/1i.grf" target="_blank">grf/1i.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>自动布局功能是开发自适应动态报表的重要方面。自动布局功能包括：停靠(Dock)、居中(Center)、对齐列(AlignColumn)、锚定(Anchor)。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1j', 'Customer');">1j.切分纸张</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('1j', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/1j.grf" target="_blank">grf/1j.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>演示切分纸张打印报表，通过定报表的‘页分割数(PageDevideCount)’属性定义切分纸张打印。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1k', 'Customer');">1k.明细自由编排</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('1k', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('1k', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/1k.grf" target="_blank">grf/1k.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>将明细网格的标题格与内容格设为自由格，就可以像其它条幅式报表工具一样自由编排报表明细。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1l', 'Customer');">1l.交替色显示明细行</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('1l', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('1l', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/1l.grf" target="_blank">grf/1l.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>用两种背景色交替显示明细行的背景，通过设置内容行的“交替背景色”属性实现。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1m', 'Customer');">1m.邮件标签</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('1m', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/1m.grf" target="_blank">grf/1m.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>演示邮件标签：应用分栏与自由格实现邮件标签。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1n', 'AppendBlankRow');">1n.追加空白行</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('1n', 'AppendBlankRow');">[设计]</a></td>
+            <td><a href="../grf/1n.grf" target="_blank">grf/1n.grf</a></td>
+            <td><a href="javascript:openData('AppendBlankRow');">/data/DataCenter.ashx?data=AppendBlankRow</a></td>
+            <td>演示在明细网格的空白区域追加空白行：通过定义明细网格的‘追加空白行(AppendBlankRow)’属性实现。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1o', 'Categories');">1o.文字绕行与自动伸展</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('1o', 'Categories');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('1o', 'Categories');">[设计]</a></td>
+            <td><a href="../grf/1o.grf" target="_blank">grf/1o.grf</a></td>
+            <td><a href="javascript:openData('Categories');">/data/DataCenter.ashx?data=Categories</a></td>
+            <td>演示文字绕行和部件框与报表节的自动按内容多少进行伸展。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1p', 'Categories');">1p.文字缩小适应</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('1p', 'Categories');">[设计]</a></td>
+            <td><a href="../grf/1p.grf" target="_blank">grf/1p.grf</a></td>
+            <td><a href="javascript:openData('Categories');">/data/DataCenter.ashx?data=Categories</a></td>
+            <td>演示文字自动缩小适应输出区域，将全部内容完整显示出来。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('1q', 'Categories');">1q.文字跨行显示</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('1q', 'Categories');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('1q', 'Categories');">[设计]</a></td>
+            <td><a href="../grf/1q.grf" target="_blank">grf/1q.grf</a></td>
+            <td><a href="javascript:openData('Categories');">/data/DataCenter.ashx?data=Categories</a></td>
+            <td>实现表格中的文字另起新表格行显示，即超范围文字在本单元格内不绕行显示，而是在下一表格行继续显示。</td>
+        </tr>
+    </table>
+
+    <h3>分组报表</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=5% />
+            <col width=5% />
+            <col width="10%" />
+            <col width="20%" />
+            <col width=40% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>报表(打印预览)</th>
+            <th>查询显示</th>
+            <th>报表设计</th>
+            <th>报表模板</th>
+            <th>报表数据</th>
+            <th>说明</th>
+        </tr>
+
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('2a', 'SaleDetail');">2a.基本分组</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('2a', 'SaleDetail');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('2a', 'SaleDetail');">[设计]</a></td>
+            <td><a href="../grf/2a.grf" target="_blank">grf/2a.grf</a></td>
+            <td><a href="javascript:openData('SaleDetail');">/data/DataCenter.ashx?data=SaleDetail</a></td>
+            <td>一个最基本的分组报表，定义一个分组，并定义分组的“依据字段”属性。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('2b', 'Customer');">2b.依据多个字段分组</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('2b', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('2b', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/2b.grf" target="_blank">grf/2b.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>根据多个字段进行分组的报表，多个分组字段之间用字符“;”隔开。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('2c', 'Customer');">2c.多级分组</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('2c', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('2c', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/2c.grf" target="_blank">grf/2c.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>演示定义多个分组实现多级分组报表。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('2d', 'Customer');">2d.分组单元格合并</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('2d', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('2d', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/2d.grf" target="_blank">grf/2d.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>演示占列式分组报表，占列式分组其分组头不占据单独的显示行，也就是表格分组单元格合并。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('2e', 'Customer');">2e.自定义分组单元格合并</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('2e', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('2e', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/2e.grf" target="_blank">grf/2e.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>演示占列式分组，合并单元格内容在分组头中专门定义。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('2f', 'Customer');">2f.多级分组单元格合并</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('2f', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('2f', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/2f.grf" target="_blank">grf/2f.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>演示多级分组占列式分组报表。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="General/SQLFromReport/PrintReport.aspx?report=2g" target="_blank">2g.页分组</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="General/SQLFromReport/DesignReport.aspx?report=2g" target="_blank">[设计]</a></td>
+            <td><a href="../grf/2g.grf" target="_blank">grf/2g.grf</a></td>
+            <td></td>
+            <td>演示页分组，页分组在每个打印页面中产生一个分组项，不需要定义分组依据字段。查询显示时页分组被忽略掉。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('2h', 'SaleDetail');">2h.分组节显示列线</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('2h', 'SaleDetail');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('2h', 'SaleDetail');">[设计]</a></td>
+            <td><a href="../grf/2h.grf" target="_blank">grf/2h.grf</a></td>
+            <td><a href="javascript:openData('SaleDetail');">/data/DataCenter.ashx?data=SaleDetail</a></td>
+            <td>在分组头与分组尾中显示列线，通过显示部件框的左右边框并采用对其列定位来实现。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('2i', 'SaleDetail');">2i.分组节不打印边框线</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('2i', 'SaleDetail');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('2i', 'SaleDetail');">[设计]</a></td>
+            <td><a href="../grf/2i.grf" target="_blank">grf/2i.grf</a></td>
+            <td><a href="javascript:openData('SaleDetail');">/data/DataCenter.ashx?data=SaleDetail</a></td>
+            <td>将分组头尾的“打印输出边框”属性设为“否”，这样分组头尾左右两边的表格边框就不会输出。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('2j', 'SaleDetail');">2j.分组头新页重复</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('2j', 'SaleDetail');">[设计]</a></td>
+            <td><a href="../grf/2j.grf" target="_blank">grf/2j.grf</a></td>
+            <td><a href="javascript:openData('SaleDetail');">/data/DataCenter.ashx?data=SaleDetail</a></td>
+            <td>演示分组头在新页中重复打印，设置分组头的“每页重复打印”属性。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('2k', 'Customer');">2k.分组重启页号</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('2k', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/2k.grf" target="_blank">grf/2k.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>分组页号页数是在一个分组范围内计数页号与页数。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('2l', 'SaleDetail');">2l.分组按统计排序</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('2l', 'SaleDetail');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('2l', 'SaleDetail');">[设计]</a></td>
+            <td><a href="../grf/2l.grf" target="_blank">grf/2l.grf</a></td>
+            <td><a href="javascript:openData('SaleDetail');">/data/DataCenter.ashx?data=SaleDetail</a></td>
+            <td>根据分组的统计值进行排序。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('2m', 'SaleDetail');">2m.多栏分组不分栏</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('2m', 'SaleDetail');">[设计]</a></td>
+            <td><a href="../grf/2m.grf" target="_blank">grf/2m.grf</a></td>
+            <td><a href="javascript:openData('SaleDetail');">/data/DataCenter.ashx?data=SaleDetail</a></td>
+            <td>具有分组的多栏报表，其分组头与分组尾部产生分栏。</td>
+        </tr>
+    </table>
+
+    <h3>交叉报表</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=5% />
+            <col width=5% />
+            <col width="10%" />
+            <col width="20%" />
+            <col width=40% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>报表(打印预览)</th>
+            <th>查询显示</th>
+            <th>报表设计</th>
+            <th>报表模板</th>
+            <th>报表数据</th>
+            <th>说明</th>
+        </tr>
+
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3a', 'CrossTab');">3a.交叉表起步</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3a', 'CrossTab');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3a', 'CrossTab');">[设计]</a></td>
+            <td><a href="../grf/3a.grf" target="_blank">grf/3a.grf</a></td>
+            <td><a href="javascript:openData('CrossTab');">/data/DataCenter.ashx?data=CrossTab</a></td>
+            <td>一个最基本的交叉报表。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3b', 'CrossTab');">3b.交叉表横向合计</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3b', 'CrossTab');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3b', 'CrossTab');">[设计]</a></td>
+            <td><a href="../grf/3b.grf" target="_blank">grf/3b.grf</a></td>
+            <td><a href="javascript:openData('CrossTab');">/data/DataCenter.ashx?data=CrossTab</a></td>
+            <td>交叉表加上横向求和功能。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3c', 'CrossTab');">3c.交叉表纵向合计</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3c', 'CrossTab');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3c', 'CrossTab');">[设计]</a></td>
+            <td><a href="../grf/3c.grf" target="_blank">grf/3c.grf</a></td>
+            <td><a href="javascript:openData('CrossTab');">/data/DataCenter.ashx?data=CrossTab</a></td>
+            <td>交叉表加上纵向求和功能。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3d', 'CrossTab');">3d.交叉表横向百分比</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3d', 'CrossTab');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3d', 'CrossTab');">[设计]</a></td>
+            <td><a href="../grf/3d.grf" target="_blank">grf/3d.grf</a></td>
+            <td><a href="javascript:openData('CrossTab');">/data/DataCenter.ashx?data=CrossTab</a></td>
+            <td>交叉表横向求比重百分比。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3e', 'CrossTab');">3e.交叉表纵向百分比</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3e', 'CrossTab');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3e', 'CrossTab');">[设计]</a></td>
+            <td><a href="../grf/3e.grf" target="_blank">grf/3e.grf</a></td>
+            <td><a href="javascript:openData('CrossTab');">/data/DataCenter.ashx?data=CrossTab</a></td>
+            <td>交叉表纵向求比重百分比。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3f', 'CrossTabByDay');">3f.交叉表按日交叉</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3f', 'CrossTabByDay');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3f', 'CrossTabByDay');">[设计]</a></td>
+            <td><a href="../grf/3f.grf" target="_blank">grf/3f.grf</a></td>
+            <td><a href="javascript:openData('CrossTabByDay');">/data/DataCenter.ashx?data=CrossTabByDay</a></td>
+            <td>按日交叉表，即通常所说的日报表。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3g', 'CrossTabByMonth');">3g.交叉表按月交叉</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3g', 'CrossTabByMonth');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3g', 'CrossTabByMonth');">[设计]</a></td>
+            <td><a href="../grf/3g.grf" target="_blank">grf/3g.grf</a></td>
+            <td><a href="javascript:openData('CrossTabByMonth');">/data/DataCenter.ashx?data=CrossTabByMonth</a></td>
+            <td>按月交叉表，即通常所说的月报表。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3h', 'CrossTab');">3h.交叉表横向平均</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3h', 'CrossTab');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3h', 'CrossTab');">[设计]</a></td>
+            <td><a href="../grf/3h.grf" target="_blank">grf/3h.grf</a></td>
+            <td><a href="javascript:openData('CrossTab');">/data/DataCenter.ashx?data=CrossTab</a></td>
+            <td>交叉表横向统计平均值。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3i', 'CrossTab');">3i.交叉表纵向单元格合并</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3i', 'CrossTab');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3i', 'CrossTab');">[设计]</a></td>
+            <td><a href="../grf/3i.grf" target="_blank">grf/3i.grf</a></td>
+            <td><a href="javascript:openData('CrossTab');">/data/DataCenter.ashx?data=CrossTab</a></td>
+            <td>演示交叉表分组单元格合并功能。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3j', 'CrossTab');">3j.交叉表多数据列(1)</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3j', 'CrossTab');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3j', 'CrossTab');">[设计]</a></td>
+            <td><a href="../grf/3j.grf" target="_blank">grf/3j.grf</a></td>
+            <td><a href="javascript:openData('CrossTab');">/data/DataCenter.ashx?data=CrossTab</a></td>
+            <td>演示一个具有两个交叉数据列的交叉报表。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3k', 'CrossTab');">3k.交叉表多数据列(2)</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3k', 'CrossTab');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3k', 'CrossTab');">[设计]</a></td>
+            <td><a href="../grf/3k.grf" target="_blank">grf/3k.grf</a></td>
+            <td><a href="javascript:openData('CrossTab');">/data/DataCenter.ashx?data=CrossTab</a></td>
+            <td>演示一个具有两个交叉数据列的交叉报表。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="General/SQLFromReport/PrintReport.aspx?report=3l" target="_blank">3l.交叉表自定义统计</a></td>
+            <td align="center"><a href="General/SQLFromReport/DisplayReport.aspx?report=3l" target="_blank">[查询]</a></td>
+            <td align="center"><a href="General/SQLFromReport/DesignReport.aspx?report=3l" target="_blank">[设计]</a></td>
+            <td><a href="../grf/3l.grf" target="_blank">grf/3l.grf</a></td>
+            <td></td>
+            <td>演示一个按年月交叉的交叉报表。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3m', 'CrossTabSubtotal');">3m.交叉表横向小计(1)</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3m', 'CrossTabSubtotal');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3m', 'CrossTabSubtotal');">[设计]</a></td>
+            <td><a href="../grf/3m.grf" target="_blank">grf/3m.grf</a></td>
+            <td><a href="javascript:openData('CrossTabSubtotal');">/data/DataCenter.ashx?data=CrossTabSubtotal</a></td>
+            <td>交叉表横向交叉项按类别进行分类，并据此产生按类别统计的数据。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3n', 'CrossTabSubtotal');">3n.交叉表横向小计(2)</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3n', 'CrossTabSubtotal');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3n', 'CrossTabSubtotal');">[设计]</a></td>
+            <td><a href="../grf/3n.grf" target="_blank">grf/3n.grf</a></td>
+            <td><a href="javascript:openData('CrossTabSubtotal');">/data/DataCenter.ashx?data=CrossTabSubtotal</a></td>
+            <td>交叉表横向交叉项按类别进行分类，并据此产生按类别统计的数据，与上例区别在表头形式上。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3o', 'Customer');">3o.交叉表横向显示表格</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3o', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3o', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/3o.grf" target="_blank">grf/3o.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>用交叉表实现表格数据的横向显示。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3p', 'CrossTabYearMonth');">3p.交叉表按年月交叉</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3p', 'CrossTabYearMonth');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3p', 'CrossTabYearMonth');">[设计]</a></td>
+            <td><a href="../grf/3p.grf" target="_blank">grf/3p.grf</a></td>
+            <td><a href="javascript:openData('CrossTabYearMonth');">/data/DataCenter.ashx?data=CrossTabYearMonth</a></td>
+            <td>根据年份与月份对数据进行交叉统计。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('3q', 'CrossTabCalendar');">3q.日历报表</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('3q', 'CrossTabCalendar');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('3q', 'CrossTabCalendar');">[设计]</a></td>
+            <td><a href="../grf/3q.grf" target="_blank">grf/3q.grf</a></td>
+            <td><a href="javascript:openData('CrossTabCalendar');">/data/DataCenter.ashx?data=CrossTabCalendar</a></td>
+            <td>类似日历一样的报表，用于展现每日的统计数据。</td>
+        </tr>
+    </table>
+
+    <h3>子报表</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=5% />
+            <col width=5% />
+            <col width="10%" />
+            <col width="20%" />
+            <col width=40% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>报表(打印预览)</th>
+            <th>查询显示</th>
+            <th>报表设计</th>
+            <th>报表模板</th>
+            <th>报表数据</th>
+            <th>说明</th>
+        </tr>
+
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('4a', 'SubReport_4a');">4a.演示子报表</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('4a', 'SubReport_4a');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('4a', 'SubReport_4a');">[设计]</a></td>
+            <td><a href="../grf/4a.grf" target="_blank">grf/4a.grf</a></td>
+            <td><a href="javascript:openData('SubReport_4a');">/data/DataCenter.ashx?data=SubReport_4a</a></td>
+            <td>示子报表，在一个主控报表中显示多个子报表，实现多个报表的集中展现。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('4b', 'SubReport_4b');">4b.独立子报表</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('4b', 'SubReport_4b');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('4b', 'SubReport_4b');">[设计]</a></td>
+            <td><a href="../grf/4b.grf" target="_blank">grf/4b.grf</a></td>
+            <td><a href="javascript:openData('SubReport_4b');">/data/DataCenter.ashx?data=SubReport_4b</a></td>
+            <td>独立子报表中每个子报表可以是不同的页面设置，可以导出到不同的Excel工作表。独立子报表的概念说明: 请参考帮助中的“开发指南->报表部件框应用->子报表”部分。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('4c', 'SubReport_4c');">4c.子报表实现表中表</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('4c', 'SubReport_4c');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('4c', 'SubReport_4c');">[设计]</a></td>
+            <td><a href="../grf/4c.grf" target="_blank">grf/4c.grf</a></td>
+            <td><a href="javascript:openData('SubReport_4c');">/data/DataCenter.ashx?data=SubReport_4c</a></td>
+            <td>演示在内容格中查入子报表实现表中表。<a href="General/DesignReport.aspx?report=1m1.grf" target="_blank">[设计子报表1]</a><a href="General/DesignReport.aspx?report=1m2.grf" target="_blank">[设计子报表2]</a></td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('4d', 'SubReport_4d' + '&city=' + encodeURIComponent('天津'));">4d.子报表主子关联</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('4d', 'SubReport_4d' + '&city=' + encodeURIComponent('天津'));">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('4d', 'SubReport_4d' + '&city=' + encodeURIComponent('天津'));">[设计]</a></td>
+            <td><a href="../grf/4d.grf" target="_blank">grf/4d.grf</a></td>
+            <td><a href="javascript:openData('SubReport_4d' + '&city=' + encodeURIComponent('天津'));">/data/DataCenter.ashx?data=SubReport_4d&city=天津</a></td>
+            <td>演示主子报表之间如何自动传递参数，子报表中的参数会自动从主报表中同名的参数或记录集字段中取值。</td>
+        </tr>
+    </table>
+
+    <h3>各种常见类型报表</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=5% />
+            <col width=5% />
+            <col width="10%" />
+            <col width="20%" />
+            <col width=40% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>报表(打印预览)</th>
+            <th>查询显示</th>
+            <th>报表设计</th>
+            <th>报表模板</th>
+            <th>报表数据</th>
+            <th>说明</th>
+        </tr>
+
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('5a', 'SaleDetail');">5a.表达式运算</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('5a', 'SaleDetail');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('5a', 'SaleDetail');">[设计]</a></td>
+            <td><a href="../grf/5a.grf" target="_blank">grf/5a.grf</a></td>
+            <td><a href="javascript:openData('SaleDetail');">/data/DataCenter.ashx?data=SaleDetail</a></td>
+            <td>演示用综合文字框实现运算表达式。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('5b', 'Customer');">5b.显示行号序号</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('5b', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('5b', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/5b.grf" target="_blank">grf/5b.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>演示用系统变量显示行号及各种序号，将内容格设为自由格并插入系统变量框。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('5c', 'Customer');">5c.层高不等多层表头</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('5c', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('5c', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/5c.grf" target="_blank">grf/5c.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>演示层高不等多层表头报表。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('5d');">5d.文字方向与间距</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('5d');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('5d');">[设计]</a></td>
+            <td><a href="../grf/5d.grf" target="_blank">grf/5d.grf</a></td>
+            <td></td>
+            <td>演示各种方式的文字方向与文字角度。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('5e');">5e.HTML标签</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('5e');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('5e');">[设计]</a></td>
+            <td><a href="../grf/5e.grf" target="_blank">grf/5e.grf</a></td>
+            <td></td>
+            <td>演示综合文字框支持的各种HTML标签，设置综合文字框的“支持HTML标签”属性为“是”可以开启HTML标签解析功能。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('5f', 'Customer');">5f.无边框表格</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('5f', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('5f', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/5f.grf" target="_blank">grf/5f.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>演示一个没有表格边框线的报表。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('5g', 'Customer');">5g.无行线表格</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('5g', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('5g', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/5g.grf" target="_blank">grf/5g.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>演示一个没有行线的表格报表，但标题行下显示一条水平分隔线，标题格为自由格，其中的静态框显示下边框。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('5h', 'SaleDetail');">5h.对齐列改进导出Excel</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('5h', 'SaleDetail');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('5h', 'SaleDetail');">[设计]</a></td>
+            <td><a href="../grf/5h.grf" target="_blank">grf/5h.grf</a></td>
+            <td><a href="javascript:openData('SaleDetail');">/data/DataCenter.ashx?data=SaleDetail</a></td>
+            <td>尽量采用对齐列方式定位部件框的水平位置，可以改善报表导出Excel等文件的效果。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('5i', 'Customer');">5i.导航书签</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('5i', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/5i.grf" target="_blank">grf/5i.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>为报表的打印页面生成导航书签。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('5j', 'SaleDetail');">5j.财务金额线</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('5j', 'SaleDetail');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('5j', 'SaleDetail');">[设计]</a></td>
+            <td><a href="../grf/5j.grf" target="_blank">grf/5j.grf</a></td>
+            <td><a href="javascript:openData('SaleDetail');">/data/DataCenter.ashx?data=SaleDetail</a></td>
+            <td>演示财务金额线与金额位标签的用法。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('5k');">5k.标签文字</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('5k');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('5k');">[设计]</a></td>
+            <td><a href="../grf/5k.grf" target="_blank">grf/5k.grf</a></td>
+            <td></td>
+            <td>演示文字在水平方向上拉宽或缩窄比例显示。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('5l', 'Customer');">5l.伸展列适应文字</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('5l', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/5l.grf" target="_blank">grf/5l.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>演示表格列的宽度根据显示内容的多少自动加大宽度，让所有内容都完整显示出来。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('5m', 'Customer');">5m.电子印章</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('5m', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/5m.grf" target="_blank">grf/5m.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>演示用浮动部件框实现电子印章，浮动部件框说明与应用请参考帮助文档的“设计报表->其它->浮动部件框”部分。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('5n', 'Customer');">5n.水印背景</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('5n', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/5n.grf" target="_blank">grf/5n.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>演示在报表打印页面中显示水印背景图。通过报表主对象的 BackImage 或 BackImageFile 属性指定水印背景图。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('5o', 'Customer');">5o.水印文字</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('5o', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/5o.grf" target="_blank">grf/5o.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>用浮动部件框实现水印文字，浮动部件框说明与应用请参考帮助文档的“设计报表->其它->浮动部件框”部分。</td>
+        </tr>
+    </table>
+
+    <h3>打印与票据套打</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=5% />
+            <col width=5% />
+            <col width="10%" />
+            <col width="20%" />
+            <col width=40% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>报表(打印预览)</th>
+            <th>查询显示</th>
+            <th>报表设计</th>
+            <th>报表模板</th>
+            <th>报表数据</th>
+            <th>说明</th>
+        </tr>
+
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('6a', 'ContractOne');">6a.合同打印(单份_RTF)</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('6a', 'ContractOne');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('6a', 'ContractOne');">[设计]</a></td>
+            <td><a href="../grf/6a.grf" target="_blank">grf/6a.grf</a></td>
+            <td><a href="javascript:openData('ContractOne');">/data/DataCenter.ashx?data=ContractOne</a></td>
+            <td>用RTF文字框实现合同打印，合同中的动态数据域在运行时将被实际参数值替换。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="General/SQLFromReport/PrintReport.aspx?report=6b" target="_blank">6b.合同打印(多份_RTF)</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="General/SQLFromReport/DesignReport.aspx?report=6b" target="_blank">[设计]</a></td>
+            <td><a href="../grf/6b.grf" target="_blank">grf/6b.grf</a></td>
+            <td></td>
+            <td>用RTF文字框实现合同打印，合同中的动态数据域在运行时将被实际参数值替换。将RTF文字框定义在明细网格中，可以实现同时打印多份合同。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('6c', 'ContractOne');">6c.合同打印(单份_综合文字框)</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('6c', 'ContractOne');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('6c', 'ContractOne');">[设计]</a></td>
+            <td><a href="../grf/6c.grf" target="_blank">grf/6c.grf</a></td>
+            <td><a href="javascript:openData('ContractOne');">/data/DataCenter.ashx?data=ContractOne</a></td>
+            <td>用综合文字框实现合同打印，合同中的动态数据域在运行时将被实际参数值替换。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="General/SQLFromReport/PrintReport.aspx?report=6d" target="_blank">6d.合同打印(多份_综合文字框)</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="General/SQLFromReport/DesignReport.aspx?report=6d" target="_blank">[设计]</a></td>
+            <td><a href="../grf/6d.grf" target="_blank">grf/6d.grf</a></td>
+            <td></td>
+            <td>用综合文字框实现合同打印，合同中的动态数据域在运行时将被实际参数值替换。将综合文字框定义在明细网格中，可以实现同时打印多份合同。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('6e', 'InvoiceOne');">6e.发票套打</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('6e', 'InvoiceOne');">[设计]</a></td>
+            <td><a href="../grf/6e.grf" target="_blank">grf/6e.grf</a></td>
+            <td><a href="javascript:openData('InvoiceOne');">/data/DataCenter.ashx?data=InvoiceOne</a></td>
+            <td>演示发票与票据的套打，即在印刷好的票据的指定位置将数据精确定位输出。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('6f', 'InvoiceMany');">6f.发票成批套打</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('6f', 'InvoiceMany');">[设计]</a></td>
+            <td><a href="../grf/6f.grf" target="_blank">grf/6f.grf</a></td>
+            <td><a href="javascript:openData('InvoiceMany');">/data/DataCenter.ashx?data=InvoiceMany</a></td>
+            <td>演示发票与票据的套打，对数据按单分组，实现一次打印多张票据。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('6g', 'EmployeeOne');">6g.快递单套打</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('6g', 'EmployeeOne');">[设计]</a></td>
+            <td><a href="../grf/6g.grf" target="_blank">grf/6g.grf</a></td>
+            <td><a href="javascript:openData('EmployeeOne');">/data/DataCenter.ashx?data=EmployeeOne</a></td>
+            <td>演示快递单套打打印。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('6h');">6h.支票套打</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('6h');">[设计]</a></td>
+            <td><a href="../grf/6h.grf" target="_blank">grf/6h.grf</a></td>
+            <td></td>
+            <td>演示支票套打打印，按照支票书写规范用报表脚本产生特殊的显示文字。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('6i', 'InvoiceMany');">6i.多联票据</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('6i', 'InvoiceMany');">[设计]</a></td>
+            <td><a href="../grf/6i.grf" target="_blank">grf/6i.grf</a></td>
+            <td><a href="javascript:openData('InvoiceMany');">/data/DataCenter.ashx?data=InvoiceMany</a></td>
+            <td>演示单据在一张纸上重复打印，产生不同的联次，一联中还要控制显示的行数，超过的行在下一页继续显示。实现在非复写纸张上单据的多联打印。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="General/SQLFromReport/PrintReport.aspx?report=6j" target="_blank">6j.多联票据非复写纸</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="General/SQLFromReport/DesignReport.aspx?report=6j" target="_blank">[设计]</a></td>
+            <td><a href="../grf/6j.grf" target="_blank">grf/6j.grf</a></td>
+            <td></td>
+            <td>演示单据在一张纸上重复打印，产生不同的联次，一联中还要控制显示的行数，超过的行在下一页继续显示。实现在非复写纸张上单据的多联打印。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('6k');">6k.多背景图套打</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('6k');">[设计]</a></td>
+            <td><a href="../grf/6k.grf" target="_blank">grf/6k.grf</a></td>
+            <td></td>
+            <td>实现多页不同类型数据套打，且每页是不同的背景图。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('6l', 'SaleDetail');">6l.POS小票打印</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('6l', 'SaleDetail');">[设计]</a></td>
+            <td><a href="../grf/6l.grf" target="_blank">grf/6l.grf</a></td>
+            <td><a href="javascript:openData('SaleDetail');">/data/DataCenter.ashx?data=SaleDetail</a></td>
+            <td>演示超市购物小票的打印。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="General/SQLFromReport/PrintReport.aspx?report=6m" target="_blank">6m.横向分页在一页</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="General/SQLFromReport/DesignReport.aspx?report=6m" target="_blank">[设计]</a></td>
+            <td><a href="../grf/6m.grf" target="_blank">grf/6m.grf</a></td>
+            <td></td>
+            <td>报表横向分页打印时，如果数据量少，横向产生的打印数据合并在一页中显示。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('6n', 'Customer');">6n.镜像页面边距</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('6n', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/6n.grf" target="_blank">grf/6n.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>演示报表左右页边距镜像功能，当双面打印报表时，让左右页边距按镜像方式产生，这样方便报表的装订。</td>
+        </tr>
+    </table>
+
+    <h3>报表脚本</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=5% />
+            <col width=5% />
+            <col width="10%" />
+            <col width="20%" />
+            <col width=40% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>报表(打印预览)</th>
+            <th>查询显示</th>
+            <th>报表设计</th>
+            <th>报表模板</th>
+            <th>报表数据</th>
+            <th>说明</th>
+        </tr>
+
+        <tr class="table-data-row">
+            <td><a href="General/SQLFromReport/PrintReport.aspx?report=7-1a" target="_blank">7-1a.脚本：追加空白记录</a></td>
+            <td align="center"><a href="General/SQLFromReport/DisplayReport.aspx?report=7-1a" target="_blank">[查询]</a></td>
+            <td align="center"><a href="General/SQLFromReport/DesignReport.aspx?report=7-1a" target="_blank">[设计]</a></td>
+            <td><a href="../grf/7-1a.grf" target="_blank">grf/7-1a.grf</a></td>
+            <td></td>
+            <td>在报表主对象的开始处理脚本上实现追加空白记录。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="General/SQLFromReport/PrintReport.aspx?report=7-1b" target="_blank">7-1b.脚本：设置特殊显示文字</a></td>
+            <td align="center"><a href="General/SQLFromReport/DisplayReport.aspx?report=7-1b" target="_blank">[查询]</a></td>
+            <td align="center"><a href="General/SQLFromReport/DesignReport.aspx?report=7-1b" target="_blank">[设计]</a></td>
+            <td><a href="../grf/7-1b.grf" target="_blank">grf/7-1b.grf</a></td>
+            <td></td>
+            <td>在字段的“获取显示文字脚本”中为字段设置特殊显示文字。在文字类部件框上也可以实现类似的功能。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('7-1c', 'SaleDetail');">7-1c.脚本：文字按条件突出显示</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('7-1c', 'SaleDetail');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('7-1c', 'SaleDetail');">[设计]</a></td>
+            <td><a href="../grf/7-1c.grf" target="_blank">grf/7-1c.grf</a></td>
+            <td><a href="javascript:openData('SaleDetail');">/data/DataCenter.ashx?data=SaleDetail</a></td>
+            <td>在内容行的“格式化脚本”中实现文字按条件高亮显示。部件框的外观属性可以在其所处的报表节的格式化脚本上进行改变，这样可以根据不同的条件实现文字按不同的格式显示。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('7-1d', 'SaleSumByProduct');">7-1d.脚本：整行突出显示</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('7-1d', 'SaleSumByProduct');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('7-1d', 'SaleSumByProduct');">[设计]</a></td>
+            <td><a href="../grf/7-1d.grf" target="_blank">grf/7-1d.grf</a></td>
+            <td><a href="javascript:openData('SaleSumByProduct');">/data/DataCenter.ashx?data=SaleSumByProduct</a></td>
+            <td>在内容行的“格式化脚本”中实现当前行整行按条件高亮显示。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('7-1e', 'Customer');">7-1e.脚本：两行显示一次行线</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('7-1e', 'Customer');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('7-1e', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/7-1e.grf" target="_blank">grf/7-1e.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>实现按需显示表格的行线，将单元格改为自由格，然后在内容行的“格式化脚本”上按条件动态控制部件框的边框。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('7-1f', 'RTFSample');">7-1f.脚本：页脚首页不显示</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('7-1f', 'RTFSample');">[设计]</a></td>
+            <td><a href="../grf/7-1f.grf" target="_blank">grf/7-1f.grf</a></td>
+            <td><a href="javascript:openData('RTFSample');">/data/DataCenter.ashx?data=RTFSample</a></td>
+            <td>实现报表封面页不显示页脚，在页脚的“格式化脚本”属性上写脚本，控制其在首页不显示。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('7-1g', 'Customer');">7-1g.脚本：镜像页边距并奇偶页眉页脚</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('7-1g', 'Customer');">[设计]</a></td>
+            <td><a href="../grf/7-1g.grf" target="_blank">grf/7-1g.grf</a></td>
+            <td><a href="javascript:openData('Customer');">/data/DataCenter.ashx?data=Customer</a></td>
+            <td>当报表双面打印时，让页码信息始终显示在外侧。在格式化脚本中根据条件设置部件框的可见性。这里是通过取页号系统变量判断奇偶页。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('7-1h', 'SaleDetail');">7-1h.脚本.按条件隐藏数据行</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('7-1h', 'SaleDetail');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('7-1h', 'SaleDetail');">[设计]</a></td>
+            <td><a href="../grf/7-1h.grf" target="_blank">grf/7-1h.grf</a></td>
+            <td><a href="javascript:openData('SaleDetail');">/data/DataCenter.ashx?data=SaleDetail</a></td>
+            <td>根据条件确定明细行是否显示。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="General/SQLFromReport/PrintReport.aspx?report=7-2a" target="_blank">7-2a.脚本：计算字段</a></td>
+            <td align="center"><a href="General/SQLFromReport/DisplayReport.aspx?report=7-2a" target="_blank">[查询]</a></td>
+            <td align="center"><a href="General/SQLFromReport/DesignReport.aspx?report=7-2a" target="_blank">[设计]</a></td>
+            <td><a href="../grf/7-2a.grf" target="_blank">grf/7-2a.grf</a></td>
+            <td></td>
+            <td>报表中可以插入计算字段，计算字段无实际数据源字段对应。在记录集的“提交记录前脚本”属性上写报表脚本，实现计算字段求值。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('7-2b', 'SaleByProduct');">7-2b.脚本：累计求和(收发存)</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('7-2b', 'SaleByProduct');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('7-2b', 'SaleByProduct');">[设计]</a></td>
+            <td><a href="../grf/7-2b.grf" target="_blank">grf/7-2b.grf</a></td>
+            <td><a href="javascript:openData('SaleByProduct');">/data/DataCenter.ashx?data=SaleByProduct</a></td>
+            <td>用报表脚本实现计算收入支出数据的结存余额。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="General/SQLFromReport/PrintReport.aspx?report=7-2c" target="_blank">7-2c.脚本：占列分组不重复求和</a></td>
+            <td align="center"><a href="General/SQLFromReport/DisplayReport.aspx?report=7-2c" target="_blank">[查询]</a></td>
+            <td align="center"><a href="General/SQLFromReport/DesignReport.aspx?report=7-2c" target="_blank">[设计]</a></td>
+            <td><a href="../grf/7-2c.grf" target="_blank">grf/7-2c.grf</a></td>
+            <td></td>
+            <td>用报表脚本实现主表数据项求和，每项只求和一次。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="General/SQLFromReport/PrintReport.aspx?report=7-2d" target="_blank">7-2d.脚本：每页重复报表尾实现页小计</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="General/SQLFromReport/DesignReport.aspx?report=7-2d" target="_blank">[设计]</a></td>
+            <td><a href="../grf/7-2d.grf" target="_blank">grf/7-2d.grf</a></td>
+            <td></td>
+            <td>用脚本在每页重复显示的报表尾中实现当前页小计统计。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="General/SQLFromReport/PrintReport.aspx?report=7-3a" target="_blank">7-3a.脚本：自绘突出行线</a></td>
+            <td align="center"><a href="General/SQLFromReport/DisplayReport.aspx?report=7-3a" target="_blank">[查询]</a></td>
+            <td align="center"><a href="General/SQLFromReport/DesignReport.aspx?report=7-3a" target="_blank">[设计]</a></td>
+            <td><a href="../grf/7-3a.grf" target="_blank">grf/7-3a.grf</a></td>
+            <td></td>
+            <td>用脚本自绘出加粗的表格行线。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('7-3b');">7-3b.脚本：部件框自定义绘制</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('7-3b');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('7-3b');">[设计]</a></td>
+            <td><a href="../grf/7-3b.grf" target="_blank">grf/7-3b.grf</a></td>
+            <td></td>
+            <td>演示部件框的自定义绘制功能。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('7-3c');">7-3c.脚本：部件框自绘(饼图与弧线)</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('7-3c');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('7-3c');">[设计]</a></td>
+            <td><a href="../grf/7-3c.grf" target="_blank">grf/7-3c.grf</a></td>
+            <td></td>
+            <td>演示部件框的自定义绘制功能。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('7-3d', 'Categories');">7-3d.脚本：图像自定义绘制</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('7-3d', 'Categories');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('7-3d', 'Categories');">[设计]</a></td>
+            <td><a href="../grf/7-3d.grf" target="_blank">grf/7-3d.grf</a></td>
+            <td><a href="javascript:openData('Categories');">/data/DataCenter.ashx?data=Categories</a></td>
+            <td>在自绘部件框中绘制出多幅图像，可以根据条件绘制不同幅数的图像，图像的输出位置与大小也可以根据条件动态确定。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="General/SQLFromReport/PrintReport.aspx?report=7-3e" target="_blank">7-3e.脚本：自定义条件分组</a></td>
+            <td align="center"><a href="General/SQLFromReport/DisplayReport.aspx?report=7-3e" target="_blank">[查询]</a></td>
+            <td align="center"><a href="General/SQLFromReport/DesignReport.aspx?report=7-3e" target="_blank">[设计]</a></td>
+            <td><a href="../grf/7-3e.grf" target="_blank">grf/7-3e.grf</a></td>
+            <td></td>
+            <td>分组不是根据某一个或多个字段的值的变化产生，而是根据自定义的规则产生分组项，这里是根据值的范围产生不同的分组。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="General/SQLFromReport/PrintReport.aspx?report=7-3f" target="_blank">7-3f.脚本：按首字母分组</a></td>
+            <td align="center"><a href="General/SQLFromReport/DisplayReport.aspx?report=7-3f" target="_blank">[查询]</a></td>
+            <td align="center"><a href="General/SQLFromReport/DesignReport.aspx?report=7-3f" target="_blank">[设计]</a></td>
+            <td><a href="../grf/7-3f.grf" target="_blank">grf/7-3f.grf</a></td>
+            <td></td>
+            <td>按首字母进行分组。增加一个计算字段，在记录集的“提交记录前脚本”中将计算字段的值设为对应字段的首字母。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('7-3g', 'Report_7_3g' + '&BeginNo=' + encodeURIComponent('9') + '&EndNo=' + encodeURIComponent('35'));">7-3g.脚本：表格续打(套打)</a></td>
+            <td align="center"></td>
+            <td align="center"><a href="javascript:openDesignReport('7-3g', 'Report_7_3g' + '&BeginNo=' + encodeURIComponent('9') + '&EndNo=' + encodeURIComponent('35'));">[设计]</a></td>
+            <td><a href="../grf/7-3g.grf" target="_blank">grf/7-3g.grf</a></td>
+            <td><a href="javascript:openData('Report_7_3g' + '&BeginNo=' + encodeURIComponent('9') + '&EndNo=' + encodeURIComponent('35'));">/data/DataCenter.ashx?data=Report_7_3g&BeginNo=9&EndNo=35</a></td>
+            <td>用报表脚本实现续打，根据每次打印的参数确定数据的起始打印位置，通过动态设置空白报表头的高度来实现数据起始位置的变化。</td>
+        </tr>
+    </table>
+
+    <h3>图表(Chart)</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=5% />
+            <col width=5% />
+            <col width="10%" />
+            <col width="20%" />
+            <col width=40% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>报表(打印预览)</th>
+            <th>查询显示</th>
+            <th>报表设计</th>
+            <th>报表模板</th>
+            <th>报表数据</th>
+            <th>说明</th>
+        </tr>
+
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('8a');">8a.图表.序列组簇图</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('8a');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('8a');">[设计]</a></td>
+            <td><a href="../grf/8a.grf" target="_blank">grf/8a.grf</a></td>
+            <td></td>
+            <td>各种序列组簇类型的图表，包括柱状图、饼图、连线图、混和图表、双轴图表等。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('8b', 'Chart_8b');">8b.图表.XY数据型图</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('8b', 'Chart_8b');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('8b', 'Chart_8b');">[设计]</a></td>
+            <td><a href="../grf/8b.grf" target="_blank">grf/8b.grf</a></td>
+            <td><a href="javascript:openData('Chart_8b');">/data/DataCenter.ashx?data=Chart_8b</a></td>
+            <td>各种散列(XY)类型的图表，包括散列点图、散列连线图、散列曲线图、气泡图表等。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('8c');">8c.图表.三维(3D)</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('8c');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('8c');">[设计]</a></td>
+            <td><a href="../grf/8c.grf" target="_blank">grf/8c.grf</a></td>
+            <td></td>
+            <td>各种3D图表等。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('8c', 'Chart_8d');">8d.记录集图表</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('8c', 'Chart_8d');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('8c', 'Chart_8d');">[设计]</a></td>
+            <td><a href="../grf/8c.grf" target="_blank">grf/8c.grf</a></td>
+            <td><a href="javascript:openData('Chart_8d');">/data/DataCenter.ashx?data=Chart_8d</a></td>
+            <td>图表全部定义对应记录集，图表的相关属性关联记录集的字段。</td>
+        </tr>
+    </table>
+
+    <h3>自由表格(FreeGrid)</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=5% />
+            <col width=5% />
+            <col width="10%" />
+            <col width="20%" />
+            <col width=40% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>报表(打印预览)</th>
+            <th>查询显示</th>
+            <th>报表设计</th>
+            <th>报表模板</th>
+            <th>报表数据</th>
+            <th>说明</th>
+        </tr>
+
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('9a', 'EmployeeOne');">9a.自由表格</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('9a', 'EmployeeOne');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('9a', 'EmployeeOne');">[设计]</a></td>
+            <td><a href="../grf/9a.grf" target="_blank">grf/9a.grf</a></td>
+            <td><a href="javascript:openData('EmployeeOne');">/data/DataCenter.ashx?data=EmployeeOne</a></td>
+            <td>用自由表格(FreeGrid)部件框制作一个人员档案自由表格。</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('9b', 'FreeGridwithDetailGrid');">9b.自由表格并明细网格</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('9b', 'FreeGridwithDetailGrid');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('9b', 'FreeGridwithDetailGrid');">[设计]</a></td>
+            <td><a href="../grf/9b.grf" target="_blank">grf/9b.grf</a></td>
+            <td><a href="javascript:openData('FreeGridwithDetailGrid');">/data/DataCenter.ashx?data=FreeGridwithDetailGrid</a></td>
+            <td>用自由表格部件框与明细网格共同实现一个有动态明细数据的自由表格。</td>
+        </tr>
+    </table>
+
+    <h3>报表组件对象模型</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=5% />
+            <col width=5% />
+            <col width="10%" />
+            <col width="20%" />
+            <col width=40% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>报表(打印预览)</th>
+            <th>查询显示</th>
+            <th>报表设计</th>
+            <th>报表模板</th>
+            <th>报表数据</th>
+            <th>说明</th>
+        </tr>
+
+        <tr class="table-data-row">
+            <td><a href="javascript:openPrintReport('a0');">a0.报表组件对象模型</a></td>
+            <td align="center"><a href="javascript:openDisplayReport('a0');">[查询]</a></td>
+            <td align="center"><a href="javascript:openDesignReport('a0');">[设计]</a></td>
+            <td><a href="../grf/a0.grf" target="_blank">grf/a0.grf</a></td>
+            <td></td>
+            <td>用 Grid++Report 本身设计出其编程对象的组件对象模型图。</td>
+        </tr>
+    </table>
+    <h2>二、教程例子演示</h2>
+
+
+    <h3>基础起步</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=50% />
+            <col width=30% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>例子报表名称</th>
+            <th>简要说明</th>
+            <th>例子文件</th>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="01.ViewReport/PrintViewReport.htm" target="_blank">打印显示报表</a></td>
+            <td>用打印显示器(PrintViewer)展现报表，即以打印预览的方式展现报表。</td>
+            <td>01.ViewReport/PrintViewReport.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="01.ViewReport/DisplayViewReport.htm" target="_blank">查询显示报表</a></td>
+            <td>用查询显示器(DisplayViewer)展现报表，通常用来展现具有明细表格的报表。</td>
+            <td>01.ViewReport/DisplayViewReport.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="02.PrintDirect/PrintDirect.htm" target="_blank">直接打印与数据导出报表</a></td>
+            <td>不使用查询显示器与打印显示器展现报表，而是直接将报表打印输出或进行数据导出。</td>
+            <td>02.PrintDirect/PrintDirect.htm</td>
+        </tr>
+    </table>
+
+    <h3>多种方式提供报表数据</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=50% />
+            <col width=30% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>例子报表名称</th>
+            <th>简要说明</th>
+            <th>例子文件</th>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="04.PrintInForm/InvoiceMany.htm" target="_blank">仅提供明细记录数据(发票成批套打)</a></td>
+            <td>将约定格式的 XML 文本数据加载到报表的明细记录集中。</td>
+            <td>04.PrintInForm/InvoiceMany.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="04.PrintInForm/CheckDataFromServer.htm" target="_blank">仅提供参数数据(支票打印)</a></td>
+            <td>为没有明细网格的报表提供 XML 数据，即将 XML 数据加载给报表中的参数与部件框。</td>
+            <td>04.PrintInForm/CheckDataFromServer.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="04.PrintInForm/InvoiceOne.htm" target="_blank">同时提供明细记录与参数数据(发票单张套打)</a></td>
+            <td>向报表同时提供明细记录数据与参数数据，在服务器端将报表的明细记录数据与参数数据统一打包在一起。</td>
+            <td>04.PrintInForm/InvoiceOne.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="10.SummaryToDetail/Summary.htm" target="_blank">按条件筛选报表数据</a></td>
+            <td>根据不同的过滤参数，获得不同的报表数据。</td>
+            <td>10.SummaryToDetail/Summary.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="04.PrintInForm/Check.htm" target="_blank">用JS代码加载报表参数(支票打印)</a></td>
+            <td>通过设置报表值，实现支票数据的打印。<a href="04.PrintInForm/CheckDesign.htm" target="_blank">设计模板(调整打印位置)</a></td>
+            <td>04.PrintInForm/Check.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="11.BatchData/SQL_BatchData.htm" target="_blank">分批次获取报表数据</a></td>
+            <td>当用查询显示器展现报表时，可以分批次获取报表数据。分批获取报表数据适用于大数据量报表，加快报表展现的速度，并避免获取大量不用查看的数据。</td>
+            <td>11.BatchData/SQL_BatchData.htm</td>
+        </tr>
+    </table>
+
+    <h3>为子报表提供数据</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=50% />
+            <col width=30% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>例子报表名称</th>
+            <th>简要说明</th>
+            <th>例子文件</th>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="06.SubReport/SubReport.htm" target="_blank">子报表载入数据</a></td>
+            <td>演示如何为一个报表中的多个子报表提供数据。</td>
+            <td>06.SubReport/SubReport.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="06.SubReport/SRGridInGrid.htm" target="_blank">为子报表实现的表中表载入数据</a></td>
+            <td>演示如何为表中表中的子报表提供数据，其中的子报表会在生成过程中多次请求数据，取主表参数或当前记录字段值作为子报表筛选数据的条件。</td>
+            <td>06.SubReport/SRGridInGrid.htm</td>
+        </tr>
+    </table>
+
+    <h3>为报表中的图表提供数据</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=50% />
+            <col width=30% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>例子报表名称</th>
+            <th>简要说明</th>
+            <th>例子文件</th>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="07.Chart/FillChartData.htm" target="_blank">为报表中的图表提供数据</a></td>
+            <td>从服务器获取XML数据，并将数据加载到图表部件框中。</td>
+            <td>07.Chart/FillChartData.htm</td>
+        </tr>
+    </table>
+
+    <h3>报表插件各种功能特性应用</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=50% />
+            <col width=30% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>例子报表名称</th>
+            <th>简要说明</th>
+            <th>例子文件</th>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="08.CustomToolbar/CustomToolbar.htm" target="_blank">自定义预览控件工具栏</a></td>
+            <td>隐藏工具栏上的某些按钮，增加自定义按钮并响应其执行事件。</td>
+            <td>08.CustomToolbar/CustomToolbar.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="01.ViewReport/PrintViewReportEx.htm" target="_blank">打印预览编辑与导航书签</a></td>
+            <td>开启报表打印预览时的数据可编辑功能，并显示报表导航书签。</td>
+            <td>01.ViewReport/PrintViewReportEx.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="Misc/PageDisplay.htm" target="_blank">查询显示控件分页显示数据</a></td>
+            <td>查询显示器以分页方式显示表格数据，每页数据行数可以指定，也可以自动确定。</td>
+            <td>Misc/PageDisplay.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="Advance/ResortRegroup/ResortRegroup.htm" target="_blank">查询显示控件按列重排序数据</a></td>
+            <td>当用查询显示器展现报表时，可以通过点击表格列标题实现数据重排序。</td>
+            <td>Advance/ResortRegroup/ResortRegroup.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="03.Export/CustomExport.htm" target="_blank">设置报表导出默认选项</a></td>
+            <td>在报表的 ExportBegin 事件中改变数据导出的选项参数。</td>
+            <td>03.Export/CustomExport.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="Misc/ShowProgress.htm" target="_blank">显示进度条</a></td>
+            <td>在报表生成过程中显示进度条。</td>
+            <td>Misc/ShowProgress.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="Misc/PrintAdapt.htm" target="_blank">明细表格打印自适应策略</a></td>
+            <td>用不同的打印策略打印同一表格报表，得到不同的打印结果，如列宽自动缩放，横向分页等。</td>
+            <td>Misc/PrintAdapt.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="05.Picture/Picture.htm" target="_blank">报表中显示图像</a></td>
+            <td>在报表中显示图像，以多种方式载入图像数据。</td>
+            <td>05.Picture/Picture.htm</td>
+        </tr>
+    </table>
+
+    <h3>应用报表事件控制报表生成</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=50% />
+            <col width=30% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>例子报表名称</th>
+            <th>简要说明</th>
+            <th>例子文件</th>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="Advance/CalcField/CalcField.htm" target="_blank">计算字段</a></td>
+            <td>1、在报表的BeforePostRecord事件中求计算字段值，2、用综合文字框的表达式实现计算字段。</td>
+            <td>Advance/CalcField/CalcField.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="Advance/CustomGroup/CustomGroup.htm" target="_blank">自定义条件分组</a></td>
+            <td>报表分组不能依据字段自动产生，而是按自定义条件产生分组。</td>
+            <td>Advance/CustomGroup/CustomGroup.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="Advance/CustomSummary/CustomSummary.htm" target="_blank">自定义汇总统计计算</a></td>
+            <td>不能用报表内部的统计函数直接求出统计值，而是在报表事件中实现统计值生成。</td>
+            <td>Advance/CustomSummary/CustomSummary.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="Advance/RedNegativeText/RedNegativeText.htm" target="_blank">负数红字显示</a></td>
+            <td>实现负数值的特殊显示，并在查询显示与打印显示时展现不同的结果。</td>
+            <td>Advance/RedNegativeText/RedNegativeText.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="Advance/SectionFormat/SectionFormat.htm" target="_blank">文字突出显示</a></td>
+            <td>在报表的SectionFormat事件中按条件改变显示外观属性，实现文字突出显示。</td>
+            <td>Advance/SectionFormat/SectionFormat.htm</td>
+        </tr>
+    </table>
+
+    <h3>编程动态定义报表</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=50% />
+            <col width=30% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>例子报表名称</th>
+            <th>简要说明</th>
+            <th>例子文件</th>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="Advance/Program/Program.htm" target="_blank">编程定义报表模板</a></td>
+            <td>用程序代码定义出一个完整的报表模板。用报表设计程序可以设计出的报表，一样可以用程序代码定义出来。</td>
+            <td>Advance/Program/Program.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="Advance/CustomCrosstab/CustomCrosstab.htm" target="_blank">编程定义交叉表</a></td>
+            <td>Grid++Report本身具有交叉表功能，如果要实现特殊的交叉表，也可以通过编程定义出来。</td>
+            <td>Advance/CustomCrosstab/CustomCrosstab.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="Advance/DynamicColumn/DynamicColumn.htm" target="_blank">动态显示或隐藏表格列</a></td>
+            <td>通过参数实现列的显示与隐藏。</td>
+            <td>Advance/DynamicColumn/DynamicColumn.htm</td>
+        </tr>
+    </table>
+
+    <h3>各种杂项功能实现</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=50% />
+            <col width=30% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>例子报表名称</th>
+            <th>简要说明</th>
+            <th>例子文件</th>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="10.SummaryToDetail/Summary.htm" target="_blank">报表穿透查询(报表透视)</a></td>
+            <td>用报表查询显示器展现报表，通过响应鼠标事件实现从汇总报表穿透查询到对应明细报表，实现报表数据的追本溯源。</td>
+            <td>10.SummaryToDetail/Summary.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="10.SummaryToDetail/Crosstab.htm" target="_blank">交叉报表穿透查询(报表透视)</a></td>
+            <td>用报表查询显示器展现交叉报表，当用鼠标双击一项交叉数据单元格时打开对应的明细报表，示范如何获取当前单元格的对应数据作为穿透查询的数据筛选条件。</td>
+            <td>10.SummaryToDetail/Crosstab.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="Advance/ListCheckBox/ListCheckBox.htm" target="_blank">表格选中列与超链接</a></td>
+            <td>在明细表格中增加一选中列，实现数据行选中与否标记；通过响应事件实现超链接功能。</td>
+            <td>Advance/ListCheckBox/ListCheckBox.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="Misc/Multilanguage.htm" target="_blank">设定控件界面语言</a></td>
+            <td>切换控件的界面语言，并实时更新显示。在本页的上端可以设定界面语言，这样的方式实现在报表首页设定界面语言。</td>
+            <td>Misc/Multilanguage.htm</td>
+        </tr>
+    </table>
+
+    <h3>应用报表设计器设计报表</h3>
+    <table class="table-report">
+        <colgroup>
+            <col width=20% />
+            <col width=50% />
+            <col width=30% />
+        </colgroup>
+        <tr class="table-title-row">
+            <th>例子报表名称</th>
+            <th>简要说明</th>
+            <th>例子文件</th>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="09.DesignReport/DesignReport.htm" target="_blank">设计报表</a></td>
+            <td>设一个新报表，并保存到服务器。</td>
+            <td>09.DesignReport/DesignReport.htm</td>
+        </tr>
+        <tr class="table-data-row">
+            <td><a href="09.DesignReport/DesignNewReport.htm" target="_blank">设计一个新报表</a></td>
+            <td>设一个新报表，并保存到服务器。</td>
+            <td>09.DesignReport/DesignNewReport.htm</td>
+        </tr>
+    </table>
+</body>
+</html>

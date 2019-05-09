@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "显示报表";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<script src="~/Content/gridreport/CreateControl.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var Report = request('report'), dataURL = request('data');
+    if (Report != "") {
+        Report = "/Report/grf/" + Report + ".grf";
+    }
+    if (dataURL != "") {
+        dataURL = "/Report/data/DataCenter.ashx?data=" + dataURL;
+    }
+    if ("@(ViewBag.DataUrl)" != "") {
+        dataURL += "@(ViewBag.DataUrl)";
+    }
+    CreateDisplayViewerEx("100%", "100%", Report, dataURL, true, "");
+</script>

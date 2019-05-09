@@ -1,0 +1,36 @@
+﻿.am-form-layout {
+    padding:44px 0 0 0;
+}
+.am-form-layout-top {
+    position:absolute;
+    top:0;
+    left:0;
+    border-bottom:1px solid #ddd;
+    height:44px;
+    width:100%;
+    padding-left:3px;
+    z-index:4;
+}
+.am-item {
+    position: relative;
+    float: left;
+    padding-top: 8px;
+    padding-left:5px;
+    line-height:28px;
+}
+.am-item .btn
+{
+    position: relative;
+    display: inline-block;
+    height: 28px;
+    margin-bottom: 1px;
+    line-height: 14px;
+
+}
+.am-item .am-select {
+    width:170px;
+}
+.am-item .am-field-error-info {
+    top:9px;
+    height:26px;
+}

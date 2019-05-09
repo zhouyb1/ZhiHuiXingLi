@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "岗位添加";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="am-form-wrap" id="form">
+    <div class="col-xs-12 am-form-item">
+        <div class="am-form-item-title">岗位选择</div>
+        <div id="auditorId"></div>
+    </div>
+    <div class="col-xs-12 am-form-item">
+        <div class="am-form-item-title">附加条件</div>
+        <div id="condition"></div>
+    </div>
+</div>
+@Html.AppendJsFile("/Areas/AM_WorkFlowModule/Views/WfScheme/PostForm.js")
+

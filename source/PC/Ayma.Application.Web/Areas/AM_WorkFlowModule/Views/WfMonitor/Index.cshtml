@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "流程监控";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div id="am_layout" class="am-layout am-layout-left-center">
+    <div class="am-layout-left">
+        <div class="am-layout-wrap am-layout-wrap-notitle" style="padding-top:10px;">
+            <div class="am-layout-body">
+                <ul class="am-left-list" id="am_left_list">
+                    <li class="active" data-value="1" >未完成</li>
+                    <li data-value="2">已完成</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="am-layout-center">
+        <div class="am-layout-wrap am-layout-wrap-notitle">
+            <div class="am-layout-tool">
+                <div class="am-layout-tool-left">
+                    <div class="am-layout-tool-item">
+                        <div id="datesearch"></div>
+                    </div>
+                    <div class="am-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" />
+                    </div>
+                    <div class="am-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;查询</a>
+                    </div>
+                </div>
+                <div class="am-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="am_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class=" btn-group btn-group-sm">
+                        <a id="am_eye" class="btn btn-default"><i class="fa fa-eye"></i>&nbsp;查看进度</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="am-layout-body" id="girdtable">
+            </div>
+        </div>
+    </div>
+</div>
+@Html.AppendJsFile("/Areas/AM_WorkFlowModule/Views/WfMonitor/Index.js")
+
+
+
+
+

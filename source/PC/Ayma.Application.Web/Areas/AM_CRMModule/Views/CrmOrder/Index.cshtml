@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "订单管理";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="am-layout">
+    <div class="am-layout-center">
+        <div class="am-layout-wrap am-layout-wrap-notitle">
+            <div class="am-layout-tool">
+                <div class="am-layout-tool-left">
+                    <div class="am-layout-tool-item">
+                        <div id="datesearch"></div>
+                    </div>
+                    <div class="am-layout-tool-item">
+                        <div id="multiple_condition_query">
+                            <div class="am-query-formcontent">
+                                <div class="col-xs-12 am-form-item">
+                                    <div class="am-form-item-title">单据编号</div>
+                                    <input id="orderCode" type="text" class="form-control" />
+                                </div>
+                                <div class="col-xs-12 am-form-item">
+                                    <div class="am-form-item-title">客户名称</div>
+                                    <div id="customerId"></div>
+                                </div>
+                                <div class="col-xs-12 am-form-item">
+                                    <div class="am-form-item-title">销售人员</div>
+                                    <div id="sellerId"></div>
+                                </div>
+                                <div class="col-xs-12 am-form-item">
+                                    <div class="am-form-item-title">收款状态</div>
+                                    <div id="paymentState"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="am-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="am_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class="btn-group btn-group-sm" ayma-authorize="yes">
+                        <a id="am_add" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;新增</a>
+                        <a id="am_edit" class="btn btn-default"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
+                        <a id="am_delete" class="btn btn-default"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+                        <a id="am_detail" class="btn btn-default"><i class="fa fa-trash-o"></i>&nbsp;打印</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="am-layout-body" id="girdtable"></div>
+        </div>
+    </div>
+</div>
+@Html.AppendJsFile("/Areas/AM_CRMModule/Views/CrmOrder/Index.js")
+

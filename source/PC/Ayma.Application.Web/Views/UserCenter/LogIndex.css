@@ -1,0 +1,35 @@
+﻿.am-layout {
+    padding:0;
+    padding-top:40px;
+}
+.am-layout-center {
+    padding:0;
+}
+.am-layout-wrap {
+    padding:0;
+    border:0;
+}
+.am-nav-tabs
+{
+    position: absolute;
+    top: 0;
+    height: 40px;
+    width: 100%;
+    border-bottom: 1px solid #eee;
+}
+.am-nav-tabs>li {
+    border: 0;
+    padding: 11px 15px;
+    cursor:pointer;
+}
+.am-nav-tabs>li.active, 
+.am-nav-tabs>li.active:focus, 
+.am-nav-tabs>li.active:hover {
+    color: #555;
+    cursor: default;
+    padding-bottom:10px;
+    background-color: #fff;
+    border: 0;
+    border-bottom: 2px solid #3498DB;
+}
+

@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name=”renderer” content=”webkit|ie-comp|ie-stand” />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge">
+    <title>@Ayma.Util.Config.GetValue("SystemName")登录</title>
+    <link rel="shortcut icon" href="~/Content/images/favicon.ico" type="image/x-icon" />
+</head>
+<body style="background: url(/Content/images/Login/bg_login.jpg) no-repeat center / contain; height: 100%; width: 100%; overflow: hidden; background-size: cover; ">
+    @Html.AppendCssFile("/Views/Login/index.css")
+    <input id="errornum" type="hidden" value="@ViewBag.errornum" />
+    <div class="am-layout-block top">
+    </div>
+    <div class="am-layout-block middle">
+        <div class="am-login-form">
+            <div class="am-tips" id="am_tips"></div>
+            <div class="am-input-item ">
+                <label class="name-label"></label>
+                <input id="am_username" type="text" placeholder="账户">
+            </div>
+            <div class="am-input-item">
+                <label class="pwd-label"></label>
+                <input id="am_password" type="password" placeholder="密码">
+            </div>
+            <div class="am-input-item" style="display:none;">
+                <label class="code-label"></label>
+                <input id="am_verifycode_input" maxlength="4" type="text" placeholder="图片验证码">
+                <div style="height: 36px;width: 100px;position: absolute;right: 0px;top: 0px;">
+                    <img id="am_verifycode_img" src="~/Login/VerifyCode" alt="点击切换验证码" title="点击切换验证码" />
+                </div>
+            </div>
+            <button id="am_login_btn" type="button"><span>登录</span></button>
+            <div class="am-login-links">
+                @*<a href="#" onclick="alert('请联系管理员')">忘记密码</a>*@
+            </div>
+            <div class="am-version"></div>
+        </div>
+    </div>
+
+    <script src="~/Content/jquery/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/jquery/jquery.md5.min.js"></script>
+    <script>
+        $.rootUrl = '@Url.Content("~")'.substr(0, '@Url.Content("~")'.length - 1);
+        $.amToken = $('@Html.AntiForgeryToken()').val();
+    </script>
+    @Html.AppendJsFile("/Views/Login/index.js")
+</body>
+</html>
+

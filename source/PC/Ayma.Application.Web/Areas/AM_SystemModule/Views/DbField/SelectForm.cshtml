@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "表格字段设置";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="am-layout" style="padding:0;">
+    <div class="am-layout-center">
+        <div class="am-layout-wrap am-layout-wrap-notitle">
+            <div class="am-layout-tool">
+                <div class="am-layout-tool-left">
+                    <div class="am-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" />
+                    </div>
+                    <div class="am-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;查询</a>
+                    </div>
+                </div>
+            </div>
+            <div class="am-layout-body" id="girdtable">
+            </div>
+        </div>
+    </div>
+</div>
+@Html.AppendJsFile("/Areas/AM_SystemModule/Views/DbField/SelectForm.js")
+

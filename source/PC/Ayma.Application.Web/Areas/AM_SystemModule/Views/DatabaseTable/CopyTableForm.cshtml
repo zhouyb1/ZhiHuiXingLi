@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "表复制";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="am-layout am-layout-left-center">
+    <div class="am-layout-left">
+        <div class="am-layout-wrap">
+            <div class="am-layout-title">数据库目录</div>
+            <div class="am-layout-body" id="db_tree"></div>
+        </div>
+    </div>
+    <div class="am-layout-center">
+        <div class="am-layout-wrap">
+            <div class="am-layout-title">
+                数据表信息 - <span id="titleinfo">未选择分类</span>
+            </div>
+
+            <div class="am-layout-tool">
+                <div class="am-layout-tool-left">
+                    <div class="am-layout-tool-item">
+                        <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" />
+                    </div>
+                    <div class="am-layout-tool-item">
+                        <a id="btn_Search" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;查询</a>
+                    </div>
+                </div>
+                <div class="am-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="am_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="am-layout-body" id="girdtable">
+            </div>
+        </div>
+    </div>
+</div>
+@Html.AppendJsFile("/Areas/AM_SystemModule/Views/DatabaseTable/CopyTableForm.js")
+

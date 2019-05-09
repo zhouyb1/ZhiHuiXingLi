@@ -1,0 +1,22 @@
+﻿@using Ayma.Util
+@{
+    ViewBag.Title = Config.GetValue("SystemName");
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+@Html.AppendCssFile("/Views/Home/AdminWindos/index.css")
+<div class="am-frame-top">
+    <a class="am-logo-title" style="font-family: Microsoft Yahei;"><img src="~/Content/images/logo.png" /> @Config.GetValue("SystemName")</a>
+</div>
+<div class="am-windows-start" id="am_windows_start" title="开始菜单"><i class="fa fa-windows"></i></div>
+<div class="am-applist-btn" id="am_applist_btn">应用列表</div>
+<div class="am-applist-content" id="am_applist_content">
+    <div class="am-applist-slidebox-slider">
+        <ul class="am-applist-slidebox-slider-content"></ul>
+    </div>
+    <div class="am-applist-slidebox" id="am_applist_slidebox"></div>
+</div>
+@Html.AppendJsFile("/Views/Home/AdminWindos/index.js")
+
+
+
+

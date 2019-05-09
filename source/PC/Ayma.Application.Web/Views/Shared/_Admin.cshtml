@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name=”renderer” content=”webkit|ie-comp|ie-stand” />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="~/Content/images/favicon.ico" type="image/x-icon"/>
+
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/pace/pace-theme-loading-bar.css" rel="stylesheet" />
+    <link href="~/Content/font/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/font/aymafont/iconfont.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery/plugin/scrollbar/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery/plugin/toastr/toastr.css" rel="stylesheet" />
+    @Html.AppendCssFile(
+    "/Views/AM_Content/style/am-common.css",
+    "/Views/AM_Content/style/am-admin.css",
+    "/Views/AM_Content/style/am-layer.css",
+    "/Views/AM_Content/plugin/contextmenu/am-contextmenu.css",
+    "/Views/AM_Content/plugin/im/am-im.css",
+    "/Views/AM_Content/plugin/tree/am-tree.css",
+    "/Views/AM_Content/plugin/select/am-select.css"
+    )
+
+    <script src="~/Content/pace/pace.min.js"></script>
+    <script src="~/Content/jquery/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/signalr/jquery.signalR-2.2.2.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="~/Content/bootstrap/html5shiv.min.js"></script>
+      <script src="~/Content/bootstrap/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="@Ayma.Util.Net.Browser @Ayma.Util.WebHelper.GetUITheme()">
+    <div class="am-loadbg" id="am_loadbg"></div>
+    @RenderBody()
+    <div class="am-frame-menu"><div class="am-frame-menu-wrap" id="am_frame_menu"></div></div>
+    <div class="am-frame-tabs">
+        <div class="am-frame-tabs-wrap">
+            <ul id="am_frame_tabs_ul"></ul>
+        </div>
+    </div>
+    <div class="am-frame-main" id="am_frame_main" style="background-color: #fff">
+    @*<img src="~/Content/images/iframebg.png"/>*@
+    </div>
+
+   
+    <script src="~/Content/bootstrap/bootstrap.min.js"></script>
+    <script src="~/Content/jquery/plugin/layer/layer.js"></script>
+    <script src="~/Content/jquery/plugin/jquery.cookie.min.js"></script>
+    <script src="~/Content/jquery/jquery.md5.min.js"></script>
+    <script src="~/Content/jquery/plugin/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="~/Content/jquery/plugin/toastr/toastr.min.js"></script>
+    <script>
+        $.rootUrl = '@Url.Content("~")'.substr(0, '@Url.Content("~")'.length - 1);
+        $.workflowapi = '@System.Configuration.ConfigurationManager.AppSettings["workflowapi"].ToString()';
+    </script>
+    @Html.AppendJsFile(
+    "/Views/AM_Content/script/am-base.js",
+    "/Views/AM_Content/script/am-tabs.js",
+    "/Views/AM_Content/script/am-date.js",
+    "/Views/AM_Content/script/am-validator-helper.js",
+    "/Views/AM_Content/script/am-layer.js",
+    "/Views/AM_Content/script/am-ajax.js",
+    "/Views/AM_Content/script/am-clientdata.js",
+    "/Views/AM_Content/plugin/tree/am-tree.js",
+    "/Views/AM_Content/plugin/select/am-select.js",
+    
+
+    "/Views/AM_Content/plugin/workflow/am-workflow-api.js",
+    "/Views/AM_Content/plugin/contextmenu/am-contextmenu.js",
+    "/Views/AM_Content/plugin/im/am-im.js",
+            
+    "/Views/AM_Content/script/am-admin.js"
+    )
+</body>
+</html>
+
+
+
+

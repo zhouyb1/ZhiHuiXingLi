@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "附件上传";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<link href="~/Content/webuploader/webuploader.css" rel="stylesheet" />
+@Html.AppendCssFile("/Areas/AM_SystemModule/Views/Annexes/UploadForm.css")
+<div class="am-form-layout am-form-layout-top-bottom">
+    <div class="am-form-layout-header">
+        <div id="am_add_file_btn"><i class="fa fa-cloud-upload"></i>添加文件</div>
+    </div>
+    <div class="am-form-layout-body">
+        <div class="am-form-file-queue-wrap" id="am_form_file_queue" >
+            <div class="am-form-file-queue" id="am_form_file_queue_list">
+                
+            </div>
+            <div class="am-form-file-queue-bg">
+                <h1>请选择要上传的文件</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Content/webuploader/webuploader.nolog.min.js"></script>
+@Html.AppendJsFile(
+"/Areas/AM_SystemModule/Views/Annexes/UploadForm.js")

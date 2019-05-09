@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "附件下载";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+@Html.AppendCssFile("/Areas/AM_SystemModule/Views/Annexes/DownForm.css")
+<div class="am-form-layout">
+    <div class="am-form-layout-body">
+        <div class="am-form-file-queue-wrap" id="am_form_file_queue">
+            <div class="am-form-file-queue" id="am_form_file_queue_list">
+
+            </div>
+            <div class="am-form-file-queue-bg">
+                <h1>还没有文件上传</h1>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.AppendJsFile("/Areas/AM_SystemModule/Views/Annexes/DownForm.js")
+

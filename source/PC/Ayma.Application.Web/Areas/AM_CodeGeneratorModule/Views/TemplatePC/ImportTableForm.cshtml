@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "导入表字段";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="am-form-wrap" id="form">
+    <div class="col-xs-12 am-form-item">
+        <div class="am-form-item-title">数据表选择<font face="宋体">*</font></div>
+        <div id="tableName" isvalid="yes" checkexpession="notNull"></div>
+    </div>
+</div>
+@Html.AppendJsFile("/Areas/AM_CodeGeneratorModule/Views/TemplatePC/ImportTableForm.js")
+

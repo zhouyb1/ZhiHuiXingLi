@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "表单权限字段导入";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="am-form-wrap">
+    <div class="col-xs-12 am-form-item am-form-btnitem">
+        <div class="am-form-item-title">表单选择<font face="宋体">*</font></div>
+        <div id="FormId" isvalid="yes" checkexpession="NotNull"></div>
+        <a id="am_preview" class="btn btn-default am-form-item-btn">预览表单</a>
+    </div>
+    <div class="col-xs-12 am-form-item">
+        <div class="am-form-item-title">字段选择<font face="宋体">*</font></div>
+        <div id="FieldId" isvalid="yes" checkexpession="NotNull"></div>
+    </div>
+</div>
+@Html.AppendJsFile("/Areas/AM_WorkFlowModule/Views/WfScheme/FieldSelectForm.js")

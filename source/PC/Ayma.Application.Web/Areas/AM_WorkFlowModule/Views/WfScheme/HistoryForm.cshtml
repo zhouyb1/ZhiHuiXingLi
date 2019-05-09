@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "表单模板历史记录管理";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+@Html.AppendCssFile("/Areas/AM_SystemModule/Views/DataItem/ClassifyIndex.css")
+<div class="am-layout">
+    <div class="am-layout-center">
+        <div class="am-layout-wrap am-layout-wrap-notitle">
+            <div class="am-layout-tool">
+                <div class="am-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="am_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class=" btn-group btn-group-sm">
+                        <a id="am_preview" class="btn btn-default"><i class="fa fa-eye"></i>&nbsp;预览模板</a>
+                        <a id="am_update" class="btn btn-default"><i class="fa fa-exchange"></i>&nbsp;更新到此版本</a>
+                    </div>
+                </div>
+            </div>
+            <div class="am-layout-body" id="girdtable"></div>
+        </div>
+    </div>
+</div>
+@Html.AppendJsFile("/Areas/AM_WorkFlowModule/Views/WfScheme/HistoryForm.js")

@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_GirdForm.cshtml";
+}
+<link href="~/Content/webuploader/webuploader.css" rel="stylesheet" />
+<script src="~/Content/webuploader/webuploader.nolog.min.js"></script>
+@Html.AppendCssFile("/Areas/AM_SystemModule/Views/ExcelImport/ImportForm.css")
+
+<div class="am-form-layout am-form-layout-top-bottom">
+    <div class="am-form-layout-header">
+        <div id="am_add_file_btn"><i class="fa fa-cloud-upload"></i>上传文件</div>
+        <div class="webuploader-pick"  id="am_down_file_btn"><i class="fa fa-download"></i>下载模板</div>
+    </div>
+    <div class="am-form-layout-body">
+        <div class="am-form-file-queue-wrap" id="am_form_file_queue">
+            <div class="am-form-file-queue" id="am_form_file_queue_list">
+
+            </div>
+            <div class="am-form-file-queue-bg">
+                <h1>请选择要上传的文件</h1>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.AppendJsFile("/Areas/AM_SystemModule/Views/ExcelImport/ImportForm.js")

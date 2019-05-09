@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "PC端代码生成器";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+@Html.AppendCssFile("/Areas/AM_CodeGeneratorModule/Views/TemplatePC/Index.css")
+<div class="am-layout">
+    <div class="am-layout-center">
+        <div class="am-layout-wrap">
+            <div class="am-cover-box">
+                <div class="am-cover-img">
+                    <img class="am-cover-img1" src="~/Content/images/codeGenerator/multitable0.png" />
+                    <img class="am-cover-img2" src="~/Content/images/codeGenerator/multitable1.png" />
+
+                    <h4>自定义开发模板</h4>
+                </div>
+                <div class="am-cover-info">
+                    <small>通过设置生成单表或多表的增删改查功能。</small>
+                </div>
+                <div class="am-cover-button">
+                    <a class="btn btn-default" id="am_custmerCode">配置</a>
+                </div>
+            </div>
+            <div class="am-cover-box">
+                <div class="am-cover-img">
+                    <img class="am-cover-img1" src="~/Content/images/codeGenerator/singletable0.png" />
+                    <img class="am-cover-img2" src="~/Content/images/codeGenerator/singletable1.png" />
+
+                    <h4>快速开发模板</h4>
+                </div>
+                <div class="am-cover-info">
+                    <small>快速生成必要的类和页面。</small>
+                </div>
+                <div class="am-cover-button">
+                    <a class="btn btn-default" id="am_fastCode">配置</a>
+                </div>
+            </div>
+            <div class="am-cover-box">
+                <div class="am-cover-img">
+                    <img class="am-cover-img1" src="~/Content/images/codeGenerator/serviceCode0.png" />
+                    <img class="am-cover-img2" src="~/Content/images/codeGenerator/serviceCode1.png" />
+
+                    <h4>实体映射类生成</h4>
+                </div>
+                <div class="am-cover-info">
+                    <small>根据数据库快速生成实体类和映射类。</small>
+                </div>
+                <div class="am-cover-button">
+                    <a class="btn btn-default" id="am_entityCode">配置</a>
+                </div>
+            </div>
+            <div class="am-cover-box">
+                <div class="am-cover-img">
+                    <img class="am-cover-img1" src="~/Content/images/codeGenerator/multitable0.png" />
+                    <img class="am-cover-img2" src="~/Content/images/codeGenerator/multitable1.png" />
+
+                    <h4>流程系统表单模板</h4>
+                </div>
+                <div class="am-cover-info">
+                    <small>通过设置生成流程的系统表单。</small>
+                </div>
+                <div class="am-cover-button">
+                    <a class="btn btn-default" id="am_workflowCode">配置</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.AppendJsFile("/Areas/AM_CodeGeneratorModule/Views/TemplatePC/Index.js")

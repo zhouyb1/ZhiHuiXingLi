@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "预览页面";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<script src="~/Content/echarts/echarts.min.js"></script>
+<script src="~/Content/echarts/charts_comm.js"></script>
+
+<div class="am-layout ui-report">
+    <div class="am-layout-center">
+        <div id="report-pane" class="am-layout-wrap" style="overflow: auto;box-shadow: 0 1px 3px rgba(0,0,0,0.2);border-radius: 0;border: 1px solid #cfcfcf;padding: 30px;padding-top: 10px;background-color: #ffffff;">
+            <span id="moduleURL" style="display:none;"></span>
+        </div>
+    </div>
+</div>
+@Html.AppendCssFile("/Views/AM_Content/style/am-reportTemplate.css")
+@Html.AppendJsFile("/Views/AM_Content/script/am-chartshelper.js")
+<script>
+    $(document).ready(function () {
+        if (request('type') == "preview") {
+            $("#moduleURL").html("/AM_ReportModule/ReportManage/Preview?reportId=" + request('reportId')).show();
+        }
+        $.LoadReport({
+            url: top.$.rootUrl + "/AM_ReportModule/ReportManage/GetReportData?reportId=" + request('reportId'),
+            element: $("#report-pane")
+        });
+    });
+</script>

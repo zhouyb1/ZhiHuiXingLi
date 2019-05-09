@@ -1,0 +1,134 @@
+﻿/*
+ * 
+ * 
+ * 创建人：前端开发组
+ * 日 期：2017.03.16
+ * 描 述：树组件样式
+ */
+.am-tree {
+    overflow-y: auto;
+}
+
+.am-tree ul,
+.am-tree li {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.am-tree-icon,
+.am-tree-ec-icon,
+.am-tree-node-cb,
+.am-tree-node-icon {
+    border: 0 none;
+    height: 18px;
+    margin: 0;
+    padding: 0;
+    margin-top: 3px;
+    vertical-align: top;
+    width: 16px;
+    background-repeat: no-repeat;
+}
+.am-tree-node-cb {
+    height: 16px;
+    padding: 2px;
+    margin-top: 4.5px;
+    margin-right: 5px;
+}
+
+ul.am-tree-node-ct {
+    line-height: 0;
+    zoom: 1;
+}
+
+.am-tree-node-expanded > .am-tree-ec-icon {
+    background-image: url(/Content/images/aymatree/arrows.gif) !important;
+    background: transparent no-repeat -16px 0;
+}
+
+.am-tree-node-expanded > .am-tree-ec-icon:hover {
+    background: transparent no-repeat -48px 0;
+}
+
+.am-tree-node-collapsed > .am-tree-ec-icon {
+    background-image: url(/Content/images/aymatree/arrows.gif) !important;
+    background: transparent no-repeat 0px 0;
+}
+
+.am-tree-node-collapsed > .am-tree-ec-icon:hover {
+    background: transparent no-repeat -32px 0;
+}
+
+.am-tree-node {
+    white-space: nowrap;
+    color: #000;
+}
+
+.am-tree-node {
+    color: #000;
+}
+
+.am-tree-node i {
+    font-size: 13px;
+    width: 13px;
+    color: #666666;
+}
+
+.am-tree-node a {
+    text-decoration: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+
+    -kthml-user-focus: normal;
+    -moz-user-focus: normal;
+    -moz-outline: 0 none;
+    outline: 0 none;
+}
+
+.am-tree-node a span {
+    text-decoration: none;
+    padding: 1px 3px 1px 2px;
+}
+
+.am-tree-node a:hover {
+    text-decoration: none;
+}
+
+.am-tree-node .am-tree-selected {
+    background-color: #3498DB !important;
+    color: #fff;
+}
+
+.am-tree-node .am-tree-selected a span {
+    color: #fff;
+}
+
+.am-tree-node .am-tree-selected i {
+    color: #fff;
+}
+
+.am-tree-node-el {
+    position:relative;
+    line-height: 25px;
+    cursor: default;
+    cursor: pointer;
+}
+
+.am-tree-node-el:hover {
+    background-color: #eee;
+}
+
+.am-tree-loading {
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    display:none;
+}
+.am-tree-loading > img {
+    height: 14px;
+    width: 14px;
+}
+
