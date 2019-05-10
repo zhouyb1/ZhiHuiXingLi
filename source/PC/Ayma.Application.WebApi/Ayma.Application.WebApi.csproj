@@ -139,6 +139,8 @@
     <Compile Include="Modules\DataSourceApi.cs" />
     <Compile Include="Modules\DepartmentApi.cs" />
     <Compile Include="Modules\ErpApi\PdaBaseApi.cs" />
+    <Compile Include="Modules\ErpApi\SmallProgramClientApi.cs" />
+    <Compile Include="Modules\ErpApi\SmallProgramServerApi.cs" />
     <Compile Include="Modules\FormApi.cs" />
     <Compile Include="Modules\Index.cs" />
     <Compile Include="Modules\AM_Crm\Invoice.cs" />

@@ -56,7 +56,7 @@
     <Compile Include="SystemDemo\Demoleave\DemoleaveEntity.cs" />
     <Compile Include="SystemDemo\Demoleave\DemoleaveIBLL.cs" />
     <Compile Include="SystemDemo\Demoleave\DemoleaveService.cs" />
-    <Compile Include="ErpDev\Test\TestService.cs" />
+    <Compile Include="TwoDev\Test\TestService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Ayma.Application.Organization\Ayma.Application.Organization.csproj">
@@ -95,7 +95,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="ErpApi\WebApi调用.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
