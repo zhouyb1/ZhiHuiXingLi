@@ -8,6 +8,9 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
 {
     public class SmallProgramServerApi : PdaBaseApi
     {
+        /// <summary>
+        /// 分拣员小程序调用
+        /// </summary>
         public SmallProgramServerApi()
             : base("/pdaapi")
         {

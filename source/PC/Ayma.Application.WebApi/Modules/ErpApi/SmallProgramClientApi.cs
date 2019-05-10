@@ -6,6 +6,9 @@ using System.Web;
 
 namespace Ayma.Application.WebApi.Modules.ErpApi
 {
+    /// <summary>
+    /// 客户小程序调用
+    /// </summary>
     public class SmallProgramClientApi
         : PdaBaseApi
     {
