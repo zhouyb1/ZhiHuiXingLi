@@ -13,9 +13,9 @@ using Ayma.Util.Security;
 
 namespace Ayma.Application.WebApi.Modules.ErpApi
 {
-    public class PdaBaseApi:NancyModule
+    public class PdaBaseApi : NancyModule
     {
-         #region 构造函数
+        #region 构造函数
         public PdaBaseApi()
             : base()
         {
@@ -90,7 +90,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         #region 权限验证
         public string sign;
         public string version; //版本号
-        public string model; //机器型号
+
 
         /// <summary>
         /// 前置拦截器
@@ -109,7 +109,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 ReqParameter<string> req = this.Bind<ReqParameter<string>>();
                 this.sign = req.sign;
                 this.version = req.version;
-                this.model = req.model;//机器型号
+
                 if (string.IsNullOrEmpty(this.sign))
                 {
                     return this.Fail("sign不能为空");
@@ -118,24 +118,11 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 {
                     return this.Fail("version不能为空");
                 }
-
-                if (string.IsNullOrEmpty(this.model))
-                {
-                    return this.Fail("model不能为空");
-                }
-
                 //配置data 参数可以为空
                 string[] ReqPath = new[]
                 {
                     "/pdaapi/getemployeelist",
-                    "/pdaapi/getemployeeInfo",
-                    "/pdaapi/gettrainslist",
-                    "/pdaapi/getgoodslist",
-                    "/pdaapi/getroadlist",
-                    "/pdaapi/empmodifypassword",
-                    "/pdaapi/pdabundmachine",
-                    "/pdaapi/getteamlist"
-
+ 
                 };
                 if (!ReqPath.Contains(path.ToLower()))
                 {
@@ -149,7 +136,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 string[] ReqSign = new[]
                 {
                     "/pdaapi/saledatadetailupload"
-
                 };
 
                 if (ReqSign.Contains(path.ToLower()))
@@ -160,15 +146,15 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 var pdakey = Config.GetValue("pdakey");//pda签名key
                 var serverSign = "";
                 var data = req.data;
-               
+
                 //请求参数data为空时，不参与签名
-                if (data==null)
+                if (data == null)
                 {
-                    serverSign = "model=" + model+"&version=" + version + "&key=" + pdakey;// 签名模式，version+&key=pdakey
+                    serverSign = "&version=" + version + "&key=" + pdakey;// 签名模式，version+&key=pdakey
                 }
                 else
                 {
-                    serverSign = "data=" + data + "&model="+model+"&version=" + version + "&key=" + pdakey;// 签名模式，data+version+&key=pdakey
+                    serverSign = "data=" + data + "&version=" + version + "&key=" + pdakey;// 签名模式，data+version+&key=pdakey
                 }
                 string md5 = Md5Helper.Encrypt(serverSign, 32).ToUpper();
                 if (md5 != req.sign.ToUpper())
@@ -179,7 +165,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
             return null;
@@ -295,7 +281,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             logMessage.UserName = "";
             string strMessage = new LogFormat().ExceptionFormat(logMessage);
             log.Info(strMessage);
-  
+
             LogEntity logEntity = new LogEntity();
             logEntity.F_CategoryId = 4;
             logEntity.F_OperateTypeId = ((int)OperationType.Exception).ToString();
