@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Ayma.Util;
 
 namespace Ayma.Application.WebApi.Modules.ErpApi
 {
@@ -24,13 +25,21 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         /// <returns></returns>
         public Response SubmitUpdateOrderState(dynamic _)
         {
-            int errCode = 0;//成功状态  100  成功
-            string errText = "";//提示信息
-            string F_AirfieldId = ""; //机场ID 
+            var req = this.GetReqData().ToJObject();// 获取模板请求数据
+
+
+            if (req["F_AirfieldId"] == null)
+            {
+                return Fail("F_AirfieldId不能为空!");
+            }
+            string F_AirfieldId = req["F_AirfieldId"].ToString(); //机场ID 
             string F_OrderNo = ""; //订单号
             string F_State_Old = ""; //原状态值
             string F_State_New = ""; //新状态值
             string Operator = ""; //操作人
+
+            int errCode = 0;//成功状态  100  成功
+            string errText = "";//提示信息
             billServerApiBLL.SubmitUpdateOrderState(F_AirfieldId, F_OrderNo, F_State_Old, F_State_New, Operator, out   errCode, out   errText);
             if (errCode == 100)
             {
