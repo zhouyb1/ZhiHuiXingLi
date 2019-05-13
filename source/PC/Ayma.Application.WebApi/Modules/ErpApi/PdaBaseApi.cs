@@ -121,6 +121,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 //配置data 参数可以为空
                 string[] ReqPath = new[]
                 {
+                    "/pdaapi/GetAirPort",
                     "/pdaapi/getemployeelist",
  
                 };
@@ -314,7 +315,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         /// <returns></returns>
         public Response Success(object data)
         {
-            var secretData = DESHelper.Encrypt(data.ToJson());
+            //var secretData = DESHelper.Encrypt(data.ToJson());
+            var secretData = data.ToJson();
             ResParameter res = new ResParameter { code = ResponseCode.success, info = "响应成功", data = secretData };
             return Response.AsText(res.ToString()).WithContentType("application/json");
         }
@@ -326,7 +328,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         /// <returns></returns>
         public Response Success<T>(T data) where T : class
         {
-            var secretData = DESHelper.Encrypt(data.ToJson());
+            //var secretData = DESHelper.Encrypt(data.ToJson());
+            var secretData = data.ToJson();
             ResParameter res = new ResParameter { code = ResponseCode.success, info = "响应成功", data = secretData };
             return Response.AsText(res.ToJson()).WithContentType("application/json");
         }
@@ -337,7 +340,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         /// <returns></returns>
         public Response SuccessString(string data)
         {
-            var secretData = DESHelper.Encrypt(data);
+            //var secretData = DESHelper.Encrypt(data);
+            var secretData = data.ToJson();
             ResParameter res = new ResParameter { code = ResponseCode.success, info = "响应成功", data = secretData };
             return Response.AsText(res.ToJson()).WithContentType("application/json");
         }

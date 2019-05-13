@@ -51,6 +51,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\ErpEnums.cs" />
+    <Compile Include="ErpApi\SmallProgramClient\ModelApi\T_AirfieldInfoModelApi.cs" />
+    <Compile Include="ErpApi\SmallProgramClient\ModelApi\T_FlightNoInfoModelApi.cs" />
+    <Compile Include="ErpApi\SmallProgramClient\SmallProgramClientApiBLL.cs" />
+    <Compile Include="ErpApi\SmallProgramClient\SmallProgramClientApiIBLL.cs" />
+    <Compile Include="ErpApi\SmallProgramClient\SmallProgramClientApiService.cs" />
+    <Compile Include="ErpApi\SmallProgramServer\ModelApi\ClassModelApi.cs" />
+    <Compile Include="ErpApi\SmallProgramServer\SmallProgramServerApiBLL.cs" />
+    <Compile Include="ErpApi\SmallProgramServer\SmallProgramServerApiIBLL.cs" />
+    <Compile Include="ErpApi\SmallProgramServer\SmallProgramServerApiService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemDemo\Demoleave\DemoleaveBLL.cs" />
     <Compile Include="SystemDemo\Demoleave\DemoleaveEntity.cs" />

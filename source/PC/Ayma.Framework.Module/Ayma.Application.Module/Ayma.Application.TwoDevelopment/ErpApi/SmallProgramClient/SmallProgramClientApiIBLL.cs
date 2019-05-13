@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,16 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
 {
     public interface SmallProgramClientApiIBLL
     {
+        /// <summary>
+        /// 获取机场列表
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<T_AirfieldInfoModelApi> GetAirPort();
+
+        /// <summary>
+        /// 根据机场获取航班信息
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<T_FlightNoInfoModelApi> GetFlightNoInfo(string F_AirfieldId);
     }
 }
