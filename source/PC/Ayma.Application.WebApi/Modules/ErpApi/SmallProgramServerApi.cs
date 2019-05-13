@@ -33,10 +33,10 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 return Fail("F_AirfieldId不能为空!");
             }
             string F_AirfieldId = req["F_AirfieldId"].ToString(); //机场ID 
-            string F_OrderNo = ""; //订单号
-            string F_State_Old = ""; //原状态值
-            string F_State_New = ""; //新状态值
-            string Operator = ""; //操作人
+            string F_OrderNo = "454"; //订单号
+            string F_State_Old = "4"; //原状态值
+            string F_State_New = "5"; //新状态值
+            string Operator = "454"; //操作人
 
             int errCode = 0;//成功状态  100  成功
             string errText = "";//提示信息
