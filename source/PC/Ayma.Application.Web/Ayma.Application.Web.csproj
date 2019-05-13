@@ -240,6 +240,9 @@
       <DependentUpon>SQLParam.ashx</DependentUpon>
     </Compile>
     <Compile Include="Areas\TwoDev\Controllers\TestController.cs" />
+    <Compile Include="Areas\TwoDev\Controllers\AirportMessageController.cs" />
+    <Compile Include="Areas\TwoDev\Controllers\ExpressageMessageController.cs" />
+    <Compile Include="Areas\TwoDev\Controllers\FlightNumberRecordController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\AM_SystemModule\Views\Annexes\PreviewForm.js" />
@@ -2125,6 +2128,18 @@
     <None Include="Properties\PublishProfiles\learunadms6.1.pubxml" />
     <Content Include="Areas\TwoDev\Views\Test\Test.cshtml" />
     <Content Include="Report\grf\AdjustStock.grf" />
+    <Content Include="Areas\TwoDev\Views\AirportMessage\Index.cshtml" />
+    <Content Include="Areas\TwoDev\Views\AirportMessage\Index.js" />
+    <Content Include="Areas\TwoDev\Views\AirportMessage\Form.cshtml" />
+    <Content Include="Areas\TwoDev\Views\AirportMessage\Form.js" />
+    <Content Include="Areas\TwoDev\Views\ExpressageMessage\Index.cshtml" />
+    <Content Include="Areas\TwoDev\Views\ExpressageMessage\Index.js" />
+    <Content Include="Areas\TwoDev\Views\ExpressageMessage\Form.cshtml" />
+    <Content Include="Areas\TwoDev\Views\ExpressageMessage\Form.js" />
+    <Content Include="Areas\TwoDev\Views\FlightNumberRecord\Index.cshtml" />
+    <Content Include="Areas\TwoDev\Views\FlightNumberRecord\Index.js" />
+    <Content Include="Areas\TwoDev\Views\FlightNumberRecord\Form.cshtml" />
+    <Content Include="Areas\TwoDev\Views\FlightNumberRecord\Form.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

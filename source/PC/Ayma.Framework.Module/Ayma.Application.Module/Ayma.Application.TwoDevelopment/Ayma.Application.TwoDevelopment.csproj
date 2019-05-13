@@ -57,6 +57,18 @@
     <Compile Include="SystemDemo\Demoleave\DemoleaveIBLL.cs" />
     <Compile Include="SystemDemo\Demoleave\DemoleaveService.cs" />
     <Compile Include="TwoDev\Test\TestService.cs" />
+    <Compile Include="TwoDev\AirportMessage\T_AirfieldInfoEntity.cs" />
+    <Compile Include="TwoDev\AirportMessage\AirportMessageService.cs" />
+    <Compile Include="TwoDev\AirportMessage\AirportMessageBLL.cs" />
+    <Compile Include="TwoDev\AirportMessage\AirportMessageIBLL.cs" />
+    <Compile Include="TwoDev\ExpressageMessage\T_ExpressCompanyEntity.cs" />
+    <Compile Include="TwoDev\ExpressageMessage\ExpressageMessageService.cs" />
+    <Compile Include="TwoDev\ExpressageMessage\ExpressageMessageBLL.cs" />
+    <Compile Include="TwoDev\ExpressageMessage\ExpressageMessageIBLL.cs" />
+    <Compile Include="TwoDev\FlightNumberRecord\T_FlightNoInfoEntity.cs" />
+    <Compile Include="TwoDev\FlightNumberRecord\FlightNumberRecordService.cs" />
+    <Compile Include="TwoDev\FlightNumberRecord\FlightNumberRecordBLL.cs" />
+    <Compile Include="TwoDev\FlightNumberRecord\FlightNumberRecordIBLL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Ayma.Application.Organization\Ayma.Application.Organization.csproj">

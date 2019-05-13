@@ -109,6 +109,9 @@
     <Compile Include="CRM\CrmExpensesMap.cs" />
     <Compile Include="CRM\CrmInvoiceMap.cs" />
     <Compile Include="CRM\CrmReceivableMap.cs" />
+    <Compile Include="TwoDev\T_AirfieldInfoMap.cs" />
+    <Compile Include="TwoDev\T_ExpressCompanyMap.cs" />
+    <Compile Include="TwoDev\T_FlightNoInfoMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
