@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "快递公司信息管理";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="am-form-wrap" id="form">
+    <div class="col-xs-12 am-form-item"  data-table="T_ExpressCompany" >
+        <div class="am-form-item-title">快递公司名称<font face="宋体">*</font></div>
+        <input id="F_ExpressCompanyName" isvalid="yes" checkexpession="NotNull" type="text" class="form-control" />
+    </div>
+    <div class="col-xs-12 am-form-item" data-table="T_AirfieldInfo">
+        <div class="am-form-item-title">排序<font face="宋体">*</font></div>
+        <input id="F__OrderBy" isvalid="yes" checkexpession="NotNull" type="text" class="form-control" />
+    </div>
+</div>
+@Html.AppendJsFile("/Areas/TwoDev/Views/ExpressageMessage/Form.js")
