@@ -244,6 +244,8 @@
     <Compile Include="Areas\TwoDev\Controllers\ExpressageMessageController.cs" />
     <Compile Include="Areas\TwoDev\Controllers\FlightNumberRecordController.cs" />
     <Compile Include="Areas\TwoDev\Controllers\SorterMessageController.cs" />
+    <Compile Include="Areas\TwoDev\Controllers\WeChatMemberController.cs" />
+    <Compile Include="Areas\TwoDev\Controllers\OrderInquiryController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\AM_SystemModule\Views\Annexes\PreviewForm.js" />
@@ -2145,6 +2147,14 @@
     <Content Include="Areas\TwoDev\Views\SorterMessage\Index.js" />
     <Content Include="Areas\TwoDev\Views\SorterMessage\Form.cshtml" />
     <Content Include="Areas\TwoDev\Views\SorterMessage\Form.js" />
+    <Content Include="Areas\TwoDev\Views\WeChatMember\Index.cshtml" />
+    <Content Include="Areas\TwoDev\Views\WeChatMember\Index.js" />
+    <Content Include="Areas\TwoDev\Views\WeChatMember\Form.cshtml" />
+    <Content Include="Areas\TwoDev\Views\WeChatMember\Form.js" />
+    <Content Include="Areas\TwoDev\Views\OrderInquiry\Index.cshtml" />
+    <Content Include="Areas\TwoDev\Views\OrderInquiry\Index.js" />
+    <Content Include="Areas\TwoDev\Views\OrderInquiry\Form.cshtml" />
+    <Content Include="Areas\TwoDev\Views\OrderInquiry\Form.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

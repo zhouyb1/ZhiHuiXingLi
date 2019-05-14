@@ -83,6 +83,15 @@
     <Compile Include="TwoDev\SorterMessage\SorterMessageService.cs" />
     <Compile Include="TwoDev\SorterMessage\SorterMessageBLL.cs" />
     <Compile Include="TwoDev\SorterMessage\SorterMessageIBLL.cs" />
+    <Compile Include="TwoDev\WeChatMember\T_CustomerInfoEntity.cs" />
+    <Compile Include="TwoDev\WeChatMember\WeChatMemberService.cs" />
+    <Compile Include="TwoDev\WeChatMember\WeChatMemberBLL.cs" />
+    <Compile Include="TwoDev\WeChatMember\WeChatMemberIBLL.cs" />
+    <Compile Include="TwoDev\OrderInquiry\T_OrderHeadEntity.cs" />
+    <Compile Include="TwoDev\OrderInquiry\T_OrderBodyEntity.cs" />
+    <Compile Include="TwoDev\OrderInquiry\OrderInquiryService.cs" />
+    <Compile Include="TwoDev\OrderInquiry\OrderInquiryBLL.cs" />
+    <Compile Include="TwoDev\OrderInquiry\OrderInquiryIBLL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Ayma.Application.Organization\Ayma.Application.Organization.csproj">
