@@ -99,72 +99,66 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         /// <returns></returns>
         private Response BeforeRequest(NancyContext ctx)
         {
-            try
+            string path = ctx.ResolvedRoute.Description.Path;
+            //验证登录状态
+            ReqParameter<string> req = this.Bind<ReqParameter<string>>();
+            this.sign = req.sign;
+            this.version = req.version;
+            if (string.IsNullOrEmpty(this.sign))
             {
-                string path = ctx.ResolvedRoute.Description.Path;
-                //验证登录状态
-                ReqParameter<string> req = this.Bind<ReqParameter<string>>();
-                this.sign = req.sign;
-                this.version = req.version;
-                if (string.IsNullOrEmpty(this.sign))
-                {
-                    return this.Fail("sign不能为空");
-                }
-                if (string.IsNullOrEmpty(this.version))
-                {
-                    return this.Fail("version不能为空");
-                }
-                //配置data 参数可以为空
-                string[] ReqPath = new[]
-                {
-                    "/pdaapi/GetAirPort",
-                    "/pdaapi/getemployeelist",
+                return this.Fail("sign不能为空");
+            }
+            if (string.IsNullOrEmpty(this.version))
+            {
+                return this.Fail("version不能为空");
+            }
+            //配置data 参数可以为空
+            string[] ReqPath = new[]
+            {
+                "/pdaapi/GetAirPort",
+                "/pdaapi/getemployeelist",
  
-                };
-                if (!ReqPath.Contains(path.ToLower()))
-                {
-                    if (string.IsNullOrEmpty(req.data))
-                    {
-                        return this.Fail("data不能为空");
-                    }
-                }
-
-                //配置不参与sign
-                string[] ReqSign = new[]
-                {
-                    "/pdaapi/saledatadetailupload"
-                };
-
-                if (ReqSign.Contains(path.ToLower()))
-                {
-                    return null;
-                }
-
-                var pdakey = Config.GetValue("pdakey");//pda签名key
-                var serverSign = "";
-                var data = req.data;
-
-                //请求参数data为空时，不参与签名
-                if (data == null)
-                {
-                    serverSign = "&version=" + version + "&key=" + pdakey;// 签名模式，version+&key=pdakey
-                }
-                else
-                {
-                    serverSign = "data=" + data + "&version=" + version + "&key=" + pdakey;// 签名模式，data+version+&key=pdakey
-                }
-                string md5 = Md5Helper.Encrypt(serverSign, 32).ToUpper();
-                if (md5 != req.sign.ToUpper())
-                {
-                    return this.Fail("sign签名错误");
-                }
-                this.WriteLog(ctx, req);//记录日志
-            }
-            catch (Exception)
+            };
+            if (!ReqPath.Contains(path.ToLower()))
             {
-
-                throw;
+                if (string.IsNullOrEmpty(req.data))
+                {
+                    return Fail("data不能为空");
+                }
             }
+
+            //配置不参与sign
+            string[] ReqSign = new[]
+            {
+                "/pdaapi/saledatadetailupload",
+                "/pdaapi/onlogin",
+                "pdaapi/register"
+            };
+
+            if (ReqSign.Contains(path.ToLower()))
+            {
+                return null;
+            }
+
+            var pdakey = Config.GetValue("pdakey");//pda签名key
+            var serverSign = "";
+            var data = req.data;
+
+            //请求参数data为空时，不参与签名
+            if (data == null)
+            {
+                serverSign = "&version=" + version + "&key=" + pdakey;// 签名模式，version+&key=pdakey
+            }
+            else
+            {
+                serverSign = "data=" + data + "&version=" + version + "&key=" + pdakey;// 签名模式，data+version+&key=pdakey
+            }
+            string md5 = Md5Helper.Encrypt(serverSign, 32).ToUpper();
+            if (md5 != req.sign.ToUpper())
+            {
+                return this.Fail("sign签名错误");
+            }
+            this.WriteLog(ctx, req);//记录日志
             return null;
         }
         #endregion
