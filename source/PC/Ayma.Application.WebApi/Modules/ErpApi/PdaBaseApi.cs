@@ -332,6 +332,12 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             ResParameter res = new ResParameter { code = ResponseCode.success, info = "响应成功", data = secretData };
             return Response.AsText(res.ToJson()).WithContentType("application/json");
         }
+
+        public Response Success(string info, object data)
+        {
+            ResParameter res = new ResParameter { code = ResponseCode.success, info = info, data = data };
+            return Response.AsText(res.ToJson()).WithContentType("application/json");
+        }
         /// <summary>
         /// 接口响应失败
         /// </summary>
