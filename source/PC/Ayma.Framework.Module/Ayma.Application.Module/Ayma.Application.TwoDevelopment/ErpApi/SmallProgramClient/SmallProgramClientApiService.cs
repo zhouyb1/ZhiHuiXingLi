@@ -37,6 +37,14 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             }
         }
 
+        /// <summary>
+        ///  /// <summary>
+        /// 根据机场获取航班号信息
+        /// </summary>
+        /// <returns></returns>
+        /// </summary>
+        /// <param name="F_AirfieldId"></param>
+        /// <returns></returns>
         public IEnumerable<T_FlightNoInfoModelApi> GetFlightNoInfo(string F_AirfieldId)
         {
             try

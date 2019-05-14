@@ -5,6 +5,9 @@ using System.Linq;
 using System.Web;
 using Ayma.Util;
 using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient;
+using Senparc.Weixin.WxOpen.AdvancedAPIs.Sns;
+using Senparc.Weixin;
+using Config = Ayma.Util.Config;
 
 namespace Ayma.Application.WebApi.Modules.ErpApi
 {
@@ -20,8 +23,10 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Post["/SubmitBillSaleOut"] = SubmitBillSaleOut; //提交车班补货单
             Get["/GetAirPort"] = GetAirPort; //获取机场
             Get["/GetFlightNoInfo"] = GetFlightNoInfo; //获取航班列表
+            Post["/OnLogin"] = OnLogin;
         }
         private SmallProgramClientApiBLL billClientApiBLL = new SmallProgramClientApiBLL();
+        private static string openId = string.Empty;
         /// <summary>
         /// 获取机场列表
         /// </summary>
@@ -61,6 +66,33 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             else
             {
                 return Fail("没有数据!");
+            }
+        }
+
+        private Response OnLogin(dynamic _)
+        {
+            try
+            {
+                var code = this.GetReqData().ToJObject()["code"].ToString(); //获取code 
+                if (string.IsNullOrEmpty(code))
+                {
+                    return Fail("未获取到用户凭证");
+                }
+                //以code换取session_key
+                var jsonResult = SnsApi.JsCode2Json(Config.GetValue("AppId"), Config.GetValue("AppSecret"), code);
+                if (jsonResult.errcode == ReturnCode.请求成功)
+                {
+                    openId = jsonResult.openid;
+                    var unionId = "";
+                    //获取openid+session_key生成3rd_session
+                    var sessionBag = Senparc.Weixin.WxOpen.SessionContainer.UpdateSession(jsonResult.openid, jsonResult.session_key, unionId);
+                    return Success(new { sessionId = sessionBag.Key, sessionKey = sessionBag.SessionKey });
+                }
+                return Fail(jsonResult.errmsg);
+            }
+            catch (Exception ex)
+            {
+                return Fail("参数格式有误");
             }
         }
 
