@@ -92,6 +92,7 @@
     <Compile Include="TwoDev\OrderInquiry\OrderInquiryService.cs" />
     <Compile Include="TwoDev\OrderInquiry\OrderInquiryBLL.cs" />
     <Compile Include="TwoDev\OrderInquiry\OrderInquiryIBLL.cs" />
+    <Compile Include="TwoDev\OrderLogistics\T_OrderLogisticsInfoEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Ayma.Application.Organization\Ayma.Application.Organization.csproj">

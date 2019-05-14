@@ -116,6 +116,7 @@
     <Compile Include="TwoDev\T_CustomerInfoMap.cs" />
     <Compile Include="TwoDev\T_OrderHeadMap.cs" />
     <Compile Include="TwoDev\T_OrderBodyMap.cs" />
+    <Compile Include="TwoDev\T_OrderLogisticsInfoMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
