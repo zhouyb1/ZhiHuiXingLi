@@ -1,6 +1,6 @@
 ﻿/* * 创建人：超级管理员
- * 日  期：2019-05-13 14:01
- * 描  述：航班号记录
+ * 日  期：2019-05-13 16:02
+ * 描  述：分拣员信息管理
  */
 var acceptClick;
 var keyValue = request('keyValue');
@@ -14,21 +14,10 @@ $('.am-form-wrap').mCustomScrollbar({theme: "minimal-dark"});
             page.initData();
         },
         bind: function () {
-            $('#F_AirfieldName').select({
-                type: 'default',
-                value: 'F_AirfieldName',
-                text: 'F_AirfieldName',
-                // 展开最大高度
-                maxHeight: 200,
-                // 是否允许搜索
-                allowSearch: true,
-                // 访问数据接口地址
-                url: top.$.rootUrl + '/TwoDev/FlightNumberRecord/GetList',
-            });
         },
         initData: function () {
             if (!!keyValue) {
-                $.SetForm(top.$.rootUrl + '/TwoDev/FlightNumberRecord/GetFormData?keyValue=' + keyValue, function (data) {
+                $.SetForm(top.$.rootUrl + '/TwoDev/SorterMessage/GetFormData?keyValue=' + keyValue, function (data) {
                     for (var id in data) {
                         if (!!data[id].length && data[id].length > 0) {
                         }
@@ -48,7 +37,7 @@ $('.am-form-wrap').mCustomScrollbar({theme: "minimal-dark"});
         var postData = {
             strEntity: JSON.stringify($('body').GetFormData())
         };
-        $.SaveForm(top.$.rootUrl + '/TwoDev/FlightNumberRecord/SaveForm?keyValue=' + keyValue, postData, function (res) {
+        $.SaveForm(top.$.rootUrl + '/TwoDev/SorterMessage/SaveForm?keyValue=' + keyValue, postData, function (res) {
             // 保存成功后才回调
             if (!!callBack) {
                 callBack();

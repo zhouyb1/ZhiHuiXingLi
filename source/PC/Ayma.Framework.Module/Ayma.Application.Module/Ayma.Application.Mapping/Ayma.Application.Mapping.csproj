@@ -112,6 +112,7 @@
     <Compile Include="TwoDev\T_AirfieldInfoMap.cs" />
     <Compile Include="TwoDev\T_ExpressCompanyMap.cs" />
     <Compile Include="TwoDev\T_FlightNoInfoMap.cs" />
+    <Compile Include="TwoDev\T_EmployeeInfoMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

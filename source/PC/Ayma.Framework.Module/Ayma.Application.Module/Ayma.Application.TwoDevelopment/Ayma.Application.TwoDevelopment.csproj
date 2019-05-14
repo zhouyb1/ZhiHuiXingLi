@@ -79,6 +79,10 @@
     <Compile Include="TwoDev\FlightNumberRecord\FlightNumberRecordService.cs" />
     <Compile Include="TwoDev\FlightNumberRecord\FlightNumberRecordBLL.cs" />
     <Compile Include="TwoDev\FlightNumberRecord\FlightNumberRecordIBLL.cs" />
+    <Compile Include="TwoDev\SorterMessage\T_EmployeeInfoEntity.cs" />
+    <Compile Include="TwoDev\SorterMessage\SorterMessageService.cs" />
+    <Compile Include="TwoDev\SorterMessage\SorterMessageBLL.cs" />
+    <Compile Include="TwoDev\SorterMessage\SorterMessageIBLL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Ayma.Application.Organization\Ayma.Application.Organization.csproj">

@@ -243,6 +243,7 @@
     <Compile Include="Areas\TwoDev\Controllers\AirportMessageController.cs" />
     <Compile Include="Areas\TwoDev\Controllers\ExpressageMessageController.cs" />
     <Compile Include="Areas\TwoDev\Controllers\FlightNumberRecordController.cs" />
+    <Compile Include="Areas\TwoDev\Controllers\SorterMessageController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\AM_SystemModule\Views\Annexes\PreviewForm.js" />
@@ -2140,6 +2141,10 @@
     <Content Include="Areas\TwoDev\Views\FlightNumberRecord\Index.js" />
     <Content Include="Areas\TwoDev\Views\FlightNumberRecord\Form.cshtml" />
     <Content Include="Areas\TwoDev\Views\FlightNumberRecord\Form.js" />
+    <Content Include="Areas\TwoDev\Views\SorterMessage\Index.cshtml" />
+    <Content Include="Areas\TwoDev\Views\SorterMessage\Index.js" />
+    <Content Include="Areas\TwoDev\Views\SorterMessage\Form.cshtml" />
+    <Content Include="Areas\TwoDev\Views\SorterMessage\Form.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
