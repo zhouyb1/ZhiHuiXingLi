@@ -99,9 +99,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         /// <returns></returns>
         private Response BeforeRequest(NancyContext ctx)
         {
-
-            this.WriteLog(ctx);//记录日志
-
             try
             {
                 string path = ctx.ResolvedRoute.Description.Path;
@@ -109,7 +106,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 ReqParameter<string> req = this.Bind<ReqParameter<string>>();
                 this.sign = req.sign;
                 this.version = req.version;
-
                 if (string.IsNullOrEmpty(this.sign))
                 {
                     return this.Fail("sign不能为空");
@@ -162,7 +158,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 {
                     return this.Fail("sign签名错误");
                 }
-
+                this.WriteLog(ctx, req);//记录日志
             }
             catch (Exception)
             {
@@ -216,7 +212,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             if (context == null)
                 return;
             string path = context.ResolvedRoute.Description.Path;
-            var log = LogFactory.GetLogger("webapi");
             Exception Error = ex;
             LogMessage logMessage = new LogMessage();
             logMessage.OperationTime = DateTime.Now;
@@ -239,7 +234,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             logMessage.ExceptionSource = Error.Source;
             logMessage.ExceptionRemark = Error.StackTrace;
             string strMessage = new LogFormat().ExceptionFormat(logMessage);
-            log.Error(strMessage);
+            Logger.Error(strMessage);
 
             LogEntity logEntity = new LogEntity();
             logEntity.F_CategoryId = 4;
@@ -251,27 +246,20 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             logEntity.F_ExecuteResult = -1;
             logEntity.F_ExecuteResultJson = strMessage;
             logEntity.WriteLog();
-            //SendMail(strMessage);
         }
 
 
-        private void WriteLog(NancyContext context)
+        /// <summary>
+        /// 添加接口访问记录
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="req"></param>
+        private void WriteLog(NancyContext context,ReqParameter<string>req )
         {
             if (context == null)
                 return;
 
-            ReqParameter<string> req = this.Bind<ReqParameter<string>>();
-
-            //NameValueCollection coll=context. Request.Form;
-            //String[] requestItem = coll.AllKeys;
-
-            //for (int i = 0; i < requestItem.Length; i++)
-            //{
-            //    request += requestItem[i] + "," + Request.Form[requestItem[i]];
-            //}
-
             string path = context.ResolvedRoute.Description.Path;
-            var log = LogFactory.GetLogger("webapi");
             LogMessage logMessage = new LogMessage();
             logMessage.OperationTime = DateTime.Now;
             logMessage.Url = path;
@@ -280,8 +268,9 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             logMessage.Host = Net.Host;
             logMessage.Browser = Net.Browser;
             logMessage.UserName = "";
-            string strMessage = new LogFormat().ExceptionFormat(logMessage);
-            log.Info(strMessage);
+            logMessage.Content = req.ToJson();
+            string strMessage = new LogFormat().InfoFormat(logMessage);
+            Logger.Info(strMessage);
 
             LogEntity logEntity = new LogEntity();
             logEntity.F_CategoryId = 4;
@@ -293,9 +282,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             logEntity.F_ExecuteResult = -1;
             logEntity.F_ExecuteResultJson = strMessage;
             logEntity.WriteLog();
-
         }
-
 
         #region 响应接口
         /// <summary>
@@ -356,7 +343,5 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             return Response.AsText(res.ToJson()).WithContentType("application/json");
         }
         #endregion
-
     }
-
 }
