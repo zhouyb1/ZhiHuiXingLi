@@ -132,7 +132,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 "/pdaapi/saledatadetailupload",
                 "/pdaapi/onlogin",
-                "pdaapi/register"
+                "/pdaapi/register",
+                "/pdaadpi/getphone"
             };
 
             if (ReqSign.Contains(path.ToLower()))
