@@ -68,5 +68,46 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 }
             }
         }
+
+        /// <summary>
+        /// 根据openId获取订单列表
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <returns></returns>
+        public IEnumerable<OrderModelApi> GetOrderList(string openId)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT    h.F_OrderNo ,
+                                        F_State ,
+                                        F_FlightNumber ,
+                                        F_OrderDate ,
+                                        ( SELECT    SUM(F_Qty)
+                                            FROM      dbo.T_OrderBody
+                                            WHERE     dbo.T_OrderBody.F_OrderNo = h.F_OrderNo
+                                        ) qty
+                                FROM      dbo.T_OrderHead h
+                                        LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo
+                                        WHERE 1=1");
+                strSql.Append(" And F_OpenId=@OpenId");
+                strSql.Append("  GROUP BY  h.F_OrderNo , F_State ,F_FlightNumber , F_OrderDate");                    
+                var dp = new DynamicParameters(new { });
+                dp.Add("@OpenId",openId);
+                return this.BaseRepository().FindList<OrderModelApi>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
     }
 }

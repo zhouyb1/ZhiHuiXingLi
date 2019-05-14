@@ -57,7 +57,30 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 }
             }
         }
+
+        /// <summary>
+        /// 根据openId获取订单列表
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <returns></returns>
+        public IEnumerable<OrderModelApi> GetOrderList(string openId)
+        {
+            try
+            {
+                return billClientApiService.GetOrderList(openId);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
     }
-
-
 }

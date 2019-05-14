@@ -17,8 +17,45 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             : base("/pdaapi")
         {
             Post["/SubmitUpdateOrderState"] = SubmitUpdateOrderState; //提交车班补货单
+            Post["/UpdateOrderStatus"] = UpdateOrderStatus; //修改订单状态
         }
         private SmallProgramServerApiIBLL billServerApiBLL = new SmallProgramServerApiBLL();
+
+        /// <summary>
+        /// 修改订单状态
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response UpdateOrderStatus(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject();// 获取模板请求数据
+            if (req["OrderNo"].IsEmpty())
+            {
+                return Fail("订单号不能为空!");
+            }
+            if (req["status"].IsEmpty())
+            {
+                return Fail("订单状态不能为空!");
+            }
+            if (req["Operator"].IsEmpty())
+            {
+                return Fail("操作员不能为空!");
+            }
+            var Order=billServerApiBLL.GetOrder(req["OrderNo"].ToString());
+            if (Order.Count() < 1)
+            {
+                return Fail("订单不存在!");
+            }
+            string OrderNo = req["OrderNo"].ToString();  //订单号
+            string status = req["status"].ToString();  //订单状态
+            string Operator = req["Operator"].ToString(); //操作人
+            string errText = "";
+            billServerApiBLL.UpdateOrderStatus(OrderNo, status, Operator, out errText);
+            return Success(errText);
+        }
+
+
+
         /// <summary>
         /// 提交车班补货单
         /// </summary>

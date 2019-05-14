@@ -1,4 +1,6 @@
-﻿using Ayma.Util;
+﻿using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi;
+using Ayma.Application.TwoDevelopment.TwoDev;
+using Ayma.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +29,54 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             try
             {
                 billServerApiService.SubmitUpdateOrderState(F_AirfieldId, F_OrderNo, F_State_Old, F_State_New, Operator, out errCode, out errText);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+        /// <summary>
+        /// 查询订单是否存在
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        public IEnumerable<T_OrderHeadEntity> GetOrder(string OrderNo)
+        {
+            try
+            {
+                return billServerApiService.GetOrder(OrderNo);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 修改订单状态
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <param name="status"></param>
+        /// <param name="Operator"></param>
+        public void UpdateOrderStatus(string OrderNo, string status, string Operator, out string errText)
+        {
+            try
+            {
+                billServerApiService.UpdateOrderStatus(OrderNo, status, Operator, out errText);
             }
             catch (Exception ex)
             {

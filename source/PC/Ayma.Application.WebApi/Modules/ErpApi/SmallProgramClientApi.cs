@@ -19,10 +19,12 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
     {
         public SmallProgramClientApi()
             : base("/pdaapi")
+            //注册接口
         {
             Post["/SubmitBillSaleOut"] = SubmitBillSaleOut; //提交车班补货单
             Get["/GetAirPort"] = GetAirPort; //获取机场
             Get["/GetFlightNoInfo"] = GetFlightNoInfo; //获取航班列表
+            Get["/GetOrderList"] = GetOrderList; //获取航班列表
             Post["/OnLogin"] = OnLogin;
         }
         private SmallProgramClientApiBLL billClientApiBLL = new SmallProgramClientApiBLL();
@@ -59,6 +61,30 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
             string F_AirfieldId = req["F_AirfieldId"].ToString(); //机场ID 
             var data = billClientApiBLL.GetFlightNoInfo(F_AirfieldId);
+            if (data.Count() > 0)
+            {
+                return Success(data);
+            }
+            else
+            {
+                return Fail("没有数据!");
+            }
+        }
+
+        /// <summary>
+        /// 根据openId获取订单列表
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response GetOrderList(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject(); //获取模板请求数据
+            if (req["openId"].IsEmpty())
+            {
+                return Fail("openId不能为空!");
+            }
+            string openId = req["openId"].ToString(); //openId
+            var data = billClientApiBLL.GetOrderList(openId);
             if (data.Count() > 0)
             {
                 return Success(data);

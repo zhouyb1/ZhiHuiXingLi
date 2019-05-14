@@ -20,5 +20,12 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         /// </summary>
         /// <returns></returns>
         IEnumerable<T_FlightNoInfoModelApi> GetFlightNoInfo(string F_AirfieldId);
+
+        /// <summary>
+        /// 根据openId获取订单列表
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <returns></returns>
+        IEnumerable<OrderModelApi> GetOrderList(string openId);
     }
 }
