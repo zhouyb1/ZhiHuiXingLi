@@ -79,8 +79,8 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         public string F_CreateStype { get; set; }
         /// <summary>
         /// 订单状态 0:待款、1：付款完成、-1：订单已取消、-2：已退款
-2：航班已到达、3：开始分拣、4：分拣完成、5、出港完成
-41:分拣异常、51:出港异常
+        //2：航班已到达、3：开始分拣、4：分拣完成、5、出港完成
+        //41:分拣异常、51:出港异常
         /// </summary>
         [Column("F_STATE")]
         public string F_State { get; set; }
