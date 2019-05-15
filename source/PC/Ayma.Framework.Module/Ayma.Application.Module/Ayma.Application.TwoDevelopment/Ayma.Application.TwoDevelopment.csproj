@@ -67,6 +67,9 @@
     <Compile Include="SystemDemo\Demoleave\DemoleaveEntity.cs" />
     <Compile Include="SystemDemo\Demoleave\DemoleaveIBLL.cs" />
     <Compile Include="SystemDemo\Demoleave\DemoleaveService.cs" />
+    <Compile Include="TwoDev\OrderLogistics\OrderLogisticsBLL.cs" />
+    <Compile Include="TwoDev\OrderLogistics\OrderLogisticsIBLL.cs" />
+    <Compile Include="TwoDev\OrderLogistics\OrderLogisticsService.cs" />
     <Compile Include="TwoDev\Test\TestService.cs" />
     <Compile Include="TwoDev\AirportMessage\T_AirfieldInfoEntity.cs" />
     <Compile Include="TwoDev\AirportMessage\AirportMessageService.cs" />

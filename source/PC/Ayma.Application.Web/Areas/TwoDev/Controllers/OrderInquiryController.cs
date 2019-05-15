@@ -13,6 +13,7 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
     public partial class OrderInquiryController : MvcControllerBase
     {
         private OrderInquiryIBLL orderInquiryIBLL = new OrderInquiryBLL();
+        private OrderLogisticsIBLL orderlogisticsIBLL = new OrderLogisticsBLL();
 
         #region 视图功能
 
@@ -26,13 +27,23 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
              return View();
         }
         /// <summary>
-        /// 表单页
+        /// 订单详情页
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public ActionResult Form()
         {
              return View();
+        }
+
+        /// <summary>
+        /// 物流详情页
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult LogisticsForm()
+        {
+            return View();
         }
         #endregion
 
@@ -71,6 +82,24 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
             var jsonData = new {
                 T_OrderHeadData = T_OrderHeadData,
                 T_OrderBodyData = T_OrderBodyData,
+            };
+            return Success(jsonData);
+        }
+        
+
+        /// <summary>
+        /// 获取物流表单数据
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [AjaxOnly]
+        public ActionResult GetLogisticsFormData(string keyValue) 
+        {
+            var T_OrderHeadData = orderInquiryIBLL.GetT_OrderHeadEntity(keyValue);
+            var T_OrderLogisticsInfo = orderlogisticsIBLL.GetT_OrderLogisticsInfoEntity(T_OrderHeadData.F_OrderNo);
+            var jsonData = new
+            {
+                T_OrderLogisticsInfo = T_OrderLogisticsInfo,
             };
             return Success(jsonData);
         }

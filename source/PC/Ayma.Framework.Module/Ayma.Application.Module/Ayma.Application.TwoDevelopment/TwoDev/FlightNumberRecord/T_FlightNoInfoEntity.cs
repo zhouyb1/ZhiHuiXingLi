@@ -28,6 +28,11 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         [Column("F_AIRFIELDNAME")]
         public string F_AirfieldName { get; set; }
         /// <summary>
+        /// 传送带号
+        /// </summary>
+        [Column("F_CONVEYORNUMBER")]
+        public string F_ConveyorNumber { get; set; }
+        /// <summary>
         /// 航站楼
         /// </summary>
         [Column("F_AIRFIELDFLOOR")]
@@ -68,6 +73,11 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         [Column("DATETIMEEND")]
         public DateTime? DateTimeEnd { get; set; }
+        /// <summary>
+        /// 实际到达时间
+        /// </summary>
+        [Column("DATETIMEENDREALITY")]
+        public DateTime? DateTimeEndReality { get; set; }
         #endregion
 
         #region 扩展操作

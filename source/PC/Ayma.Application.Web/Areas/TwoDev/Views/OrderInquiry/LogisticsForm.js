@@ -1,5 +1,5 @@
 ﻿var keyValue = request('keyValue');
-//var CurrentCompanyId = $("#CurrentCompanyId").val();
+var OrderNoId = request('orderno');
 
 var bootstrap = function ($, ayma) {
     "use strict";
@@ -11,15 +11,16 @@ var bootstrap = function ($, ayma) {
         },
         bind: function () {
 
-            $('#T_OrderBody').jfGrid({
+            $("#F_EnCode").val(OrderNoId);
+
+            $('#T_OrderLogisticsInfo').jfGrid({
                 headData:
                     [
                         { label: '订单号', name: 'F_OrderNo', width: 160, align: 'left', editType: 'label', hidden: true },
-                        { label: '托运单号', name: 'F_ConsignmentNumber', width: 100, align: 'left', editType: 'label' },
-                        { label: '重量', name: 'F_Weight', width: 160, align: 'left', editType: 'label' },
-                        { label: '配送距离', name: 'F_Distance', width: 160, align: 'left', editType: 'label' },
-                        { label: '价格', name: 'F_Price', width: 100, align: 'left', editType: 'label' },
-                        { label: '数量', name: 'F_Qty', width: 100, align: 'left', editType: 'label' }
+                        { label: '状态描述', name: 'F_StateDescribe', width: 100, align: 'left', editType: 'label' },
+                        { label: '操作时间', name: 'F_StateDateTime', width: 160, align: 'left', editType: 'label' },
+                        { label: '操作人', name: 'F_StateOperator', width: 160, align: 'left', editType: 'label' },
+                        { label: '对客户开放', name: 'F_CustomerOpen', width: 100, align: 'left', editType: 'label' }
                     ],
                 isEidt: true,
                 footerrow: true,
@@ -28,12 +29,14 @@ var bootstrap = function ($, ayma) {
                 isMultiselect: true
             });
         },
+
         initData: function () {
+            debugger;
             if (!!keyValue) {
-                $.SetForm(top.$.rootUrl + '/TwoDev/OrderInquiry/GetFormData?keyValue=' + keyValue, function (data) {
+                $.SetForm(top.$.rootUrl + '/TwoDev/OrderInquiry/GetLogisticsFormData?keyValue=' + keyValue, function (data) {
                     for (var id in data) {
                         if (!!data[id].length && data[id].length > 0) {
-                            $('#T_OrderBody').jfGridSet('refreshdata', { rowdatas: data[id] });
+                            $('#T_OrderLogisticsInfo').jfGridSet('refreshdata', { rowdatas: data[id] });
                         }
                         else {
                             $('[data-table="' + id + '"]').SetFormData(data[id]);
@@ -42,9 +45,10 @@ var bootstrap = function ($, ayma) {
                 });
             }
         },
-        search: function (data) {
-            data = data || {};
-            $('#T_OrderBody').jfGridSet('refreshdata', { rowdatas: data });
+        search: function (param) {
+            param = param || {};
+
+            $('#T_OrderLogisticsInfo').jfGridSet('refreshdata', { rowdatas: param });
         }
     };
     page.init();

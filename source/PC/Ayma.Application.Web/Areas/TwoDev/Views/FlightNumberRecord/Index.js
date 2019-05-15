@@ -22,7 +22,7 @@ var bootstrap = function ($, ayma) {
                     title: '新增',
                     url: top.$.rootUrl + '/TwoDev/FlightNumberRecord/Form',
                     width: 500,
-                    height: 300,
+                    height: 340,
                     maxmin: true,
                     callBack: function (id) {
                         return top[id].acceptClick(refreshGirdData);
@@ -68,13 +68,26 @@ var bootstrap = function ($, ayma) {
                     //{ label: "标示", name: "F_Id", width: 160, align: "left"},
                     //{ label: "机场Id", name: "F_AirfieldId", width: 160, align: "left"},
                     { label: "机场名称", name: "F_AirfieldName", width: 160, align: "left"},
+                    { label: "传送带号", name: "F_ConveyorNumber", width: 160, align: "left" },
                     { label: "航站楼", name: "F_AirfieldFloor", width: 160, align: "left"},
                     { label: "航空公司", name: "F_FlightCompany", width: 160, align: "left"},
                     { label: "航班号", name: "F_FlightNumber", width: 160, align: "left"},
                     { label: "起飞地址", name: "AddressBegin", width: 160, align: "left"},
                     { label: "到达地址", name: "AddressEnd", width: 160, align: "left"},
-                    { label: "起飞时间", name: "DateTimeBegin", width: 160, align: "left"},
-                    { label: "到达时间", name: "DateTimeEnd", width: 160, align: "left"},
+                    {
+                        label: "起飞时间", name: "DateTimeBegin", width: 160, align: "left",
+                        formatter: function (cellvalue, options, rowObject) 
+                        {
+                            return ayma.formatDate(cellvalue, 'hh:mm');
+                        }
+                    },
+                    {
+                        label: "计划到达时间", name: "DateTimeEnd", width: 160, align: "left",
+                        formatter: function (cellvalue, options, rowObject) {
+                            return ayma.formatDate(cellvalue, 'hh:mm');
+                        }
+                    },
+                    { label: "实际到达时间", name: "DateTimeEndReality", width: 160, align: "left" },
                 ],
                 mainId:'F_Id',
                 reloadSelected: true,

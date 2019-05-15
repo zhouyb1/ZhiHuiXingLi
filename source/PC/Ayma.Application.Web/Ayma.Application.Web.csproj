@@ -457,6 +457,8 @@
     <Content Include="Areas\AM_WorkFlowModule\Views\WfScheme\WorkformForm.js" />
     <Content Include="Areas\AM_WorkFlowModule\Views\WfSystemDemo\DemoLeaveForm.js" />
     <Content Include="Areas\AM_WorkFlowModule\Views\WfSystemDemo\DemoLeaveIndex.js" />
+    <Content Include="Areas\TwoDev\Views\OrderInquiry\Form.css" />
+    <Content Include="Areas\TwoDev\Views\OrderInquiry\LogisticsForm.js" />
     <Content Include="Content\bootstrap\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\bootstrap.min.css" />
     <Content Include="Content\bootstrap\html5shiv.min.js" />
@@ -1784,6 +1786,17 @@
     <Content Include="Areas\AM_WorkFlowModule\Views\WfScheme\HistoryForm.cshtml" />
     <Content Include="Properties\PublishProfiles\Ayma.pubxml.user" />
     <Content Include="Properties\PublishProfiles\learunadms6.1.pubxml.user" />
+    <Content Include="Areas\TwoDev\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\TwoDev\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\TwoDev\Views\OrderInquiry\LogisticsForm.cshtml" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Views\Home\AdminAccordion\Index.css" />
     <Content Include="Views\Home\AdminAccordion\Index.js" />
     <Content Include="Views\Home\AdminDesktopTemp\Index.js" />
@@ -2155,6 +2168,7 @@
     <Content Include="Areas\TwoDev\Views\OrderInquiry\Index.js" />
     <Content Include="Areas\TwoDev\Views\OrderInquiry\Form.cshtml" />
     <Content Include="Areas\TwoDev\Views\OrderInquiry\Form.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

@@ -16,6 +16,10 @@
         @*<input id="F_AirfieldName" type="text" class="form-control"  />*@
         <div id="F_AirfieldName" isvalid="yes" checkexpession="NotNull"></div>
     </div>
+    <div class="col-xs-6 am-form-item" data-table="T_FlightNoInfo">
+        <div class="am-form-item-title">传送带号</div>
+        <input id="F_ConveyorNumber" type="text" class="form-control" />
+    </div>
     <div class="col-xs-6 am-form-item"  data-table="T_FlightNoInfo" >
         <div class="am-form-item-title">航站楼</div>
         <input id="F_AirfieldFloor" type="text" class="form-control"  />
@@ -38,11 +42,15 @@
     </div>
     <div class="col-xs-6 am-form-item"  data-table="T_FlightNoInfo" >
         <div class="am-form-item-title">起飞时间</div>
-        <input id="DateTimeBegin" type="text" class="form-control am-input-wdatepicker" onfocus="WdatePicker({dateFmt:'HH:mm'})" isvalid="no" checkexpession="HourSecond" />
+        <input id="DateTimeBegin" type="text" class="form-control am-input-wdatepicker" onfocus="WdatePicker({dateFmt:'hh:mm'})" isvalid="no" checkexpession="HourSecond" />
     </div>
     <div class="col-xs-6 am-form-item"  data-table="T_FlightNoInfo" >
-        <div class="am-form-item-title">到达时间</div>
-        <input id="DateTimeEnd" type="text" class="form-control am-input-wdatepicker" onfocus="WdatePicker({dateFmt:'HH:mm'})" isvalid="no" checkexpession="HourSecond" />
+        <div class="am-form-item-title">计划到达时间</div>
+        <input id="DateTimeEnd" type="text" class="form-control am-input-wdatepicker" onfocus="WdatePicker({dateFmt:'hh:mm'})" isvalid="no" checkexpession="HourSecond" />
+    </div>
+    <div class="col-xs-6 am-form-item" data-table="T_FlightNoInfo">
+        <div class="am-form-item-title">实际到达时间</div>
+        <input id="DateTimeEndReality" type="text" class="form-control am-input-wdatepicker" onfocus="WdatePicker({dateFmt:'HH:mm'})" isvalid="no" checkexpession="HourSecond" />
     </div>
 </div>
 @Html.AppendJsFile("/Areas/TwoDev/Views/FlightNumberRecord/Form.js")

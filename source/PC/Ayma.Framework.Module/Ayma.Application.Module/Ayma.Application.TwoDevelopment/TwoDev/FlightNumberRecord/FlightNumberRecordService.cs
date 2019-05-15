@@ -57,13 +57,15 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 t.F_Id,
                 t.F_AirfieldId,
                 t.F_AirfieldName,
+                t.F_ConveyorNumber,
                 t.F_AirfieldFloor,
                 t.F_FlightCompany,
                 t.F_FlightNumber,
                 t.AddressBegin,
                 t.AddressEnd,
                 t.DateTimeBegin,
-                t.DateTimeEnd
+                t.DateTimeEnd,
+                t.DateTimeEndReality
                 ");
                 strSql.Append("  FROM T_FlightNoInfo t ");
                 strSql.Append("  WHERE 1=1 ");
