@@ -174,7 +174,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         {
             try
             {
-                var customerData = this.GetReqData().ToJObject()["CustomerInfo"].ToObject<CustomerInfo>();
                 var code = this.GetReqData().ToJObject()["code"].ToString(); //获取code 
                 if (string.IsNullOrEmpty(code))
                 {
@@ -357,7 +356,14 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 return Fail("订单不存在");
             }
+            var nonceStr = TenPayV3Util.GetNoncestr();
             //发起退款申请
+            TenPayV3RefundRequestData data = new TenPayV3RefundRequestData(Config.GetValue("AppId"),
+                Config.GetValue("Mchid"), Config.GetValue("key"), null, nonceStr, "traind", orderNo, "23", 23, 23, null,
+                null);
+            TenPayV3.Refund(data, "cret", Config.GetValue("Mchid"));
+
+            //修改订单状态为已退款
             return Success("");
         }
 
@@ -394,6 +400,9 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 {
                     Logger.Info("微信支付回调：1.订单号：" + orderNo + "2.微信支付订单号：" + transaction_id + "3.金额：" + total_fee);
                     //正确的订单处理 改变订单状态
+                    var orderData = order.GetT_OrderHeadEntity(orderNo);
+                    orderData.F_State = "2";
+                    order.UpdateOrderStatus(orderNo,"1");
                     paySuccess = true;
                 }
                 else
