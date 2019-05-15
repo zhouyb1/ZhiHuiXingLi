@@ -11,6 +11,9 @@ using Senparc.Weixin.WxOpen;
 using Senparc.Weixin.WxOpen.AdvancedAPIs.Sns;
 using Senparc.Weixin;
 using Config = Ayma.Util.Config;
+using Senparc.CO2NET.Helpers;
+using Ayma.Application.Base.SystemModule;
+using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi;
 
 namespace Ayma.Application.WebApi.Modules.ErpApi
 {
@@ -31,6 +34,9 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/GetAirPort"] = GetAirPort; //获取机场
             Get["/GetFlightNoInfo"] = GetFlightNoInfo; //获取航班列表
             Get["/GetOrderList"] = GetOrderList; //获取航班列表
+            Get["/GetOrderDetailByNo"] = GetOrderDetailByNo;//获取订详情
+            Get["/SubmitOrder"] = SubmitOrder; //提交订单
+            //Get["/GetOrderListByStatus"] = GetOrderListByStatus;//根据订单状态查询订单列表
             Post["/OnLogin"] = OnLogin;
             Post["/GetPhone"] = GetPhone;
             Post["/Register"] = Register;
@@ -90,12 +96,68 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             var req = this.GetReqData().ToJObject(); //获取模板请求数据
             if (req["openId"].IsEmpty())
             {
-                return Fail("openId不能为空!");
+                return Fail("缺少参数openId!"); 
             }
             string openId = req["openId"].ToString(); //openId
-            var data = billClientApiBLL.GetOrderList(openId);
+            string status = req["status"].ToString(); //订单状态
+            var data = billClientApiBLL.GetOrderList(openId, status);
             if (data.Count() > 0)
             {
+                return Success(data);
+            }
+            else
+            {
+                return Fail("没有数据!");
+            }
+        }
+        /// <summary>
+        /// 根据订单状态查询订单列表
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        #region
+        //public Response GetOrderListByStatus(dynamic _)
+        //{
+        //    var req = this.GetReqData().ToJObject(); //获取模板请求数据
+        //    if (req["openId"].IsEmpty())
+        //    {
+        //        return Fail("openId不能为空!");
+        //    }
+        //    if (req["status"].IsEmpty())
+        //    {
+        //        return Fail("订单状态不能为空!");
+        //    }
+        //    string status = req["status"].ToString(); //订单状态
+        //    var data = billClientApiBLL.GetOrderListByStatus(openId, status);
+        //    if (data.Count() > 0)
+        //    {
+        //        return Success(data);
+        //    }
+        //    else
+        //    {
+        //        return Fail("没有数据!");
+        //    }
+        //}
+        #endregion
+
+        /// <summary>
+        /// 根据订单号获取订单详情
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response GetOrderDetailByNo(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject(); //获取模板请求数据
+            if (req["OrderNo"].IsEmpty())
+            {
+                return Fail("缺少参数OrderNo!");
+            }
+            string OrderNo = req["OrderNo"].ToString(); //订单号
+            var orderhead = billClientApiBLL.GetOrderHeadByNo(OrderNo);
+            var orderbody = billClientApiBLL.GetOrderBodyByNo(OrderNo);
+            if (orderhead.Count() > 0 && orderbody.Count() > 0)
+            {
+                var data = new { orderhead = orderhead, orderbody = orderbody };
                 return Success(data);
             }
             else
@@ -130,6 +192,35 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 return Fail("参数格式有误");
             }
+        }
+
+        //提交订单
+        public Response SubmitOrder(dynamic _)
+        {
+            BillMakeBaseModelAPi SubmitOrderModelApi;
+            try
+            {
+                SubmitOrderModelApi = this.GetReqData().ToObject<BillMakeBaseModelAPi>();
+                if (SubmitOrderModelApi.Head.F_OpenId.IsEmpty())
+                {
+                    return Fail("订单头不能为空！");
+                }
+                if (SubmitOrderModelApi.OrderDetails.Count == 0)
+                {
+                    return Fail("订单内容不能为空！");
+                }
+            }
+            catch (System.Exception)
+            {
+                return Fail("数据格式错误");
+            }
+
+            //生成订单号
+            var orderNo = new CodeRuleBLL().GetBillCode("10001", "System");
+            new CodeRuleBLL().UseRuleSeed("10001", "System");
+            string errText = "";
+            billClientApiBLL.SubmitOrder(SubmitOrderModelApi, orderNo, out errText);
+            return Success(errText);
         }
 
         /// <summary>

@@ -18,6 +18,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         {
             Post["/SubmitUpdateOrderState"] = SubmitUpdateOrderState; //提交车班补货单
             Post["/UpdateOrderStatus"] = UpdateOrderStatus; //修改订单状态
+            Get["/GetOrderListByStatus"] = GetOrderListByStatus; //根据订单状态获取订单列表
+            Get["/SerGetOrderDetailByNo"] = SerGetOrderDetailByNo; //根据订单号获取订单详情
         }
         private SmallProgramServerApiIBLL billServerApiBLL = new SmallProgramServerApiBLL();
 
@@ -54,7 +56,55 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             return Success(errText);
         }
 
+       /// <summary>
+       /// 根据订单状态获取订单列表
+       /// </summary>
+       /// <param name="_"></param>
+       /// <returns></returns>
+        public Response GetOrderListByStatus(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject(); //获取模板请求数据
+            if (req["status"].IsEmpty())
+            {
+                return Fail("缺少参数status");
+            }
+            string status = req["status"].ToString(); //订单状态
+            var data = billServerApiBLL.GetOrderListByStatus(status);
+            if (data.Count() > 0)
+            {
+                return Success(data);
+            }
+            else
+            {
+                return Fail("没有数据!");
+            }
+        }
 
+        /// <summary>
+        /// 根据订单号获取订单详情
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response SerGetOrderDetailByNo(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject(); //获取模板请求数据
+            if (req["OrderNo"].IsEmpty())
+            {
+                return Fail("缺少参数OrderNo");
+            }
+            string OrderNo = req["OrderNo"].ToString(); //订单号
+            var orderhead = billServerApiBLL.SerGetOrderHeadByNo(OrderNo);
+            var orderbody = billServerApiBLL.SerGetOrderBodyByNo(OrderNo);
+            if (orderhead.Count() > 0 && orderbody.Count() > 0)
+            {
+                var data = new { orderhead = orderhead, orderbody = orderbody };
+                return Success(data);
+            }
+            else
+            {
+                return Fail("没有数据!");
+            }
+        }
 
         /// <summary>
         /// 提交车班补货单
