@@ -37,5 +37,25 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// <param name="Operator"></param>
         /// <param name="errText"></param>
         void UpdateOrderStatus(string OrderNo, string status, string Operator, out string errText);
+
+        /// <summary>
+        /// 根据订单状态获取订单列表
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        IEnumerable<OrderListModelApi> GetOrderListByStatus(string status);
+
+        /// <summary>
+        /// 根据订单号获取订单头
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        IEnumerable<SerOrderHeadModelApi> SerGetOrderHeadByNo(string OrderNo);
+        /// <summary>
+        /// 根据订单号获取订单详细
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        IEnumerable<SerConsignmentNumberModelApi> SerGetOrderBodyByNo(string OrderNo);
     }
 }

@@ -90,6 +90,77 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 }
             }
         }
-    }
 
+        /// <summary>
+        /// 根据订单状态查询订单列表
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public IEnumerable<OrderListModelApi> GetOrderListByStatus(string status)
+        {
+            try
+            {
+                return billServerApiService.GetOrderListByStatus(status);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 根据订单号获取订单头
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        public IEnumerable<SerOrderHeadModelApi> SerGetOrderHeadByNo(string OrderNo)
+        {
+            try
+            {
+                return billServerApiService.SerGetOrderHeadByNo(OrderNo);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+        /// <summary>
+        /// 根据订单号获取订单详细
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        public IEnumerable<SerConsignmentNumberModelApi> SerGetOrderBodyByNo(string OrderNo)
+        {
+            try
+            {
+                return billServerApiService.SerGetOrderBodyByNo(OrderNo);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+    }
 }

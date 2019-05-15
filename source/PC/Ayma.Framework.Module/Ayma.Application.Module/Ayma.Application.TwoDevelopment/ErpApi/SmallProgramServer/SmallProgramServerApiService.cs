@@ -131,5 +131,106 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 }
             }
         }
+
+        /// <summary>
+        /// 根据订单状态查询订单列表
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public IEnumerable<OrderListModelApi> GetOrderListByStatus(string status)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT F_FlightNumber,F_AirfieldFloor,F_State,h.F_OrderNo,F_ConsignmentNumber
+                                FROM dbo.T_OrderHead h 
+                                LEFT JOIN dbo.T_OrderBody b
+                                ON b.F_OrderNo = h.F_OrderNo WHERE 1=1");
+                if (!string.IsNullOrEmpty(status))
+                {
+                    strSql.Append(" And F_State=@F_State");
+                }
+                var dp = new DynamicParameters(new { });
+                if (!string.IsNullOrEmpty(status))
+                {
+                    dp.Add("@F_State", status);
+                }
+                return this.BaseRepository().FindList<OrderListModelApi>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 根据订单号获取订单头
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        public IEnumerable<SerOrderHeadModelApi> SerGetOrderHeadByNo(string OrderNo)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT F_FlightNumber,F_State,h.F_OrderNo,F_OrderDate,F_AirfieldFloor,F_CustomerName,
+                                (SELECT sum (F_Qty) FROM T_OrderBody WHERE F_OrderNo=h.F_OrderNo) F_Qty,
+                                F_CustomerPhone,F_CustomerAddress,F_Stype,F_IsUrgent,F_ExpressCompanyId,
+                                F_ExpressNO,F_Amount
+                                FROM dbo.T_OrderHead h
+                                LEFT JOIN dbo.T_OrderPayMoney p ON p.F_OrderNo = h.F_OrderNo
+                                WHERE 1=1");
+                strSql.Append(" AND h.F_OrderNo=@OrderNo");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@OrderNo", OrderNo);
+                return this.BaseRepository().FindList<SerOrderHeadModelApi>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+        /// <summary>
+        /// 根据订单号获取订单详细
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        public IEnumerable<SerConsignmentNumberModelApi> SerGetOrderBodyByNo(string OrderNo)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT F_ConsignmentNumber FROM dbo.T_OrderBody WHERE F_OrderNo=@OrderNo");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@OrderNo", OrderNo);
+                return this.BaseRepository().FindList<SerConsignmentNumberModelApi>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
     }
 }

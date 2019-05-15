@@ -74,7 +74,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         /// </summary>
         /// <param name="openId"></param>
         /// <returns></returns>
-        public IEnumerable<OrderModelApi> GetOrderList(string openId)
+        public IEnumerable<OrderModelApi> GetOrderList(string openId, string status)
         {
             try
             {
@@ -91,13 +91,187 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                                         LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo
                                         WHERE 1=1");
                 strSql.Append(" And F_OpenId=@OpenId");
+                if (!string.IsNullOrEmpty(status))
+                {
+                    strSql.Append(" And F_State=@F_State");
+                }
                 strSql.Append("  GROUP BY  h.F_OrderNo , F_State ,F_FlightNumber , F_OrderDate");                    
                 var dp = new DynamicParameters(new { });
                 dp.Add("@OpenId",openId);
+                if (!string.IsNullOrEmpty(status))
+                {
+                    dp.Add("@F_State", status);
+                }
                 return this.BaseRepository().FindList<OrderModelApi>(strSql.ToString(), dp);
             }
             catch (Exception ex)
             {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+        /// <summary>
+        /// 根据订单状态查询订单列表
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        #region
+        //public IEnumerable<OrderModelApi> GetOrderListByStatus(string openId, string status)
+//        {
+//            try
+//            {
+//                var strSql = new StringBuilder();
+//                strSql.Append(@"SELECT    h.F_OrderNo ,
+//                                        F_State ,
+//                                        F_FlightNumber ,
+//                                        F_OrderDate ,
+//                                        ( SELECT    SUM(F_Qty)
+//                                            FROM      dbo.T_OrderBody
+//                                            WHERE     dbo.T_OrderBody.F_OrderNo = h.F_OrderNo
+//                                        ) qty
+//                                FROM      dbo.T_OrderHead h
+//                                        LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo
+//                                        WHERE 1=1");
+//                strSql.Append(" And F_OpenId=@OpenId");
+//                strSql.Append(" And F_State=@F_State");
+//                strSql.Append(" GROUP BY  h.F_OrderNo , F_State ,F_FlightNumber , F_OrderDate");
+//                var dp = new DynamicParameters(new { });
+//                dp.Add("@OpenId", openId);
+//                dp.Add("@F_State", status);
+//                return this.BaseRepository().FindList<OrderModelApi>(strSql.ToString(), dp);
+//            }
+//            catch (Exception ex)
+//            {
+//                if (ex is ExceptionEx)
+//                {
+//                    throw;
+//                }
+//                else
+//                {
+//                    throw ExceptionEx.ThrowServiceException(ex);
+//                }
+//            }
+        //        }
+        #endregion
+        /// <summary>
+        /// 根据订单号获取订单头
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        public IEnumerable<OrderHeadModelApi> GetOrderHeadByNo(string OrderNo)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT F_CustomerName,F_CustomerPhone,F_CustomerAddress,h.F_FlightNumber,F_OrderNo,AddressBegin,AddressEnd
+                            FROM dbo.T_OrderHead h
+                            LEFT JOIN T_FlightNoInfo f ON f.F_FlightNumber = h.F_FlightNumber WHERE F_OrderNo=@OrderNo");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@OrderNo", OrderNo);
+                return this.BaseRepository().FindList<OrderHeadModelApi>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+        /// <summary>
+        /// 根据订单号获取订单详细
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        public IEnumerable<OrderDetailsModelApi> GetOrderBodyByNo(string OrderNo)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT F_ConsignmentNumber,F_Qty FROM T_OrderBody WHERE F_OrderNo=@OrderNo");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@OrderNo", OrderNo);
+                return this.BaseRepository().FindList<OrderDetailsModelApi>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        public void SubmitOrder(BillMakeBaseModelAPi SubmitOrderModelApi, string OrderNo, out string errText)
+        {
+            try
+            {
+                //订单表头
+                var strSql = new StringBuilder();
+                strSql.Append(@"INSERT INTO dbo.T_OrderHead ( F_Id ,F_AirfieldId ,F_AirfieldName ,F_AirfieldFloor ,F_FlightCompany , F_FlightNumber ,F_OrderDate , F_OrderNo ,
+                              F_CustomerName ,F_CustomerPhone , F_CustomerAddress ,F_CustomerRemarks ,F_CreateStype ,F_State ,F_Stype ,F_CreateTime ,F_CreateUserName ,
+                              F_OpenId ,F_IsUrgent)
+                              VALUES(@F_Id,@F_AirfieldId,@F_AirfieldName,@F_AirfieldFloor,@F_FlightCompany,@F_FlightNumber,@F_OrderDate,@F_OrderNo,@F_CustomerName,
+                              @F_CustomerPhone,@F_CustomerAddress,@F_CustomerRemarks,@F_CreateStype,@F_State,@F_Stype,@F_CreateTime,@F_CreateUserName,@F_OpenId,@F_IsUrgent)");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@F_Id", Guid.NewGuid().ToString());
+                dp.Add("@F_AirfieldId", SubmitOrderModelApi.Head.F_AirfieldId);
+                dp.Add("@F_AirfieldName", SubmitOrderModelApi.Head.F_AirfieldName);
+                dp.Add("@F_AirfieldFloor", SubmitOrderModelApi.Head.F_AirfieldFloor);
+                dp.Add("@F_FlightCompany", SubmitOrderModelApi.Head.F_FlightCompany);
+                dp.Add("@F_FlightNumber", SubmitOrderModelApi.Head.F_FlightNumber);
+                dp.Add("@F_OrderDate", DateTime.Now);
+                dp.Add("@F_OrderNo", OrderNo);
+                dp.Add("@F_CustomerName", SubmitOrderModelApi.Head.F_CustomerName);
+                dp.Add("@F_CustomerPhone", SubmitOrderModelApi.Head.F_CustomerPhone);
+                dp.Add("@F_CustomerAddress", SubmitOrderModelApi.Head.F_CustomerAddress);
+                dp.Add("@F_CustomerRemarks", SubmitOrderModelApi.Head.F_CustomerRemarks);
+                dp.Add("@F_CreateStype", SubmitOrderModelApi.Head.F_CreateStype);
+                dp.Add("@F_State", SubmitOrderModelApi.Head.F_State);
+                dp.Add("@F_Stype", SubmitOrderModelApi.Head.F_Stype);
+                dp.Add("@F_CreateTime", DateTime.Now);
+                dp.Add("@F_CreateUserName", SubmitOrderModelApi.Head.F_CreateUserName);
+                dp.Add("@F_OpenId", SubmitOrderModelApi.Head.F_OpenId);
+                dp.Add("@F_IsUrgent", SubmitOrderModelApi.Head.F_IsUrgent);
+                this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
+
+                //订单内容
+                foreach (var item in SubmitOrderModelApi.OrderDetails)
+                {
+                    var strInsert = new StringBuilder();
+                    strInsert.Append(@"INSERT INTO dbo.T_OrderBody ( F_Id ,F_OrderNo , F_ConsignmentNumber ,F_Weight ,F_Distance ,F_Price ,F_Qty )
+                                    VALUES ( @F_Id ,@F_OrderNo , @F_ConsignmentNumber ,@F_Weight ,@F_Distance ,@F_Price ,@F_Qty )
+                                    ");
+                    var para = new DynamicParameters(new { });
+                    para.Add("@F_Id", Guid.NewGuid().ToString());
+                    para.Add("@F_OrderNo",OrderNo);
+                    para.Add("@F_ConsignmentNumber", item.F_ConsignmentNumber);
+                    para.Add("@F_Weight", item.F_Weight);
+                    para.Add("@F_Distance", item.F_Distance);
+                    para.Add("@F_Price", item.F_Price);
+                    para.Add("@F_Qty", item.F_Qty);
+
+                    this.BaseRepository().ExecuteBySql(strInsert.ToString(), para);
+                }
+                errText = "订单提交成功!";
+            }
+            catch (Exception ex)
+            {
+                errText = "订单提交失败!";
                 if (ex is ExceptionEx)
                 {
                     throw;

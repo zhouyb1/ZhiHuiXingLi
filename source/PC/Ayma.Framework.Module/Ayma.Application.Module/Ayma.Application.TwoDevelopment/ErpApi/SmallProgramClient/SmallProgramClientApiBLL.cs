@@ -63,11 +63,102 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         /// </summary>
         /// <param name="openId"></param>
         /// <returns></returns>
-        public IEnumerable<OrderModelApi> GetOrderList(string openId)
+        public IEnumerable<OrderModelApi> GetOrderList(string openId, string status)
         {
             try
             {
-                return billClientApiService.GetOrderList(openId);
+                return billClientApiService.GetOrderList(openId, status);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+        /// <summary>
+        /// 根据订单状态查询订单列表
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        #region
+        //public IEnumerable<OrderModelApi> GetOrderListByStatus(string openId, string status)
+        //{
+        //    try
+        //    {
+        //        return billClientApiService.GetOrderListByStatus(openId, status);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (ex is ExceptionEx)
+        //        {
+        //            throw;
+        //        }
+        //        else
+        //        {
+        //            throw ExceptionEx.ThrowBusinessException(ex);
+        //        }
+        //    }
+        //}
+        #endregion
+
+        /// <summary>
+        /// 根据订单号获取订单头
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        public IEnumerable<OrderHeadModelApi> GetOrderHeadByNo(string OrderNo)
+        {
+            try
+            {
+                return billClientApiService.GetOrderHeadByNo(OrderNo);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+        /// <summary>
+        /// 根据订单号获取订单详细
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        public IEnumerable<OrderDetailsModelApi> GetOrderBodyByNo(string OrderNo)
+        {
+            try
+            {
+                return billClientApiService.GetOrderBodyByNo(OrderNo);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        public void SubmitOrder(BillMakeBaseModelAPi SubmitOrderModelApi, string OrderNo, out string errText)
+        {
+            try
+            {
+                billClientApiService.SubmitOrder(SubmitOrderModelApi, OrderNo, out errText);
             }
             catch (Exception ex)
             {

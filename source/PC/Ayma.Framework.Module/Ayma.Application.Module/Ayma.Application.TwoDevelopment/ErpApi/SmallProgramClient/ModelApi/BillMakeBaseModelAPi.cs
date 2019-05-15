@@ -14,11 +14,6 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
     public class BillMakeTempModelApi
     {
         /// <summary>
-        /// Id
-        /// </summary>
-        public string F_Id { get; set; }
-
-        /// <summary>
         /// 机场Id
         /// </summary>
         public string F_AirfieldId { get; set; }
@@ -111,11 +106,6 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
 
     public class BillMakeTempBModelApi
     {
-        /// <summary>
-        /// Id
-        /// </summary>
-        public string F_Id { get; set; }
-
         /// <summary>
         /// 订单号
         /// </summary>
