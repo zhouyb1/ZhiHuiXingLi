@@ -148,11 +148,11 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             //请求参数data为空时，不参与签名
             if (data == null)
             {
-                serverSign = "&version=" + version + "&key=" + pdakey;// 签名模式，version+&key=pdakey
+                serverSign = "version=" + version + "&key=" + pdakey;// 签名模式，version+&key=pdakey
             }
             else
             {
-                serverSign = "data=" + data + "&version=" + version + "&key=" + pdakey;// 签名模式，data+version+&key=pdakey
+                serverSign = "version=" + version + "&key=" + pdakey + "&data=" + data;// 签名模式，data+version+&key=pdakey
             }
             string md5 = Md5Helper.Encrypt(serverSign, 32).ToUpper();
             if (md5 != req.sign.ToUpper())
