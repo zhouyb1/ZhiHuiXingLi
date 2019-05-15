@@ -205,5 +205,48 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 }
             }
         }
+
+        /// <summary>
+        /// 根据航班号获取航班列表
+        /// </summary>
+        /// <param name="FlightNumber"></param>
+        /// <returns></returns>
+        public IEnumerable<GetFlightListByFNo> SerGetFlightList(string FlightNumber)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT h.F_FlightCompany,h.F_FlightNumber,f.AddressBegin,f.AddressEnd,
+                                  f.DateTimeBegin,f.DateTimeEnd,
+                                  SUM(F_Qty) TotalQty
+                                  FROM T_OrderHead h
+                                  LEFT JOIN dbo.T_OrderBody b
+                                  ON b.F_OrderNo = h.F_OrderNo
+                                  LEFT JOIN T_FlightNoInfo f 
+                                  ON f.F_FlightNumber = h.F_FlightNumber 
+                                  WHERE 1=1");
+                if(!string.IsNullOrEmpty(FlightNumber)){
+                    strSql.Append(" AND h.F_FlightNumber=@F_FlightNumber");
+                }
+                strSql.Append(" AND h.F_OrderDate BETWEEN @StartTime AND @EndTime");
+                strSql.Append(" GROUP BY h.F_FlightCompany,h.F_FlightNumber,f.AddressBegin,f.AddressEnd,f.DateTimeBegin,f.DateTimeEnd ");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@F_FlightNumber", FlightNumber);
+                dp.Add("@StartTime", DateTime.Now.ToString("yyyy-MM-dd")+" 00:00:00");
+                dp.Add("@EndTime", DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59");
+                return this.BaseRepository().FindList<GetFlightListByFNo>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
     }
 }

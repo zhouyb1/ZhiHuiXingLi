@@ -116,7 +116,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         }
 
         /// <summary>
-        /// 根据订单号获取订单头
+        /// 根据行李号获取订单详细
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
@@ -125,6 +125,30 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             try
             {
                 return billServerApiService.SerGetOrderDetailByNo(ConsignmentNumber);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 根据航班号获取航班列表
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        public IEnumerable<GetFlightListByFNo> SerGetFlightList(string FlightNumber)
+        {
+            try
+            {
+                return billServerApiService.SerGetFlightList(FlightNumber);
             }
             catch (Exception ex)
             {
