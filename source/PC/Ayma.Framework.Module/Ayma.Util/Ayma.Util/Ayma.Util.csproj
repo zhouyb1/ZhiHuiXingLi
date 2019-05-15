@@ -79,6 +79,8 @@
     <Compile Include="DataBase\DbWhere.cs" />
     <Compile Include="Excel\NPOIExcel.cs" />
     <Compile Include="Model\jfGridModel.cs" />
+    <Compile Include="Payment\WXConfig.cs" />
+    <Compile Include="Payment\WxPayData.cs" />
     <Compile Include="Security\DESHelper.cs" />
     <Compile Include="Tree\TreeDataMake.cs" />
     <Compile Include="Tree\TreeModelEx.cs" />
