@@ -64,10 +64,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         public Response GetOrderListByStatus(dynamic _)
         {
             var req = this.GetReqData().ToJObject(); //获取模板请求数据
-            if (req["status"].IsEmpty())
-            {
-                return Fail("缺少参数status");
-            }
             string status = req["status"].ToString(); //订单状态
             var data = billServerApiBLL.GetOrderListByStatus(status);
             if (data.Count() > 0)
@@ -81,23 +77,42 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         }
 
         /// <summary>
-        /// 根据订单号获取订单详情
+        /// 根据行李号获取订单详情
         /// </summary>
         /// <param name="_"></param>
         /// <returns></returns>
         public Response SerGetOrderDetailByNo(dynamic _)
         {
             var req = this.GetReqData().ToJObject(); //获取模板请求数据
-            if (req["OrderNo"].IsEmpty())
+            if (req["ConsignmentNumber"].IsEmpty())
             {
-                return Fail("缺少参数OrderNo");
+                return Fail("缺少参数ConsignmentNumber");
             }
-            string OrderNo = req["OrderNo"].ToString(); //订单号
-            var orderhead = billServerApiBLL.SerGetOrderHeadByNo(OrderNo);
-            var orderbody = billServerApiBLL.SerGetOrderBodyByNo(OrderNo);
-            if (orderhead.Count() > 0 && orderbody.Count() > 0)
+            string ConsignmentNumber = req["ConsignmentNumber"].ToString(); //行李号
+            var data = billServerApiBLL.SerGetOrderDetailByNo(ConsignmentNumber);
+            //var orderbody = billServerApiBLL.SerGetOrderBodyByNo(OrderNo);
+            if (data.Count() > 0 )
             {
-                var data = new { orderhead = orderhead, orderbody = orderbody };
+                //var data = new { orderhead = orderhead, orderbody = orderbody };
+                return Success(data);
+            }
+            else
+            {
+                return Fail("没有数据!");
+            }
+        }
+
+        public Response SerGetFlightList(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject(); //获取模板请求数据
+            if (req["FlightNumber"].IsEmpty())
+            {
+                return Fail("缺少参数FlightNumber");
+            }
+            string FlightNumber = req["FlightNumber"].ToString(); //行李号
+            var data = billServerApiBLL.SerGetFlightList(FlightNumber);
+            if (data.Count() > 0)
+            {
                 return Success(data);
             }
             else
