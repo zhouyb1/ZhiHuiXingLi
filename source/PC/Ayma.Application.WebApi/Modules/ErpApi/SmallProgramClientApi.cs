@@ -1,5 +1,6 @@
 ﻿using Ayma.Application.TwoDevelopment.ErpDev;
 using Ayma.Application.TwoDevelopment.TwoDev;
+using Ayma.Util.Payment;
 using Nancy;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,8 @@ using System.Linq;
 using System.Web;
 using Ayma.Util;
 using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient;
+using Senparc.Weixin.TenPay;
+using Senparc.Weixin.TenPay.V3;
 using Senparc.Weixin.WxOpen;
 using Senparc.Weixin.WxOpen.AdvancedAPIs.Sns;
 using Senparc.Weixin;
@@ -25,7 +28,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
     {
         private static string openId = string.Empty;
         private static string cellPhone = string.Empty;
-
+        private OrderInquiryIBLL order = new OrderInquiryBLL();
         public SmallProgramClientApi()
             : base("/pdaapi")
             //注册接口
@@ -251,7 +254,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             var encrytedData = this.GetReqData().ToJObject()["encrytedData"].ToString();
             var iv = this.GetReqData().ToJObject()["iv"].ToString();
             var phoneData = EncryptHelper.DecryptPhoneNumber(sessionId, encrytedData, iv);//解密手机号码
-            return Success(new { phone = cellPhone });
+            cellPhone = phoneData.phoneNumber;
+            return Success(new { phone = phoneData.phoneNumber });
         }
         /// <summary>
         /// 注册用户信息
@@ -266,7 +270,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             try
             {
                 var customerData = EncryptHelper.DecodeUserInfoBySessionId(sessionId, encrytedData, iv);//解密用户信息
-                var phoneData = EncryptHelper.DecryptPhoneNumber(sessionId, encrytedData, iv);//解密手机号码
+                //var phoneData = EncryptHelper.DecryptPhoneNumber(sessionId, encrytedData, iv);//解密手机号码
                 var customer = customerIbll.GetT_CustomerInfoEntity(openId);
                 if (customer != null)
                 {
@@ -279,7 +283,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                     F_Sex = customerData.gender == 1 ? "男" : "女",
                     F_Country = customerData.country,
                     F_Name = customerData.nickName,
-                    F_Phone = phoneData.phoneNumber,
+                    F_Phone = cellPhone,
                     F_Province = customerData.province
                 };
                 //入用户信息
@@ -289,6 +293,126 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             catch (Exception ex)
             {
                 return Fail(ex.Message);
+            }
+        }
+        /// <summary>
+        /// 微信支付
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response WxPay(dynamic _)
+        {
+            //接收订单号
+            var orderNo = this.GetReqData().ToJObject()["orderNo"].ToString();
+            var openId = this.GetReqData().ToJObject()["openId"].ToString();
+            //订单合理性校正
+            var ordeEntity = order.GetT_OrderHeadEntity(orderNo);
+            if (ordeEntity == null)
+            {
+                return Fail("订单不存在");
+            }
+            WXConfig wx = new WXConfig();
+            TenPayV3UnifiedorderRequestData xmlDataInfo = new TenPayV3UnifiedorderRequestData(wx.AppId, wx.MchId, "body",
+    orderNo, 2, Net.Ip, wx.NotifyUrl, TenPayV3Type.JSAPI, openId, Config.GetValue("key"), TenPayV3Util.GetNoncestr());
+
+            //接收微信服务器传来的数据并进行二次加密
+            var result = TenPayV3.Unifiedorder(xmlDataInfo);
+            if (result.result_code == "SUCCESS" && result.return_code == "SUCCESS")
+            {
+                Logger.Info("订单：" + order + "预支付申请成功");
+                //返回给小程序
+                WxPayData jsApiParam = new WxPayData();
+                var prepay_id = string.Format("prepay_id={0}", result.prepay_id);
+                var timeStamp = TenPayV3Util.GetTimestamp();
+                jsApiParam.SetValue("timeStamp", timeStamp);
+                jsApiParam.SetValue("nonceStr", result.nonce_str);
+                jsApiParam.SetValue("package", prepay_id);
+                jsApiParam.SetValue("signType", "MD5");
+                jsApiParam.SetValue("paySign", TenPayV3.GetJsPaySign(result.appid, timeStamp, result.nonce_str, prepay_id, Config.GetValue("key")));
+                return Success("请求成功", jsApiParam.ToJson());
+            }
+            return Fail("JSAPI下单失败");
+        }
+
+        /// <summary>
+        /// 取消订单（退款）
+        /// </summary>
+        /// <returns></returns>
+        public Response Refused(dynamic _)
+        {
+            var orderNo = this.GetReqData().ToJObject()["orderNo"].ToString();
+            if (orderNo.IsEmpty())
+            {
+                return Fail("订单号为空");
+            }
+            var entity = order.GetT_OrderHeadEntity(orderNo);
+            if (entity == null)
+            {
+                return Fail("订单不存在");
+            }
+            //发起退款申请
+            return Success("");
+        }
+
+        /// <summary>
+        /// 小程序微信支付
+        /// </summary>
+        /// <returns></returns>
+        public Response NotifyUrl(dynamic _)
+        {
+            try
+            {
+                var resHandler = new Senparc.Weixin.TenPay.V3.ResponseHandler(null);
+                //获取微信服务器返回的所有数据
+                Logger.Info("异步通知返回xml数据：" + "\r\n" + resHandler.ParseXML());
+                if (string.IsNullOrWhiteSpace(resHandler.GetParameter("transaction_id")))
+                {
+                    var res = new WxPayData();
+                    res.SetValue("return_code", "FAIL");
+                    res.SetValue("return_msg", "支付结果中微信订单号不存在");
+                    return Content(res.ToXml());
+                }
+                var transaction_id = resHandler.GetParameter("transaction_id");
+                var return_code = resHandler.GetParameter("return_code");
+                var return_msg = resHandler.GetParameter("return_msg");
+                var orderNo = resHandler.GetParameter("out_trade_no");
+                var total_fee = resHandler.GetParameter("total_fee");
+                var err_code = resHandler.GetParameter("err_code"); //错误代码
+                var err_code_des = resHandler.GetParameter("err_code_des"); //错误代码描述
+                var paySuccess = false;
+
+                resHandler.SetKey(Config.GetValue("key"));
+                //验证请求是否从微信发过来（安全）
+                if (resHandler.IsTenpaySign() && return_code.ToUpper() == "SUCCESS")
+                {
+                    Logger.Info("微信支付回调：1.订单号：" + orderNo + "2.微信支付订单号：" + transaction_id + "3.金额：" + total_fee);
+                    //正确的订单处理 改变订单状态
+                    paySuccess = true;
+                }
+                else
+                {
+                    //错误的订单处理
+                    Logger.Error("支付回调失败：1.订单号：" + orderNo + " 错误代码：" + err_code + " 错误描述" + err_code_des);
+                }
+                if (paySuccess)
+                {
+                    var res = new WxPayData();
+                    res.SetValue("return_code", return_code);
+                    res.SetValue("return_msg", return_msg);
+                    return Success(res.ToJson());
+                }
+                else
+                {
+                    var res = new WxPayData();
+                    res.SetValue("return_code", "FAIL");
+                    res.SetValue("return_msg", "异步回调失败");
+                    return Success(res.ToXml());
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("微信支付回调异常：" + ex.Message);
+                throw;
             }
         }
     }
