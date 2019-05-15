@@ -103,4 +103,43 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// </summary>
         public string F_IsUrgent { get; set; }
     }
+
+
+    public class GetFlightListByFNo
+    {
+        /// <summary>
+        /// 航空公司
+        /// </summary>
+        public string F_FlightCompany { get; set; }
+
+        /// <summary>
+        /// 航班号
+        /// </summary>
+        public string F_FlightNumber { get; set; }
+
+        /// <summary>
+        /// 始发站
+        /// </summary>
+        public string AddressBegin { get; set; }
+
+        /// <summary>
+        /// 终点站
+        /// </summary>
+        public string AddressEnd { get; set; }
+
+        /// <summary>
+        /// 起飞时间
+        /// </summary>
+        public DateTime DateTimeBegin { get; set; }
+
+        /// <summary>
+        /// 到达时间
+        /// </summary>
+        public DateTime DateTimeEnd { get; set; }
+
+        /// <summary>
+        /// 行李总件数
+        /// </summary>
+        public int TotalQty { get; set; }
+    }
 }

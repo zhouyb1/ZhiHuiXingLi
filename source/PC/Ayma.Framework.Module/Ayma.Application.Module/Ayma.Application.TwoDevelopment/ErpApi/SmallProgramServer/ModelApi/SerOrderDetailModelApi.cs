@@ -8,11 +8,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
 {
     public class SerOrderDetailModelApi
     {
-        public SerOrderHeadModelApi  SerOrderHead { get; set; }
+        public SerOrderDetail  OrderDetail { get; set; }
 
-        public List<SerConsignmentNumberModelApi> SerConsignmentNumber { get; set; }
 }
-    public class SerOrderHeadModelApi{
+    public class SerOrderDetail
+    {
         /// <summary>
         /// 航班号
         /// </summary>
@@ -27,6 +27,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// 订单号
         /// </summary>
         public string F_OrderNo { get; set; }
+
+        /// <summary>
+        /// 行李号
+        /// </summary>
+        public string F_ConsignmentNumber { get; set; }
 
         /// <summary>
         /// 下单时间
@@ -83,11 +88,5 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// </summary>
         public decimal? F_Amount { get; set; }
 
-    }
-    public class SerConsignmentNumberModelApi{
-        /// <summary>
-        /// 托运单号
-        /// </summary>
-        public string F_ConsignmentNumber { get; set; }
     }
 }

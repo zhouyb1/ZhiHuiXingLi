@@ -46,16 +46,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         IEnumerable<OrderListModelApi> GetOrderListByStatus(string status);
 
         /// <summary>
-        /// 根据订单号获取订单头
+        /// 根据行李号获取订单详情
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
-        IEnumerable<SerOrderHeadModelApi> SerGetOrderHeadByNo(string OrderNo);
-        /// <summary>
-        /// 根据订单号获取订单详细
-        /// </summary>
-        /// <param name="OrderNo"></param>
-        /// <returns></returns>
-        IEnumerable<SerConsignmentNumberModelApi> SerGetOrderBodyByNo(string OrderNo);
+        IEnumerable<SerOrderDetail> SerGetOrderDetailByNo(string ConsignmentNumber);
+
     }
 }

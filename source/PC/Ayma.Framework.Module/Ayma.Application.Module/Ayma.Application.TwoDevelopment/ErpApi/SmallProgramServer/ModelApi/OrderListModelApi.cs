@@ -33,4 +33,5 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// </summary>
         public string F_ConsignmentNumber { get; set; }
     }
+
 }

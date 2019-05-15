@@ -175,22 +175,23 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
-        public IEnumerable<SerOrderHeadModelApi> SerGetOrderHeadByNo(string OrderNo)
+        public IEnumerable<SerOrderDetail> SerGetOrderDetailByNo(string ConsignmentNumber)
         {
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT F_FlightNumber,F_State,h.F_OrderNo,F_OrderDate,F_AirfieldFloor,F_CustomerName,
+                strSql.Append(@"SELECT F_FlightNumber,F_State,h.F_OrderNo,F_OrderDate,F_AirfieldFloor,F_CustomerName,b.F_ConsignmentNumber,
                                 (SELECT sum (F_Qty) FROM T_OrderBody WHERE F_OrderNo=h.F_OrderNo) F_Qty,
                                 F_CustomerPhone,F_CustomerAddress,F_Stype,F_IsUrgent,F_ExpressCompanyId,
                                 F_ExpressNO,F_Amount
                                 FROM dbo.T_OrderHead h
+                                LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo
                                 LEFT JOIN dbo.T_OrderPayMoney p ON p.F_OrderNo = h.F_OrderNo
                                 WHERE 1=1");
-                strSql.Append(" AND h.F_OrderNo=@OrderNo");
+                strSql.Append(" AND b.F_ConsignmentNumber=@ConsignmentNumber");
                 var dp = new DynamicParameters(new { });
-                dp.Add("@OrderNo", OrderNo);
-                return this.BaseRepository().FindList<SerOrderHeadModelApi>(strSql.ToString(), dp);
+                dp.Add("@ConsignmentNumber", ConsignmentNumber);
+                return this.BaseRepository().FindList<SerOrderDetail>(strSql.ToString(), dp);
             }
             catch (Exception ex)
             {
@@ -204,33 +205,5 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 }
             }
         }
-        /// <summary>
-        /// 根据订单号获取订单详细
-        /// </summary>
-        /// <param name="OrderNo"></param>
-        /// <returns></returns>
-        public IEnumerable<SerConsignmentNumberModelApi> SerGetOrderBodyByNo(string OrderNo)
-        {
-            try
-            {
-                var strSql = new StringBuilder();
-                strSql.Append(@"SELECT F_ConsignmentNumber FROM dbo.T_OrderBody WHERE F_OrderNo=@OrderNo");
-                var dp = new DynamicParameters(new { });
-                dp.Add("@OrderNo", OrderNo);
-                return this.BaseRepository().FindList<SerConsignmentNumberModelApi>(strSql.ToString(), dp);
-            }
-            catch (Exception ex)
-            {
-                if (ex is ExceptionEx)
-                {
-                    throw;
-                }
-                else
-                {
-                    throw ExceptionEx.ThrowServiceException(ex);
-                }
-            }
-        }
-
     }
 }
