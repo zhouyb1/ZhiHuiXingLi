@@ -3,6 +3,9 @@
     Layout = "~/Views/Shared/_GirdForm.cshtml";
 }
 @Html.AppendCssFile("/Areas/TwoDev/Views/OrderInquiry/Form.css")
+<script>
+    document.getElementsByClassName("layui-layer-btn0").style.display = 'none';
+</script>
 <div class="col-xs-6 am-form-item">
     <div class="am-form-item-title">订单号：</div>
     <input id="F_EnCode" type="text" class="form-control am-input-underline" isvalid="yes" checkexpession="NotNull" readonly="readonly" />

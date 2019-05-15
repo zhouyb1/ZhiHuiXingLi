@@ -154,6 +154,90 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         }
 
         /// <summary>
+        /// 修改分拣
+        /// </summary>
+        /// <param name="keyValye"></param>
+        public void UpdateSorting(string keyValue)
+        {
+            try
+            {
+                var db = this.BaseRepository().BeginTrans();
+                try
+                {
+                    var dp = new DynamicParameters(new { });
+                    dp.Add("F_Id", keyValue);
+                    db.ExecuteBySql("UPDATE T_OrderHead SET F_State='4' WHERE F_Id=@F_Id", dp);
+                    db.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Rollback();
+                    if (ex is ExceptionEx)
+                    {
+                        throw;
+                    }
+                    else
+                    {
+                        throw ExceptionEx.ThrowServiceException(ex);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 修改出港
+        /// </summary>
+        /// <param name="keyValye"></param>
+        public void UpdateLeaveport(string keyValue)
+        {
+            try
+            {
+                var db = this.BaseRepository().BeginTrans();
+                try
+                {
+                    var dp = new DynamicParameters(new { });
+                    dp.Add("F_Id", keyValue);
+                    db.ExecuteBySql("UPDATE T_OrderHead SET F_State='5' WHERE F_Id=@F_Id", dp);
+                    db.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Rollback();
+                    if (ex is ExceptionEx)
+                    {
+                        throw;
+                    }
+                    else
+                    {
+                        throw ExceptionEx.ThrowServiceException(ex);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 保存实体数据（新增、修改）
         /// </summary>
         /// <param name="keyValue">主键</param>

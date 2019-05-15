@@ -8,10 +8,13 @@ var bootstrap = function ($, ayma) {
             $('.am-form-wrap').mCustomScrollbar({ theme: "minimal-dark" });
             page.bind();
             page.initData();
+            
         },
         bind: function () {
+            
 
             $("#F_EnCode").val(OrderNoId);
+            
 
             $('#T_OrderLogisticsInfo').jfGrid({
                 headData:
@@ -35,6 +38,7 @@ var bootstrap = function ($, ayma) {
             if (!!keyValue) {
                 $.SetForm(top.$.rootUrl + '/TwoDev/OrderInquiry/GetLogisticsFormData?keyValue=' + keyValue, function (data) {
                     for (var id in data) {
+                        debugger;
                         if (!!data[id].length && data[id].length > 0) {
                             $('#T_OrderLogisticsInfo').jfGridSet('refreshdata', { rowdatas: data[id] });
                         }

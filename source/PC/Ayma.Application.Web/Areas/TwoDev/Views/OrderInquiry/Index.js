@@ -47,11 +47,12 @@ var bootstrap = function ($, ayma) {
             // 查看详情
             $('#am_detail').on('click', function () {
                 var keyValue = $('#girdtable').jfGridValue('F_Id');
+                var state = $('#girdtable').jfGridValue('F_State');
                 if (ayma.checkrow(keyValue)) {
                     ayma.layerForm({
                         id: 'form',
                         title: '旅客下单详情',
-                        url: top.$.rootUrl + '/TwoDev/OrderInquiry/Form?keyValue=' + keyValue + '',
+                        url: top.$.rootUrl + '/TwoDev/OrderInquiry/Form?keyValue=' + keyValue + '&state=' + state + '',
                         width: 1000,
                         height: 800,
                         maxmin: true,

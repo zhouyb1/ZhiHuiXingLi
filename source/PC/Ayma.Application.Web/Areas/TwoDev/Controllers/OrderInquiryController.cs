@@ -134,6 +134,28 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
             orderInquiryIBLL.SaveEntity(keyValue,entity,t_OrderBodyEntity);
             return Success("保存成功！");
         }
+
+        /// <summary>
+        /// 修改订单分拣异常状态
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <returns></returns>
+        public ActionResult PostSorting(string keyValue)
+        {
+            orderInquiryIBLL.UpdateSorting(keyValue);
+            return Success("分拣成功！");
+        }
+
+        /// <summary>
+        /// 修改订单出港异常状态
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <returns></returns>
+        public ActionResult PostLeavePort(string keyValue)
+        {
+            orderInquiryIBLL.UpdateLeaveport(keyValue);
+            return Success("出港成功！");
+        }
         #endregion
 
     }

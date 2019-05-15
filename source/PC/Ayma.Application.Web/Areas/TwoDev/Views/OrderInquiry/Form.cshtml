@@ -36,9 +36,18 @@
         <div class="am-form-item-title">订单日期</div>
         <input id="F_OrderDate" type="text" class="form-control" />
     </div>
+    <div class="col-xs-12 am-form-item" data-table="T_OrderHead" style="display:none" id="am_sortingg">
+        <div class="am-form-item-title"></div>
+        <a id="am_sorting" class="btn btn-success"><i class="fa fa-check"></i>&nbsp;订单分拣</a>
+    </div>
+    <div class="col-xs-12 am-form-item" data-table="T_OrderHead" style="display: none" id="am_leaveportt">
+        <div class="am-form-item-title"></div>
+        <a id="am_leaveport" class="btn btn-success"><i class="fa fa-check"></i>&nbsp;订单出港</a>
+    </div>
 
     <div class="col-xs-12 am-form-item am-form-item-grid">
         <div id="T_OrderBody"></div>
     </div>
+
 </div>
 @Html.AppendJsFile("/Areas/TwoDev/Views/OrderInquiry/Form.js")

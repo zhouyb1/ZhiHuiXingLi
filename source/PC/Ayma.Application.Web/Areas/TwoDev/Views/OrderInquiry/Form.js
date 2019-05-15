@@ -1,5 +1,7 @@
 ﻿var keyValue = request('keyValue');
+var state = request('state');
 //var CurrentCompanyId = $("#CurrentCompanyId").val();
+var refreshGirdData;
 
 var bootstrap = function ($, ayma) {
     "use strict";
@@ -10,6 +12,49 @@ var bootstrap = function ($, ayma) {
             page.initData();
         },
         bind: function () {
+            if (state == 41)
+            {
+                $("#am_sortingg").show();
+            } else if (state == 51)
+            {
+                $("#am_leaveportt").show();
+            }
+
+            //订单分拣操作
+            $('#am_sorting').on('click', function () {
+                debugger;
+                //var keyValue = $('#girdtable').jfGridValue('F_Id');
+                //if (ayma.checkrow(keyValue)) {
+                    ayma.layerConfirm('是否确认订单分拣完成！', function (res) {
+                        if (res) {
+                            ayma.postForm(top.$.rootUrl + '/TwoDev/OrderInquiry/PostSorting', { keyValue: keyValue }, function () {
+                                //操作分拣完成后隐藏该操作按钮
+                                $('#am_sortingg').hide();
+                                //重载页面
+                                refreshGirdData();
+                            });
+                        }
+                    });
+                //}
+            });
+
+            //订单出港操作
+            $('#am_leaveport').on('click', function () {
+                //var keyValue = $('#girdtable').jfGridValue('F_Id');
+                if (ayma.checkrow(keyValue)) {
+                    ayma.layerConfirm('是否确认订单出港完成！', function (res) {
+                        if (res) {
+                            ayma.postForm(top.$.rootUrl + '/TwoDev/OrderInquiry/PostLeavePort', { keyValue: keyValue }, function () {
+                                //操作出港完成后隐藏该操作按钮
+                                $('#am_leaveportt').hide();
+                                //重载页面
+                                refreshGirdData();
+                            });
+                        }
+                    });
+                }
+            });
+
 
             $('#T_OrderBody').jfGrid({
                 headData:
@@ -47,5 +92,10 @@ var bootstrap = function ($, ayma) {
             $('#T_OrderBody').jfGridSet('refreshdata', { rowdatas: data });
         }
     };
+
+    refreshGirdData = function () {
+        page.search();
+    };
     page.init();
+    
 }

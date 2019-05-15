@@ -41,6 +41,17 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// <returns></returns>
         void DeleteEntity(string keyValue);
         /// <summary>
+        /// 修改分拣状态
+        /// </summary>
+        /// <param name="keyValue"></param>
+        void UpdateSorting(string keyValue);
+
+        /// <summary>
+        /// 修改出港状态
+        /// </summary>
+        /// <param name="keyValue"></param>
+        void UpdateLeaveport(string keyValue);
+        /// <summary>
         /// 保存实体数据（新增、修改）
         /// </summary>
         /// <param name="keyValue">主键</param>
