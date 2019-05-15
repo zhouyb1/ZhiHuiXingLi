@@ -193,7 +193,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
             catch (Exception ex)
             {
-                return Fail("参数格式有误");
+                return Fail(ex.Message);
             }
         }
 
