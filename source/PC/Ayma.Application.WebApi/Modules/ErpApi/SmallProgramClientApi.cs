@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using Ayma.Util;
 using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient;
+using Senparc.CO2NET.HttpUtility;
 using Senparc.Weixin.TenPay;
 using Senparc.Weixin.TenPay.V3;
 using Senparc.Weixin.WxOpen;
@@ -41,7 +42,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/SubmitOrder"] = SubmitOrder; //提交订单
             //Get["/GetOrderListByStatus"] = GetOrderListByStatus;//根据订单状态查询订单列表
             Post["/OnLogin"] = OnLogin;
-            Post["/GetPhone"] = GetPhone;
+            Post["/SaveUserInfo"] = SaveUserInfo;
             Post["/Register"] = Register;
 
         }
@@ -173,6 +174,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         {
             try
             {
+                var customerData = this.GetReqData().ToJObject()["CustomerInfo"].ToObject<CustomerInfo>();
                 var code = this.GetReqData().ToJObject()["code"].ToString(); //获取code 
                 if (string.IsNullOrEmpty(code))
                 {
@@ -185,7 +187,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                     var unionId = "";
                     openId = jsonResult.openid;
                     //获取openid+session_key生成3rd_session
-                    var sessionBag = SessionContainer.UpdateSession(null, "", "",
+                    var sessionBag = SessionContainer.UpdateSession(null, openId, jsonResult.session_key,
                         unionId);
                     return Success(new {sessionId = sessionBag.Key, sessionKey = sessionBag.SessionKey, openId = openId});
                 }
@@ -243,34 +245,40 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 return Fail(errText);
             }
         }
+
         /// <summary>
         /// 获取手机号
         /// </summary>
         /// <param name="_"></param>
         /// <returns></returns>
-        public Response GetPhone(dynamic _)
+        public Response SaveUserInfo(dynamic _)
         {
             var sessionId = this.GetReqData().ToJObject()["sessionId"].ToString();
             var encrytedData = this.GetReqData().ToJObject()["encrytedData"].ToString();
             var iv = this.GetReqData().ToJObject()["iv"].ToString();
-            var phoneData = EncryptHelper.DecryptPhoneNumber(sessionId, encrytedData, iv);//解密手机号码
-            cellPhone = phoneData.phoneNumber;
-            return Success(new { phone = phoneData.phoneNumber });
+            var phoneData = EncryptHelper.DecryptPhoneNumber(sessionId, encrytedData, iv); //解密手机号码
+
+            //根据openid 获取用户信息
+            var customer = customerIbll.GetT_CustomerInfoEntity(openId);
+            customer.F_Phone = phoneData.phoneNumber;
+            customerIbll.SaveEntity(openId, customer);
+            return Success("保存成功");
         }
+
         /// <summary>
         /// 注册用户信息
         /// </summary>
         /// <returns></returns>
         public Response Register(dynamic _)
         {
-            var s = openId;
-            var sessionId = this.GetReqData().ToJObject()["sessionId"].ToString();
-            var encrytedData = this.GetReqData().ToJObject()["encrytedData"].ToString();
-            var iv = this.GetReqData().ToJObject()["iv"].ToString();
             try
             {
-                var customerData = EncryptHelper.DecodeUserInfoBySessionId(sessionId, encrytedData, iv);//解密用户信息
+                //var sessionId = this.GetReqData().ToJObject()["sessionId"].ToString();
+                //var encrytedData = this.GetReqData().ToJObject()["encrytedData"].ToString();
+                //var iv = this.GetReqData().ToJObject()["iv"].ToString();
+                //var customerData = EncryptHelper.DecodeUserInfoBySessionId(sessionId, encrytedData, iv);//解密用户信息
                 //var phoneData = EncryptHelper.DecryptPhoneNumber(sessionId, encrytedData, iv);//解密手机号码
+                var customerData = this.GetReqData().ToJObject()["customerInfo"].ToObject<CustomerInfo>();
                 var customer = customerIbll.GetT_CustomerInfoEntity(openId);
                 if (customer != null)
                 {
@@ -279,12 +287,11 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 T_CustomerInfoEntity entity = new T_CustomerInfoEntity
                 {
                     F_Openid = openId,
-                    F_City = customerData.city,
-                    F_Sex = customerData.gender == 1 ? "男" : "女",
-                    F_Country = customerData.country,
-                    F_Name = customerData.nickName,
-                    F_Phone = cellPhone,
-                    F_Province = customerData.province
+                    F_City = customerData.F_City,
+                    F_Sex = customerData.F_Sex == "1" ? "男" : "女",
+                    F_Country = customerData.F_Country,
+                    F_Name = customerData.F_Name,
+                    F_Province = customerData.F_Province
                 };
                 //入用户信息
                 customerIbll.SaveEntity("", entity);
@@ -415,5 +422,16 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 throw;
             }
         }
+    }
+
+    public class CustomerInfo
+    {
+        public string F_Openid { get; set; }
+        public string F_City { get; set; }
+        public string F_Sex { get; set; }
+        public string F_Country { get; set; }
+        public string F_Name {get;set;}
+        public string F_Phone { get; set; }
+        public string F_Province { get; set; }
     }
 }
