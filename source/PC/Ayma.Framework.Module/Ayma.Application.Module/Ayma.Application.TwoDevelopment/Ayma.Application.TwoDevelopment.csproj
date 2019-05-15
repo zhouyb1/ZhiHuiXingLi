@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Common\ErpEnums.cs" />
     <Compile Include="ErpApi\SmallProgramClient\ModelApi\BillMakeBaseModelAPi.cs" />
+    <Compile Include="ErpApi\SmallProgramClient\ModelApi\OrderDetailModelApi.cs" />
     <Compile Include="ErpApi\SmallProgramClient\ModelApi\OrderModelApi.cs" />
     <Compile Include="ErpApi\SmallProgramClient\ModelApi\T_AirfieldInfoModelApi.cs" />
     <Compile Include="ErpApi\SmallProgramClient\ModelApi\T_FlightNoInfoModelApi.cs" />
@@ -59,6 +60,8 @@
     <Compile Include="ErpApi\SmallProgramClient\SmallProgramClientApiIBLL.cs" />
     <Compile Include="ErpApi\SmallProgramClient\SmallProgramClientApiService.cs" />
     <Compile Include="ErpApi\SmallProgramServer\ModelApi\OrderHeadModelApi.cs" />
+    <Compile Include="ErpApi\SmallProgramServer\ModelApi\OrderListModelApi.cs" />
+    <Compile Include="ErpApi\SmallProgramServer\ModelApi\SerOrderDetailModelApi.cs" />
     <Compile Include="ErpApi\SmallProgramServer\SmallProgramServerApiBLL.cs" />
     <Compile Include="ErpApi\SmallProgramServer\SmallProgramServerApiIBLL.cs" />
     <Compile Include="ErpApi\SmallProgramServer\SmallProgramServerApiService.cs" />

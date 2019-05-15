@@ -86,6 +86,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         public void Create()
         {
             this.F_Id = Guid.NewGuid().ToString();
+            this.F_CreateTime = DateTime.Now;
         }
         /// <summary>
         /// 编辑调用
