@@ -20,6 +20,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Post["/UpdateOrderStatus"] = UpdateOrderStatus; //修改订单状态
             Get["/GetOrderListByStatus"] = GetOrderListByStatus; //根据订单状态获取订单列表
             Get["/SerGetOrderDetailByNo"] = SerGetOrderDetailByNo; //根据订单号获取订单详情
+            Get["/SerGetFlightList"] = SerGetFlightList; // 根据航班号获取航班时间列表
         }
         private SmallProgramServerApiIBLL billServerApiBLL = new SmallProgramServerApiBLL();
 
@@ -84,10 +85,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         public Response SerGetOrderDetailByNo(dynamic _)
         {
             var req = this.GetReqData().ToJObject(); //获取模板请求数据
-            if (req["ConsignmentNumber"].IsEmpty())
-            {
-                return Fail("缺少参数ConsignmentNumber");
-            }
             string ConsignmentNumber = req["ConsignmentNumber"].ToString(); //行李号
             var data = billServerApiBLL.SerGetOrderDetailByNo(ConsignmentNumber);
             //var orderbody = billServerApiBLL.SerGetOrderBodyByNo(OrderNo);
@@ -102,14 +99,15 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
         }
 
+        /// <summary>
+        /// 根据航班号获取航班时间列表
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
         public Response SerGetFlightList(dynamic _)
         {
             var req = this.GetReqData().ToJObject(); //获取模板请求数据
-            if (req["FlightNumber"].IsEmpty())
-            {
-                return Fail("缺少参数FlightNumber");
-            }
-            string FlightNumber = req["FlightNumber"].ToString(); //行李号
+            string FlightNumber = req["FlightNumber"].ToString(); //航班号
             var data = billServerApiBLL.SerGetFlightList(FlightNumber);
             if (data.Count() > 0)
             {
