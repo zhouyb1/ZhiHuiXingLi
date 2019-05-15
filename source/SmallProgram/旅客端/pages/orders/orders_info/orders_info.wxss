@@ -1,0 +1,116 @@
+/* pages/orders/orders_info/orders_info.wxss */
+
+/* pages/pays/pays.wxss */
+
+page {
+  color: #888;
+}
+
+.text {
+  width: 100%;
+  height: 80rpx;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #ccc;
+  padding-left: 10rpx;
+}
+
+.list {
+  width: 100%;
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  border-bottom: solid 1px #ccc;
+  font-size: 14px;
+  padding-left: 20rpx;
+  position: relative;
+}
+
+.list text {
+  position: absolute;
+  top: 25rpx;
+  right: 50rpx;
+  font-size: 15px;
+}
+
+.lists {
+  width: 100%;
+  height: 100rpx;
+  border-bottom: solid 1px #ccc;
+  font-size: 14px;
+  padding-left: 20rpx;
+  position: relative;
+  text-align: right;
+  line-height: 100rpx;
+  padding-right: 30rpx;
+  box-sizing: border-box;
+}
+
+.ems {
+  width: 100%;
+  margin-bottom: 150rpx;
+}
+
+.ems-top {
+  margin-top: 50rpx;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 150rpx;
+  display: flex;
+  background: #fff;
+  z-index: 9;
+}
+
+.go-pay {
+  width: 100%;
+  height: 100%;
+  background: #3cb4ff;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-type, .order-ok {
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-type view, .order-ok view {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-type view:nth-of-type(1) {
+  background: #ff8d1a;
+}
+
+.order-type view:nth-of-type(2) {
+  background: #3cb4ff;
+}
+
+.order-type view:nth-of-type(3) {
+  background: #d43030;
+}
+
+.order-ok view:first-child {
+  background: #ff8d1a;
+}
+
+.order-ok view:last-child {
+  background: #3cb4ff;
+}

@@ -1,0 +1,68 @@
+<!--pages/orders/orders_info/orders_info.wxml-->
+<view class='list'>姓名：</view>
+<view class='list'>手机：</view>
+<view class='list'>地址：</view>
+<view class='list'>订单号：</view>
+<view class='list'>航班号：</view>
+<view class='list'>航程：</view>
+
+<view class="text">行李信息</view>
+<view class='list'>
+  托运单号：88888888
+  <text>x2</text>
+</view>
+<view class='lists'>
+  <text>合计:1件</text>
+  <text style="color:#ff8d1a;margin-left:30rpx;">实付款：999.00</text>
+</view>
+<view class="text">其他信息</view>
+<view class='list'>
+  送达时间：加急件
+</view>
+<view class='list'>是否港内件：港内件
+</view>
+<view class="text">物流信息</view>
+<view class="ems">
+  <view class="text" wx:if="{{type===0}}" style="background:#555;">派送中</view>
+  <view class='i-steps'>
+    <i-steps current="{{verticalCurrent}}" direction="vertical" i-class="ems-top">
+      <i-step>
+        <view slot="title">
+          已完成
+        </view>
+        <view slot="content">
+          这里是该步骤的描述信息
+        </view>
+      </i-step>
+      <i-step>
+        <view slot="title">
+          进行中
+        </view>
+        <view slot="content">
+          这里是该步骤的描述信息
+        </view>
+      </i-step>
+      <i-step icon="coordinates_fill">
+        <view slot="title">
+          错误
+        </view>
+        <view slot="content">
+          这里是该步骤的描述信息
+        </view>
+      </i-step>
+    </i-steps>
+  </view>
+</view>
+<!-- 底部 -->
+<view class='footer'>
+  <view class="go-pay" wx:if="{{type===0}}">去支付</view>
+  <view class="order-type" wx:if="{{type===1}}">
+    <view>催单</view>
+    <view>确定签收</view>
+    <view>取消订单</view>
+  </view>
+  <view class="order-ok" wx:if="{{type===2}}">
+    <view>投诉</view>
+    <view>评价</view>
+  </view>
+</view>

@@ -9,7 +9,7 @@ App({
     // 登录
     wx.login({
       success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId、
       }
     })
     // 获取用户信息
@@ -35,5 +35,16 @@ App({
   },
   globalData: {
     userInfo: null
+  },
+  path(obj){
+    if(obj === 1){
+      return "http://39.98.228.251:8011";
+    };
+    if (obj === 2) {
+      return "o6IgFIj7gJanSJyyg6ruaiq0PHRFpVd9";
+    };
+    if (obj === 3) {
+      return "1";
+    };
   }
 })

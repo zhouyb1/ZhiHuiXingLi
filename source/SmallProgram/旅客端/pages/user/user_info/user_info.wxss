@@ -1,0 +1,9 @@
+/* pages/user/user_info/user_info.wxss */
+.save{
+  position: fixed;
+  left:10%;
+  bottom: 20rpx;
+  background-color: #3cb4ff;
+  color:#fff;
+  width:80%;
+}

@@ -1,0 +1,27 @@
+/* pages/user/user_say/user_say.wxss */
+
+textarea {
+  border: 1px solid #ccc;
+  margin: 20rpx auto;
+  font-size: 15px;
+  border-radius: 10rpx;
+  padding: 10rpx;
+}
+
+.save {
+  position: fixed;
+  left: 10%;
+  bottom:100rpx;
+  background-color: #3cb4ff;
+  color: #fff;
+  width: 80%;
+}
+
+input {
+  width: 300px;
+  border: 1px solid #ccc;
+  margin: 0rpx auto;
+  padding: 10rpx;
+  font-size: 15px;
+  border-radius: 10rpx;
+}

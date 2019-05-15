@@ -1,0 +1,54 @@
+<!--pages/pays/pays.wxml-->
+<view class="text">航班信息</view>
+<view class='list'>航班号：</view>
+<view class='list'>航程：</view>
+
+<view class="text">旅客信息</view>
+<view class='list'>姓名：</view>
+<view class='list'>手机：</view>
+<view class='list'>地址：</view>
+
+<view class="text">行李信息</view>
+<view class='list'>托运单号：</view>
+
+<view class="text">其他信息</view>
+<view class='list'>
+  送达时间：
+  <view wx:if="{{!times}}">
+    <picker mode="multiSelector" bindchange="bindMultiPickerChange" value="{{multiIndex}}" range="{{multiArray}}">
+      <view class="picker">
+        {{multiArray[0][multiIndex[0]]}} {{multiArray[1][multiIndex[1]]}}:{{multiArray[2][multiIndex[2]]}}
+      </view>
+    </picker>
+  </view>
+  <block wx:else>
+    尽快送达
+  </block>
+  <view class='timers'>
+    <i-switch value="{{times}}" size="large" bind:change="onChange" slot="footer">
+      <view slot="open">加急</view>
+      <view slot="close">普通</view>
+    </i-switch>
+  </view>
+</view>
+<view class='list' style="margin-bottom:150rpx;">是否港内件
+  <view class="help" bindtap='handleText'>
+    <image src='../../image/helps.png'></image>
+    什么是港内件
+  </view>
+  <view class='timers'>
+    <i-switch value="{{ems}}" size="large" bind:change="onChange1" slot="footer">
+      <view slot="open">港内</view>
+      <view slot="close">港外</view>
+    </i-switch>
+  </view>
+</view>
+<!-- 底部 -->
+<view class='footer'>
+  <view class="goods_info">
+  <view>合计：￥49.99</view>
+  <view>已优惠49.00，第二件5折</view>
+  </view>
+  <view class="pay">去支付</view>
+</view>
+<i-toast id="toast" />
