@@ -187,7 +187,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                     //获取openid+session_key生成3rd_session
                     var sessionBag = SessionContainer.UpdateSession(null, "", "",
                         unionId);
-                    return Success(new { sessionId = sessionBag.Key, sessionKey = sessionBag.SessionKey });
+                    return Success(new {sessionId = sessionBag.Key, sessionKey = sessionBag.SessionKey, openId = openId});
                 }
                 return Fail(jsonResult.errmsg);
             }
