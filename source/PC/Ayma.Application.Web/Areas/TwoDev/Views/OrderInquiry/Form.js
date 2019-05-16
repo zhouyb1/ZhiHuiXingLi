@@ -64,7 +64,34 @@ var bootstrap = function ($, ayma) {
                         { label: '重量', name: 'F_Weight', width: 160, align: 'left', editType: 'label' },
                         { label: '配送距离', name: 'F_Distance', width: 160, align: 'left', editType: 'label' },
                         { label: '价格', name: 'F_Price', width: 100, align: 'left', editType: 'label' },
-                        { label: '数量', name: 'F_Qty', width: 100, align: 'left', editType: 'label' }
+                        { label: '数量', name: 'F_Qty', width: 100, align: 'left', editType: 'label' },
+                        {
+                            label: '订单状态', name: 'F_State', width: 100, align: 'left', editType: 'label',
+                            formatter: function (cellvalue, options, rowObject) {
+                                var colorcss = "";
+                                if (cellvalue == 1) {
+                                    colorcss = "label label-warning";
+                                    cellvalue = "未分拣";
+                                }
+                                else if (cellvalue == 2) {
+                                    colorcss = "label label-warning";
+                                    cellvalue = "分拣中";
+                                }
+                                else if (cellvalue == 3) {
+                                    colorcss = "label label-warning";
+                                    cellvalue = "运输中";
+                                }
+                                else if (cellvalue == 4) {
+                                    colorcss = "label label-success";
+                                    cellvalue = "已完成";
+                                }
+                                else if (cellvalue == 5) {
+                                    colorcss = "label label-danger";
+                                    cellvalue = "异常";
+                                }
+                                return "<span class='" + colorcss + "'>" + cellvalue + "</span>";
+                            }
+                        }
                     ],
                 isEidt: true,
                 footerrow: true,

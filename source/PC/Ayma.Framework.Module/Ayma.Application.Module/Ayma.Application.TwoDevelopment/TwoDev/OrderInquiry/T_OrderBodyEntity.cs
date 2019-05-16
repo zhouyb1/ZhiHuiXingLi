@@ -47,6 +47,11 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         [Column("F_QTY")]
         public int? F_Qty { get; set; }
+        /// <summary>
+        /// 订单状态
+        /// </summary>
+        [Column("FB_STATE")]
+        public string FB_State { get; set; }
         #endregion
 
         #region 扩展操作
