@@ -100,6 +100,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         private Response BeforeRequest(NancyContext ctx)
         {
             string path = ctx.ResolvedRoute.Description.Path;
+            WriteLog(ctx);
             //验证登录状态
             ReqParameter<string> req = this.Bind<ReqParameter<string>>();
             this.WriteLog(ctx, req);//记录日志
@@ -258,7 +259,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             LogMessage logMessage = new LogMessage();
             logMessage.OperationTime = DateTime.Now;
             logMessage.Url = path;
-            logMessage.Class = req.data;
+            logMessage.Class = context.NegotiationContext.ModuleName;
             logMessage.Ip = Net.Ip;
             logMessage.Host = Net.Host;
             logMessage.Browser = Net.Browser;
@@ -277,6 +278,12 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             logEntity.F_ExecuteResult = -1;
             logEntity.F_ExecuteResultJson = strMessage;
             logEntity.WriteLog();
+        }
+
+        public void WriteLog(NancyContext ctx)
+        {
+            Logger.Info("post:"+ctx.Request.Form.ToString());
+            Logger.Info("get:"+ctx.Request.Form.ToString());
         }
 
         #region 响应接口
