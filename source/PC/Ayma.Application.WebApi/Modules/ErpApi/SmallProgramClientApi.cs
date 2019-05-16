@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text.RegularExpressions;
 using Ayma.Application.TwoDevelopment.ErpDev;
 using Ayma.Application.TwoDevelopment.TwoDev;
 using Ayma.Util;
@@ -47,6 +48,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Post["/SaveUserInfo"] = SaveUserInfo;
             Post["/Register"] = Register;
             Post["/CancelOrder"] = CancelOrder;
+            Get["/GetUserInfo"] = GetUserInfo;
+            Get["/GetPhone"] = GetPhone;
 
         }
         private SmallProgramClientApiBLL billClientApiBLL = new SmallProgramClientApiBLL();
@@ -229,16 +232,89 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         /// <returns></returns>
         public Response SaveUserInfo(dynamic _)
         {
+            var fullName = this.GetReqData().ToJObject()["FullName"];
+            var phone = this.GetReqData().ToJObject()["Phone"];
+            var idCard = this.GetReqData().ToJObject()["IDCard"];
+            var id = this.GetReqData().ToJObject()["OpenId"];
+            if (fullName.IsEmpty())
+            {
+                return Fail("姓名为空");
+            }
+            if (phone.IsEmpty())
+            {
+                return Fail("手机号码为空");
+            }
+            if (!Regex.IsMatch(phone.ToString(), @"^[1]+[3,5]+\d{9}"))
+            {
+                return Fail("手机号码格式不正确");
+            }
+            if (!idCard.IsEmpty())
+            {
+                if (!Regex.IsMatch(idCard.ToString(), @"(^\d{18}$)|(^\d{15}$)"))
+                {
+                    return Fail("请输入正确的身份证");
+                }
+            }
+            var customer = customerIbll.GetT_CustomerInfoEntity(id.ToString());
+            if (customer!=null)
+            {
+                customer.F_Phone = phone.ToString();
+                customer.F_Name = fullName.ToString();
+                customer.F_IdCard = idCard == null ? "" : idCard.ToString();
+                customerIbll.SaveEntity(openId, customer);
+                return Success("保存成功");
+            }
+            return Fail("没有用户信息");
+        }
+
+        /// <summary>
+        /// 获取用户资料
+        /// </summary>
+        /// <returns></returns>
+        public Response GetUserInfo(dynamic _)
+        {
+            var useId = this.GetReqData().ToJObject()["OpenId"];
+            if (useId.IsEmpty())
+            {
+                return Fail("OpenId为空");
+            }
+            var userInfo = customerIbll.GetT_CustomerInfoEntity(useId.ToString());
+            if (userInfo!=null)
+            {
+                return Success(new {FullName = userInfo.F_Name, Phone = userInfo.F_Phone, IDCard = userInfo.F_IdCard});
+            }
+            return Fail("没有用户信息");
+        }
+
+        /// <summary>
+        /// 地址管理
+        /// </summary>
+        /// <returns></returns>
+        public Response AddressToDo()
+        {
+            var isDel = this.GetReqData().ToJObject()["IsDel"].ToBool();
+            if (isDel)
+            {
+                
+            }
+            return Success("");
+        }
+
+        /// <summary>
+        /// 获取手机号
+        /// </summary>
+        public Response GetPhone(dynamic _)
+        {
             var sessionId = this.GetReqData().ToJObject()["sessionId"].ToString();
             var encrytedData = this.GetReqData().ToJObject()["encrytedData"].ToString();
             var iv = this.GetReqData().ToJObject()["iv"].ToString();
             var phoneData = EncryptHelper.DecryptPhoneNumber(sessionId, encrytedData, iv); //解密手机号码
 
             //根据openid 获取用户信息
-            var customer = customerIbll.GetT_CustomerInfoEntity(openId);
-            customer.F_Phone = phoneData.phoneNumber;
-            customerIbll.SaveEntity(openId, customer);
-            return Success("保存成功");
+            //var customer = customerIbll.GetT_CustomerInfoEntity(openId);
+            //customer.F_Phone = phoneData.phoneNumber;
+            //customerIbll.SaveEntity(openId, customer);
+            return Success(phoneData.phoneNumber);
         }
 
         /// <summary>
@@ -299,7 +375,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                     F_City = customerData.F_City,
                     F_Sex = customerData.F_Sex == "1" ? "男" : "女",
                     F_Country = customerData.F_Country,
-                    F_Name = customerData.F_Name,
+                    F_Nickname= customerData.F_Name,
                     F_Province = customerData.F_Province
                 };
                 //入用户信息
