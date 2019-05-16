@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.CodeDom;
+using Dapper;
 using Ayma.DataBase.Repository;
 using Ayma.Util;
 using System;
@@ -81,7 +82,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         {
             try
             {
-                return this.BaseRepository("LocalHost").FindEntity<T_OrderHeadEntity>(keyValue);
+                return this.BaseRepository("BaseDb").FindEntity<T_OrderHeadEntity>(c=>c.F_Id==keyValue|| c.F_OrderNo==keyValue);
             }
             catch (Exception ex)
             {
@@ -244,7 +245,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// <returns></returns>
         public void SaveEntity(string keyValue, T_OrderHeadEntity entity,T_OrderBodyEntity t_OrderBodyEntity)
         {
-            var db = this.BaseRepository("LocalHost").BeginTrans();
+            var db = this.BaseRepository("BaseDb").BeginTrans();
             try
             {
                 if (!string.IsNullOrEmpty(keyValue))
@@ -279,6 +280,37 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                     throw ExceptionEx.ThrowServiceException(ex);
                 }
             }
+        }
+
+        /// <summary>
+        /// 修改订单状态
+        /// </summary>
+        /// <param name="orderNo"></param>
+        /// <param name="state"></param>
+        public void UpdateOrderStatus(string orderNo,string state)
+        {
+            try
+            {
+                var db = this.BaseRepository().BeginTrans();
+                var dp = new DynamicParameters(new { });
+                dp.Add("F_OrderNO", orderNo);
+                dp.Add("F_State", state);
+                var updateSql = "update T_OrderHead set F_State =@F_State where F_OrderNO =@F_OrderNO";
+                db.ExecuteBySql(updateSql, dp);
+                db.Commit();
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+
         }
 
         #endregion

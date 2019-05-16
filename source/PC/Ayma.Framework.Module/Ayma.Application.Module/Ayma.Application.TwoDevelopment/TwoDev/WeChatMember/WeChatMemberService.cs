@@ -79,7 +79,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         {
             try
             {
-                return this.BaseRepository("LocalHost").FindEntity<T_CustomerInfoEntity>(keyValue);
+                return this.BaseRepository().FindEntity<T_CustomerInfoEntity>(c=>c.F_Openid==keyValue||c.F_Id==keyValue);
             }
             catch (Exception ex)
             {

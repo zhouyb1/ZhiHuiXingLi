@@ -185,6 +185,30 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
             }
         }
 
+        /// <summary>
+        /// 修改订单状态
+        /// </summary>
+        /// <param name="orderNo"></param>
+        /// <param name="state"></param>
+        public void UpdateOrderStatus(string orderNo, string state)
+        {
+            try
+            {
+                orderInquiryService.UpdateOrderStatus(orderNo, state);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
         #endregion
 
     }
