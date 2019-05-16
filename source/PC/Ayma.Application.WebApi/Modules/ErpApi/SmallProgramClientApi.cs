@@ -1,5 +1,7 @@
-﻿using Ayma.Application.TwoDevelopment.ErpDev;
+﻿using System.Net;
+using Ayma.Application.TwoDevelopment.ErpDev;
 using Ayma.Application.TwoDevelopment.TwoDev;
+using Ayma.Util;
 using Ayma.Util.Payment;
 using Nancy;
 using System;
@@ -44,6 +46,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Post["/OnLogin"] = OnLogin;
             Post["/SaveUserInfo"] = SaveUserInfo;
             Post["/Register"] = Register;
+            Post["/CancelOrder"] = CancelOrder;
 
         }
         private SmallProgramClientApiBLL billClientApiBLL = new SmallProgramClientApiBLL();
@@ -170,33 +173,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
         }
 
-        private Response OnLogin(dynamic _)
-        {
-            try
-            {
-                var code = this.GetReqData().ToJObject()["code"].ToString(); //获取code 
-                if (string.IsNullOrEmpty(code))
-                {
-                    return Fail("未获取到用户凭证");
-                }
-                //以code换取session_key
-                var jsonResult = SnsApi.JsCode2Json(Config.GetValue("AppId"), Config.GetValue("AppSecret"), code);
-                if (jsonResult.errcode == ReturnCode.请求成功)
-                {
-                    var unionId = "";
-                    openId = jsonResult.openid;
-                    //获取openid+session_key生成3rd_session
-                    var sessionBag = SessionContainer.UpdateSession(null, openId, jsonResult.session_key,
-                        unionId);
-                    return Success(new {sessionId = sessionBag.Key, sessionKey = sessionBag.SessionKey, openId = openId});
-                }
-                return Fail(jsonResult.errmsg);
-            }
-            catch (Exception ex)
-            {
-                return Fail(ex.Message);
-            }
-        }
+        
 
         //提交订单
         public Response SubmitOrder(dynamic _)
@@ -265,6 +242,39 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         }
 
         /// <summary>
+        /// 登录授权
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        private Response OnLogin(dynamic _)
+        {
+            try
+            {
+                var code = this.GetReqData().ToJObject()["code"].ToString(); //获取code 
+                if (string.IsNullOrEmpty(code))
+                {
+                    return Fail("未获取到用户凭证");
+                }
+                //以code换取session_key
+                var jsonResult = SnsApi.JsCode2Json(Config.GetValue("AppId"), Config.GetValue("AppSecret"), code);
+                if (jsonResult.errcode == ReturnCode.请求成功)
+                {
+                    var unionId = "";
+                    openId = jsonResult.openid;
+                    //获取openid+session_key生成3rd_session
+                    var sessionBag = SessionContainer.UpdateSession(null, openId, jsonResult.session_key,
+                        unionId);
+                    return Success(new { sessionId = sessionBag.Key, sessionKey = sessionBag.SessionKey, openId = openId });
+                }
+                return Fail(jsonResult.errmsg);
+            }
+            catch (Exception ex)
+            {
+                return Fail(ex.Message);
+            }
+        }
+
+        /// <summary>
         /// 注册用户信息
         /// </summary>
         /// <returns></returns>
@@ -318,7 +328,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 return Fail("订单不存在");
             }
             WXConfig wx = new WXConfig();
-            TenPayV3UnifiedorderRequestData xmlDataInfo = new TenPayV3UnifiedorderRequestData(wx.AppId, wx.MchId, "body",
+            TenPayV3UnifiedorderRequestData xmlDataInfo = new TenPayV3UnifiedorderRequestData(wx.AppId, wx.MchId, "智慧行李",
     orderNo, 2, Net.Ip, wx.NotifyUrl, TenPayV3Type.JSAPI, openId, Config.GetValue("key"), TenPayV3Util.GetNoncestr());
 
             //接收微信服务器传来的数据并进行二次加密
@@ -338,33 +348,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 return Success("请求成功", jsApiParam.ToJson());
             }
             return Fail("JSAPI下单失败");
-        }
-
-        /// <summary>
-        /// 取消订单（退款）
-        /// </summary>
-        /// <returns></returns>
-        public Response Refused(dynamic _)
-        {
-            var orderNo = this.GetReqData().ToJObject()["orderNo"].ToString();
-            if (orderNo.IsEmpty())
-            {
-                return Fail("订单号为空");
-            }
-            var entity = order.GetT_OrderHeadEntity(orderNo);
-            if (entity == null)
-            {
-                return Fail("订单不存在");
-            }
-            var nonceStr = TenPayV3Util.GetNoncestr();
-            //发起退款申请
-            TenPayV3RefundRequestData data = new TenPayV3RefundRequestData(Config.GetValue("AppId"),
-                Config.GetValue("Mchid"), Config.GetValue("key"), null, nonceStr, "traind", orderNo, "23", 23, 23, null,
-                null);
-            TenPayV3.Refund(data, "cret", Config.GetValue("Mchid"));
-
-            //修改订单状态为已退款
-            return Success("");
         }
 
         /// <summary>
@@ -402,7 +385,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                     //正确的订单处理 改变订单状态
                     var orderData = order.GetT_OrderHeadEntity(orderNo);
                     orderData.F_State = "2";
-                    order.UpdateOrderStatus(orderNo,"1");
+                    order.UpdateOrder(orderNo, OrderStatus.已付款);
                     paySuccess = true;
                 }
                 else
@@ -415,14 +398,14 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                     var res = new WxPayData();
                     res.SetValue("return_code", return_code);
                     res.SetValue("return_msg", return_msg);
-                    return Success(res.ToJson());
+                    return Content(res.ToXml());
                 }
                 else
                 {
                     var res = new WxPayData();
                     res.SetValue("return_code", "FAIL");
                     res.SetValue("return_msg", "异步回调失败");
-                    return Success(res.ToXml());
+                    return Content(res.ToXml());
                 }
             }
             catch (Exception ex)
@@ -430,6 +413,48 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 Logger.Error("微信支付回调异常：" + ex.Message);
                 throw;
             }
+        }
+
+        /// <summary>
+        /// 取消订单（退款）
+        /// </summary>
+        /// <returns></returns>
+        public Response CancelOrder(dynamic _)
+        {
+            var msg = "";
+            var orderNo = this.GetReqData().ToJObject()["orderNo"].ToString();
+            if (orderNo.IsEmpty())
+            {
+                return Fail("订单号为空");
+            }
+            var entity = order.GetT_OrderHeadEntity(orderNo);
+            var tmpStatus = new[] { "-1", "-2" };//-1 已取消，-2 已退款
+
+            if (entity.F_State.ToInt() >= 3)
+            {
+                return  Fail("订单正在处理中，不能取消！");
+            }
+            if (tmpStatus.Contains(entity.F_State))
+            {
+                return  Fail("订单已完成，请勿重复操作！");
+            }
+            var nonceStr = TenPayV3Util.GetNoncestr();
+            //发起退款申请
+            TenPayV3RefundRequestData data = new TenPayV3RefundRequestData(Config.GetValue("AppId"),
+                Config.GetValue("MchId"), Config.GetValue("Key"), null, nonceStr, "traind", orderNo, orderNo, 23, 23,Config.GetValue("MchId") ,"REFUND_SOURCE_RECHARGE_FUNDS");
+            //获取服务器证书目录
+            var cert = HttpContext.Current.Server.MapPath("/");
+            var result = TenPayV3.Refund(data, cert, Config.GetValue("Mchid"));
+
+            Logger.Info("订单"+orderNo+ "微信退款返回xml"+ result.ResultXml);  //记录日志
+            if (result.result_code.ToUpper()=="SUCCESSS")
+            {
+                Logger.Info("退款记录：1.订单"+orderNo+"；2.退款金额"+result.refund_fee);
+                //修改订单状态为已退款
+                order.UpdateOrder(orderNo,OrderStatus.已退款);
+                return Success("订单退款成功！");
+            }
+            return Fail(result.err_code_des);
         }
     }
 
