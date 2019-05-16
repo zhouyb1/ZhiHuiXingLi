@@ -1,4 +1,6 @@
 // pages/user/user_info/user_info.js
+var app = getApp();
+var md5 = require('../../../dist/md5.js');
 Page({
 
   /**
@@ -7,13 +9,47 @@ Page({
   data: {
     name: '',
     phone: '',
-    card: ''
+    card: '',
+    open: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    var _this = this;
+    wx.getStorage({
+      key: 'open',
+      success(res) {
+        res.data = JSON.parse(res.data);
+        _this.setData({
+          open: res.data
+        });
+        wx.request({
+          url: app.path(1) + "/pdaapi/getuserinfo",
+          data: {
+            sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify({ OpenId: res.data.openId })}`).toUpperCase(),
+            version: app.path(3),
+            data: {
+             OpenId: res.data.openId
+            }
+          },
+          header: {
+            'content-type': 'application/json'
+          },
+          method: "GET",
+          success(res) {
+            console.log(res.data)
+            var d = JSON.parse(res.data.data);
+            _this.setData({
+              name: d.FullName,
+              phone: d.Phone,
+              card: d.IDCard
+            })
+          }
+        })
+      }
+    });
 
   },
 
@@ -106,5 +142,56 @@ Page({
       });
       return false;
     };
+    this.set_info({
+      name: d.name,
+      phone: d.phone,
+      id: d.card
+    });
+  },
+  set_info(obj) {
+    var d = this.data;
+    var da = {
+      FullName: obj.name,
+      Phone: obj.phone,
+      IDCard: obj.id ,
+      OpenId: d.open.openId
+    }
+    wx.request({
+      url: app.path(1) + "/pdaapi/saveuserinfo",
+      data: {
+        sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify(da)}`).toUpperCase(),
+        version: app.path(3),
+        data: da
+      },
+      method: "POST",
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      success(res) {
+        console.log(res.data)
+      }
+    })
+  },
+  getPhoneNumber(e) {
+    console.log(e)
+    wx.request({
+      url: app.path(1) + "/pdaadpi/getphone",
+      data: {
+        sign: app.path(2),
+        version: app.path(3),
+        data: {
+          errMsg: e.detail.errMsg,
+          iv: e.detail.iv,
+          encryptedData: e.detail.encryptedData
+        }
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      method: "GET",
+      success(res) {
+        console.log(res.data)
+      }
+    })
   }
 })

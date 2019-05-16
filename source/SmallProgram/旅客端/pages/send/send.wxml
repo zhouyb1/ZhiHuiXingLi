@@ -56,6 +56,10 @@
   <view class="list_l">地址</view>
   <view class="list_rs">
     <view class="filght_num">
+    <view class="city_type" bindtap='city_types'>
+    <view>手动</view>
+    <view>填写</view>
+    </view>
       <picker bindchange="city_data" value="{{index}}" range="{{citty_data_list}}">
         <view class="picker">
           {{citty_data_list[index]}}
@@ -71,7 +75,7 @@
       <input type='text' placeholder='请输入地址' value="{{self_city}}" bindinput='city_fun' style='width:80%'></input>
       <view class="phone_btn" bindtap='get_city' style='width:100rpx;right:10rpx;top:-2rpx;'>
         <view>
-          <image src='../../image/addr.png' style="width:50%;height:80%"></image>
+          <image src='../../image/addr.png' style="width:50%;height:75%"></image>
         </view>
         <view>获取位置</view>
       </view>

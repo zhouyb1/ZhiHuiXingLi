@@ -79,6 +79,7 @@ Page({
         hasUserInfo: true
       });
       wx.showTabBar({});
+      this.set_user_info();
     } else if (this.data.canIUse) {
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
@@ -97,6 +98,7 @@ Page({
           data: JSON.stringify(res.userInfo)
         });
         wx.showTabBar({});
+        this.set_user_info();
       }
     } else {
       // 在没有 open-type=getUserInfo 版本的兼容处理
@@ -108,7 +110,7 @@ Page({
             hasUserInfo: true
           })
           wx.showTabBar({});
-          console.log(1)
+          this.set_user_info();
         }
       })
     }
@@ -195,6 +197,7 @@ Page({
       key: 'user_info',
       data: JSON.stringify(e.detail.userInfo)
     });
+    this.set_user_info();
   },
   paths(event) {
     var href = event.currentTarget.dataset.url;
@@ -202,11 +205,54 @@ Page({
       wx.navigateTo({
         url: href
       })
-    }else{
+    } else {
       wx.showModal({
         title: '温馨提示',
         content: '敬请期待'
       })
     };
+  },
+  set_user_info() {
+    var obj = {};
+    var customerInfo = {};
+    wx.getStorage({
+      key: 'user_info',
+      success(res) {
+        obj = JSON.parse(res.data);
+        customerInfo = {
+          F_Openid: obj.openId,
+          F_City: obj.city,
+          F_Sex: obj.sex,
+          F_Country: obj.country,
+          F_Name: obj.nickName,
+          F_Phone: '',
+          F_Province: obj.province
+        };
+        wx.getStorage({
+          key: 'open',
+          success(res) {
+            var d = JSON.parse(res.data);
+            obj.openId = d.openId;
+            wx.request({
+              url: app.path(1) + '/pdaapi/register', // 仅为示例，并非真实的接口地址
+              data: {
+                sign: app.path(2),
+                version: app.path(3),
+                data: (JSON.stringify({
+                  customerInfo: customerInfo
+                }))
+              },
+              header: {
+                'content-type': 'application/json' // 默认值
+              },
+              method: "POST",
+              success(res) {
+                console.log(res.data);
+              }
+            });
+          }
+        });
+      }
+    });
   }
 })

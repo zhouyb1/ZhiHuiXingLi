@@ -13,6 +13,7 @@ page {
   font-size: 12px;
   color: #ccc;
   padding-left: 10rpx;
+  box-sizing: border-box;
 }
 
 .list {
@@ -24,6 +25,7 @@ page {
   font-size: 14px;
   padding-left: 20rpx;
   position: relative;
+  box-sizing: border-box;
 }
 
 .timers {
@@ -69,12 +71,14 @@ page {
   align-items: center;
   padding-left: 30rpx;
 }
-.goods_info view:first-child{
-  color:#ff8d1a;
+
+.goods_info view:first-child {
+  color: #ff8d1a;
 }
-.goods_info view:last-child{
+
+.goods_info view:last-child {
   font-size: 10px;
-  color:#ccc;
+  color: #ccc;
 }
 
 .pay {
@@ -85,4 +89,7 @@ page {
   justify-content: center;
   background: #3cb4ff;
   color: #fff;
+}
+.p_none,.i-cell{
+  padding:0;
 }

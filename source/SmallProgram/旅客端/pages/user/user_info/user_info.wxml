@@ -6,3 +6,5 @@
 </i-panel>
 
 <button class='save' bindtap='svaes'> 保存修改 </button>
+
+<button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" class='p'>快速填写</button>

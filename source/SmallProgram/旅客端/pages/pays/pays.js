@@ -16,6 +16,8 @@ Page({
       ['30', '00']
     ],
     multiIndex: [0, 0, 0],
+    animal: '熊猫',
+    checked: false,
   },
 
   /**
@@ -30,7 +32,7 @@ Page({
     for (var i = 1; i < 8; i++) {
       d = new Date(times + 86400000 * i).getMonth() + 1 + '-' + new Date(times + 86400000 * i).getDate();
       arr.push(d);
-      if(i === 1){
+      if (i === 1) {
         arr[0] = "今天"
       };
       if (i === 2) {
@@ -109,12 +111,12 @@ Page({
   bindMultiPickerChange: function(e) {
     var s = this.data.multiArray[1];
     var t = new Date().getHours();
-    if (t > s[e.detail.value[1]] && this.data.multiArray[0][e.detail.value[0]] === "今天"){
+    if (t > s[e.detail.value[1]] && this.data.multiArray[0][e.detail.value[0]] === "今天") {
       wx.showModal({
         title: '提示',
         content: '呀！这个点已经过去了，请选择其他时间'
       })
-      e.detail.value[0]+=1;
+      e.detail.value[0] += 1;
     };
     this.setData({
       multiIndex: e.detail.value
@@ -125,4 +127,7 @@ Page({
       content: '这是说明是港内件说明'
     });
   },
+  checkboxChange: function (e) {
+    console.log('checkbox发生change事件，携带value值为：', e)
+  }
 })

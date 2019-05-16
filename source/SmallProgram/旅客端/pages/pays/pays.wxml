@@ -31,7 +31,7 @@
     </i-switch>
   </view>
 </view>
-<view class='list' style="margin-bottom:150rpx;">是否港内件
+<view class='list'>是否港内件
   <view class="help" bindtap='handleText'>
     <image src='../../image/helps.png'></image>
     什么是港内件
@@ -43,11 +43,19 @@
     </i-switch>
   </view>
 </view>
+<view class='list' style="margin-bottom:150rpx;">
+  <checkbox-group bindchange="checkboxChange">
+    <label class="checkbox">
+      <checkbox checked="{{checked}}" />{{item.value}}
+    </label>
+    <text style="font-size:15px;">我已阅读并</text>
+  </checkbox-group>
+</view>
 <!-- 底部 -->
 <view class='footer'>
   <view class="goods_info">
-  <view>合计：￥49.99</view>
-  <view>已优惠49.00，第二件5折</view>
+    <view>合计：￥49.99</view>
+    <view>已优惠49.00，第二件5折</view>
   </view>
   <view class="pay">去支付</view>
 </view>

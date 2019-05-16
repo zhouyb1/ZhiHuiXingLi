@@ -55,11 +55,14 @@
 </view>
 <!-- 底部 -->
 <view class='footer'>
-  <view class="go-pay" wx:if="{{type===0}}">去支付</view>
+   <view class="order-ok" wx:if="{{type===0}}">
+    <view>去支付</view>
+    <view>取消订单</view>
+  </view>
   <view class="order-type" wx:if="{{type===1}}">
     <view>催单</view>
     <view>确定签收</view>
-    <view>取消订单</view>
+    <view>申请退款</view>
   </view>
   <view class="order-ok" wx:if="{{type===2}}">
     <view>投诉</view>

@@ -13,6 +13,7 @@ page {
   font-size: 12px;
   color: #ccc;
   padding-left: 10rpx;
+  box-sizing: border-box;
 }
 
 .list {
@@ -21,6 +22,7 @@ page {
   display: flex;
   border-bottom: solid 1px #ccc;
 }
+
 /* .list input{
     width: 80%;
 } */
@@ -123,6 +125,7 @@ page {
   display: flex;
   align-items: center;
   font-size: 12px;
+  position: relative;
 }
 
 .filght_num > picker {
@@ -147,7 +150,7 @@ page {
   display: flex;
   justify-content: center;
   align-items: center;
-  color:#3cb4ff;
+  color: #3cb4ff;
 }
 
 .phone_btn view:first-child {
@@ -157,10 +160,12 @@ page {
   justify-content: center;
   align-items: center;
 }
-.images{
+
+.images {
   width: 70%;
   height: 90%;
 }
+
 .phone_btn image {
   width: 90%;
   height: 90%;
@@ -237,4 +242,24 @@ page {
 
 .footer view:last-child {
   background: #ff8d1a;
+}
+
+.city_type {
+  position: absolute;
+  top: -9rpx;
+  right: 0rpx;
+  width: 120rpx;
+  height: 100rpx;
+  background: #3cb4ff;
+  z-index: 999;
+  color: #fff;
+  font-size: 12px;
+}
+
+.city_type view {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

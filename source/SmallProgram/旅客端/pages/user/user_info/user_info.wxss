@@ -1,9 +1,20 @@
 /* pages/user/user_info/user_info.wxss */
-.save{
+
+.save {
   position: fixed;
-  left:10%;
+  left: 10%;
   bottom: 20rpx;
   background-color: #3cb4ff;
-  color:#fff;
-  width:80%;
+  color: #fff;
+  width: 80%;
+}
+
+.p {
+  position: absolute;
+  top: 100rpx;
+  right: 10px;
+  background-color: #3cb4ff;
+  color: #fff;
+  font-size: 13px;
+  z-index: 999;
 }

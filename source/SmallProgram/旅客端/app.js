@@ -1,15 +1,35 @@
 //app.js
 App({
-  onLaunch: function () {
+  onLaunch: function() {
     // 展示本地存储能力
+    var _this = this;
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
+    wx.setStorageSync('logs', logs);
     // 登录
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId、
+        wx.request({
+          url: _this.path(1) + '/pdaapi/onlogin',
+          data: {
+            sign: _this.path(2),
+            version: _this.path(3),
+            data: (JSON.stringify({
+              code: res.code
+            }))
+          },
+          header: {
+            'content-type': 'application/json' // 默认值
+          },
+          method: "POST",
+          success(res) {
+            wx.setStorage({
+              key: 'open',
+              data: res.data.data
+            })
+          }
+        });
       }
     })
     // 获取用户信息
@@ -36,8 +56,8 @@ App({
   globalData: {
     userInfo: null
   },
-  path(obj){
-    if(obj === 1){
+  path(obj) {
+    if (obj === 1) {
       return "http://39.98.228.251:8011";
     };
     if (obj === 2) {
@@ -46,5 +66,22 @@ App({
     if (obj === 3) {
       return "1";
     };
+  },
+  get_time() {
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+      month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+      strDate = "0" + strDate;
+    }
+    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate +
+      " " + date.getHours() + seperator2 + date.getMinutes() +
+      seperator2 + date.getSeconds();
+    return currentdate;
   }
 })
