@@ -241,10 +241,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 dp.Add("@F_CustomerAddress", SubmitOrderModelApi.Head.F_CustomerAddress);
                 dp.Add("@F_CustomerRemarks", SubmitOrderModelApi.Head.F_CustomerRemarks);
                 dp.Add("@F_CreateStype", SubmitOrderModelApi.Head.F_CreateStype);
-                dp.Add("@F_State", SubmitOrderModelApi.Head.F_State);
+                dp.Add("@F_State", OrderStatus.待付款);
                 dp.Add("@F_Stype", SubmitOrderModelApi.Head.F_Stype);
                 dp.Add("@F_CreateTime", DateTime.Now);
-                dp.Add("@F_CreateUserName", SubmitOrderModelApi.Head.F_CreateUserName);
+                dp.Add("@F_CreateUserName", "system");
                 dp.Add("@F_OpenId", SubmitOrderModelApi.Head.F_OpenId);
                 dp.Add("@F_IsUrgent", SubmitOrderModelApi.Head.F_IsUrgent);
                 this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
@@ -253,8 +253,8 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 foreach (var item in SubmitOrderModelApi.OrderDetails)
                 {
                     var strInsert = new StringBuilder();
-                    strInsert.Append(@"INSERT INTO dbo.T_OrderBody ( F_Id ,F_OrderNo , F_ConsignmentNumber ,F_Weight ,F_Distance ,F_Price ,F_Qty )
-                                    VALUES ( @F_Id ,@F_OrderNo , @F_ConsignmentNumber ,@F_Weight ,@F_Distance ,@F_Price ,@F_Qty )
+                    strInsert.Append(@"INSERT INTO dbo.T_OrderBody ( F_Id ,F_OrderNo , F_ConsignmentNumber ,F_Weight ,F_Distance ,F_Price ,F_Qty,FB_State )
+                                    VALUES ( @F_Id ,@F_OrderNo , @F_ConsignmentNumber ,@F_Weight ,@F_Distance ,@F_Price ,@F_Qty ,@FB_State)
                                     ");
                     var para = new DynamicParameters(new { });
                     para.Add("@F_Id", Guid.NewGuid().ToString());
@@ -262,9 +262,9 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                     para.Add("@F_ConsignmentNumber", item.F_ConsignmentNumber);
                     para.Add("@F_Weight", item.F_Weight);
                     para.Add("@F_Distance", item.F_Distance);
-                    para.Add("@F_Price", item.F_Price);
+                    para.Add("@F_Price", 49);
                     para.Add("@F_Qty", item.F_Qty);
-
+                    para.Add("@FB_State", OrderStatus.未分拣);
                     this.BaseRepository().ExecuteBySql(strInsert.ToString(), para);
                 }
                 errText = "订单提交成功!";
