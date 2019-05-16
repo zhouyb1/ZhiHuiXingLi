@@ -138,6 +138,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
 
             if (ReqSign.Contains(path.ToLower()))
             {
+                this.WriteLog(ctx, req);//记录日志
                 return null;
             }
 
@@ -159,7 +160,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 return this.Fail("sign签名错误");
             }
-            this.WriteLog(ctx, req);//记录日志
             return null;
         }
         #endregion
