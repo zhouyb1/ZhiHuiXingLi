@@ -129,5 +129,10 @@ Page({
   },
   checkboxChange: function (e) {
     console.log('checkbox发生change事件，携带value值为：', e)
+  },
+  go_help(event){
+    wx.navigateTo({
+      url: '/pages/help/help?type=' + event.target.dataset.type,
+    });
   }
 })

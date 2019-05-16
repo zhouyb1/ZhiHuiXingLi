@@ -44,11 +44,12 @@
   </view>
 </view>
 <view class='list' style="margin-bottom:150rpx;">
-  <checkbox-group bindchange="checkboxChange">
+  <checkbox-group bindchange="checkboxChange" class="check">
     <label class="checkbox">
-      <checkbox checked="{{checked}}" />{{item.value}}
+      <checkbox checked="{{checked}}" />
+      阅读并接受
     </label>
-    <text style="font-size:15px;">我已阅读并</text>
+    <text bindtap='go_help' data-type="1">《xxx用户协议》</text>
   </checkbox-group>
 </view>
 <!-- 底部 -->

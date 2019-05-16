@@ -90,6 +90,8 @@ page {
   background: #3cb4ff;
   color: #fff;
 }
-.p_none,.i-cell{
-  padding:0;
+.check {
+  display: flex;
+  align-items: center;
+  font-size:12px;
 }

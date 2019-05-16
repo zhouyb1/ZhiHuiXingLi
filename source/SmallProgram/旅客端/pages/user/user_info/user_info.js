@@ -165,7 +165,7 @@ Page({
       },
       method: "POST",
       header: {
-        'content-type': 'application/x-www-form-urlencoded'
+        'content-type': 'application/json'
       },
       success(res) {
         console.log(res.data)
