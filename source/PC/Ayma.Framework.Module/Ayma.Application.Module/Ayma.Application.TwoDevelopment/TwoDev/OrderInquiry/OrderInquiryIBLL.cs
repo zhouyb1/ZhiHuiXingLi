@@ -59,11 +59,10 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         void SaveEntity(string keyValue, T_OrderHeadEntity entity,T_OrderBodyEntity t_OrderBodyEntity);
 
         /// <summary>
-        /// 修改订单状态
+        /// 更新订单状态(取消订单、完成订单)
         /// </summary>
-        /// <param name="orderNo"></param>
-        /// <param name="state"></param>
-        void UpdateOrderStatus(string orderNo, string state);
+        /// <returns></returns>
+        void UpdateOrder(string orderNo, OrderStatus status);
 
         #endregion
 

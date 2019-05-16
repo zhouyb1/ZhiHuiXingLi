@@ -1,6 +1,9 @@
-﻿using Ayma.Util;
+﻿using System.Dynamic;
+using System.Linq;
+using Ayma.Util;
 using System;
 using System.Collections.Generic;
+using Dapper;
 
 namespace Ayma.Application.TwoDevelopment.TwoDev
 {
@@ -86,6 +89,8 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 }
             }
         }
+
+        
 
         #endregion
 
@@ -186,15 +191,14 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         }
 
         /// <summary>
-        /// 修改订单状态
+        /// 更新订单状态(取消订单、完成订单)
         /// </summary>
-        /// <param name="orderNo"></param>
-        /// <param name="state"></param>
-        public void UpdateOrderStatus(string orderNo, string state)
+        /// <returns></returns>
+        public void UpdateOrder(string orderNo, OrderStatus status)
         {
             try
             {
-                orderInquiryService.UpdateOrderStatus(orderNo, state);
+                 orderInquiryService.UpdateOrder(orderNo, status);
             }
             catch (Exception ex)
             {
@@ -204,11 +208,10 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 }
                 else
                 {
-                    throw ExceptionEx.ThrowServiceException(ex);
+                    throw ExceptionEx.ThrowBusinessException(ex);
                 }
             }
         }
-
         #endregion
 
     }

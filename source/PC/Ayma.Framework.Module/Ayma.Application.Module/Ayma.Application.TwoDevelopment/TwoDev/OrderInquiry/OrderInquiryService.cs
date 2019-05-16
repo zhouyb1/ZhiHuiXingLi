@@ -1,4 +1,5 @@
 ﻿using System.CodeDom;
+using System.Security.Permissions;
 using Dapper;
 using Ayma.DataBase.Repository;
 using Ayma.Util;
@@ -120,7 +121,6 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 }
             }
         }
-
         #endregion
 
         #region 提交数据
@@ -283,24 +283,24 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         }
 
         /// <summary>
-        /// 修改订单状态
+        /// 更新订单状态(取消订单、完成订单)
         /// </summary>
-        /// <param name="orderNo"></param>
-        /// <param name="state"></param>
-        public void UpdateOrderStatus(string orderNo,string state)
+        /// <returns></returns>
+        public void UpdateOrder(string orderNo, OrderStatus status)
         {
+            var db = this.BaseRepository().BeginTrans();
             try
             {
-                var db = this.BaseRepository().BeginTrans();
+                var sql = "UPDATE dbo.T_OrderHead SET F_State =@F_State WHERE F_OrderNo =@F_OrderNo ";
                 var dp = new DynamicParameters(new { });
-                dp.Add("F_OrderNO", orderNo);
-                dp.Add("F_State", state);
-                var updateSql = "update T_OrderHead set F_State =@F_State where F_OrderNO =@F_OrderNO";
-                db.ExecuteBySql(updateSql, dp);
+                dp.Add("F_State", ((int)status).ToString());
+                dp.Add("F_OrderNo", orderNo);
+                db.ExecuteBySql(sql, dp);
                 db.Commit();
             }
             catch (Exception ex)
             {
+                db.Rollback();
                 if (ex is ExceptionEx)
                 {
                     throw;
@@ -310,9 +310,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                     throw ExceptionEx.ThrowServiceException(ex);
                 }
             }
-
         }
-
         #endregion
 
     }
