@@ -23,11 +23,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         void SubmitUpdateOrderState(string F_AirfieldId, string F_OrderNo, string F_State_Old, string F_State_New, string Operator, out int errCode, out string errText);
 
         /// <summary>
-        /// 查询订单是否存在
+        /// 查询行李号是否存在
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
-        IEnumerable<T_OrderHeadEntity> GetOrder(string OrderNo);
+        IEnumerable<T_OrderBodyEntity> GetConsignmentNumber(string ConsignmentNumber);
 
         /// <summary>
         /// 修改订单状态
@@ -36,7 +36,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// <param name="status"></param>
         /// <param name="Operator"></param>
         /// <param name="errText"></param>
-        void UpdateOrderStatus(string OrderNo, string status, string Operator, out string errText);
+        void UpdateOrderStatus(string OrderNo,string ConsignmentNumber, string status, string Operator, out string errText);
 
         /// <summary>
         /// 根据订单状态获取订单列表
