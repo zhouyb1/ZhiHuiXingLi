@@ -109,6 +109,9 @@
       <HintPath>..\packages\Senparc.Weixin.MP.16.7.3\lib\net45\Senparc.Weixin.MP.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Senparc.Weixin.TenPay">
+      <HintPath>..\packages\Senparc.Weixin.TenPay.1.3.0.1\lib\net45\Senparc.Weixin.TenPay.dll</HintPath>
+    </Reference>
     <Reference Include="Senparc.Weixin.WxOpen, Version=3.3.10.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Senparc.Weixin.WxOpen.3.4.2.3\lib\net45\Senparc.Weixin.WxOpen.dll</HintPath>

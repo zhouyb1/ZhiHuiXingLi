@@ -36,6 +36,10 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 return Fail("订单号不能为空!");
             }
+            if (req["ConsignmentNumber"].IsEmpty())
+            {
+                return Fail("行李号不能为空!");
+            }
             if (req["status"].IsEmpty())
             {
                 return Fail("订单状态不能为空!");
@@ -44,16 +48,17 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 return Fail("操作员不能为空!");
             }
-            var Order=billServerApiBLL.GetOrder(req["OrderNo"].ToString());
-            if (Order.Count() < 1)
+            var ConsignmentOrder = billServerApiBLL.GetConsignmentNumber(req["ConsignmentNumber"].ToString());
+            if (ConsignmentOrder.Count() < 1)
             {
-                return Fail("订单不存在!");
+                return Fail("行李号不存在!");
             }
             string OrderNo = req["OrderNo"].ToString();  //订单号
+            string ConsignmentNumber = req["ConsignmentNumber"].ToString();  //行李号
             string status = req["status"].ToString();  //订单状态
             string Operator = req["Operator"].ToString(); //操作人
             string errText = "";
-            billServerApiBLL.UpdateOrderStatus(OrderNo, status, Operator, out errText);
+            billServerApiBLL.UpdateOrderStatus(OrderNo, ConsignmentNumber, status, Operator, out errText);
             return Success(errText);
         }
 

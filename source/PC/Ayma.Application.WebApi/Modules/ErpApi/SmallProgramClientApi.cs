@@ -41,7 +41,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/GetFlightNoInfo"] = GetFlightNoInfo; //获取航班列表
             Get["/GetOrderList"] = GetOrderList; //获取航班列表
             Get["/GetOrderDetailByNo"] = GetOrderDetailByNo;//获取订详情
-            Get["/SubmitOrder"] = SubmitOrder; //提交订单
+            Post["/SubmitOrder"] = SubmitOrder; //提交订单
             //Get["/GetOrderListByStatus"] = GetOrderListByStatus;//根据订单状态查询订单列表
             Post["/OnLogin"] = OnLogin;
             Post["/SaveUserInfo"] = SaveUserInfo;
