@@ -43,15 +43,15 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             }
         }
         /// <summary>
-        /// 查询订单是否存在
+        /// 查询行李号是否存在
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
-        public IEnumerable<T_OrderHeadEntity> GetOrder(string OrderNo)
+        public IEnumerable<T_OrderBodyEntity> GetConsignmentNumber(string ConsignmentNumber)
         {
             try
             {
-                return billServerApiService.GetOrder(OrderNo);
+                return billServerApiService.GetConsignmentNumber(ConsignmentNumber);
             }
             catch (Exception ex)
             {
@@ -72,11 +72,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// <param name="OrderNo"></param>
         /// <param name="status"></param>
         /// <param name="Operator"></param>
-        public void UpdateOrderStatus(string OrderNo, string status, string Operator, out string errText)
+        public void UpdateOrderStatus(string OrderNo, string ConsignmentNumber, string status, string Operator, out string errText)
         {
             try
             {
-                billServerApiService.UpdateOrderStatus(OrderNo, status, Operator, out errText);
+                billServerApiService.UpdateOrderStatus(OrderNo,ConsignmentNumber, status, Operator, out errText);
             }
             catch (Exception ex)
             {
