@@ -228,7 +228,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             {
                 var strSql = new StringBuilder();
                 strSql.Append(@"SELECT h.F_FlightCompany,h.F_FlightNumber,f.AddressBegin,f.AddressEnd,
-                                  f.DateTimeEnd,,f.DateTimeEndReality,
+                                  f.DateTimeEnd,f.DateTimeEndReality,
                                   SUM(F_Qty) TotalQty
                                   FROM T_OrderHead h
                                   LEFT JOIN dbo.T_OrderBody b
