@@ -49,7 +49,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Post["/Register"] = Register;
             Post["/CancelOrder"] = CancelOrder;
             Get["/GetUserInfo"] = GetUserInfo;
-            Get["/GetPhone"] = GetPhone;
+            Post["/GetPhone"] = GetPhone;
 
         }
         private SmallProgramClientApiBLL billClientApiBLL = new SmallProgramClientApiBLL();

@@ -100,10 +100,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         private Response BeforeRequest(NancyContext ctx)
         {
             string path = ctx.ResolvedRoute.Description.Path;
-            Logger.Error(ctx.Request.Form["sign"]);
-            Logger.Error(ctx.Request.Form["model"]);
-            Logger.Error(ctx.Request.Form["version"]);
-            Logger.Error(ctx.Request.Form["data"]);
+           
             //验证登录状态
             ReqParameter<string> req = this.Bind<ReqParameter<string>>();
             this.WriteLog(ctx, req);//记录日志
