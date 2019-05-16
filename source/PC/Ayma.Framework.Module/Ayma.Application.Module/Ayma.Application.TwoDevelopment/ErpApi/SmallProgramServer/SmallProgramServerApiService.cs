@@ -35,11 +35,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="keyValue"></param>
         /// <returns></returns>
-        public IEnumerable<T_OrderHeadEntity> GetOrder(string keyValue)
+        public IEnumerable<T_OrderBodyEntity> GetConsignmentNumber(string keyValue)
         {
             try
             {
-                return this.BaseRepository().FindList<T_OrderHeadEntity>(c => c.F_OrderNo == keyValue);
+                return this.BaseRepository().FindList<T_OrderBodyEntity>(c => c.F_ConsignmentNumber == keyValue);
             }
             catch (Exception ex)
             {
@@ -61,29 +61,40 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// <param name="status"></param>
         /// <param name="Operator"></param>
         /// <param name="errText"></param>
-        public void UpdateOrderStatus(string OrderNo, string status, string Operator, out string errText)
+        public void UpdateOrderStatus(string OrderNo, string ConsignmentNumber, string status, string Operator, out string errText)
         {
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"UPDATE T_OrderHead SET F_State=@Status WHERE F_OrderNo=@OrderNo");
+                strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status WHERE F_ConsignmentNumber=@ConsignmentNumber");
                  var dp = new DynamicParameters(new { });
-                     dp.Add("@OrderNo", OrderNo);
+                     dp.Add("@ConsignmentNumber", ConsignmentNumber);
                      dp.Add("@Status", status);
                      this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
+
+                     var list = this.BaseRepository().FindList<T_OrderBodyEntity>(c => c.F_OrderNo == OrderNo).OrderByDescending(c => c.FB_State);
+                     var State = list.Last().FB_State; //获取订单下最后一个行李号的状态
+                     var strUpdate = new StringBuilder();
+                     strUpdate.Append(@"UPDATE T_OrderHead SET F_State=@F_State WHERE F_OrderNo=@F_OrderNo");
+                     var par = new DynamicParameters(new { });
+                     par.Add("@F_State", State);
+                     par.Add("@F_OrderNo", OrderNo);
+                     this.BaseRepository().ExecuteBySql(strUpdate.ToString(), par);
+
                  var StateDescribe="";
-                 switch (status){
+                 switch (State)
+                 {
                      case "2":
-                         StateDescribe="航班已到达";
+                         StateDescribe="未分拣";
                          break;
                      case "3":
-                         StateDescribe="开始分拣";
+                         StateDescribe="分拣中";
                          break;
                      case"4":
-                         StateDescribe="分拣完成";
+                         StateDescribe="运输中";
                          break;
                      case "5":
-                         StateDescribe="出港完成";
+                         StateDescribe="已完成";
                          break;
                      case "41":
                          StateDescribe="分拣异常";
@@ -217,7 +228,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             {
                 var strSql = new StringBuilder();
                 strSql.Append(@"SELECT h.F_FlightCompany,h.F_FlightNumber,f.AddressBegin,f.AddressEnd,
-                                  f.DateTimeBegin,f.DateTimeEnd,
+                                  f.DateTimeEnd,,f.DateTimeEndReality,
                                   SUM(F_Qty) TotalQty
                                   FROM T_OrderHead h
                                   LEFT JOIN dbo.T_OrderBody b
@@ -229,7 +240,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                     strSql.Append(" AND h.F_FlightNumber=@F_FlightNumber");
                 }
                 strSql.Append(" AND h.F_OrderDate BETWEEN @StartTime AND @EndTime");
-                strSql.Append(" GROUP BY h.F_FlightCompany,h.F_FlightNumber,f.AddressBegin,f.AddressEnd,f.DateTimeBegin,f.DateTimeEnd ");
+                strSql.Append(" GROUP BY h.F_FlightCompany,h.F_FlightNumber,f.AddressBegin,f.AddressEnd,f.DateTimeEndReality,f.DateTimeEnd ");
                 var dp = new DynamicParameters(new { });
                 dp.Add("@F_FlightNumber", FlightNumber);
                 dp.Add("@StartTime", DateTime.Now.ToString("yyyy-MM-dd")+" 00:00:00");
