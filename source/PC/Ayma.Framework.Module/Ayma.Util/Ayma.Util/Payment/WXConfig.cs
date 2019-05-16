@@ -17,6 +17,7 @@ namespace Ayma.Util.Payment
             this.AppId = Config.GetValue("AppId");
             this.NotifyUrl = Config.GetValue("Wx_NotifyUrl");
             this.Key = Config.GetValue("PayKey");//支付秘钥
+            this.MchId = Config.GetValue("MchId");//商户号
         }
 
         public string AppId { get; set; }
