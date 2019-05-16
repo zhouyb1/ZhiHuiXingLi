@@ -18,6 +18,9 @@ Page({
    */
   onLoad: function(options) {
     var _this = this;
+    wx.showLoading({
+      title: '加载中',
+    })
     wx.getStorage({
       key: 'open',
       success(res) {
@@ -40,6 +43,7 @@ Page({
           method: "GET",
           success(res) {
             console.log(res.data)
+            wx.hideLoading()
             var d = JSON.parse(res.data.data);
             _this.setData({
               name: d.FullName,
