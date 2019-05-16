@@ -128,11 +128,27 @@ Page({
     });
   },
   checkboxChange: function (e) {
-    console.log('checkbox发生change事件，携带value值为：', e)
+    var c = !this.data.checked;
+    this.setData({
+      checked:c
+    });
+    console.log(c)
   },
   go_help(event){
     wx.navigateTo({
       url: '/pages/help/help?type=' + event.target.dataset.type,
     });
+  },
+  pays(){
+    var d = this.data.checked;
+    if(!d){
+      wx.showModal({
+        title: '温馨提示',
+        content: '请同意xxx'
+      });
+      return false;
+    }else{
+      console.log(2)
+    };
   }
 })

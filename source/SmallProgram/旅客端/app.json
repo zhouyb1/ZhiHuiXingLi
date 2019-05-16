@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/pays/pays",
     "pages/index/index",
+    "pages/pays/pays",
     "pages/user/user",
     "pages/send/send",
     "pages/user/user_say/user_say",

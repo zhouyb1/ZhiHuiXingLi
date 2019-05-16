@@ -161,11 +161,11 @@ Page({
       data: {
         sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify(da)}`).toUpperCase(),
         version: app.path(3),
-        data: da
+        data: JSON.stringify(da)
       },
       method: "POST",
       header: {
-        'content-type': 'application/json'
+        'content-type': 'application/x-www-form-urlencoded'
       },
       success(res) {
         console.log(res.data)
@@ -175,14 +175,15 @@ Page({
   getPhoneNumber(e) {
     console.log(e)
     wx.request({
-      url: app.path(1) + "/pdaadpi/getphone",
+      url: app.path(1) + "/pdaapi/getphone",
       data: {
         sign: app.path(2),
         version: app.path(3),
         data: {
           errMsg: e.detail.errMsg,
           iv: e.detail.iv,
-          encryptedData: e.detail.encryptedData
+          encryptedData: e.detail.encryptedData,
+          sessionId: this.data.open.sessionId
         }
       },
       header: {

@@ -58,6 +58,6 @@
     <view>合计：￥49.99</view>
     <view>已优惠49.00，第二件5折</view>
   </view>
-  <view class="pay">去支付</view>
+  <view class="pay" bindtap='pays'>去支付</view>
 </view>
 <i-toast id="toast" />
