@@ -102,6 +102,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             string path = ctx.ResolvedRoute.Description.Path;
             //验证登录状态
             ReqParameter<string> req = this.Bind<ReqParameter<string>>();
+            this.WriteLog(ctx, req);//记录日志
+
             this.sign = req.sign;
             this.version = req.version;
             if (string.IsNullOrEmpty(this.sign))
@@ -133,12 +135,10 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 "/pdaapi/saledatadetailupload",
                 "/pdaapi/onlogin",
                 "/pdaapi/register",
-                "/pdaadpi/saveuserinfo"
             };
 
             if (ReqSign.Contains(path.ToLower()))
             {
-                this.WriteLog(ctx, req);//记录日志
                 return null;
             }
 
