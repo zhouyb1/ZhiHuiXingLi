@@ -2,6 +2,7 @@
 using Ayma.Application.TwoDevelopment.TwoDev;
 using System.Web.Mvc;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Ayma.Application.Web.Areas.TwoDev.Controllers
 {
@@ -85,6 +86,40 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
             };
             return Success(jsonData);
         }
+
+        /// <summary>
+        /// 获取收款表数据  GetT_OrderCollectMoneyEntity
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [AjaxOnly]
+        public ActionResult GetOrderCollectMoney(string keyValue)
+        {
+            var T_OrderHeadData = orderInquiryIBLL.GetT_OrderHeadEntity(keyValue);
+            var T_OrderCollectMoney = orderInquiryIBLL.GetT_OrderCollectMoneyEntity(T_OrderHeadData.F_OrderNo);
+            var jsonData = new
+            {
+                T_OrderCollectMoney = T_OrderCollectMoney,
+            };
+            return Success(jsonData);
+        }
+
+        /// <summary>
+        /// 获取付款表数据  GetT_OrderCollectMoneyEntity
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [AjaxOnly]
+        public ActionResult GetOrderPayMoney(string keyValue)
+        {
+            var T_OrderHeadData = orderInquiryIBLL.GetT_OrderHeadEntity(keyValue);
+            var T_OrderCollectMoney = orderInquiryIBLL.GetT_OrderPayMoneyEntity(T_OrderHeadData.F_OrderNo);
+            var jsonData = new
+            {
+                T_OrderCollectMoney = T_OrderCollectMoney,
+            };
+            return Success(jsonData);
+        }
         
 
         /// <summary>
@@ -95,13 +130,8 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
         [AjaxOnly]
         public ActionResult GetLogisticsFormData(string keyValue) 
         {
-            var T_OrderHeadData = orderInquiryIBLL.GetT_OrderHeadEntity(keyValue);
-            var T_OrderLogisticsInfo = orderlogisticsIBLL.GetT_OrderLogisticsInfoEntity(T_OrderHeadData.F_OrderNo);
-            var jsonData = new
-            {
-                T_OrderLogisticsInfo = T_OrderLogisticsInfo,
-            };
-            return Success(jsonData);
+            var data = orderlogisticsIBLL.GetT_OrderLogisticsInfo(keyValue);
+            return Success(data);
         }
         #endregion
 

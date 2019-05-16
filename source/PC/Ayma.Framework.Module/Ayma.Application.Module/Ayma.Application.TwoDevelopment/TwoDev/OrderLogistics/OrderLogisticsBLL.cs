@@ -1,6 +1,7 @@
 ﻿using Ayma.Util;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Ayma.Application.TwoDevelopment.TwoDev
 {
@@ -38,8 +39,28 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
             }
         }
 
+        public IEnumerable<T_OrderLogisticsInfoEntity> GetT_OrderLogisticsInfo(string OrderNo)
+       {
+           try
+           {
+               return orderlogisticsService.GetT_OrderLogisticsInfo(OrderNo);
+           }
+           catch (Exception ex)
+           {
+               if (ex is ExceptionEx)
+               {
+                   throw;
+               }
+               else
+               {
+                   throw ExceptionEx.ThrowBusinessException(ex);
+               }
+           }
+       }
 
-        #endregion
+        
+
 
     }
+        #endregion
 }

@@ -29,7 +29,19 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         /// <param name="keyValue">主键</param>
         /// <returns></returns>
-        T_OrderBodyEntity GetT_OrderBodyEntity(string keyValue);
+        IEnumerable<T_OrderBodyEntity> GetT_OrderBodyEntity(string keyValue);
+        /// <summary>
+        /// 获取收款表实体数据
+        /// </summary>
+        /// <param name="keyValue">主键</param>
+        /// <returns></returns>
+        IEnumerable<T_OrderCollectMoneyEntity> GetT_OrderCollectMoneyEntity(string keyValue);
+        /// <summary>
+        /// 获取付款表实体数据
+        /// </summary>
+        /// <param name="keyValue">主键</param>
+        /// <returns></returns>
+        IEnumerable<T_OrderPayMoneyEntity> GetT_OrderPayMoneyEntity(string keyValue);
         #endregion
 
         #region 提交数据

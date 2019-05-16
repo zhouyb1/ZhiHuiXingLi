@@ -100,6 +100,8 @@
     <Compile Include="TwoDev\OrderInquiry\OrderInquiryBLL.cs" />
     <Compile Include="TwoDev\OrderInquiry\OrderInquiryIBLL.cs" />
     <Compile Include="TwoDev\OrderLogistics\T_OrderLogisticsInfoEntity.cs" />
+    <Compile Include="TwoDev\OrderCollectMoney\T_OrderCollectMoneyEntity.cs" />
+    <Compile Include="TwoDev\OrderPayMoney\T_OrderPayMoneyEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Ayma.Application.Organization\Ayma.Application.Organization.csproj">

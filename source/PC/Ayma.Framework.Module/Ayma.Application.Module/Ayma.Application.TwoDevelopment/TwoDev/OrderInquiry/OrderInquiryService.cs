@@ -103,11 +103,27 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         /// <param name="keyValue">主键</param>
         /// <returns></returns>
-        public T_OrderBodyEntity GetT_OrderBodyEntity(string keyValue)
+        public IEnumerable<T_OrderBodyEntity> GetT_OrderBodyEntity(string keyValue)
         {
             try
             {
-                return this.BaseRepository("LocalHost").FindEntity<T_OrderBodyEntity>(t=>t.F_OrderNo == keyValue);
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT
+                    F_Id,
+                    F_OrderNo,
+                    F_ConsignmentNumber,
+                    F_Weight,
+                    F_Distance,
+                    F_Price,
+                    F_Qty,
+                    FB_State
+                    FROM    T_OrderBody
+                    WHERE   1 = 1");
+                strSql.Append(" And F_OrderNo='" + keyValue + "'");
+                // 虚拟参数
+                var dp = new DynamicParameters(new { });
+                //return this.BaseRepository().FindTable(strSql.ToString(), dp);
+                return this.BaseRepository().FindList<T_OrderBodyEntity>(strSql.ToString(), dp);
             }
             catch (Exception ex)
             {
@@ -121,6 +137,80 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 }
             }
         }
+
+        /// <summary>
+        /// 获取收款表实体数据
+        /// </summary>
+        /// <param name="keyValue">主键</param>
+        /// <returns></returns>
+        public IEnumerable<T_OrderCollectMoneyEntity> GetT_OrderCollectMoneyEntity(string keyValue)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT
+                    F_Id,
+                     F_OrderNo,
+                     F_PayType,
+                     F_Amount
+                    FROM    T_OrderCollectMoney
+                    WHERE   1 = 1");
+                strSql.Append(" And F_OrderNo='" + keyValue + "'");
+                // 虚拟参数
+                var dp = new DynamicParameters(new { });
+                return this.BaseRepository().FindList<T_OrderCollectMoneyEntity>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取付款表实体数据
+        /// </summary>
+        /// <param name="keyValue">主键</param>
+        /// <returns></returns>
+        public IEnumerable<T_OrderPayMoneyEntity> GetT_OrderPayMoneyEntity(string keyValue)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT
+                     F_Id,
+                     F_OrderNo,
+                     F_ConsignmentNumber,
+                     F_ExpressCompanyId,
+                     F_ExpressNO,
+                     F_PayType,
+                     F_Amount
+                    FROM    T_OrderPayMoney
+                    WHERE   1 = 1");
+                strSql.Append(" And F_OrderNo='" + keyValue + "'");
+                // 虚拟参数
+                var dp = new DynamicParameters(new { });
+                return this.BaseRepository().FindList<T_OrderPayMoneyEntity>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
         #endregion
 
         #region 提交数据

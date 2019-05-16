@@ -2,12 +2,14 @@
 var state = request('state');
 //var CurrentCompanyId = $("#CurrentCompanyId").val();
 var refreshGirdData;
+//var tabTitle = "";//Tab名字
 
 var bootstrap = function ($, ayma) {
     "use strict";
     var page = {
         init: function () {
             $('.am-form-wrap').mCustomScrollbar({ theme: "minimal-dark" });
+            page.initGird();
             page.bind();
             page.initData();
         },
@@ -55,18 +57,17 @@ var bootstrap = function ($, ayma) {
                 }
             });
 
-
             $('#T_OrderBody').jfGrid({
                 headData:
                     [
-                        { label: '订单号', name: 'F_OrderNo', width: 160, align: 'left', editType: 'label', hidden: true },
-                        { label: '托运单号', name: 'F_ConsignmentNumber', width: 100, align: 'left', editType: 'label' },
-                        { label: '重量', name: 'F_Weight', width: 160, align: 'left', editType: 'label' },
-                        { label: '配送距离', name: 'F_Distance', width: 160, align: 'left', editType: 'label' },
-                        { label: '价格', name: 'F_Price', width: 100, align: 'left', editType: 'label' },
-                        { label: '数量', name: 'F_Qty', width: 100, align: 'left', editType: 'label' },
+                        { label: '订单号', name: 'F_OrderNo', width: 160, align: 'left',  hidden: true },
+                        { label: '托运单号', name: 'F_ConsignmentNumber', width: 160, align: 'left' },
+                        { label: '重量', name: 'F_Weight', width: 160, align: 'left' },
+                        { label: '配送距离', name: 'F_Distance', width: 160, align: 'left' },
+                        { label: '价格', name: 'F_Price', width: 120, align: 'left' },
+                        { label: '数量', name: 'F_Qty', width: 120, align: 'left'},
                         {
-                            label: '订单状态', name: 'F_State', width: 100, align: 'left', editType: 'label',
+                            label: '订单状态', name: 'FB_State', width: 148, align: 'left',
                             formatter: function (cellvalue, options, rowObject) {
                                 var colorcss = "";
                                 if (cellvalue == 1) {
@@ -95,7 +96,7 @@ var bootstrap = function ($, ayma) {
                     ],
                 isEidt: true,
                 footerrow: true,
-                height: 350,
+                height: 210,
                 isStatistics: true,
                 isMultiselect: true
             });
@@ -114,15 +115,45 @@ var bootstrap = function ($, ayma) {
                 });
             }
         },
-        search: function (data) {
-            data = data || {};
-            $('#T_OrderBody').jfGridSet('refreshdata', { rowdatas: data });
-        }
+        // 初始化列表
+        initGird: function () {
+            //收款数据
+            $('#girdtable_formal').jfGrid({
+                url: top.$.rootUrl + '/TwoDev/OrderInquiry/GetOrderCollectMoney?keyValue=' + keyValue + '',
+                headData: [
+                    { label: "订单号", name: "F_OrderNo", width: 160, align: "left"},
+                    { label: "收款方式", name: "F_PayType", width: 160, align: "left" },
+                    { label: "收款金额(元)", name: "F_Amount", width: 100, align: "left" }
+                ],
+                mainId: 'F_Id',
+                reloadSelected: true
+            });
+            page.search();
+            //付款数据
+            $('#girdtable_temp').jfGrid({
+                url: top.$.rootUrl + '/TwoDev/OrderInquiry/GetOrderPayMoney?keyValue=' + keyValue + '',
+                headData: [
+                    { label: "订单号", name: "F_OrderNo", width: 160, align: "left"},
+                    { label: "航班托运单号", name: "F_ConsignmentNumber", width: 160, align: "left" },
+                    { label: "快递公司", name: "F_ExpressCompanyId", width: 100, align: "left" },
+                    { label: "快递单号", name: "F_ExpressNO", width: 100, align: "left"},
+                    { label: "收款方式", name: "F_PayType", width: 160, align: "left" },
+                    { label: "收款金额(元)", name: "F_Amount", width: 80, align: "left"}
+                ],
+                mainId: 'F_Id',
+                reloadSelected: true
+            });
+            page.search();
+        },
+        search: function (param) {
+        param = param || {};
+        $('#T_OrderBody').jfGridSet('reload', { param: { queryJson: JSON.stringify(param) } });
+        $('#girdtable_formal').jfGridSet('reload', { param: { queryJson: JSON.stringify(param) } });
+        $('#girdtable_temp').jfGridSet('reload', { param: { queryJson: JSON.stringify(param) } });
+       }
     };
-
     refreshGirdData = function () {
         page.search();
     };
     page.init();
-    
 }

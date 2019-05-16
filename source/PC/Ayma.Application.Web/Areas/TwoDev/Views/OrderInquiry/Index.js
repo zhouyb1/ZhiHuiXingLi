@@ -51,10 +51,10 @@ var bootstrap = function ($, ayma) {
                 if (ayma.checkrow(keyValue)) {
                     ayma.layerForm({
                         id: 'form',
-                        title: '旅客下单详情',
+                        title: '订单详情',
                         url: top.$.rootUrl + '/TwoDev/OrderInquiry/Form?keyValue=' + keyValue + '&state=' + state + '',
                         width: 1000,
-                        height: 800,
+                        height: 950,
                         maxmin: true,
                         callBack: function (id) {
                             return top[id].acceptClick(refreshGirdData);
@@ -71,8 +71,8 @@ var bootstrap = function ($, ayma) {
                         id: 'form',
                         title: '物流信息详情',
                         url: top.$.rootUrl + '/TwoDev/OrderInquiry/LogisticsForm?keyValue=' + keyValue + '&orderno=' + orderno + '',
-                        width: 900,
-                        height: 600,
+                        width: 700,
+                        height: 500,
                         maxmin: true,
                         callBack: function (id) {
                             return top[id].acceptClick(refreshGirdData);
@@ -107,11 +107,11 @@ var bootstrap = function ($, ayma) {
                             }
                             else if (cellvalue == 1) {
                                 colorcss = "label label-success";
-                                cellvalue = "付款完成";
+                                cellvalue = "已付款";
                             }
                             else if (cellvalue == -1) {
                                 colorcss = "label label-warning";
-                                cellvalue = "订单已取消";
+                                cellvalue = "已取消";
                             }
                             else if (cellvalue == -2) {
                                 colorcss = "label label-warning";
@@ -119,19 +119,19 @@ var bootstrap = function ($, ayma) {
                             }
                             else if (cellvalue == 2) {
                                 colorcss = "label label-success";
-                                cellvalue = "航班已到达";
+                                cellvalue = "未分拣";
                             }
                             else if (cellvalue == 3) {
                                 colorcss = "label label-success";
-                                cellvalue = "开始分拣";
+                                cellvalue = "分拣中";
                             }
                             else if (cellvalue == 4) {
                                 colorcss = "label label-success";
-                                cellvalue = "分拣完成";
+                                cellvalue = "运输中";
                             }
                             else if (cellvalue == 5) {
                                 colorcss = "label label-success";
-                                cellvalue = "出港完成";
+                                cellvalue = "已完成";
                             }
                             else if (cellvalue == 41) {
                                 colorcss = "label label-danger";

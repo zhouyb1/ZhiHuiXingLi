@@ -1,5 +1,6 @@
 ﻿using Ayma.Util;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Ayma.Application.TwoDevelopment.TwoDev
 {
@@ -18,6 +19,8 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// <param name="keyValue">主键</param>
         /// <returns></returns>
         T_OrderLogisticsInfoEntity GetT_OrderLogisticsInfoEntity(string keyValue);
+
+        IEnumerable<T_OrderLogisticsInfoEntity> GetT_OrderLogisticsInfo(string OrderNo);
 
         #endregion
 

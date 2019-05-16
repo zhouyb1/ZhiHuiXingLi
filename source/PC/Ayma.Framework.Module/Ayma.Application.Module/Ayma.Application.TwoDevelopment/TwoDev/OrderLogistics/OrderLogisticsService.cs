@@ -39,9 +39,42 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                     throw ExceptionEx.ThrowServiceException(ex);
                 }
             }
+        }
+        public IEnumerable<T_OrderLogisticsInfoEntity> GetT_OrderLogisticsInfo(string OrderNo)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT
+                    F_Id,
+                    F_OrderNo,
+                    F_StateDescribe,
+                    F_StateDateTime,
+                    F_StateOperator,
+                    F_CustomerOpen
+                    FROM    T_OrderLogisticsInfo
+                    WHERE   1 = 1");
+                strSql.Append(" And F_OrderNo='" + OrderNo + "'");
+                // 虚拟参数
+                var dp = new DynamicParameters(new { });
+                //return this.BaseRepository().FindTable(strSql.ToString(), dp);
+                return this.BaseRepository().FindList<T_OrderLogisticsInfoEntity>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+
 
         #endregion
-
-        }
     }
 }

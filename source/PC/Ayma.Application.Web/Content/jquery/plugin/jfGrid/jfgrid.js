@@ -329,7 +329,7 @@
 
             var pagebarLabel = '';
             var btnlist = "";
-            if (dfop.rowdatas.length == 0) {
+            if (dfop.rowdatas == undefined || dfop.rowdatas.length == 0) {
                 pagebarLabel = '无显示数据';
             }
             else {
