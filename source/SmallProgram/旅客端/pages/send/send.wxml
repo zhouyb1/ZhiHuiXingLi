@@ -33,7 +33,13 @@
     </view>
   </view>
 </view>
-<view class="text">旅客信息</view>
+<view class="text">
+  旅客信息
+  <view class="text-help">
+    <image src='../../image/helps.png' ></image>
+    <text bindtap='go_help' data-type="2">服务流程</text>
+  </view>
+</view>
 <view class="list">
   <view class="list_l">姓名</view>
   <view class="list_rs">
@@ -42,7 +48,7 @@
       <view>
         <image src='../../image/phone.png'></image>
       </view>
-      <view>导入</view>
+      <view>快速填写</view>
     </view>
   </view>
 </view>
@@ -56,10 +62,10 @@
   <view class="list_l">地址</view>
   <view class="list_rs">
     <view class="filght_num">
-    <view class="city_type" bindtap='city_types'>
-    <view>手动</view>
-    <view>填写</view>
-    </view>
+      <view class="city_type" bindtap='city_types'>
+        <view>手动</view>
+        <view>填写</view>
+      </view>
       <picker bindchange="city_data" value="{{index}}" range="{{citty_data_list}}">
         <view class="picker">
           {{citty_data_list[index]}}
@@ -82,11 +88,17 @@
     </view>
   </view>
 </block>
-<view class="text">行李信息</view>
+<view class="text">
+  行李信息
+  <view class="text-help" >
+    <image src='../../image/helps.png'></image>
+    <text bindtap='go_help' data-type="3">下单规则</text>
+  </view>
+</view>
 <view class="list">
   <view class="list_ls">托运行李号</view>
   <view class="list_rs">
-    <input type='number' placeholder='请输入托运行李号码' value="{{can_value}}" bindinput='can_numbers'></input>
+    <input type='number' placeholder='请输入托运行李号后六位' value="{{can_value}}" bindinput='can_numbers' maxlength='6'></input>
     <view class='code_box'>
       <view class="codes" bindtap='cans'>
         <image src='../../image/can.png'></image>
@@ -103,7 +115,6 @@
     </view>
   </view>
 </view>
-
 <!-- 底部 -->
 <view class="footer">
   <view>合计：{{can_list.length}} 件</view>

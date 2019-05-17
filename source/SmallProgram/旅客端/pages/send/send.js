@@ -28,8 +28,9 @@ Page({
     can_value: "", //托运单号
     can_list: [], //托运单号列表
     self_city: '', //手动获取的地址
-    openid: ''
-
+    openid: '', //用户信息
+    en_location: '', //到达站坐标
+    user_location: '', //用户选择地址
   },
 
   /**
@@ -107,6 +108,7 @@ Page({
     this.setData({
       self_city: e.detail.value
     });
+    this.get_addr(e.detail.value, 1);
   },
   bindRegionChange: function(e) {
     this.setData({
@@ -117,32 +119,17 @@ Page({
     this.setData({
       citty_list: e.detail.value
     });
-    var addrss = e.detail.value[0] + e.detail.value[1];
-    qqmapsdk.geocoder({
-      address: addrss, //地址参数，例：固定地址，address: '北京市海淀区彩和坊路海淀西大街74号'
-      success: function(res) { //成功后的回调
-        wx.setStorage({
-          key: 'city',
-          data: addrss
-        });
-        wx.setStorage({
-          key: 'location',
-          data: JSON.stringify(res.result.location)
-        });
-      },
-      fail: function(error) {
-        console.error(error);
-      },
-      complete: function(res) {
-        console.log(res);
-      }
-    })
   },
   end_citty(e) {
     var _this = this;
+    console.log();
     if (_this.data.end_city_list_data[e.detail.value] === '0') {
       return false;
     };
+    // this.get_addr(_this.data.end_city_list[e.detail.value]);
+    wx.showLoading({
+      title: '',
+    });
     this.setData({
       index: e.detail.value
     });
@@ -150,7 +137,7 @@ Page({
     wx.request({
       url: app.path(1) + "/pdaapi/GetFlightNoInfo",
       data: {
-        sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify({F_AirfieldId: _this.data.end_city_list_data[e.detail.value]})}`).toUpperCase(),
+        sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify({ F_AirfieldId: _this.data.end_city_list_data[e.detail.value] })}`).toUpperCase(),
         version: app.path(3),
         data: {
           F_AirfieldId: _this.data.end_city_list_data[e.detail.value]
@@ -161,15 +148,24 @@ Page({
         'content-type': 'application/json' // 默认值
       },
       success(res) {
-        var d = JSON.parse(res.data.data);
-        var t = ['请选择航班号'];
-        for (var i = 0; i < d.length; i++) {
-          t.push(d[i].F_FlightNumber);
+        wx.hideLoading();
+        if (res.data.code === 200) {
+          var d = JSON.parse(res.data.data);
+          var t = ['请选择航班号'];
+          for (var i = 0; i < d.length; i++) {
+            t.push(d[i].F_FlightNumber);
+          };
+          _this.setData({
+            city_num: t,
+            en_data: d
+          });
+        } else {
+          wx.showToast({
+            title: '获取航班号失败',
+            image: "../../image/error.png",
+            duration: 2000
+          })
         };
-        _this.setData({
-          city_num: t,
-          en_data: d
-        })
       }
     })
 
@@ -185,12 +181,13 @@ Page({
   },
   city_data(e) {
     //选择历史地址
-    var d = this.data.citty_data_list[(e.detail.value-0)]
+    var d = this.data.citty_data_list[(e.detail.value - 0)]
     this.setData({
       self_city: d
     });
+    this.get_addr(d, 1);
   },
-  city_types(){
+  city_types() {
     // 切换手动填写地址
     var _this = this;
     wx.showModal({
@@ -199,7 +196,7 @@ Page({
       success(res) {
         if (res.confirm) {
           _this.setData({
-            citty_data_list:[]
+            citty_data_list: []
           });
         };
       }
@@ -275,13 +272,17 @@ Page({
     wx.scanCode({
       success(res) {
         _this.setData({
-          can_value: res.result
+          can_value: res.result.substr(res.result.length - 6)
         })
       },
       fail(res) {
-        console.log(res);
+        wx.showToast({
+          title: '扫码失败',
+          image: "../../image/error.png",
+          duration: 2000
+        });
       }
-    })
+    });
   },
   can_numbers(e) {
     this.setData({
@@ -290,17 +291,26 @@ Page({
   },
   save_cans() {
     var data = this.data.can_list;
-    if (this.data.can_value) {
-      data.push(this.data.can_value);
-      data = [...new Set(data)];
-      this.setData({
-        can_list: data,
-        can_value: ''
+    var _this = this;
+    if (this.data.can_value.length === 6) {
+      wx.showModal({
+        title: '温馨提示',
+        content: '请确保[' + _this.data.can_value + ']是托运单号后六位,填入错误可能会找不到行李',
+        success(res) {
+          if (res.confirm) {
+            data.push(_this.data.can_value);
+            data = [...new Set(data)];
+            _this.setData({
+              can_list: data,
+              can_value: ''
+            });
+          };
+        }
       });
     } else {
       wx.showModal({
         title: '温馨提示',
-        content: '请输入托运单号'
+        content: '请输入托运单号后六位'
       })
     }
   },
@@ -340,7 +350,8 @@ Page({
             that.setData({
               self_city: res.result.address
             });
-            wx.hideLoading()
+            wx.hideLoading();
+            that.get_addr(res.result.address, 1);
           },
           fail: function(error) {
             wx.setStorage({
@@ -419,6 +430,9 @@ Page({
     da.head.F_AirfieldFloor = d.en_data[d.num_index - 1].F_AirfieldFloor;
     da.head.F_AirfieldId = d.en_data[d.num_index - 1].F_AirfieldId;
     da.head.F_AirfieldName = d.en_data[d.index - 0].F_AirfieldName;
+    da.head.F_StartStation = d.citty_list[0];
+    da.head.F_Longitude = d.user_location.lng;
+    da.head.F_Latitude = d.user_location.lat;
     // da.head.F_CreateTime = '';
     // da.head.F_CreateUserName = d.name;
     da.head.F_CustomerAddress = d.self_city;
@@ -444,23 +458,60 @@ Page({
       });
     };
     console.log(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify(da)}`);
-
+    wx.showLoading({
+      title: '提交中',
+    });
     wx.request({
       url: app.path(1) + "/pdaapi/SubmitOrder", // 仅为示例，并非真实的接口地址
       data: {
         sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify(da)}`).toUpperCase(),
         version: app.path(3),
-        data: da
+        data: JSON.stringify(da)
       },
       header: {
-        'content-type': 'application/json' // 默认值
+        'content-type': 'application/x-www-form-urlencoded'
       },
+      method: "POST",
       success(res) {
         console.log(res.data)
-        wx.navigateTo({
-          url: '../pays/pays'
-        });
+        if (res.data.code === 200) {
+          wx.hideLoading()
+          wx.navigateTo({
+            url: '../pays/pays?OrdeNo=' + res.data.data.OrdeNo
+          });
+        } else {
+          wx.hideLoading();
+          wx.showToast({
+            title: '提交失败',
+            image: "../../image/error.png",
+            duration: 2000
+          })
+        };
       }
+    });
+  },
+  get_addr(obj, type) {
+    if (!obj || obj.length < 4){
+      return false;
+    };
+    var _this = this;
+    qqmapsdk.search({
+      keyword: obj,
+      auto_extend:1,
+      success: function(res) {
+        _this.setData({
+          user_location: res.data[0].location
+        })
+        console.log(res.data[0].location)
+      },
+      fail: function(res) {
+        console.log(res);
+      }
+    });
+  },
+  go_help(event) {
+    wx.navigateTo({
+      url: '/pages/help/help?type=' + event.target.dataset.type,
     });
   },
 })

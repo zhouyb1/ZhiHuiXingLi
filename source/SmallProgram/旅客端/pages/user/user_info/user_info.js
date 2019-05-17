@@ -34,7 +34,7 @@ Page({
             sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify({ OpenId: res.data.openId })}`).toUpperCase(),
             version: app.path(3),
             data: {
-             OpenId: res.data.openId
+              OpenId: res.data.openId
             }
           },
           header: {
@@ -43,13 +43,22 @@ Page({
           method: "GET",
           success(res) {
             console.log(res.data)
-            wx.hideLoading()
-            var d = JSON.parse(res.data.data);
-            _this.setData({
-              name: d.FullName,
-              phone: d.Phone,
-              card: d.IDCard
-            })
+            if (res.data.code === 200) {
+              wx.hideLoading()
+              var d = JSON.parse(res.data.data);
+              _this.setData({
+                name: d.FullName,
+                phone: d.Phone,
+                card: d.IDCard
+              })
+            } else {
+              wx.hideLoading();
+              wx.showToast({
+                title: '获取失败',
+                image: "../../../image/error.png",
+                duration: 2000
+              })
+            };
           }
         })
       }
@@ -157,9 +166,12 @@ Page({
     var da = {
       FullName: obj.name,
       Phone: obj.phone,
-      IDCard: obj.id ,
+      IDCard: obj.id,
       OpenId: d.open.openId
-    }
+    };
+    wx.showLoading({
+      title: '',
+    });
     wx.request({
       url: app.path(1) + "/pdaapi/saveuserinfo",
       data: {
@@ -172,30 +184,34 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       success(res) {
-        console.log(res.data)
+       if(res.data){}
       }
     })
   },
   getPhoneNumber(e) {
-    console.log(e)
+    var _this = this;
     wx.request({
       url: app.path(1) + "/pdaapi/getphone",
       data: {
         sign: app.path(2),
         version: app.path(3),
-        data: {
-          errMsg: e.detail.errMsg,
+        data: JSON.stringify({
           iv: e.detail.iv,
-          encryptedData: e.detail.encryptedData,
-          sessionId: this.data.open.sessionId
-        }
+          encrytedData: e.detail.encryptedData,
+          sessionId: _this.data.open.sessionId,
+          errMsg: e.detail.errMsg,
+        })
       },
       header: {
-        'content-type': 'application/json'
+        'content-type': 'application/x-www-form-urlencoded'
       },
-      method: "GET",
+      method: "POST",
       success(res) {
-        console.log(res.data)
+        if (res.data.code === 200) {
+          _this.setData({
+            phone: res.data.data
+          })
+        }
       }
     })
   }

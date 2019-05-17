@@ -238,12 +238,12 @@ Page({
               data: {
                 sign: app.path(2),
                 version: app.path(3),
-                data: (JSON.stringify({
+                data: JSON.stringify({
                   customerInfo: customerInfo
-                }))
+                })
               },
               header: {
-                'content-type': 'application/json' // 默认值
+                'content-type': 'application/x-www-form-urlencoded'
               },
               method: "POST",
               success(res) {

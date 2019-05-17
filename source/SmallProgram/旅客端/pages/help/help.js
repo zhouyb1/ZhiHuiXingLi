@@ -12,11 +12,22 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options);
     if (options.type==='1'){
       this.setData({
         type:"xxx协议"
       })
-    }
+    };
+    if (options.type === '2') {
+      this.setData({
+        type: "服务流程"
+      })
+    };
+    if (options.type === '3') {
+      this.setData({
+        type: "下单规则"
+      })
+    };
   },
 
   /**
