@@ -78,16 +78,6 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         [Column("DATETIMEENDREALITY")]
         public DateTime? DateTimeEndReality { get; set; }
-        /// <summary>
-        /// 经度
-        /// </summary>
-        [Column("F_LONGITUDE")]
-        public decimal? F_Longitude { get; set; }
-        /// <summary>
-        /// 纬度
-        /// </summary>
-        [Column("F_LATITUDE")]
-        public decimal? F_Latitude { get; set; }
         #endregion
 
         #region 扩展操作
