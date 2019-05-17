@@ -140,6 +140,30 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 }
             }
         }
+        /// <summary>
+        /// 批量修改订单状态（未分拣-分拣中）
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <param name="status"></param>
+        /// <param name="Operator"></param>
+        public void UpdateBatchOrderStatus(string status, out string errText)
+        {
+            try
+            {
+                billServerApiService.UpdateBatchOrderStatus(status, out errText);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
 
         /// <summary>
         /// 根据订单状态查询订单列表

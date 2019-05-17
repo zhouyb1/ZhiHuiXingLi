@@ -191,6 +191,39 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         }
 
         /// <summary>
+        /// 批量修改订单状态（未分拣-分拣中）
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <param name="status"></param>
+        /// <param name="Operator"></param>
+        /// <param name="errText"></param>
+        public void UpdateBatchOrderStatus(string status, out string errText)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status WHERE FB_State=@FB_State");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@FB_State", 2);
+                dp.Add("@Status", status);
+                this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
+                errText = "修改成功!";
+            }
+            catch (Exception ex)
+            {
+                errText = "修改失败!";
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 根据订单状态查询订单列表
         /// </summary>
         /// <param name="status"></param>

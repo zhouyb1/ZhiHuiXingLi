@@ -24,7 +24,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/SerGetFlightList"] = SerGetFlightList; // 根据航班号获取航班时间列表
             Get["/ExpressInformation"] = ExpressInformation;//分拣完成后填写快递信息
             Get["/ReasonNoMessage"] = ReasonNoMessage;//根据航班号获取航班信息
-            Get["/SorterLogin"] = SorterLogin;//分拣员登录
+            Get["/SorterLogin"] = SorterLogin;//分拣员登录 
+            Get["/UpdateBatchOrderStatus"] = UpdateBatchOrderStatus;//批量修改订单状态（未分拣-分拣中）
         }
         private SmallProgramServerApiIBLL billServerApiBLL = new SmallProgramServerApiBLL();
 
@@ -112,6 +113,25 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             string Operator = req["Operator"].ToString(); //操作人
             string errText = "";
             billServerApiBLL.UpdateOrderStatus(OrderNo, ConsignmentNumber, status, Operator, out errText);
+            return Success(errText);
+        }
+
+        /// <summary>
+        /// 批量修改订单状态（未分拣-分拣中）
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response UpdateBatchOrderStatus(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject();// 获取模板请求数据
+            if (req["status"].IsEmpty())
+            {
+                return Fail("订单状态不能为空!");
+            }
+            string status = req["status"].ToString();  //订单状态
+            
+            string errText = "";
+            billServerApiBLL.UpdateBatchOrderStatus(status, out errText);
             return Success(errText);
         }
 

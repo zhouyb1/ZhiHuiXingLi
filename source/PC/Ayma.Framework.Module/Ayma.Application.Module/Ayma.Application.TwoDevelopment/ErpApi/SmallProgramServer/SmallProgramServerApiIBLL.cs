@@ -52,8 +52,17 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// <param name="OrderNo"></param>
         /// <param name="status"></param>
         /// <param name="Operator"></param>
-        /// <param name="errText"></param>
+        /// <param name="errText"></param> 
         void UpdateOrderStatus(string OrderNo,string ConsignmentNumber, string status, string Operator, out string errText);
+
+        /// <summary>
+        /// 批量修改订单状态（未分拣-分拣中）
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <param name="status"></param>
+        /// <param name="Operator"></param>
+        /// <param name="errText"></param> 
+        void UpdateBatchOrderStatus(string status, out string errText);
 
         /// <summary>
         /// 根据订单状态获取订单列表
