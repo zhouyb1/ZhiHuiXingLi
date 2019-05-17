@@ -44,13 +44,17 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/GetOrderList"] = GetOrderList; //获取航班列表
             Get["/GetOrderDetailByNo"] = GetOrderDetailByNo;//获取订详情
             Post["/SubmitOrder"] = SubmitOrder; //提交订单
+            Get["/GetUserInfo"] = GetUserInfo;
+            Get["GetOrderInfo"] = GetOrderInfo;//获取指定订单
             //Get["/GetOrderListByStatus"] = GetOrderListByStatus;//根据订单状态查询订单列表
             Post["/OnLogin"] = OnLogin;
             Post["/SaveUserInfo"] = SaveUserInfo;
             Post["/Register"] = Register;
             Post["/CancelOrder"] = CancelOrder;
-            Get["/GetUserInfo"] = GetUserInfo;
+          
             Post["/GetPhone"] = GetPhone;
+
+
 
         }
         private SmallProgramClientApiBLL billClientApiBLL = new SmallProgramClientApiBLL();
@@ -71,6 +75,21 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 return Fail("没有数据!");
             }
+        }
+
+        /// <summary>
+        /// 获取指定订单详情
+        /// </summary>
+        /// <returns></returns>
+        public Response GetOrderInfo(dynamic _)
+        {
+            var orderNo = this.GetReqData().ToJObject()["OrderNo"].ToString();
+            if (orderNo.IsEmpty())
+            {
+                return Fail("订单号为空");
+            }
+            var orderEntity = order.GetOrderInfoByNo(orderNo);
+            return Success(orderEntity);
         }
 
         /// <summary>
@@ -189,10 +208,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 if (SubmitOrderModelApi.Head.F_OpenId.IsEmpty())
                 {
                     return Fail("订单头不能为空！");
-                }
-                if (SubmitOrderModelApi.Head.F_CreateStype.IsEmpty())
-                {
-                    return Fail("订单类型为空");
                 }
                 if (SubmitOrderModelApi.Head.F_CustomerAddress.IsEmpty())
                 {
