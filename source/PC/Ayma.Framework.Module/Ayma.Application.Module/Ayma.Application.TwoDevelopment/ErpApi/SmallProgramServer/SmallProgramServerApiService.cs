@@ -259,5 +259,43 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 }
             }
         }
+
+        /// <summary>
+        /// 根据航班号获取订单信息
+        /// </summary>
+        /// <param name="FlightNumber"></param>
+        /// <returns></returns>
+        public IEnumerable<OrderHeadModelApi> ReasonNoMessage(string FlightNumber, string OrderDate)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"select * from T_OrderHead A LEFT JOIN T_OrderBody B on
+                                  A.F_OrderNo=b.F_OrderNo
+                                  LEFT JOIN T_FlightNoInfo c on
+                                  A.F_FlightNumber=c.F_FlightNumber
+                                  where 1=1");
+                if (!string.IsNullOrEmpty(FlightNumber))
+                {
+                    strSql.Append(" AND A.F_FlightNumber=@F_FlightNumber");
+                }
+                strSql.Append(" OR A.F_OrderDate = @F_OrderDate");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@F_FlightNumber", FlightNumber);
+                dp.Add("@F_OrderDate", OrderDate);
+                return this.BaseRepository().FindList<OrderHeadModelApi>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
     }
 }

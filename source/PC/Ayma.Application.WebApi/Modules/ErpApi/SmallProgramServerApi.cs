@@ -21,8 +21,40 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/GetOrderListByStatus"] = GetOrderListByStatus; //根据订单状态获取订单列表
             Get["/SerGetOrderDetailByNo"] = SerGetOrderDetailByNo; //根据订单号获取订单详情
             Get["/SerGetFlightList"] = SerGetFlightList; // 根据航班号获取航班时间列表
+            Get["/ExpressInformation"] = ExpressInformation;//分拣完成后填写快递信息
+            Get["/ReasonNoMessage"] = ReasonNoMessage;//根据航班号获取航班信息
         }
         private SmallProgramServerApiIBLL billServerApiBLL = new SmallProgramServerApiBLL();
+
+
+
+
+        /// <summary>
+        /// 填写快递公司,单号,费用信息
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response ExpressInformation(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject();//获取模板请求数据
+            if (req["F_ExpressCompanyId"].IsEmpty())
+            {
+                return Fail("快递公司不能为空!");
+            }
+            if (req["F_ExpressNO"].IsEmpty())
+            {
+                return Fail("快递单号不能为空!");
+            }
+            if (req["F_Amount"].IsEmpty())
+            {
+                return Fail("费用不能为空");
+            }
+
+            return 1;
+        }
+
+
+
 
         /// <summary>
         /// 修改订单状态
@@ -121,6 +153,22 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             else
             {
                 return Fail("没有数据!");
+            }
+        }
+
+        public Response ReasonNoMessage(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject(); //获取模板请求数据
+            string FlightNumber = req["FlightNumber"].ToString(); //航班号
+            string OrderDate = req["OrderDate"].ToString();//日期
+            var data = billServerApiBLL.ReasonNoMessage(FlightNumber,OrderDate);
+            if (data.Count() > 0)
+            {
+                return Success(data);
+            }
+            else 
+            {
+                return Fail("没有订单记录!");
             }
         }
 

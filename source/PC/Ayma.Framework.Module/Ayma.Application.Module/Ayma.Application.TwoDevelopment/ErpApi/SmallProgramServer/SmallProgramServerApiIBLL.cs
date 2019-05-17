@@ -58,5 +58,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// <param name="ConsignmentNumber"></param>
         /// <returns></returns>
         IEnumerable<GetFlightListByFNo> SerGetFlightList(string FlightNumber);
+        /// <summary>
+        /// 根据航班号获取订单记录
+        /// </summary>
+        /// <param name="ConsignmentNumber"></param>
+        /// <returns></returns>
+        IEnumerable<OrderHeadModelApi> ReasonNoMessage(string FlightNumber,string OrderDate);
     }
 }

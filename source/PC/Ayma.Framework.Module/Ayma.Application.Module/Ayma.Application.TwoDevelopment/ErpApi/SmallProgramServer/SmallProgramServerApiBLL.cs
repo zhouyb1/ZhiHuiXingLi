@@ -162,6 +162,29 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 }
             }
         }
+        /// <summary>
+        /// 根据航班号获取订单信息
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        public IEnumerable<OrderHeadModelApi> ReasonNoMessage(string FlightNumber,string OrderDate)
+        {
+            try
+            {
+                return billServerApiService.ReasonNoMessage(FlightNumber, OrderDate);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
 
     }
 }
