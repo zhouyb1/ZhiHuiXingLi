@@ -156,6 +156,11 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
         }
 
+       /// <summary>
+       /// 根据航班号或航班号+日期查询订单列表
+       /// </summary>
+       /// <param name="_"></param>
+       /// <returns></returns>
         public Response ReasonNoMessage(dynamic _)
         {
             var req = this.GetReqData().ToJObject(); //获取模板请求数据

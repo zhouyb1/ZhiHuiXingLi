@@ -63,6 +63,6 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="ConsignmentNumber"></param>
         /// <returns></returns>
-        IEnumerable<OrderHeadModelApi> ReasonNoMessage(string FlightNumber,string OrderDate);
+        IEnumerable<GetFlightListByDate> ReasonNoMessage(string FlightNumber, string OrderDate);
     }
 }

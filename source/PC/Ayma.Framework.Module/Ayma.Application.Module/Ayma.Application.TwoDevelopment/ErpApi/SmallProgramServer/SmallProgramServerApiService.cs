@@ -265,12 +265,18 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="FlightNumber"></param>
         /// <returns></returns>
-        public IEnumerable<OrderHeadModelApi> ReasonNoMessage(string FlightNumber, string OrderDate)
+        public IEnumerable<GetFlightListByDate> ReasonNoMessage(string FlightNumber, string OrderDate)
         {
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"select * from T_OrderHead A LEFT JOIN T_OrderBody B on
+                strSql.Append(@"select 
+                                    A.F_FlightNumber,
+                                    A.F_AirfieldFloor,
+                                    B.F_ConsignmentNumber,
+                                    A.F_OrderNo,
+                                    A.F_State
+                                    from T_OrderHead A LEFT JOIN T_OrderBody B on
                                   A.F_OrderNo=b.F_OrderNo
                                   LEFT JOIN T_FlightNoInfo c on
                                   A.F_FlightNumber=c.F_FlightNumber
@@ -283,7 +289,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 var dp = new DynamicParameters(new { });
                 dp.Add("@F_FlightNumber", FlightNumber);
                 dp.Add("@F_OrderDate", OrderDate);
-                return this.BaseRepository().FindList<OrderHeadModelApi>(strSql.ToString(), dp);
+                return this.BaseRepository().FindList<GetFlightListByDate>(strSql.ToString(), dp);
             }
             catch (Exception ex)
             {

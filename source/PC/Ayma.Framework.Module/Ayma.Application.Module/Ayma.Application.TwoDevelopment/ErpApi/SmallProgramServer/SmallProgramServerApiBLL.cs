@@ -167,7 +167,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
-        public IEnumerable<OrderHeadModelApi> ReasonNoMessage(string FlightNumber,string OrderDate)
+        public IEnumerable<GetFlightListByDate> ReasonNoMessage(string FlightNumber, string OrderDate)
         {
             try
             {
