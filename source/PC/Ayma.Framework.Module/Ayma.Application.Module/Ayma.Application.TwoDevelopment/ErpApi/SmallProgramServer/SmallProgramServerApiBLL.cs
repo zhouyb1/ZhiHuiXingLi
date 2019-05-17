@@ -67,6 +67,31 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         }
 
         /// <summary>
+        /// 保存快递信息
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <param name="status"></param>
+        /// <param name="Operator"></param>
+        public void ExpressInformation(string OrderNo, string ConsignmentNumber, string ExpressCompanyId, string ExpressNO, string PayType, string Amount, out string errText)
+        {
+            try
+            {
+                billServerApiService.ExpressInformation(OrderNo, ConsignmentNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 修改订单状态
         /// </summary>
         /// <param name="OrderNo"></param>

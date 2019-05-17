@@ -37,20 +37,35 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         public Response ExpressInformation(dynamic _)
         {
             var req = this.GetReqData().ToJObject();//获取模板请求数据
-            if (req["F_ExpressCompanyId"].IsEmpty())
+            if (req["OrderNo"].IsEmpty())
+            {
+                return Fail("订单号不能为空!");
+            }
+            if (req["ConsignmentNumber"].IsEmpty())
+            {
+                return Fail("行李号不能为空!");
+            }
+            if (req["ExpressCompanyId"].IsEmpty())
             {
                 return Fail("快递公司不能为空!");
             }
-            if (req["F_ExpressNO"].IsEmpty())
+            if (req["ExpressNO"].IsEmpty())
             {
                 return Fail("快递单号不能为空!");
             }
-            if (req["F_Amount"].IsEmpty())
+            if (req["Amount"].IsEmpty())
             {
                 return Fail("费用不能为空");
             }
-
-            return 1;
+            string OrderNo = req["OrderNo"].ToString();  //订单号
+            string ConsignmentNumber = req["ConsignmentNumber"].ToString();  //行李号
+            string ExpressCompanyId = req["ExpressCompanyId"].ToString();  //快递公司
+            string ExpressNO = req["ExpressNO"].ToString(); //快递单号
+            string PayType = req["PayType"].ToString(); //收款方式
+            string Amount = req["Amount"].ToString(); //快递费用
+            string errText = "";
+            billServerApiBLL.ExpressInformation(OrderNo, ConsignmentNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
+            return Success(errText);
         }
 
 

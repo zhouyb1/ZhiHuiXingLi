@@ -30,6 +30,15 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         IEnumerable<T_OrderBodyEntity> GetConsignmentNumber(string ConsignmentNumber);
 
         /// <summary>
+        /// 保存快递信息
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <param name="status"></param>
+        /// <param name="Operator"></param>
+        /// <param name="errText"></param>
+        void ExpressInformation(string OrderNo, string ConsignmentNumber, string ExpressCompanyId, string ExpressNO, string PayType, string Amount, out string errText);
+
+        /// <summary>
         /// 修改订单状态
         /// </summary>
         /// <param name="OrderNo"></param>

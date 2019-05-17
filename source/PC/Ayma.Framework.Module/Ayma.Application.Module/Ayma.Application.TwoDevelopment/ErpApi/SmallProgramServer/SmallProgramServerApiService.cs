@@ -54,6 +54,53 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             }
         }
 
+        public void ExpressInformation(string OrderNo, string ConsignmentNumber, string ExpressCompanyId, string ExpressNO, string PayType,string Amount,out string errText)
+        {
+            try
+            {
+                var InSql = new StringBuilder();
+                InSql.Append(@"INSERT  INTO dbo.T_OrderPayMoney
+                                            ( F_Id ,
+                                                F_OrderNo ,
+                                                F_ConsignmentNumber ,
+                                                F_ExpressCompanyId ,
+                                                F_ExpressNO ,
+                                                F_PayType,
+                                                F_Amount  
+                                            )
+                                    VALUES  ( @F_Id,
+                                                @F_OrderNo,
+                                                @F_ConsignmentNumber ,
+                                                @F_ExpressCompanyId,
+                                                @F_ExpressNO ,
+                                                @F_PayType,
+                                                @F_Amount
+                                            )");
+                var param = new DynamicParameters(new { });
+                param.Add("@F_Id", Guid.NewGuid().ToString());
+                param.Add("@F_OrderNo", OrderNo);
+                param.Add("@F_ConsignmentNumber", ConsignmentNumber);
+                param.Add("@F_ExpressCompanyId", ExpressCompanyId);
+                param.Add("@F_ExpressNO", ExpressNO);
+                param.Add("@F_PayType", PayType);
+                param.Add("@F_Amount", Amount);
+                this.BaseRepository().ExecuteBySql(InSql.ToString(), param);
+                errText = "保存成功!";
+            }
+            catch (Exception ex)
+            {
+                errText = "保存失败!";
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
         /// <summary>
         /// 修改订单状态
         /// </summary>
