@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Ayma.Util;
+using System.Text.RegularExpressions;
 
 namespace Ayma.Application.WebApi.Modules.ErpApi
 {
@@ -56,6 +57,10 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             if (req["Amount"].IsEmpty())
             {
                 return Fail("费用不能为空");
+            }
+            if (!Regex.IsMatch(req["Amount"].ToString(), @"^[0-9]*$"))
+            {
+                return Fail("费用只能为数字");
             }
             string OrderNo = req["OrderNo"].ToString();  //订单号
             string ConsignmentNumber = req["ConsignmentNumber"].ToString();  //行李号
