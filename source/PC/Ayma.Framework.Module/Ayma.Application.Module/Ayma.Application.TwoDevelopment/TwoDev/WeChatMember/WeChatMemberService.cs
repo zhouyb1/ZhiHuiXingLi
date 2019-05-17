@@ -134,12 +134,12 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 if (!string.IsNullOrEmpty(keyValue))
                 {
                     entity.Modify(keyValue);
-                    this.BaseRepository("BaseDb").Update(entity);
+                    this.BaseRepository().Update(entity);
                 }
                 else
                 {
                     entity.Create();
-                    this.BaseRepository("BaseDb").Insert(entity);
+                    this.BaseRepository().Insert(entity);
                 }
             }
             catch (Exception ex)

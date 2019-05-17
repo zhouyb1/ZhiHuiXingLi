@@ -218,16 +218,19 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
 
         public void SubmitOrder(BillMakeBaseModelAPi SubmitOrderModelApi, string OrderNo, out string errText)
         {
+            //追加事务
+            var db = this.BaseRepository().BeginTrans();
             try
             {
                 //订单表头
                 var strSql = new StringBuilder();
-                strSql.Append(@"INSERT INTO dbo.T_OrderHead ( F_Id ,F_AirfieldId ,F_AirfieldName ,F_AirfieldFloor ,F_FlightCompany , F_FlightNumber ,F_OrderDate , F_OrderNo ,
+                strSql.Append(
+                    @"INSERT INTO dbo.T_OrderHead ( F_Id ,F_AirfieldId ,F_AirfieldName ,F_AirfieldFloor ,F_FlightCompany , F_FlightNumber ,F_OrderDate , F_OrderNo ,
                               F_CustomerName ,F_CustomerPhone , F_CustomerAddress ,F_CustomerRemarks ,F_CreateStype ,F_State ,F_Stype ,F_CreateTime ,F_CreateUserName ,
                               F_OpenId ,F_IsUrgent)
                               VALUES(@F_Id,@F_AirfieldId,@F_AirfieldName,@F_AirfieldFloor,@F_FlightCompany,@F_FlightNumber,@F_OrderDate,@F_OrderNo,@F_CustomerName,
                               @F_CustomerPhone,@F_CustomerAddress,@F_CustomerRemarks,@F_CreateStype,@F_State,@F_Stype,@F_CreateTime,@F_CreateUserName,@F_OpenId,@F_IsUrgent)");
-                var dp = new DynamicParameters(new { });
+                var dp = new DynamicParameters(new {});
                 dp.Add("@F_Id", Guid.NewGuid().ToString());
                 dp.Add("@F_AirfieldId", SubmitOrderModelApi.Head.F_AirfieldId);
                 dp.Add("@F_AirfieldName", SubmitOrderModelApi.Head.F_AirfieldName);
@@ -247,30 +250,40 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 dp.Add("@F_CreateUserName", "system");
                 dp.Add("@F_OpenId", SubmitOrderModelApi.Head.F_OpenId);
                 dp.Add("@F_IsUrgent", SubmitOrderModelApi.Head.F_IsUrgent);
-                this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
+                db.ExecuteBySql(strSql.ToString(), dp);
 
                 //订单内容
                 foreach (var item in SubmitOrderModelApi.OrderDetails)
                 {
                     var strInsert = new StringBuilder();
-                    strInsert.Append(@"INSERT INTO dbo.T_OrderBody ( F_Id ,F_OrderNo , F_ConsignmentNumber ,F_Weight ,F_Distance ,F_Price ,F_Qty,FB_State )
+                    strInsert.Append(
+                        @"INSERT INTO dbo.T_OrderBody ( F_Id ,F_OrderNo , F_ConsignmentNumber ,F_Weight ,F_Distance ,F_Price ,F_Qty,FB_State )
                                     VALUES ( @F_Id ,@F_OrderNo , @F_ConsignmentNumber ,@F_Weight ,@F_Distance ,@F_Price ,@F_Qty ,@FB_State)
                                     ");
-                    var para = new DynamicParameters(new { });
+                    var para = new DynamicParameters(new {});
                     para.Add("@F_Id", Guid.NewGuid().ToString());
-                    para.Add("@F_OrderNo",OrderNo);
+                    para.Add("@F_OrderNo", OrderNo);
                     para.Add("@F_ConsignmentNumber", item.F_ConsignmentNumber);
                     para.Add("@F_Weight", item.F_Weight);
                     para.Add("@F_Distance", item.F_Distance);
-                    para.Add("@F_Price", 49);
+                    if (SubmitOrderModelApi.Head.F_IsUrgent.Equals("加急"))
+                    {
+                        para.Add("@F_Price", 49 + 2);
+                    }
+                    else
+                    {
+                        para.Add("@F_Price", 49);
+                    }
                     para.Add("@F_Qty", item.F_Qty);
                     para.Add("@FB_State", OrderStatus.未分拣);
-                    this.BaseRepository().ExecuteBySql(strInsert.ToString(), para);
+                    db.ExecuteBySql(strInsert.ToString(), para);
                 }
+                db.Commit();
                 errText = "订单提交成功!";
             }
             catch (Exception ex)
             {
+                db.Rollback();//回滚事务
                 errText = "订单提交失败!";
                 if (ex is ExceptionEx)
                 {
@@ -282,6 +295,5 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 }
             }
         }
-
     }
 }
