@@ -190,6 +190,30 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         }
 
         /// <summary>
+        /// 获取所有快递公司
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public IEnumerable<T_ExpressCompanyEntity> GetExpressCompany()
+        {
+            try
+            {
+                return billServerApiService.GetExpressCompany();
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 根据行李号获取订单详细
         /// </summary>
         /// <param name="OrderNo"></param>

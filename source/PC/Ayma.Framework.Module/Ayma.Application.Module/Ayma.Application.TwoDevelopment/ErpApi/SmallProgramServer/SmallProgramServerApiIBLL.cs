@@ -70,6 +70,12 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// <param name="status"></param>
         /// <returns></returns>
         IEnumerable<OrderListModelApi> GetOrderListByStatus(string status);
+        /// <summary>
+        /// 获取所有快递公司记录
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        IEnumerable<T_ExpressCompanyEntity> GetExpressCompany();
 
         /// <summary>
         /// 根据行李号获取订单详情

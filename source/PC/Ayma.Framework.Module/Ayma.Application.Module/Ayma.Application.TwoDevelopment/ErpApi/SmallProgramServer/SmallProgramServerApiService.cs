@@ -260,6 +260,31 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 }
             }
         }
+        /// <summary>
+        /// 获取所有快递公司记录
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<T_ExpressCompanyEntity> GetExpressCompany()
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"select F_ExpressCompanyName from T_ExpressCompany WHERE 1=1");
+                var dp = new DynamicParameters(new { });
+                return this.BaseRepository().FindList<T_ExpressCompanyEntity>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
 
         /// <summary>
         /// 根据订单号获取订单头

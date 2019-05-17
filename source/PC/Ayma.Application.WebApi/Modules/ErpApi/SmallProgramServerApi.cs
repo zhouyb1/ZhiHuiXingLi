@@ -24,8 +24,9 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/SerGetFlightList"] = SerGetFlightList; // 根据航班号获取航班时间列表
             Get["/ExpressInformation"] = ExpressInformation;//分拣完成后填写快递信息
             Get["/ReasonNoMessage"] = ReasonNoMessage;//根据航班号获取航班信息
-            Get["/SorterLogin"] = SorterLogin;//分拣员登录 
+            Get["/SorterLogin"] = SorterLogin;//分拣员登录  
             Get["/UpdateBatchOrderStatus"] = UpdateBatchOrderStatus;//批量修改订单状态（未分拣-分拣中）
+            Get["/GetExpressCompany"] = GetExpressCompany;//获取所有快递公司记录
         }
         private SmallProgramServerApiIBLL billServerApiBLL = new SmallProgramServerApiBLL();
 
@@ -167,13 +168,32 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
        /// <summary>
        /// 根据订单状态获取订单列表
        /// </summary>
-       /// <param name="_"></param>
+        /// <param name="_"></param> 
        /// <returns></returns>
         public Response GetOrderListByStatus(dynamic _)
         {
             var req = this.GetReqData().ToJObject(); //获取模板请求数据
             string status = req["status"].ToString(); //订单状态
             var data = billServerApiBLL.GetOrderListByStatus(status);
+            if (data.Count() > 0)
+            {
+                return Success(data);
+            }
+            else
+            {
+                return Fail("没有数据!");
+            }
+        }
+
+        /// <summary>
+        /// 获取所有快递公司信息
+        /// </summary>
+        /// <param name="_"></param> 
+        /// <returns></returns>
+        public Response GetExpressCompany(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject(); //获取模板请求数据
+            var data = billServerApiBLL.GetExpressCompany();
             if (data.Count() > 0)
             {
                 return Success(data);
