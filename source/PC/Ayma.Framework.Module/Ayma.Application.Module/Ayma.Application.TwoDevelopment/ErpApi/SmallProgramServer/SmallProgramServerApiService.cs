@@ -202,9 +202,9 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status WHERE FB_State=@FB_State");
+                strSql.Append(@"UPDATE T_OrderHead SET F_State=@Status WHERE F_State=@F_State");
                 var dp = new DynamicParameters(new { });
-                dp.Add("@FB_State", 2);
+                dp.Add("@F_State", 2);
                 dp.Add("@Status", status);
                 this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
                 errText = "修改成功!";

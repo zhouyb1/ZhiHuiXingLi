@@ -45,10 +45,10 @@
       <publishTime>05/17/2019 19:04:49</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Mapping.dll">
-      <publishTime>05/17/2019 19:04:56</publishTime>
+      <publishTime>05/17/2019 19:39:51</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Mapping.pdb">
-      <publishTime>05/17/2019 19:04:56</publishTime>
+      <publishTime>05/17/2019 19:39:51</publishTime>
     </File>
     <File Include="bin/Ayma.Application.OA.dll">
       <publishTime>05/17/2019 19:04:50</publishTime>
@@ -69,16 +69,16 @@
       <publishTime>05/17/2019 19:04:53</publishTime>
     </File>
     <File Include="bin/Ayma.Application.TwoDevelopment.dll">
-      <publishTime>05/17/2019 19:04:55</publishTime>
+      <publishTime>05/17/2019 19:39:50</publishTime>
     </File>
     <File Include="bin/Ayma.Application.TwoDevelopment.pdb">
-      <publishTime>05/17/2019 19:04:55</publishTime>
+      <publishTime>05/17/2019 19:39:50</publishTime>
     </File>
     <File Include="bin/Ayma.Application.WebApi.dll">
-      <publishTime>05/17/2019 19:04:57</publishTime>
+      <publishTime>05/17/2019 19:42:40</publishTime>
     </File>
     <File Include="bin/Ayma.Application.WebApi.pdb">
-      <publishTime>05/17/2019 19:04:57</publishTime>
+      <publishTime>05/17/2019 19:42:40</publishTime>
     </File>
     <File Include="bin/Ayma.Application.WorkFlow.dll">
       <publishTime>05/17/2019 19:04:54</publishTime>
@@ -273,7 +273,10 @@
       <publishTime>05/13/2019 15:33:38</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>05/17/2019 19:04:58</publishTime>
+      <publishTime>05/17/2019 19:42:41</publishTime>
+    </File>
+    <File Include="Properties/PublishProfiles/FolderProfile.pubxml.user">
+      <publishTime>05/17/2019 19:16:38</publishTime>
     </File>
     <File Include="Web.config">
       <publishTime>05/17/2019 15:28:12</publishTime>
