@@ -23,7 +23,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         [Column("F_AIRFIELDID")]
         public string F_AirfieldId { get; set; }
         /// <summary>
-        /// 机场名称
+        /// 机场名称(到达站)
         /// </summary>
         [Column("F_AIRFIELDNAME")]
         public string F_AirfieldName { get; set; }
@@ -109,6 +109,24 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         [Column("F_ISURGENT")]
         public string F_IsUrgent { get; set; }
+
+        /// <summary>
+        /// 始发站
+        /// </summary>
+        [Column("F_STARTSTATION")]
+        public string F_StartStation { get; set; }
+        /// <summary>
+        /// 经度
+        /// </summary>
+        [Column("F_LONGITUDE")]
+        public decimal? F_Longitude { get; set; }
+        /// <summary>
+        /// 纬度
+        /// </summary>
+        [Column("F_LATITUDE")]
+        public decimal? F_Latitude { get; set; }
+
+
         #endregion
 
         #region 扩展操作
