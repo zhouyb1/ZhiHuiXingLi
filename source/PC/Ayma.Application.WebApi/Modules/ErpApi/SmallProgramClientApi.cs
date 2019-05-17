@@ -12,6 +12,7 @@ using System.Web;
 using Ayma.Util;
 using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient;
 using Senparc.CO2NET.HttpUtility;
+using Senparc.NeuChar.Helpers;
 using Senparc.Weixin.TenPay;
 using Senparc.Weixin.TenPay.V3;
 using Senparc.Weixin.WxOpen;
@@ -189,6 +190,26 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 {
                     return Fail("订单头不能为空！");
                 }
+                if (SubmitOrderModelApi.Head.F_CreateStype.IsEmpty())
+                {
+                    return Fail("订单类型为空");
+                }
+                if (SubmitOrderModelApi.Head.F_CustomerAddress.IsEmpty())
+                {
+                    return Fail("收件地址不能为空");
+                }
+                if (SubmitOrderModelApi.Head.F_CustomerName.IsEmpty())
+                {
+                    return Fail("收件人为空");
+                }
+                if (SubmitOrderModelApi.Head.F_FlightNumber.IsEmpty())
+                {
+                    return Fail("航班号为空");
+                }
+                if (SubmitOrderModelApi.Head.F_CustomerPhone.IsEmpty())
+                {
+                    return Fail("手机号为空");
+                }
                 if (SubmitOrderModelApi.OrderDetails.Count == 0)
                 {
                     return Fail("订单内容不能为空！");
@@ -204,7 +225,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             new CodeRuleBLL().UseRuleSeed("10001", "System");
             string errText = "";
             billClientApiBLL.SubmitOrder(SubmitOrderModelApi, orderNo, out errText);
-            return Success(errText);
+            return Success("ok",new{OrdeNo=orderNo});
         }
 
         /// <summary>
@@ -314,7 +335,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             //var customer = customerIbll.GetT_CustomerInfoEntity(openId);
             //customer.F_Phone = phoneData.phoneNumber;
             //customerIbll.SaveEntity(openId, customer);
-            return Success(phoneData.phoneNumber);
+            return Success("ok",phoneData.phoneNumber);
         }
 
         /// <summary>
