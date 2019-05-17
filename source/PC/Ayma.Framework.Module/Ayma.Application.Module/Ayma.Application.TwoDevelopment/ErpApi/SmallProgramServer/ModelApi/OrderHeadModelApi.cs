@@ -167,4 +167,76 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         public string F_State { get; set; }
 
     }
+
+    public class EmployeeInfoModelApi
+    {
+        /// <summary>
+        /// Id
+        /// </summary>
+        public string F_Id { get; set; }
+        /// <summary>
+        /// 微信OpenId
+        /// </summary>
+        public string F_Openid { get; set; }
+        /// <summary>
+        /// 微信名称
+        /// </summary>
+        public string F_Nickname { get; set; }
+        /// <summary>
+        /// 性别
+        /// </summary>
+        public string F_Sex { get; set; }
+        /// <summary>
+        /// 语言
+        /// </summary>
+        public string F_Language { get; set; }
+        /// <summary>
+        /// 城市
+        /// </summary>
+        public string F_City { get; set; }
+        /// <summary>
+        /// 省份
+        /// </summary>
+        public string F_Province { get; set; }
+        /// <summary>
+        /// 国家
+        /// </summary>
+        public string F_Country { get; set; }
+        /// <summary>
+        /// 图像地址
+        /// </summary>
+        public string F_Headimgurl { get; set; }
+        /// <summary>
+        /// 联系电话
+        /// </summary>
+        public string F_Phone { get; set; }
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime F_CreateTime { get; set; }
+        /// <summary>
+        /// 身份证号码
+        /// </summary>
+        public string F_IdCard { get; set; }
+        /// <summary>
+        /// 真实姓名
+        /// </summary>
+        public string F_Name { get; set; }
+        /// <summary>
+        /// 工号
+        /// </summary>
+        public string F_Code { get; set; }
+        /// <summary>
+        /// 密码
+        /// </summary>
+        public string F_PassWord { get; set; }
+        /// <summary>
+        /// 等级
+        /// </summary>
+        public string F_Grade { get; set; }
+        /// <summary>
+        /// 分数
+        /// </summary>
+        public int F_Fraction { get; set; }
+    }
 }

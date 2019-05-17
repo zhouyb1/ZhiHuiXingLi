@@ -24,6 +24,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/SerGetFlightList"] = SerGetFlightList; // 根据航班号获取航班时间列表
             Get["/ExpressInformation"] = ExpressInformation;//分拣完成后填写快递信息
             Get["/ReasonNoMessage"] = ReasonNoMessage;//根据航班号获取航班信息
+            Get["/SorterLogin"] = SorterLogin;//分拣员登录
         }
         private SmallProgramServerApiIBLL billServerApiBLL = new SmallProgramServerApiBLL();
 
@@ -112,6 +113,35 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             string errText = "";
             billServerApiBLL.UpdateOrderStatus(OrderNo, ConsignmentNumber, status, Operator, out errText);
             return Success(errText);
+        }
+
+        /// <summary>
+        /// 分拣员登录
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response SorterLogin(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject();// 获取模板请求数据
+            if (req["Code"].IsEmpty())
+            {
+                return Fail("账户不能为空!");
+            }
+            if (req["PassWord"].IsEmpty())
+            {
+                return Fail("密码不能为空!");
+            }
+            string Code = req["Code"].ToString();  //登录账户
+            string PassWord = req["PassWord"].ToString();  //登录密码
+            string errText = "";
+            var EmployeeEntity = billServerApiBLL.SorterLogin(Code, PassWord, out errText);
+            if (EmployeeEntity!=null)
+            {
+                return Success(errText);
+            }
+            else {
+                return Fail("登录失败!");
+            }
         }
 
        /// <summary>

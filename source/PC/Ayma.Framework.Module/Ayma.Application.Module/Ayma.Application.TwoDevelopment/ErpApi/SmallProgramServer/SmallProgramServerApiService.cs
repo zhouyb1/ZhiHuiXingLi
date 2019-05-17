@@ -350,5 +350,31 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 }
             }
         }
+
+        /// <summary>
+        /// 分拣员登录  EmployeeInfoModelApi
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <param name="PassWord"></param>
+        public T_EmployeeInfoEntity SorterLogin(string Code, string PassWord, out string errText)
+        {
+            try
+            {
+                errText = "登录成功";
+                return this.BaseRepository().FindEntity<T_EmployeeInfoEntity>(c => c.F_Code == Code && c.F_PassWord == PassWord);
+            }
+            catch (Exception ex)
+            {
+                errText = "登录失败";
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
     }
 }

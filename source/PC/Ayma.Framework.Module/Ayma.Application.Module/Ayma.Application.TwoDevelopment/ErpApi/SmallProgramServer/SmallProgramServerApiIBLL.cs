@@ -30,6 +30,14 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         IEnumerable<T_OrderBodyEntity> GetConsignmentNumber(string ConsignmentNumber);
 
         /// <summary>
+        /// 分拣员登录
+        /// </summary>
+        /// <param name="Code"></param>
+        /// <param name="PassWord"></param>
+        /// <returns></returns>
+        T_EmployeeInfoEntity SorterLogin(string Code, string PassWord, out string errText);
+
+        /// <summary>
         /// 保存快递信息
         /// </summary>
         /// <param name="OrderNo"></param>

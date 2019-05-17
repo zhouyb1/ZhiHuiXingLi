@@ -67,6 +67,31 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         }
 
         /// <summary>
+        /// 分拣员登录
+        /// </summary>
+        /// <param name="Code"></param>
+        /// <param name="PassWord"></param>
+        /// <returns></returns>
+        public T_EmployeeInfoEntity SorterLogin(string Code, string PassWord, out string errText)
+        {
+            try
+            {
+                return billServerApiService.SorterLogin(Code, PassWord, out errText);
+            }
+            catch (Exception ex)
+            {
+              if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 保存快递信息
         /// </summary>
         /// <param name="OrderNo"></param>
