@@ -74,15 +74,12 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
 
                      var list = this.BaseRepository().FindList<T_OrderBodyEntity>(c => c.F_OrderNo == OrderNo).OrderByDescending(c => c.FB_State);
                      var State = list.Last().FB_State; //获取订单下最后一个行李号的状态
-                     if (list.Count() <= 1)
-                     { 
                      var strUpdate = new StringBuilder();
                      strUpdate.Append(@"UPDATE T_OrderHead SET F_State=@F_State WHERE F_OrderNo=@F_OrderNo");
                      var par = new DynamicParameters(new { });
                      par.Add("@F_State", State);
                      par.Add("@F_OrderNo", OrderNo);
                      this.BaseRepository().ExecuteBySql(strUpdate.ToString(), par);
-                     }
 
                  var StateDescribe="";
                  switch (State)
