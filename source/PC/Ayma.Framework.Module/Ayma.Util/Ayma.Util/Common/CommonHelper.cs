@@ -162,6 +162,9 @@ namespace Ayma.Util
         }
         #endregion
 
+        #region 计算地球任意两点的距离
+        //地球半径，单位米
+        private const double EARTH_RADIUS = 6378137;
         /// <summary>
         /// 计算两点位置的距离，返回两点的距离，单位：米
         /// 该公式为GOOGLE提供，误差小于0.2米
@@ -190,6 +193,7 @@ namespace Ayma.Util
         private static double Rad(double d)
         {
             return d * Math.PI / 180d;
-        }
+        } 
+        #endregion
     }
 }
