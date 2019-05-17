@@ -157,7 +157,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         }
 
        /// <summary>
-       /// 根据航班号或航班号+日期查询订单列表
+       /// 根据航班号或航班号+日期查询订单查询订单列表
        /// </summary>
        /// <param name="_"></param>
        /// <returns></returns>
