@@ -148,6 +148,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <Content Include="port.png" />
+    <Content Include="Properties\PublishProfiles\FolderProfile.pubxml.user" />
     <Content Include="XmlConfig\database.config" />
     <Content Include="XmlConfig\ioc.config" />
     <Content Include="XmlConfig\log4net.config" />
