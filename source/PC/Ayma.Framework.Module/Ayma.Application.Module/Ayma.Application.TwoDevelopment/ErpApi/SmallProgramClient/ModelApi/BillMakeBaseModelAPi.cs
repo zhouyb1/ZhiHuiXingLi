@@ -14,12 +14,17 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
     public class BillMakeTempModelApi
     {
         /// <summary>
+        /// 新增始发站
+        /// </summary>
+        public string F_StartStation { get; set; }
+
+        /// <summary>
         /// 机场Id
         /// </summary>
         public string F_AirfieldId { get; set; }
 
         /// <summary>
-        /// 机场名称
+        /// 机场名称（终点站）
         /// </summary>
         public string F_AirfieldName { get; set; }
 
@@ -97,11 +102,19 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
         /// 微信OpenId
         /// </summary>
         public string F_OpenId { get; set; }
-
         /// <summary>
         /// 普通、加急
         /// </summary>
         public string F_IsUrgent { get; set; }
+        /// <summary>
+        /// 新增经度 2019年5月17日18:40:45
+        /// </summary>
+        public string F_Longitude { get; set; }
+
+        /// <summary>
+        /// 新增纬度2019年5月17日18:41:19
+        /// </summary>
+        public string F_Latitude { get; set; }
     }
 
     public class BillMakeTempBModelApi

@@ -1,4 +1,5 @@
 ﻿using System.CodeDom;
+using System.Linq;
 using System.Security.Permissions;
 using Dapper;
 using Ayma.DataBase.Repository;
@@ -197,6 +198,65 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
                 return this.BaseRepository().FindList<T_OrderPayMoneyEntity>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 根据订单号获取订单 edit by Yabo,Zhou
+        /// </summary>
+        /// <param name="orderNo"></param>
+        /// <returns></returns>
+        public OrderModel GetOrderInfoByNo(string orderNo)
+        {
+            try
+            {
+                var sql = @"SELECT 
+                           F_AirfieldName
+                          ,F_FlightNumber
+                          ,F_OrderNo
+                          ,F_CustomerName
+                          ,F_CustomerPhone
+                          ,F_CustomerAddress
+                          ,F_State
+                          ,F_StartStation
+     FROM T_OrderHead where F_OrderNo =@F_OrderNo";
+                var dp = new DynamicParameters(new {});
+                dp.Add("F_OrderNo", orderNo);
+                var order= this.BaseRepository().FindEntity<OrderModel>(sql, dp);
+                order.Details = GetOrderDetails(orderNo).ToList();
+                return order;
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        public IEnumerable<Details> GetOrderDetails(string orderNo)
+        {
+            try
+            {
+                return this.BaseRepository()
+                       .FindList<T_OrderBodyEntity>(c => c.F_OrderNo == orderNo)
+                       .Select(c => new Details { ConsignmentNumber = c.F_ConsignmentNumber });
             }
             catch (Exception ex)
             {

@@ -138,6 +138,32 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
             }
         }
 
+        /// <summary>
+        /// 根据订单号获取订单
+        /// </summary>
+        /// <param name="orderNo"></param>
+        /// <returns></returns>
+        public OrderModel GetOrderInfoByNo(string orderNo)
+        {
+            try
+            {
+                return orderInquiryService.GetOrderInfoByNo(orderNo);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        
+
         #endregion
 
         #region 提交数据

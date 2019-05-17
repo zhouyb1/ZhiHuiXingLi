@@ -1,4 +1,5 @@
 ﻿using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi;
+using Ayma.Application.TwoDevelopment.TwoDev;
 using Ayma.DataBase.Repository;
 using Ayma.Util;
 using Dapper;
@@ -12,6 +13,8 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
 {
     public partial class SmallProgramClientApiService : RepositoryFactory
     {
+
+        private AirportMessageService airportService = new AirportMessageService();
         /// <summary>
         /// 获取机场列表
         /// </summary>
@@ -227,9 +230,9 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 strSql.Append(
                     @"INSERT INTO dbo.T_OrderHead ( F_Id ,F_AirfieldId ,F_AirfieldName ,F_AirfieldFloor ,F_FlightCompany , F_FlightNumber ,F_OrderDate , F_OrderNo ,
                               F_CustomerName ,F_CustomerPhone , F_CustomerAddress ,F_CustomerRemarks ,F_CreateStype ,F_State ,F_Stype ,F_CreateTime ,F_CreateUserName ,
-                              F_OpenId ,F_IsUrgent)
+                              F_StartStation,F_Longitude,F_Latitude,F_OpenId ,F_IsUrgent)
                               VALUES(@F_Id,@F_AirfieldId,@F_AirfieldName,@F_AirfieldFloor,@F_FlightCompany,@F_FlightNumber,@F_OrderDate,@F_OrderNo,@F_CustomerName,
-                              @F_CustomerPhone,@F_CustomerAddress,@F_CustomerRemarks,@F_CreateStype,@F_State,@F_Stype,@F_CreateTime,@F_CreateUserName,@F_OpenId,@F_IsUrgent)");
+                              @F_CustomerPhone,@F_CustomerAddress,@F_CustomerRemarks,@F_CreateStype,@F_State,@F_Stype,@F_CreateTime,@F_CreateUserName,@F_StartStation,@F_Longitude,@F_Latitude,@F_OpenId,@F_IsUrgent)");
                 var dp = new DynamicParameters(new {});
                 dp.Add("@F_Id", Guid.NewGuid().ToString());
                 dp.Add("@F_AirfieldId", SubmitOrderModelApi.Head.F_AirfieldId);
@@ -248,9 +251,20 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 dp.Add("@F_Stype", SubmitOrderModelApi.Head.F_Stype);
                 dp.Add("@F_CreateTime", DateTime.Now);
                 dp.Add("@F_CreateUserName", "system");
+                //新增 2019年5月17日18:51:57
+                dp.Add("@F_StartStation", SubmitOrderModelApi.Head.F_StartStation);//起点站
+                dp.Add("@F_Longitude", SubmitOrderModelApi.Head.F_Longitude);//经度(寄件地址)
+                dp.Add("@F_Latitude", SubmitOrderModelApi.Head.F_Latitude);//纬度(寄件地址)
+                //
                 dp.Add("@F_OpenId", SubmitOrderModelApi.Head.F_OpenId);
                 dp.Add("@F_IsUrgent", SubmitOrderModelApi.Head.F_IsUrgent);
                 db.ExecuteBySql(strSql.ToString(), dp);
+                //两点之间的距离计算(计算机场与寄件地址的距离)规划
+                //var endStation = airportService.GetT_AirfieldInfoEntity(SubmitOrderModelApi.Head.F_AirfieldId);
+                //var distance = CommonHelper.GetDistance(endStation.F_Longitude.ToDouble(),
+                //    endStation.F_Latitude.ToDouble(),
+                //    SubmitOrderModelApi.Head.F_Longitude.ToDouble(), SubmitOrderModelApi.Head.F_Latitude.ToDouble());
+
 
                 //订单内容
                 foreach (var item in SubmitOrderModelApi.OrderDetails)

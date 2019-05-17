@@ -1,4 +1,5 @@
-﻿using Ayma.Util;
+﻿using System.Security.Cryptography.X509Certificates;
+using Ayma.Util;
 using System.Collections.Generic;
 
 namespace Ayma.Application.TwoDevelopment.TwoDev
@@ -42,6 +43,14 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// <param name="keyValue">主键</param>
         /// <returns></returns>
         IEnumerable<T_OrderPayMoneyEntity> GetT_OrderPayMoneyEntity(string keyValue);
+        /// <summary>
+        /// 根据订单号获取订单
+        /// </summary>
+        /// <param name="orderNo"></param>
+        /// <returns></returns>
+        OrderModel GetOrderInfoByNo(string orderNo);
+
+         
         #endregion
 
         #region 提交数据
