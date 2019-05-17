@@ -107,10 +107,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
 
             this.sign = req.sign;
             this.version = req.version;
-            if (string.IsNullOrEmpty(this.sign))
-            {
-                return this.Fail("sign不能为空");
-            }
             if (string.IsNullOrEmpty(this.version))
             {
                 return this.Fail("version不能为空");
@@ -143,7 +139,10 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 return null;
             }
-
+            if (string.IsNullOrEmpty(this.sign))
+            {
+                return this.Fail("sign不能为空");
+            }
             var pdakey = Config.GetValue("pdakey");//pda签名key
             var serverSign = "";
             var data = req.data;
