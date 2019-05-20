@@ -1,5 +1,7 @@
 ﻿using System.Net;
+using System.Runtime.Remoting.Channels;
 using System.Text.RegularExpressions;
+using System.Web.UI.WebControls;
 using Ayma.Application.TwoDevelopment.ErpDev;
 using Ayma.Application.TwoDevelopment.TwoDev;
 using Ayma.Util;
@@ -51,7 +53,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Post["/SaveUserInfo"] = SaveUserInfo;
             Post["/Register"] = Register;
             Post["/CancelOrder"] = CancelOrder;
-          
+            Get["/NotifyUrl"] = NotifyUrl;
             Post["/GetPhone"] = GetPhone;
 
 
@@ -360,6 +362,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         /// <returns></returns>
         private Response OnLogin(dynamic _)
         {
+           var s= HttpContext.Current.Request.PhysicalApplicationPath;
             try
             {
                 var code = this.GetReqData().ToJObject()["code"].ToString(); //获取code 
@@ -430,36 +433,44 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         /// <returns></returns>
         public Response WxPay(dynamic _)
         {
-            //接收订单号
-            var orderNo = this.GetReqData().ToJObject()["orderNo"].ToString();
-            var openId = this.GetReqData().ToJObject()["openId"].ToString();
-            //订单合理性校正
-            var ordeEntity = order.GetT_OrderHeadEntity(orderNo);
-            if (ordeEntity == null)
+            try
             {
-                return Fail("订单不存在");
-            }
-            WXConfig wx = new WXConfig();
-            TenPayV3UnifiedorderRequestData xmlDataInfo = new TenPayV3UnifiedorderRequestData(wx.AppId, wx.MchId, "智慧行李",
-    orderNo, 2, Net.Ip, wx.NotifyUrl, TenPayV3Type.JSAPI, openId, Config.GetValue("key"), TenPayV3Util.GetNoncestr());
+                //接收订单号
+                var orderNo = this.GetReqData().ToJObject()["orderNo"].ToString();
+                var openId = this.GetReqData().ToJObject()["openId"].ToString();
+                //订单合理性校正
+                var ordeEntity = order.GetT_OrderHeadEntity(orderNo);
+                if (ordeEntity == null)
+                {
+                    return Fail("订单不存在");
+                }
+                WXConfig wx = new WXConfig();
+                TenPayV3UnifiedorderRequestData xmlDataInfo = new TenPayV3UnifiedorderRequestData(wx.AppId, wx.MchId, "智慧行李",
+        orderNo, 2, Net.Ip, wx.NotifyUrl, TenPayV3Type.JSAPI, openId, wx.Key, TenPayV3Util.GetNoncestr());
 
-            //接收微信服务器传来的数据并进行二次加密
-            var result = TenPayV3.Unifiedorder(xmlDataInfo);
-            if (result.result_code == "SUCCESS" && result.return_code == "SUCCESS")
-            {
-                Logger.Info("订单：" + order + "预支付申请成功");
-                //返回给小程序
-                WxPayData jsApiParam = new WxPayData();
-                var prepay_id = string.Format("prepay_id={0}", result.prepay_id);
-                var timeStamp = TenPayV3Util.GetTimestamp();
-                jsApiParam.SetValue("timeStamp", timeStamp);
-                jsApiParam.SetValue("nonceStr", result.nonce_str);
-                jsApiParam.SetValue("package", prepay_id);
-                jsApiParam.SetValue("signType", "MD5");
-                jsApiParam.SetValue("paySign", TenPayV3.GetJsPaySign(result.appid, timeStamp, result.nonce_str, prepay_id, Config.GetValue("PayKey")));
-                return Success("请求成功", jsApiParam.ToJson());
+                //接收微信服务器传来的数据并进行二次加密
+                var result = TenPayV3.Unifiedorder(xmlDataInfo);
+                if (result.result_code == "SUCCESS" && result.return_code == "SUCCESS")
+                {
+                    Logger.Info("订单：" + order + "预支付申请成功");
+                    //返回给小程序
+                    WxPayData jsApiParam = new WxPayData();
+                    var prepay_id = string.Format("prepay_id={0}", result.prepay_id);
+                    var timeStamp = TenPayV3Util.GetTimestamp();
+                    jsApiParam.SetValue("timeStamp", timeStamp);
+                    jsApiParam.SetValue("nonceStr", result.nonce_str);
+                    jsApiParam.SetValue("package", prepay_id);
+                    jsApiParam.SetValue("signType", "MD5");
+                    jsApiParam.SetValue("paySign", TenPayV3.GetJsPaySign(result.appid, timeStamp, result.nonce_str, prepay_id, Config.GetValue("PayKey")));
+                    return Success("请求成功", jsApiParam.ToJson());
+                }
+                return Fail("JSAPI下单失败");
             }
-            return Fail("JSAPI下单失败");
+            catch (Exception)
+            {
+                return Fail("JSAPI下单失败");
+                throw;
+            }
         }
 
         /// <summary>
@@ -556,11 +567,14 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
             var nonceStr = TenPayV3Util.GetNoncestr();
             //发起退款申请
-            TenPayV3RefundRequestData data = new TenPayV3RefundRequestData(Config.GetValue("AppId"),
-                Config.GetValue("MchId"), Config.GetValue("PayKey"), null, nonceStr, "traind", orderNo, orderNo, 23, 23,Config.GetValue("MchId") ,"REFUND_SOURCE_RECHARGE_FUNDS");
+            WXConfig config = new WXConfig();
+            //获取订单总金额
+            var orderAmount =order.GetT_OrderBodyEntity(orderNo).Sum(c=>c.F_Price*c.F_Qty);
+            TenPayV3RefundRequestData data = new TenPayV3RefundRequestData(config.AppId,
+                config.MchId, config.Key, null, nonceStr, null, orderNo, orderNo, orderAmount.ToInt(), orderAmount.ToInt(), config.MchId, "REFUND_SOURCE_RECHARGE_FUNDS");
             //获取服务器证书目录
-            var cert = HttpContext.Current.Server.MapPath("/");
-            var result = TenPayV3.Refund(data, cert, Config.GetValue("Mchid"));
+            var certPath = @"D:\Ayma_File\HTTPS证书\1533655241_20190517_cert";
+            var result = TenPayV3.Refund(data, certPath, Config.GetValue("Mchid"));
 
             Logger.Info("订单"+orderNo+ "微信退款返回xml"+ result.ResultXml);  //记录日志
             if (result.result_code.ToUpper()=="SUCCESSS")

@@ -107,15 +107,13 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
 
             this.sign = req.sign;
             this.version = req.version;
-            if (string.IsNullOrEmpty(this.version))
-            {
-                return this.Fail("version不能为空");
-            }
+            
             //配置data 参数可以为空
             string[] ReqPath = new[]
             {
                 "/pdaapi/GetAirPort",
                 "/pdaapi/getemployeelist",
+                "/pdaapi/notifyurl"
  
             };
             if (!ReqPath.Contains(path.ToLower()))
@@ -132,12 +130,17 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 "/pdaapi/saledatadetailupload",
                 "/pdaapi/onlogin",
                 "/pdaapi/register",
-                "/pdaapi/getphone"
+                "/pdaapi/getphone",
+                "/pdaapi/notifyurl"
             };
 
             if (ReqSign.Contains(path.ToLower()))
             {
                 return null;
+            }
+            if (string.IsNullOrEmpty(this.version))
+            {
+                return this.Fail("version不能为空");
             }
             if (string.IsNullOrEmpty(this.sign))
             {
