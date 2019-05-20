@@ -62,6 +62,23 @@ var bootstrap = function ($, ayma) {
                     });
                 }
             });
+            // 查看收付款项
+            $('#am_putpay').on('click', function () {
+                var keyValue = $('#girdtable').jfGridValue('F_Id');
+                if (ayma.checkrow(keyValue)) {
+                    ayma.layerForm({
+                        id: 'form',
+                        title: '订单收付款',
+                        url: top.$.rootUrl + '/TwoDev/OrderInquiry/PutpayMoney?keyValue=' + keyValue + '',
+                        width: 900,
+                        height: 610,
+                        maxmin: true,
+                        callBack: function (id) {
+                            return top[id].acceptClick(refreshGirdData);
+                        }
+                    });
+                }
+            });
             // 查看物流信息
             $('#am_logdetail').on('click', function () {
                 var keyValue = $('#girdtable').jfGridValue('F_Id');

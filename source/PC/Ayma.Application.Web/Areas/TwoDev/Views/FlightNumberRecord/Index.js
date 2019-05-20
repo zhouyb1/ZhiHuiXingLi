@@ -37,8 +37,8 @@ var bootstrap = function ($, ayma) {
                         id: 'form',
                         title: '编辑',
                         url: top.$.rootUrl + '/TwoDev/FlightNumberRecord/Form?keyValue=' + keyValue,
-                        width: 600,
-                        height: 400,
+                        width: 500,
+                        height: 340,
                         maxmin: true,
                         callBack: function (id) {
                             return top[id].acceptClick(refreshGirdData);
@@ -67,27 +67,16 @@ var bootstrap = function ($, ayma) {
                 headData: [
                     //{ label: "标示", name: "F_Id", width: 160, align: "left"},
                     //{ label: "机场Id", name: "F_AirfieldId", width: 160, align: "left"},
-                    { label: "机场名称", name: "F_AirfieldName", width: 160, align: "left"},
-                    { label: "传送带号", name: "F_ConveyorNumber", width: 160, align: "left" },
-                    { label: "航站楼", name: "F_AirfieldFloor", width: 160, align: "left"},
-                    { label: "航空公司", name: "F_FlightCompany", width: 160, align: "left"},
-                    { label: "航班号", name: "F_FlightNumber", width: 160, align: "left"},
-                    { label: "起飞地址", name: "AddressBegin", width: 160, align: "left"},
-                    { label: "到达地址", name: "AddressEnd", width: 160, align: "left"},
-                    {
-                        label: "起飞时间", name: "DateTimeBegin", width: 160, align: "left",
-                        formatter: function (cellvalue, options, rowObject) 
-                        {
-                            return ayma.formatDate(cellvalue, 'hh:mm');
-                        }
-                    },
-                    {
-                        label: "计划到达时间", name: "DateTimeEnd", width: 160, align: "left",
-                        formatter: function (cellvalue, options, rowObject) {
-                            return ayma.formatDate(cellvalue, 'hh:mm');
-                        }
-                    },
-                    { label: "实际到达时间", name: "DateTimeEndReality", width: 160, align: "left" },
+                    { label: "机场名称", name: "F_AirfieldName", width: 160, align: "left", sort: true },
+                    { label: "传送带号", name: "F_ConveyorNumber", width: 160, align: "left", sort: true },
+                    { label: "航站楼", name: "F_AirfieldFloor", width: 160, align: "left", sort: true },
+                    { label: "航空公司", name: "F_FlightCompany", width: 160, align: "left", sort: true },
+                    { label: "航班号", name: "F_FlightNumber", width: 160, align: "left", sort: true },
+                    { label: "起飞地址", name: "AddressBegin", width: 160, align: "left", sort: true },
+                    { label: "到达地址", name: "AddressEnd", width: 160, align: "left", sort: true },
+                    { label: "起飞时间", name: "DateTimeBegin", width: 160, align: "left", sort: true },
+                    { label: "计划到达时间", name: "DateTimeEnd", width: 160, align: "left", sort: true },
+                    { label: "实际到达时间", name: "DateTimeEndReality", width: 160, align: "left", sort: true },
                 ],
                 mainId:'F_Id',
                 reloadSelected: true,

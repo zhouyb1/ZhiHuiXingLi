@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "收付款";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="am-layout">
+    <div class="am-layout-center">
+                <div class="am-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="am_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    @*<div class=" btn-group btn-group-sm" ayma-authorize="yes">
+                        <a id="am_import" class="btn btn-default"><i class="fa fa-sign-in"></i>&nbsp;快速导入</a>
+                        <a id="am_export" class="btn btn-default"><i class="fa fa-sign-in"></i>&nbsp;导出Excel</a>
+                    </div>*@
+                </div>
+            <!--分tab显示-->
+            <ul id="pageTab" class="nav nav-tabs">
+                <li class="active">
+                    <a href="#page_formal" data-toggle="tab">收款</a>
+                </li>
+                <li>
+                    <a href="#page_temp" data-toggle="tab">付款</a>
+                </li>
+            </ul>
+            <div id="pageTabContent" class="tab-content" style="width: 100%; height: 100%">
+                <div class="tab-pane fade in active" id="page_formal" style="width: 100%; height: 100%">
+                    <div class="am-layout-body" id="girdtable_formal"></div>
+                </div>
+                <div class="tab-pane fade" id="page_temp" style="width: 100%; height: 100%">
+                    <div class="am-layout-body" id="girdtable_temp"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+@Html.AppendJsFile("/Areas/TwoDev/Views/OrderInquiry/PutpayMoney.js")
+

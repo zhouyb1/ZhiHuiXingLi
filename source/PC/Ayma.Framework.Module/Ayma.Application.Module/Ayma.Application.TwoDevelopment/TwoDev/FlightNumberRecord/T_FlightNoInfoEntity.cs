@@ -67,12 +67,12 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// 起飞时间
         /// </summary>
         [Column("DATETIMEBEGIN")]
-        public DateTime? DateTimeBegin { get; set; }
+        public string DateTimeBegin { get; set; }
         /// <summary>
         /// 到达时间
         /// </summary>
         [Column("DATETIMEEND")]
-        public DateTime? DateTimeEnd { get; set; }
+        public string DateTimeEnd { get; set; }
         /// <summary>
         /// 实际到达时间
         /// </summary>

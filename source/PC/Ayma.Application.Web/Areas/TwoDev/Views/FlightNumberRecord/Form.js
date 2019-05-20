@@ -25,7 +25,6 @@ $('.am-form-wrap').mCustomScrollbar({theme: "minimal-dark"});
                 // 访问数据接口地址
                 url: top.$.rootUrl + '/TwoDev/FlightNumberRecord/GetList',
             });
-
             //$("#DateTimeBegin").val(formatDate(new Date(), "hh:mm"));
             
         },
@@ -37,6 +36,9 @@ $('.am-form-wrap').mCustomScrollbar({theme: "minimal-dark"});
                         }
                         else {
                             $('[data-table="' + id + '"]').SetFormData(data[id]);
+                            $('#DateTimeBegin').val(ayma.formatDate("2000-01-01 " + data[id].DateTimeBegin, "hh:mm"));
+                            $('#DateTimeEnd').val(ayma.formatDate("2000-01-01 " + data[id].DateTimeEnd, "hh:mm"));
+                            //$("#DateTimeEndReality").val(ayma.formatDate("2000-01-01 " + data[id].DateTimeEndReality, "yyyy-MM-dd hh:mm"))
                         }
                     }
                 });

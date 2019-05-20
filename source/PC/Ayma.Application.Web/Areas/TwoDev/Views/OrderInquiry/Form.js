@@ -9,11 +9,12 @@ var bootstrap = function ($, ayma) {
     var page = {
         init: function () {
             $('.am-form-wrap').mCustomScrollbar({ theme: "minimal-dark" });
-            page.initGird();
+            //page.initGird();
             page.bind();
             page.initData();
         },
         bind: function () {
+            //根据状态值判断是否显示分拣/出港操作按钮
             if (state == 41)
             {
                 $("#am_sortingg").show();
@@ -56,7 +57,7 @@ var bootstrap = function ($, ayma) {
                     });
                 }
             });
-
+            //详情表单
             $('#T_OrderBody').jfGrid({
                 headData:
                     [
@@ -96,7 +97,7 @@ var bootstrap = function ($, ayma) {
                     ],
                 isEidt: true,
                 footerrow: true,
-                height: 210,
+                height: 420,
                 isStatistics: true,
                 isMultiselect: true
             });
@@ -114,36 +115,6 @@ var bootstrap = function ($, ayma) {
                     }
                 });
             }
-        },
-        // 初始化列表
-        initGird: function () {
-            //收款数据
-            $('#girdtable_formal').jfGrid({
-                url: top.$.rootUrl + '/TwoDev/OrderInquiry/GetOrderCollectMoney?keyValue=' + keyValue + '',
-                headData: [
-                    { label: "订单号", name: "F_OrderNo", width: 160, align: "left"},
-                    { label: "收款方式", name: "F_PayType", width: 160, align: "left" },
-                    { label: "收款金额(元)", name: "F_Amount", width: 100, align: "left" }
-                ],
-                mainId: 'F_Id',
-                reloadSelected: true
-            });
-            page.search();
-            //付款数据
-            $('#girdtable_temp').jfGrid({
-                url: top.$.rootUrl + '/TwoDev/OrderInquiry/GetOrderPayMoney?keyValue=' + keyValue + '',
-                headData: [
-                    { label: "订单号", name: "F_OrderNo", width: 160, align: "left"},
-                    { label: "航班托运单号", name: "F_ConsignmentNumber", width: 160, align: "left" },
-                    { label: "快递公司", name: "F_ExpressCompanyId", width: 100, align: "left" },
-                    { label: "快递单号", name: "F_ExpressNO", width: 100, align: "left"},
-                    { label: "收款方式", name: "F_PayType", width: 160, align: "left" },
-                    { label: "收款金额(元)", name: "F_Amount", width: 80, align: "left"}
-                ],
-                mainId: 'F_Id',
-                reloadSelected: true
-            });
-            page.search();
         },
         search: function (param) {
         param = param || {};

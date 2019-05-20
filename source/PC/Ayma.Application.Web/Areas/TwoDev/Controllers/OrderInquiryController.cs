@@ -46,6 +46,16 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// 收付款页面
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult PutpayMoney()
+        {
+            return View();
+        }
         #endregion
 
         #region 获取数据

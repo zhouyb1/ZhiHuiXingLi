@@ -50,8 +50,8 @@ var bootstrap = function ($, ayma) {
                     id: 'form',
                     title: '新增',
                     url: top.$.rootUrl + '/TwoDev/WeChatMember/Form',
-                    width: 600,
-                    height: 400,
+                    width: 500,
+                    height: 340,
                     maxmin: true,
                     callBack: function (id) {
                         return top[id].acceptClick(refreshGirdData);
@@ -66,8 +66,8 @@ var bootstrap = function ($, ayma) {
                         id: 'form',
                         title: '编辑',
                         url: top.$.rootUrl + '/TwoDev/WeChatMember/Form?keyValue=' + keyValue,
-                        width: 600,
-                        height: 400,
+                        width: 500,
+                        height: 340,
                         maxmin: true,
                         callBack: function (id) {
                             return top[id].acceptClick(refreshGirdData);

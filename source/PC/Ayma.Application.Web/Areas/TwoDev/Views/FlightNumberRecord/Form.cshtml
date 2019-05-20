@@ -42,7 +42,7 @@
     </div>
     <div class="col-xs-6 am-form-item"  data-table="T_FlightNoInfo" >
         <div class="am-form-item-title">起飞时间</div>
-        <input id="DateTimeBegin" type="datetime" class="form-control am-input-wdatepicker" onfocus="WdatePicker({dateFmt:'HH:mm'})" isvalid="no" checkexpession="HourSecond" />
+        <input id="DateTimeBegin" type="text" class="form-control am-input-wdatepicker" onfocus="WdatePicker({dateFmt:'HH:mm'})" isvalid="no" checkexpession="HourSecond" />
     </div>
     <div class="col-xs-6 am-form-item"  data-table="T_FlightNoInfo" >
         <div class="am-form-item-title">计划到达时间</div>
@@ -50,7 +50,8 @@
     </div>
     <div class="col-xs-6 am-form-item" data-table="T_FlightNoInfo">
         <div class="am-form-item-title">实际到达时间</div>
-        <input id="DateTimeEndReality" type="text" class="form-control am-input-wdatepicker" onfocus="WdatePicker({dateFmt:'HH:mm'})" isvalid="no" checkexpession="HourSecond" />
+        <input id="DateTimeEndReality" type="text" class="form-control am-input-wdatepicker" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm' })" />
+        @*  isvalid="no" checkexpession="HourSecond"*@
     </div>
 </div>
 @Html.AppendJsFile("/Areas/TwoDev/Views/FlightNumberRecord/Form.js")

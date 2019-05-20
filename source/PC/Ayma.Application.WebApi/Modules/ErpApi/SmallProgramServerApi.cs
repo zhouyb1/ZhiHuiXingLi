@@ -25,7 +25,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/SerGetOrderDetailByNo"] = SerGetOrderDetailByNo; //根据订单号获取订单详情
             Get["/SerGetFlightList"] = SerGetFlightList; // 根据航班号获取航班时间列表
             Get["/ExpressInformation"] = ExpressInformation;//分拣完成后填写快递信息
-            Get["/ReasonNoMessage"] = ReasonNoMessage;//根据航班号获取航班信息
+            Get["/ReasonNoMessage"] = ReasonNoMessage;//根据航班号或者时间获取航班信息
             Get["/SorterLogin"] = SorterLogin;//分拣员登录  
             Get["/UpdateBatchOrderStatus"] = UpdateBatchOrderStatus;//批量修改订单状态（未分拣-分拣中）
             Get["/GetExpressCompany"] = GetExpressCompany;//获取所有快递公司记录
