@@ -201,7 +201,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT F_ConsignmentNumber,F_Qty FROM T_OrderBody WHERE F_OrderNo=@OrderNo");
+                strSql.Append(@"SELECT h.F_OrderNo, F_ConsignmentNumber,F_Qty,F_Price,F_State FROM T_OrderBody b
+                                LEFT JOIN dbo.T_OrderHead h ON h.F_OrderNo = b.F_OrderNo  WHERE 1=1");
+                strSql.Append(" AND b.F_OrderNo=@OrderNo")
+                strSql.Append(" ORDER BY b.F_ConsignmentNumber")
                 var dp = new DynamicParameters(new { });
                 dp.Add("@OrderNo", OrderNo);
                 return this.BaseRepository().FindList<OrderDetailsModelApi>(strSql.ToString(), dp);
@@ -259,7 +262,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 dp.Add("@F_OpenId", SubmitOrderModelApi.Head.F_OpenId);
                 dp.Add("@F_IsUrgent", SubmitOrderModelApi.Head.F_IsUrgent);
                 db.ExecuteBySql(strSql.ToString(), dp);
-                //两点之间的距离计算(计算机场与寄件地址的距离)规划
+                //两点之间的距离计算(计算机场与寄件地址的距离)规则
                 //var endStation = airportService.GetT_AirfieldInfoEntity(SubmitOrderModelApi.Head.F_AirfieldId);
                 //var distance = CommonHelper.GetDistance(endStation.F_Longitude.ToDouble(),
                 //    endStation.F_Latitude.ToDouble(),
@@ -284,7 +287,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                     {
                         para.Add("@F_Price", 49 + 2);
                     }
-                    else
+                    else if (SubmitOrderModelApi.Head.F_IsUrgent.Equals("普通"))
                     {
                         para.Add("@F_Price", 49);
                     }
