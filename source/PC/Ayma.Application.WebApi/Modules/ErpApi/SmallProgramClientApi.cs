@@ -49,6 +49,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/GetUserInfo"] = GetUserInfo;
             Get["GetOrderInfo"] = GetOrderInfo;//获取指定订单
             //Get["/GetOrderListByStatus"] = GetOrderListByStatus;//根据订单状态查询订单列表
+            Get["/ClientUpdateOrder"] = ClientUpdateOrder; //修改订单状态-申请退款
             Post["/OnLogin"] = OnLogin;
             Post["/SaveUserInfo"] = SaveUserInfo;
             Post["/Register"] = Register;
@@ -199,7 +200,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         }
 
         
-
         //提交订单
         public Response SubmitOrder(dynamic _)
         {
@@ -244,6 +244,30 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             billClientApiBLL.SubmitOrder(SubmitOrderModelApi, orderNo, out errText);
             return Success("ok",new{OrdeNo=orderNo});
         }
+
+        /// <summary>
+        /// 修改订单状态-旅客申请退款
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response ClientUpdateOrder(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject();// 获取模板请求数据
+            if (req["OrderNo"].IsEmpty())
+            {
+                return Fail("订单号不能为空!");
+            }
+            if (req["status"].IsEmpty())
+            {
+                return Fail("订单状态不能为空!");
+            }
+            string OrderNo = req["OrderNo"].ToString();  //订单号
+            string status = req["status"].ToString();  //订单状态
+            string errText = "";
+            billClientApiBLL.ClientUpdateOrder(OrderNo, status, out errText);
+            return Success(errText);
+        }
+
 
         /// <summary>
         /// 提交车班补货单
