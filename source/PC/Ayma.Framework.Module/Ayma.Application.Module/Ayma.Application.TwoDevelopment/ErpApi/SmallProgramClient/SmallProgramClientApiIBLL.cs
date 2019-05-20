@@ -55,6 +55,14 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         /// <param name="OrderNo"></param>
         /// <param name="errText"></param>
         void SubmitOrder(BillMakeBaseModelAPi SubmitOrderModelApi, string OrderNo, out string errText);
+
+        /// <summary>
+        /// 修改订单状态-旅客申请退款
+        /// </summary>
+        /// <param name="SubmitOrderModelApi"></param>
+        /// <param name="OrderNo"></param>
+        /// <param name="errText"></param>
+        void ClientUpdateOrder(string OrderNo, string status, out string errText);
         
     }
 }
