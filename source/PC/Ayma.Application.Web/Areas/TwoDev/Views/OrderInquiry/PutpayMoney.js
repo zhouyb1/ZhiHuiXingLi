@@ -25,8 +25,8 @@ var bootstrap = function ($, ayma) {
                 url: top.$.rootUrl + '/TwoDev/OrderInquiry/GetOrderCollectMoney?keyValue=' + keyValue + '',
                 headData: [
                     //{ label: "ID", name: "F_Id", width: 160, align: "left", sort: true },
-                    { label: "收款方式", name: "F_PayType", width: 160, align: "left", sort: true },
                     { label: "订单号", name: "F_OrderNo", width: 160, align: "left", sort: true },
+                    { label: "收款方式", name: "F_PayType", width: 160, align: "left", sort: true },
                     { label: "收款金额(元)", name: "F_Amount", width: 100, align: "left", sort: true }
                 ],
                 mainId: 'F_Id',

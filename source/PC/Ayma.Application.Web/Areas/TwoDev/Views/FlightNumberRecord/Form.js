@@ -25,6 +25,8 @@ $('.am-form-wrap').mCustomScrollbar({theme: "minimal-dark"});
                 // 访问数据接口地址
                 url: top.$.rootUrl + '/TwoDev/FlightNumberRecord/GetList',
             });
+            //
+            //$("#F_AirfieldId").CompanySelect
             //$("#DateTimeBegin").val(formatDate(new Date(), "hh:mm"));
             
         },
