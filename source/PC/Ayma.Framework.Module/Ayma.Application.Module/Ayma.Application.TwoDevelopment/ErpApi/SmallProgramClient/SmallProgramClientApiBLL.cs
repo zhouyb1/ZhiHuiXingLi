@@ -154,11 +154,42 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             }
         }
 
+        /// <summary>
+        /// 提交订单
+        /// </summary>
+        /// <param name="SubmitOrderModelApi"></param>
+        /// <param name="OrderNo"></param>
+        /// <param name="errText"></param>
         public void SubmitOrder(BillMakeBaseModelAPi SubmitOrderModelApi, string OrderNo, out string errText)
         {
             try
             {
                 billClientApiService.SubmitOrder(SubmitOrderModelApi, OrderNo, out errText);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 修改订单状态-旅客申请退款
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <param name="status"></param>
+        /// <param name="errText"></param>
+        public void ClientUpdateOrder(string OrderNo, string status, out string errText)
+        {
+            try
+            {
+                billClientApiService.ClientUpdateOrder(OrderNo, status, out errText);
             }
             catch (Exception ex)
             {
