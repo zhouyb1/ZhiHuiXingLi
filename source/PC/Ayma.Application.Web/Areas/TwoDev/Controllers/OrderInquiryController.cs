@@ -107,15 +107,11 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
         {
             var T_OrderHeadData = orderInquiryIBLL.GetT_OrderHeadEntity(keyValue);
             var T_OrderCollectMoney = orderInquiryIBLL.GetT_OrderCollectMoneyEntity(T_OrderHeadData.F_OrderNo);
-            var jsonData = new
-            {
-                T_OrderCollectMoney = T_OrderCollectMoney,
-            };
-            return Success(jsonData);
+            return Success(T_OrderCollectMoney);
         }
 
         /// <summary>
-        /// 获取付款表数据  GetT_OrderCollectMoneyEntity
+        /// 获取付款表数据
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -124,11 +120,7 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
         {
             var T_OrderHeadData = orderInquiryIBLL.GetT_OrderHeadEntity(keyValue);
             var T_OrderCollectMoney = orderInquiryIBLL.GetT_OrderPayMoneyEntity(T_OrderHeadData.F_OrderNo);
-            var jsonData = new
-            {
-                T_OrderCollectMoney = T_OrderCollectMoney,
-            };
-            return Success(jsonData);
+            return Success(T_OrderCollectMoney);
         }
         
 
