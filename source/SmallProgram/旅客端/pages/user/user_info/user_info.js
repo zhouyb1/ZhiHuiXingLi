@@ -57,7 +57,7 @@ Page({
                 title: '获取失败',
                 image: "../../../image/error.png",
                 duration: 2000
-              })
+              });
             };
           }
         })
@@ -170,7 +170,7 @@ Page({
       OpenId: d.open.openId
     };
     wx.showLoading({
-      title: '',
+      title: '修改中',
     });
     wx.request({
       url: app.path(1) + "/pdaapi/saveuserinfo",
@@ -184,12 +184,29 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       success(res) {
-       if(res.data){}
+        if (res.data.code === 200) {
+          wx.hideLoading();
+          wx.showToast({
+            title: '修改成功',
+            icon: 'success',
+            duration: 2000
+          });
+        }else{
+          wx.hideLoading();
+          wx.showToast({
+            title: '修改失败',
+            image: "../../../image/error.png",
+            duration: 2000
+          });
+        };
       }
     })
   },
   getPhoneNumber(e) {
     var _this = this;
+    wx.showLoading({
+      title: '获取中',
+    });
     wx.request({
       url: app.path(1) + "/pdaapi/getphone",
       data: {
@@ -208,10 +225,18 @@ Page({
       method: "POST",
       success(res) {
         if (res.data.code === 200) {
+          wx.hideLoading();
           _this.setData({
             phone: res.data.data
-          })
-        }
+          });
+        }else{
+          wx.hideLoading();
+          wx.showToast({
+            title: '获取失败',
+            image: "../../../image/error.png",
+            duration: 2000
+          });
+        };
       }
     })
   }

@@ -1,15 +1,15 @@
 <!--pages/pays/pays.wxml-->
 <view class="text">航班信息</view>
-<view class='list'>航班号：</view>
-<view class='list'>航程：</view>
+<view class='list'>航班号：{{data.F_FlightNumber}}</view>
+<view class='list'>航程：{{data.F_StartStation}}-{{data.F_AirfieldName}}</view>
 
 <view class="text">旅客信息</view>
-<view class='list'>姓名：</view>
-<view class='list'>手机：</view>
-<view class='list'>地址：</view>
+<view class='list'>姓名：{{data.F_CustomerName}}</view>
+<view class='list'>手机：{{data.F_CustomerPhone}}</view>
+<view class='list'>地址：{{data.F_CustomerAddress}}</view>
 
 <view class="text">行李信息</view>
-<view class='list'>托运单号：</view>
+<view class='list' wx:for="{{data.Details}}" wx:key="{{item}}">托运单号：{{item.ConsignmentNumber}}</view>
 
 <view class="text">其他信息</view>
 <view class='list'>

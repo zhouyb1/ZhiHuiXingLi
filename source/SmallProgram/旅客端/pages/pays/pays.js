@@ -2,6 +2,8 @@
 const {
   $Toast
 } = require('../../dist/base/index');
+var md5 = require('../../dist/md5.js');
+var app = getApp();
 Page({
 
   /**
@@ -18,12 +20,14 @@ Page({
     multiIndex: [0, 0, 0],
     animal: '熊猫',
     checked: false,
+    data:''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    var _this = this;
     var times = new Date().getTime();
     var t = new Date(times + 86400000);
     var d = '';
@@ -47,6 +51,42 @@ Page({
     arrs[2] = this.data.multiArray[2]
     this.setData({
       multiArray: arrs
+    });
+    // 获取订单信息
+    wx.showLoading({
+      title: '加载中',
+    });
+    wx.request({
+      url: app.path(1) + "/pdaapi/GetOrderInfo", // 仅为示例，并非真实的接口地址
+      data: {
+        sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify({OrderNo: options.OrdeNo})}`).toUpperCase(),
+        version: app.path(3),
+        data: JSON.stringify({
+          OrderNo: options.OrdeNo
+        })
+      },
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      method: "GET",
+      success(res) {
+        console.log(res.data)
+        if(res.data.code === 200){
+          wx.hideLoading();
+          var d = JSON.parse(res.data.data);
+          _this.setData({
+            data: d
+          });
+          console.log(d.Details);
+        }else{
+          wx.hideLoading();
+          wx.showToast({
+            title: '获取订单失败',
+            image: "../../image/error.png",
+            duration: 2000
+          });
+        };
+      }
     })
   },
 
@@ -127,27 +167,27 @@ Page({
       content: '这是说明是港内件说明'
     });
   },
-  checkboxChange: function (e) {
+  checkboxChange: function(e) {
     var c = !this.data.checked;
     this.setData({
-      checked:c
+      checked: c
     });
     console.log(c)
   },
-  go_help(event){
+  go_help(event) {
     wx.navigateTo({
       url: '/pages/help/help?type=' + event.target.dataset.type,
     });
   },
-  pays(){
+  pays() {
     var d = this.data.checked;
-    if(!d){
+    if (!d) {
       wx.showModal({
         title: '温馨提示',
         content: '请同意xxx'
       });
       return false;
-    }else{
+    } else {
       console.log(2)
     };
   }
