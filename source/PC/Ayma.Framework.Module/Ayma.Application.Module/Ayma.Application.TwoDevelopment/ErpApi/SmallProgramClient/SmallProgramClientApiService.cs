@@ -172,7 +172,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT F_CustomerName,F_CustomerPhone,F_CustomerAddress,h.F_FlightNumber,F_OrderNo,AddressBegin,AddressEnd
+                strSql.Append(@"SELECT F_CustomerName,F_CustomerPhone,F_CustomerAddress,h.F_FlightNumber,F_OrderNo,F_State,AddressBegin,AddressEnd
                             FROM dbo.T_OrderHead h
                             LEFT JOIN T_FlightNoInfo f ON f.F_FlightNumber = h.F_FlightNumber WHERE F_OrderNo=@OrderNo");
                 var dp = new DynamicParameters(new { });
@@ -201,10 +201,9 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT h.F_OrderNo, F_ConsignmentNumber,F_Qty,F_Price,F_State FROM T_OrderBody b
-                                LEFT JOIN dbo.T_OrderHead h ON h.F_OrderNo = b.F_OrderNo  WHERE 1=1");
-                strSql.Append(" AND b.F_OrderNo=@OrderNo")
-                strSql.Append(" ORDER BY b.F_ConsignmentNumber")
+                strSql.Append(@"SELECT F_OrderNo, F_ConsignmentNumber,F_Qty,F_Price FROM T_OrderBody  WHERE 1=1");
+                strSql.Append(" AND F_OrderNo=@OrderNo");
+                strSql.Append(" ORDER BY F_ConsignmentNumber");
                 var dp = new DynamicParameters(new { });
                 dp.Add("@OrderNo", OrderNo);
                 return this.BaseRepository().FindList<OrderDetailsModelApi>(strSql.ToString(), dp);
