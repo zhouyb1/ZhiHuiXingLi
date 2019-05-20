@@ -456,7 +456,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 jsApiParam.SetValue("nonceStr", result.nonce_str);
                 jsApiParam.SetValue("package", prepay_id);
                 jsApiParam.SetValue("signType", "MD5");
-                jsApiParam.SetValue("paySign", TenPayV3.GetJsPaySign(result.appid, timeStamp, result.nonce_str, prepay_id, Config.GetValue("key")));
+                jsApiParam.SetValue("paySign", TenPayV3.GetJsPaySign(result.appid, timeStamp, result.nonce_str, prepay_id, Config.GetValue("PayKey")));
                 return Success("请求成功", jsApiParam.ToJson());
             }
             return Fail("JSAPI下单失败");
@@ -539,9 +539,13 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 return Fail("订单号为空");
             }
+           
             var entity = order.GetT_OrderHeadEntity(orderNo);
             var tmpStatus = new[] { "-1", "-2" };//-1 已取消，-2 已退款
-
+            if (entity==null)
+            {
+                return Fail("订单不存在！");
+            }
             if (entity.F_State.ToInt() >= 3)
             {
                 return  Fail("订单正在处理中，不能取消！");
@@ -553,7 +557,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             var nonceStr = TenPayV3Util.GetNoncestr();
             //发起退款申请
             TenPayV3RefundRequestData data = new TenPayV3RefundRequestData(Config.GetValue("AppId"),
-                Config.GetValue("MchId"), Config.GetValue("Key"), null, nonceStr, "traind", orderNo, orderNo, 23, 23,Config.GetValue("MchId") ,"REFUND_SOURCE_RECHARGE_FUNDS");
+                Config.GetValue("MchId"), Config.GetValue("PayKey"), null, nonceStr, "traind", orderNo, orderNo, 23, 23,Config.GetValue("MchId") ,"REFUND_SOURCE_RECHARGE_FUNDS");
             //获取服务器证书目录
             var cert = HttpContext.Current.Server.MapPath("/");
             var result = TenPayV3.Refund(data, cert, Config.GetValue("Mchid"));
