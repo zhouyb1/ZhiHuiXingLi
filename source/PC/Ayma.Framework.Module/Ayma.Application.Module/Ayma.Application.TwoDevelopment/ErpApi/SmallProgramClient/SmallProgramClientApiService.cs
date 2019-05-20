@@ -221,6 +221,12 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             }
         }
 
+        /// <summary>
+        /// 提交订单
+        /// </summary>
+        /// <param name="SubmitOrderModelApi"></param>
+        /// <param name="OrderNo"></param>
+        /// <param name="errText"></param>
         public void SubmitOrder(BillMakeBaseModelAPi SubmitOrderModelApi, string OrderNo, out string errText)
         {
             //追加事务
@@ -311,5 +317,40 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 }
             }
         }
+
+        /// <summary>
+        /// 修改订单状态-旅客申请退款
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <param name="status"></param>
+        /// <param name="errText"></param>
+        public void ClientUpdateOrder(string OrderNo, string status, out string errText)
+        {
+            var db = this.BaseRepository().BeginTrans();
+            try
+            {
+                var sql = "UPDATE dbo.T_OrderHead SET F_State =@F_State WHERE F_OrderNo =@F_OrderNo ";
+                var dp = new DynamicParameters(new { });
+                dp.Add("F_State", status);
+                dp.Add("F_OrderNo", OrderNo);
+                db.ExecuteBySql(sql, dp);
+                db.Commit();
+                errText = "修改成功!";
+            }
+            catch (Exception ex)
+            {
+                errText = "修改失败!";
+                db.Rollback();
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
     }
 }
