@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using Ayma.Util;
 using System.Text.RegularExpressions;
+using Senparc.Weixin.WxOpen.AdvancedAPIs.Sns;
+using Senparc.Weixin.WxOpen.Entities;
 
 namespace Ayma.Application.WebApi.Modules.ErpApi
 {
@@ -27,6 +29,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/SorterLogin"] = SorterLogin;//分拣员登录  
             Get["/UpdateBatchOrderStatus"] = UpdateBatchOrderStatus;//批量修改订单状态（未分拣-分拣中）
             Get["/GetExpressCompany"] = GetExpressCompany;//获取所有快递公司记录
+            Get["/SerGetPhone"] = SerGetPhone;//获取手机号码
         }
         private SmallProgramServerApiIBLL billServerApiBLL = new SmallProgramServerApiBLL();
 
@@ -265,6 +268,24 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 return Fail("没有订单记录!");
             }
+        }
+
+        /// <summary>
+        /// 获取手机号码
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response SerGetPhone(dynamic _)
+        {
+            //var sessionId = this.GetReqData().ToJObject()["sessionId"].ToString();SessionKey
+            var code = this.GetReqData().ToJObject()["code"].ToString(); //获取code 
+            //以code换取session_key
+            var jsonResult = SnsApi.JsCode2Json(Config.GetValue("SerAppId"), Config.GetValue("SerAppSecret"), code);
+            var encrytedData = this.GetReqData().ToJObject()["encrytedData"].ToString();
+            var iv = this.GetReqData().ToJObject()["iv"].ToString();
+            var phoneData = EncryptHelper.DecodeEncryptedData(jsonResult.session_key, encrytedData, iv); //解密手机号码
+            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<DecodedPhoneNumber>(phoneData);
+            return Success("ok", result.phoneNumber);
         }
 
         /// <summary>
