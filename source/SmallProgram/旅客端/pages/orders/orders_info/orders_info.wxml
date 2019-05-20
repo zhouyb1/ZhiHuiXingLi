@@ -1,19 +1,19 @@
 <!--pages/orders/orders_info/orders_info.wxml-->
-<view class='list'>姓名：</view>
-<view class='list'>手机：</view>
-<view class='list'>地址：</view>
-<view class='list'>订单号：</view>
-<view class='list'>航班号：</view>
-<view class='list'>航程：</view>
+<view class='list'>姓名：{{list.F_CustomerName}}</view>
+<view class='list'>手机：{{list.F_CustomerPhone}}</view>
+<view class='list'>地址：{{list.F_CustomerAddress}}</view>
+<view class='list'>订单号：{{list.F_OrderNo}}</view>
+<view class='list'>航班号：{{list.F_FlightNumber}}</view>
+<view class='list'>航程：{{list.AddressBegin}} - {{list.AddressEnd}}</view>
 
 <view class="text">行李信息</view>
-<view class='list'>
-  托运单号：88888888
-  <text>x2</text>
+<view class='list' wx:for="{{num_list}}" wx:for-index="index" wx:key="index">
+  托运单号：{{item.F_ConsignmentNumber}}
+  <text>x{{item.F_Qty}}</text>
 </view>
 <view class='lists'>
-  <text>合计:1件</text>
-  <text style="color:#ff8d1a;margin-left:30rpx;">实付款：999.00</text>
+  <text>合计:{{num}}件</text>
+  <text style="color:#ff8d1a;margin-left:30rpx;">实付款：{{price}}</text>
 </view>
 <view class="text">其他信息</view>
 <view class='list'>
@@ -23,31 +23,74 @@
 </view>
 <view class="text">物流信息</view>
 <view class="ems">
-  <view class="text" wx:if="{{type===0}}" style="background:#555;">派送中</view>
+  <view class="text" wx:if="{{type===-1}}" style="background:red;">已取消</view>
+  <view class="text" wx:if="{{type===0}}" style="background:#ff8d1a;">待付款</view>
+  <view class="text" wx:if="{{type===4}}" style="background:#3cb4ff;">派送中</view>
+  <view class="text" wx:if="{{type===5}}" style="background:green;">已完成</view>
   <view class='i-steps'>
     <i-steps current="{{verticalCurrent}}" direction="vertical" i-class="ems-top">
       <i-step>
         <view slot="title">
-          已完成
+          已下单
         </view>
         <view slot="content">
-          这里是该步骤的描述信息
+          您提交了订单,请等待系统确认。
         </view>
       </i-step>
       <i-step>
         <view slot="title">
-          进行中
+          分拣中
         </view>
         <view slot="content">
-          这里是该步骤的描述信息
+          您的行李正在分拣中
+        </view>
+      </i-step>
+      <i-step>
+        <view slot="title">
+          分拣已完成
+        </view>
+        <view slot="content">
+          您的行李分拣已完成
+        </view>
+      </i-step>
+      <i-step>
+        <view slot="title">
+          派送中
+        </view>
+        <view slot="content">
+          您的行李正在进行港内派送
+        </view>
+      </i-step>
+      <i-step>
+        <view slot="title">
+          派送中
+        </view>
+        <view slot="content">
+          您的行李正在进行港外派送,港外派送物流单号：888888888
         </view>
       </i-step>
       <i-step icon="coordinates_fill">
         <view slot="title">
-          错误
+          退款中
         </view>
         <view slot="content">
-          这里是该步骤的描述信息
+          您申请了退款，具体到账时间以银行到账时间为准。
+        </view>
+      </i-step>
+            <i-step icon="coordinates_fill">
+        <view slot="title">
+          订单已取消
+        </view>
+        <view slot="content">
+          您取消了订单
+        </view>
+      </i-step>
+            <i-step icon="coordinates_fill">
+        <view slot="title">
+          订单已完成
+        </view>
+        <view slot="content">
+          订单已完成,感谢您使用智慧行李。
         </view>
       </i-step>
     </i-steps>
@@ -55,16 +98,19 @@
 </view>
 <!-- 底部 -->
 <view class='footer'>
-   <view class="order-ok" wx:if="{{type===0}}">
-    <view>去支付</view>
-    <view>取消订单</view>
+  <view class="order-ok" wx:if="{{type===-1}}">
+    <view style="background:#ccc;width:100%">已取消</view>
   </view>
-  <view class="order-type" wx:if="{{type===1}}">
+  <view class="order-ok" wx:if="{{type===0}}">
+    <view bindtap='pays'>去支付</view>
+    <view bindtap='close_order'>取消订单</view>
+  </view>
+  <view class="order-type" wx:if="{{type===1 || type===4}}">
     <view>催单</view>
     <view>确定签收</view>
-    <view>申请退款</view>
+    <view bindtap='refund'>申请退款</view>
   </view>
-  <view class="order-ok" wx:if="{{type===2}}">
+  <view class="order-ok" wx:if="{{type===5}}">
     <view>投诉</view>
     <view>评价</view>
   </view>

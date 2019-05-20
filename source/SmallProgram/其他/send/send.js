@@ -31,9 +31,6 @@ Page({
     openid: '', //用户信息
     en_location: '', //到达站坐标
     user_location: '', //用户选择地址
-    page1: false,
-    page2: false,
-    page_index: 1
   },
 
   /**
@@ -494,13 +491,13 @@ Page({
     });
   },
   get_addr(obj, type) {
-    if (!obj || obj.length < 4) {
+    if (!obj || obj.length < 4){
       return false;
     };
     var _this = this;
     qqmapsdk.search({
       keyword: obj,
-      auto_extend: 1,
+      auto_extend:1,
       success: function(res) {
         _this.setData({
           user_location: res.data[0].location
@@ -517,99 +514,4 @@ Page({
       url: '/pages/help/help?type=' + event.target.dataset.type,
     });
   },
-  user_page() {
-    var d = this.data;
-    var p = /^1[345789]\d{9}$/;
-    var n = /^[\u4e00-\u9fa5]{2,4}$/;
-    if (!n.test(d.name)) {
-      wx.showModal({
-        title: '温馨提示',
-        content: '请输入正确的收件人姓名'
-      })
-      return false;
-    };
-    if (!p.test(d.phone)) {
-      wx.showModal({
-        title: '温馨提示',
-        content: '请输入正确的收件人手机号码'
-      })
-      return false;
-    };
-    if (!d.self_city) {
-      wx.showModal({
-        title: '温馨提示',
-        content: '请输入收货地址'
-      })
-      return false;
-    };
-    if (!d.page2) {
-      wx.showModal({
-        title: '温馨提示',
-        content: '请同意委托服务协议条款'
-      });
-      return false;
-    };
-    this.setData({
-      page_index: 3
-    });
-  },
-  fly_page() {
-    var d = this.data;
-    var len = d.can_list.length;
-    if (d.citty_list[0] === "请选择始发站") {
-      wx.showModal({
-        title: '温馨提示',
-        content: '请选择始发站'
-      })
-      return false;
-    };
-    if (d.end_city_list[d.index] === "请选择到达站") {
-      wx.showModal({
-        title: '温馨提示',
-        content: '请选择到达站'
-      })
-      return false;
-    };
-    if (d.city_num[d.num_index] === "请选择航班号" || d.city_num[0] === "请先选择到达站") {
-      wx.showModal({
-        title: '温馨提示',
-        content: '请选择航班号'
-      })
-      return false;
-    };
-    if (!len) {
-      wx.showModal({
-        title: '温馨提示',
-        content: '请输入托运单号'
-      })
-      return false;
-    };
-    if (!d.page1) {
-      wx.showModal({
-        title: '温馨提示',
-        content: '请确保行李内无贵重、易碎、违禁物品'
-      });
-      return false;
-    };
-    this.setData({
-      page_index: 2
-    });
-  },
-  user_pre() {
-    this.setData({
-      page_index: 1
-    });
-  },
-  page1_fun() {
-    var d = this.data.page1;
-    this.setData({
-      page1: !d
-    })
-  },
-  page2_fun() {
-    var d = this.data.page2;
-    this.setData({
-      page2: !d
-    })
-  }
 })

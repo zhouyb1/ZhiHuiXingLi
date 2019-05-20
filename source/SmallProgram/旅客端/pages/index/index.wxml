@@ -24,11 +24,11 @@
   </swiper>
   <!-- 九宫格 -->
   <i-grid>
-    <i-grid-item bindtap="paths" data-url="/pages/orders/orders">
+    <i-grid-item bindtap="paths" data-url="/pages/sends/sends">
       <i-grid-icon>
         <image src="../../image/orders.png" />
       </i-grid-icon>
-      <i-grid-label>我的订单</i-grid-label>
+      <i-grid-label>我要寄件</i-grid-label>
     </i-grid-item>
     <!-- <i-grid-item bindtap="paths" data-url="/pages/pays/pays">
       <i-grid-icon>

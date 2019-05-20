@@ -1,7 +1,4 @@
 /* pages/orders/orders_info/orders_info.wxss */
-
-/* pages/pays/pays.wxss */
-
 page {
   color: #888;
 }

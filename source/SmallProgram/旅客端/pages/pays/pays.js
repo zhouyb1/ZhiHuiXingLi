@@ -189,6 +189,13 @@ Page({
       return false;
     } else {
       console.log(2)
+      wx.showModal({
+        title: '温馨提示',
+        content: '支付成功'
+      });
+      wx.navigateTo({
+        url: '../../pages/orders/orders',
+      });
     };
   }
 })

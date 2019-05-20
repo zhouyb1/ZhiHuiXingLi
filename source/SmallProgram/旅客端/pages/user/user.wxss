@@ -90,7 +90,7 @@ page {
 .list {
   width: 90%;
   /* height: 500rpx; */
-  margin: 100rpx auto 0 auto;
+  margin: -100rpx auto 100rpx auto;
   border-radius: 10rpx;
   overflow: hidden;
   font-size: 15px;

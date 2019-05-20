@@ -1,24 +1,24 @@
 <!--pages/orders/orders.wxml-->
-<i-tabs current="{{ index }}" color="#3cb4ff" bindchange="handleChange">
-  <i-tab key="0" title="全部"></i-tab>
-  <i-tab key="1" title="已完成"></i-tab>
+<i-tabs current="{{ index }}" color="#3cb4ff" bindchange="handleChange" fixed>
+  <i-tab key="0" title="我的订单"></i-tab>
+  <!-- <i-tab key="1" title="已完成"></i-tab>
   <i-tab key="2" title="待付款"></i-tab>
   <i-tab key="3" title="派送中"></i-tab>
-  <i-tab key="4" title="已取消"></i-tab>
+  <i-tab key="4" title="已取消"></i-tab> -->
 </i-tabs>
 
 <view class="list_box">
 
-  <view class='list' wx:for="{{list}}" wx:key="item.id" data-order="{{item.order}}" wx:if="{{list.length}}" bindtap='get_info'>
+  <view class='list' wx:for="{{list}}" wx:key="item.id" data-order="{{item.F_OrderNo}}" wx:if="{{list.length}}" bindtap='get_info' wx:if="{{item.F_State!='3'}}">
     <view class='list-title'>
-      <text>订单号：{{item.order}}</text>
-      <text class="list-type" style="background:#3cb4ff" wx:if="{{item.type===0}}">已完成</text>
-      <text class="list-type" style="background:#ff8d1a" wx:if="{{item.type===1}}">待付款</text>
-      <text class="list-type" style="background:rgba(60, 180, 255,0.6)" wx:if="{{item.type===2}}">派送中</text>
-      <text class="list-type" style="background:red" wx:if="{{item.type===3}}">已取消</text>
+      <text>订单号：{{item.F_OrderNo}}</text>
+      <text class="list-type" style="background:#3cb4ff" wx:if="{{item.F_State==='5'}}">已完成</text>
+      <text class="list-type" style="background:#ff8d1a" wx:if="{{item.F_State==='0'}}">待付款</text>
+      <text class="list-type" style="background:rgba(60, 180, 255,0.6)" wx:if="{{item.F_State==='1' || item.F_State==='4'}}">派送中</text>
+      <text class="list-type" style="background:red" wx:if="{{item.F_State==='-1'}}">已取消</text>
     </view>
-    <view class='list-cont'>航班号：{{item.hann}} 行李 X{{item.num}}件</view>
-    <view class='list-time'>时间：{{item.timer}}</view>
+    <view class='list-cont'>航班号：{{item.F_FlightNumber}} 行李 X{{item.qty}}件</view>
+    <view class='list-time'>时间：{{item.F_OrderDate}}</view>
     <view class="list-btn">查看详情</view>
   </view>
   

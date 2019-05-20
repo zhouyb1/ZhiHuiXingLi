@@ -1,4 +1,6 @@
 // pages/orders/orders.js
+var app = getApp();
+var md5 = require('../../dist/md5.js');
 Page({
 
   /**
@@ -6,48 +8,41 @@ Page({
    */
   data: {
     index: '0',
-    list: [{
-        id: 0,
-        order: 8888888,
-        type: 0,
-        han: 'GZ2222',
-        num: 2,
-        timer: '2019-05-15 00:00:00'
-      },
-      {
-        id: 1,
-        order: 8888888,
-        type: 1,
-        han: 'GZ2222',
-        num: 2,
-        timer: '2019-05-15 00:00:00'
-      },
-      {
-        id: 2,
-        order: 8888888,
-        type: 2,
-        han: 'GZ2222',
-        num: 2,
-        timer: '2019-05-15 00:00:00'
-      },
-      {
-        id: 3,
-        order: 8888888,
-        type: 3,
-        han: 'GZ2222',
-        num: 2,
-        timer: '2019-05-15 00:00:00'
-      }
-    ]
+    openid: "",
+    list: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    this.setData({
-      index: options.id || 0
-    })
+    var _this = this;
+    var id = 0;
+    if (options.id === '0') {
+      id='';
+    };
+    if (options.id === '1') {
+      id=5
+    };
+    if (options.id === '2') {
+      id='0'
+    };
+    if (options.id === '3') {
+      id=4;
+    };
+    if (options.id === '4') {
+      id=-1
+    };
+    wx.getStorage({
+      key: 'open',
+      success(res) {
+        var d = JSON.parse(res.data);
+        _this.setData({
+          openid: d.openId
+        });
+        _this.get_order(id);
+      }
+    });
   },
 
   /**
@@ -98,14 +93,79 @@ Page({
   onShareAppMessage: function() {
 
   },
-  handleChange({ detail}) {
+  handleChange({
+    detail
+  }) {
     this.setData({
       index: detail.key
     });
+    if (detail.key === '0') {
+      this.get_order('');
+    };
+    if (detail.key === '1') {
+      this.get_order(5);
+    };
+    if (detail.key === '2') {
+      this.get_order('0');
+    };
+    if (detail.key === '3') {
+      this.get_order(4);
+    };
+    if (detail.key === '4') {
+      this.get_order(-1);
+    };
   },
-  get_info(event){
+  get_info(event) {
     wx.navigateTo({
       url: '/pages/orders/orders_info/orders_info?order=' + event.currentTarget.dataset.order
     })
+  },
+  get_order(type) {
+    wx.showLoading({
+      title: '加载中',
+    });
+    var _this = this;
+    var d = {
+      openId: this.data.openid,
+      status: type || ''
+    };
+    wx.request({
+      url: app.path(1) + "/pdaapi/GetOrderList",
+      data: {
+        sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify(d)}`).toUpperCase(),
+        version: app.path(3),
+        data: JSON.stringify(d)
+      },
+      method: "GET",
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      success(res) {
+        wx.hideLoading();
+        var d = JSON.stringify(res.data.data) == '{}' ? [] : JSON.parse(res.data.data);
+        if (res.data.code === 200) {
+          _this.setData({
+            list: d
+          })
+        }else if(res.data.code === 400){
+          _this.setData({
+            list: d
+          });
+          wx.hideLoading();
+          // wx.showToast({
+          //   title: '没有数据',
+          //   image: "../../image/error.png",
+          //   duration: 2000
+          // });
+        } else {
+          wx.hideLoading();
+          wx.showToast({
+            title: '查询失败',
+            image: "../../image/error.png",
+            duration: 2000
+          });
+        };
+      }
+    });
   }
 })

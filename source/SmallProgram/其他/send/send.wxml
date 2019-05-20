@@ -1,0 +1,122 @@
+<!--pages/send/send.wxml-->
+<view class="text">航班信息</view>
+<view class="list">
+  <view class="list_l">航程</view>
+  <view class="list_r">
+    <view class="s_city">
+      <picker mode="region" bindchange="str_city" value="{{citty_list}}" custom-item="{{customItem}}">
+        <view class="picker">
+          {{citty_list[0]}}{{citty_list[1]}}
+        </view>
+      </picker>
+    </view>
+    <view class='lines'></view>
+    <view class="e_city">
+      <picker bindchange="end_citty" value="{{index}}" range="{{end_city_list}}">
+        <view class="picker">
+          {{end_city_list[index]}}
+        </view>
+      </picker>
+    </view>
+  </view>
+</view>
+
+<view class="list">
+  <view class="list_l">航班号</view>
+  <view class="list_r">
+    <view class="filght_num">
+      <picker bindchange="city_nums" value="{{num_index}}" range="{{city_num}}">
+        <view class="picker">
+          {{city_num[num_index]}}
+        </view>
+      </picker>
+    </view>
+  </view>
+</view>
+<view class="text">
+  旅客信息
+  <view class="text-help">
+    <image src='../../image/helps.png' ></image>
+    <text bindtap='go_help' data-type="2">服务流程</text>
+  </view>
+</view>
+<view class="list">
+  <view class="list_l">姓名</view>
+  <view class="list_rs">
+    <input type='text' placeholder='请输入收件人' value="{{name}}" bindinput='name_fun'></input>
+    <view class="phone_btn" bindtap='get_info'>
+      <view>
+        <image src='../../image/phone.png'></image>
+      </view>
+      <view>快速填写</view>
+    </view>
+  </view>
+</view>
+<view class="list">
+  <view class="list_l">手机</view>
+  <view class="list_rs">
+    <input type='number' placeholder='请输入收件人手机号码' maxlength='11' value="{{phone}}" bindinput='phone_fun'></input>
+  </view>
+</view>
+<view class="list" wx:if="{{citty_data_list.length}}">
+  <view class="list_l">地址</view>
+  <view class="list_rs">
+    <view class="filght_num">
+      <view class="city_type" bindtap='city_types'>
+        <view>手动</view>
+        <view>填写</view>
+      </view>
+      <picker bindchange="city_data" value="{{index}}" range="{{citty_data_list}}">
+        <view class="picker">
+          {{citty_data_list[index]}}
+        </view>
+      </picker>
+    </view>
+  </view>
+</view>
+<block wx:else>
+  <view class="list">
+    <view class="list_l">地址</view>
+    <view class="list_rs">
+      <input type='text' placeholder='请输入地址' value="{{self_city}}" bindinput='city_fun' style='width:80%'></input>
+      <view class="phone_btn" bindtap='get_city' style='width:100rpx;right:10rpx;top:-2rpx;'>
+        <view>
+          <image src='../../image/addr.png' style="width:50%;height:75%"></image>
+        </view>
+        <view>获取位置</view>
+      </view>
+    </view>
+  </view>
+</block>
+<view class="text">
+  行李信息
+  <view class="text-help" >
+    <image src='../../image/helps.png'></image>
+    <text bindtap='go_help' data-type="3">下单规则</text>
+  </view>
+</view>
+<view class="list">
+  <view class="list_ls">托运行李号</view>
+  <view class="list_rs">
+    <input type='number' placeholder='请输入托运行李号后六位' value="{{can_value}}" bindinput='can_numbers' maxlength='6'></input>
+    <view class='code_box'>
+      <view class="codes" bindtap='cans'>
+        <image src='../../image/can.png'></image>
+      </view>
+      <view class='save_code' bindtap='save_cans'>保存</view>
+    </view>
+  </view>
+</view>
+<view wx:if="{{can_list.length}}" style="margin-bottom:100rpx;">
+  <view class="list" wx:for="{{can_list}}" wx:for-index="index" wx:key="{{item}}">
+    <view class="list_l_num">托运行李号:{{item}}</view>
+    <view class="list_r_num">
+      <view bindtap='del_num' data-id="{{index}}">删除</view>
+    </view>
+  </view>
+</view>
+<!-- 底部 -->
+<view class="footer">
+  <view>合计：{{can_list.length}} 件</view>
+  <view bindtap='go_pay'>立即寄件</view>
+</view>

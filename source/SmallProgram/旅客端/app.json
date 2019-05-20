@@ -1,9 +1,10 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/send/send",
+    "pages/sends/sends",
     "pages/pays/pays",
     "pages/user/user",
-    "pages/send/send",
     "pages/user/user_say/user_say",
     "pages/user/user_addr/user_addr",
     "pages/user/user_info/user_info",
