@@ -117,6 +117,30 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             string Operator = req["Operator"].ToString(); //操作人
             string errText = "";
             billServerApiBLL.UpdateOrderStatus(OrderNo, ConsignmentNumber, status, Operator, out errText);
+            if (status == "4")
+            {
+                if (req["ExpressCompanyId"].IsEmpty())
+                {
+                    return Fail("快递公司不能为空!");
+                }
+                if (req["ExpressNO"].IsEmpty())
+                {
+                    return Fail("快递单号不能为空!");
+                }
+                if (req["Amount"].IsEmpty())
+                {
+                    return Fail("运费不能为空");
+                }
+                if (!Regex.IsMatch(req["Amount"].ToString(), @"^[0-9]*$"))
+                {
+                    return Fail("运费只能为数字");
+                }
+                string ExpressCompanyId = req["ExpressCompanyId"].ToString();  //快递公司
+                string ExpressNO = req["ExpressNO"].ToString(); //快递单号
+                string PayType = req["PayType"].ToString(); //收款方式
+                string Amount = req["Amount"].ToString(); //快递费用
+                billServerApiBLL.ExpressInformation(OrderNo, ConsignmentNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
+            }
             return Success(errText);
         }
 
@@ -277,7 +301,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         /// <returns></returns>
         public Response SerGetPhone(dynamic _)
         {
-            //var sessionId = this.GetReqData().ToJObject()["sessionId"].ToString();SessionKey
+            //var sessionId = this.GetReqData().ToJObject()["sessionId"].ToString();
             var code = this.GetReqData().ToJObject()["code"].ToString(); //获取code 
             //以code换取session_key
             var jsonResult = SnsApi.JsCode2Json(Config.GetValue("SerAppId"), Config.GetValue("SerAppSecret"), code);
