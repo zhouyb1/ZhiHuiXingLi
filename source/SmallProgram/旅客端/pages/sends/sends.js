@@ -23,7 +23,7 @@ Page({
     num_index: 0, //航班号下标
     name: '', //用户姓名
     phone: '', //用户手机
-    city_data: [0], //用户历史地址下标
+    city_data: 0, //用户历史地址下标
     citty_data_list: [], //用户历史地址列表
     can_value: "", //托运单号
     can_list: [], //托运单号列表
@@ -33,7 +33,9 @@ Page({
     user_location: '', //用户选择地址
     page1: false,
     page2: false,
-    page_index: 1
+    page_index: 1,
+    suggestion: [],
+    backfill: ''
   },
 
   /**
@@ -113,11 +115,6 @@ Page({
     });
     this.get_addr(e.detail.value, 1);
   },
-  bindRegionChange: function(e) {
-    this.setData({
-      citty_list: e.detail.value
-    })
-  },
   str_city: function(e) {
     this.setData({
       citty_list: e.detail.value
@@ -131,7 +128,7 @@ Page({
     };
     // this.get_addr(_this.data.end_city_list[e.detail.value]);
     wx.showLoading({
-      title: '',
+      title: '加载中',
     });
     this.setData({
       index: e.detail.value
@@ -436,8 +433,6 @@ Page({
     da.head.F_StartStation = d.citty_list[0];
     da.head.F_Longitude = d.user_location.lng;
     da.head.F_Latitude = d.user_location.lat;
-    // da.head.F_CreateTime = '';
-    // da.head.F_CreateUserName = d.name;
     da.head.F_CustomerAddress = d.self_city;
     da.head.F_CustomerName = d.name;
     da.head.F_CustomerPhone = d.phone;
@@ -446,8 +441,6 @@ Page({
     da.head.F_FlightNumber = d.city_num[d.num_index];
     da.head.F_IsUrgent = "普通";
     da.head.F_OpenId = d.openid;
-    // da.head.F_OrderDate = '';
-    // da.head.F_OrderNo = '';
     da.head.F_State = 0;
     da.head.F_Stype = "港内配送";
 
@@ -549,8 +542,19 @@ Page({
       });
       return false;
     };
+    this.go_pay();
     this.setData({
-      page_index: 3
+      page_index: 1,
+      name: '',
+      phone: '',
+      self_city: '',
+      can_list: [],
+      index: 0,
+      num_index: 0, //航班号下标
+      can_numbers: 0,
+      city_data: 0,
+      page1: false,
+      page2: false,
     });
   },
   fly_page() {
@@ -611,5 +615,55 @@ Page({
     this.setData({
       page2: !d
     })
+  },
+  //数据回填方法
+  backfill: function(e) {
+    var id = e.currentTarget.id;
+    for (var i = 0; i < this.data.suggestion.length; i++) {
+      if (i == id) {
+        this.setData({
+          backfill: this.data.suggestion[i].addr,
+          self_city: this.data.suggestion[i].addr,
+          user_location: this.data.suggestion[i].latitude,
+          suggestion: [],
+        });
+      }
+    }
+  },
+  //触发关键词输入提示事件
+  getsuggest: function(e) {
+    if (!e.detail.value) {
+      this.setData({
+        suggestion: []
+      });
+      return false;
+    };
+    var _this = this;
+    qqmapsdk.getSuggestion({
+      keyword: e.detail.value,
+      success: function(res) {
+        var sug = [];
+        for (var i = 0; i < res.data.length; i++) {
+          sug.push({
+            title: res.data[i].title,
+            id: res.data[i].id,
+            addr: res.data[i].address,
+            city: res.data[i].city,
+            district: res.data[i].district,
+            latitude: res.data[i].location.lat,
+            longitude: res.data[i].location.lng
+          });
+        }
+        _this.setData({ //设置suggestion属性，将关键词搜索结果以列表形式展示
+          suggestion: sug
+        });
+      },
+      fail: function(error) {
+        console.error(error);
+      },
+      complete: function(res) {
+        console.log(res);
+      }
+    });
   }
 })

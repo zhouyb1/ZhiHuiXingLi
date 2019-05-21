@@ -60,11 +60,10 @@
       </view>
     </view>
     <!-- 其他信息 -->
-    <!-- <view class="test-l">委托服务协议条款</view> -->
     <view class="test test-s">
       <checkbox-group bindchange="page1_fun">
         <label class="checkbox">
-          <checkbox value="委托服务协议条款" checked="{{page1}}" /> 行李内无贵重、易碎、违禁物品
+          <checkbox value="行李内无贵重、易碎、违禁物品" checked="{{page1}}" /> 行李内无贵重、易碎、违禁物品
         </label>
       </checkbox-group>
     </view>
@@ -121,18 +120,24 @@
       <view class="list">
         <view class="list_l">地址</view>
         <view class="list_rs">
-          <input type='text' placeholder='请输入地址' value="{{self_city}}" bindinput='city_fun' style='width:80%'></input>
-          <view class="phone_btn" bindtap='get_city' style='width:100rpx;right:10rpx;top:-2rpx;'>
-            <view>
-              <image src='../../image/addr.png' style="width:50%;height:75%"></image>
+
+          <view class="citys">
+            <input bindinput="getsuggest" value="{{backfill}}" placeholder='请输入地址'></input>
+            <!--关键词输入提示列表渲染-->
+            <view wx:for="{{suggestion}}" wx:key="index" wx:if="{{suggestion.length}}" class='city_list'>
+              <view class="citty-item" bindtap="backfill" id="{{index}}">
+                <view>{{item.title}}</view>
+                <view>{{item.addr}}</view>
+              </view>
             </view>
-            <view>获取位置</view>
+
           </view>
+
         </view>
       </view>
     </block>
     <!-- 其他信息 -->
-    <view class="test-l">委托服务协议条款</view>
+    <view class="test-l" bindtap='go_help' data-type="1">委托服务协议条款</view>
     <view class="test">
       <checkbox-group bindchange="page2_fun">
         <label class="checkbox">
@@ -142,7 +147,7 @@
     </view>
     <view class='btn_page'>
       <text class='pre' bindtap='user_pre'>上一步</text>
-      <button class="nexts" bindtap='user_page'>下一步</button>
+      <button class="nexts" bindtap='user_page'>立即寄件</button>
     </view>
   </view>
 </view>

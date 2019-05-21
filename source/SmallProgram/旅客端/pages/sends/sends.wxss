@@ -336,7 +336,7 @@ page {
 
 .pre {
   width: 80%;
-  text-align:right;
+  text-align: right;
   padding-right: 20rpx;
   font-size: 13px;
 }
@@ -373,4 +373,35 @@ page {
 checkbox {
   width: 60rpx;
   height: 60rpx;
+}
+
+.citys {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.citys input {
+  width: 100%;
+  height: 100%;
+}
+
+.city_list {
+  position: absolute;
+  top: 100rpx;
+  left: 0;
+  width: 100%;
+  height: 300rpx;
+  background: #eee;
+  color:#888;
+  z-index: 999;
+  overflow: auto;
+}
+
+.citty-item {
+  width: 100%;
+  height: 100rpx;
+  padding: 10rpx;
 }

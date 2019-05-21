@@ -23,11 +23,13 @@
 </view>
 <view class="text">物流信息</view>
 <view class="ems">
-  <view class="text" wx:if="{{type===-1}}" style="background:red;">已取消</view>
-  <view class="text" wx:if="{{type===0}}" style="background:#ff8d1a;">待付款</view>
-  <view class="text" wx:if="{{type===4}}" style="background:#3cb4ff;">派送中</view>
-  <view class="text" wx:if="{{type===5}}" style="background:green;">已完成</view>
-  <view class='i-steps'>
+  <view class="text" wx:if="{{type===-1}}" style="background:red;color:#fff;">已取消</view>
+  <view class="text" wx:if="{{type===0}}" style="background:#ff8d1a;color:#fff;">待付款</view>
+  <view class="text" wx:if="{{type===4}}" style="background:#3cb4ff;color:#fff;">派送中</view>
+  <view class="text" wx:if="{{type===5}}" style="background:green;color:#fff;">已完成</view>
+  <view class="text" wx:if="{{type===-3}}" style="background:#ccc;color:#fff;">退款中</view>
+  <view class="text" wx:if="{{type===-2}}" style="background:#ccc;color:#fff;">已退款</view>
+  <view class='i-steps' wx:if="{{type===4 || type===5}}">
     <i-steps current="{{verticalCurrent}}" direction="vertical" i-class="ems-top">
       <i-step>
         <view slot="title">
@@ -39,53 +41,21 @@
       </i-step>
       <i-step>
         <view slot="title">
-          分拣中
+          已分拣
         </view>
         <view slot="content">
-          您的行李正在分拣中
+          您的行李已分拣，准备派送中。
         </view>
       </i-step>
       <i-step>
         <view slot="title">
-          分拣已完成
+          已派送
         </view>
         <view slot="content">
-          您的行李分拣已完成
+          您的行李正在进行港外派送,快递单号：88888888
         </view>
       </i-step>
-      <i-step>
-        <view slot="title">
-          派送中
-        </view>
-        <view slot="content">
-          您的行李正在进行港内派送
-        </view>
-      </i-step>
-      <i-step>
-        <view slot="title">
-          派送中
-        </view>
-        <view slot="content">
-          您的行李正在进行港外派送,港外派送物流单号：888888888
-        </view>
-      </i-step>
-      <i-step icon="coordinates_fill">
-        <view slot="title">
-          退款中
-        </view>
-        <view slot="content">
-          您申请了退款，具体到账时间以银行到账时间为准。
-        </view>
-      </i-step>
-            <i-step icon="coordinates_fill">
-        <view slot="title">
-          订单已取消
-        </view>
-        <view slot="content">
-          您取消了订单
-        </view>
-      </i-step>
-            <i-step icon="coordinates_fill">
+      <i-step wx:if="{{type===5}}">
         <view slot="title">
           订单已完成
         </view>
@@ -101,6 +71,12 @@
   <view class="order-ok" wx:if="{{type===-1}}">
     <view style="background:#ccc;width:100%">已取消</view>
   </view>
+  <view class="order-ok" wx:if="{{type===-3}}">
+    <view style="background:#ccc;width:100%">退款中</view>
+  </view>
+  <view class="order-ok" wx:if="{{type===-2}}">
+    <view style="background:#ccc;width:100%">已退款</view>
+  </view>
   <view class="order-ok" wx:if="{{type===0}}">
     <view bindtap='pays'>去支付</view>
     <view bindtap='close_order'>取消订单</view>
@@ -108,10 +84,40 @@
   <view class="order-type" wx:if="{{type===1 || type===4}}">
     <view>催单</view>
     <view>确定签收</view>
-    <view bindtap='refund'>申请退款</view>
+    <view bindtap='close_pay'>申请退款</view>
   </view>
   <view class="order-ok" wx:if="{{type===5}}">
     <view>投诉</view>
     <view>评价</view>
   </view>
 </view>
+
+
+<!-- <view class='i-steps'>
+    <i-steps current="{{verticalCurrent}}" direction="vertical" i-class="ems-top">
+      <i-step>
+        <view slot="title">
+          已下单
+        </view>
+        <view slot="content">
+          您提交了订单,请等待系统确认。
+        </view>
+      </i-step>
+      <i-step>
+        <view slot="title">
+          已下单
+        </view>
+        <view slot="content">
+          您提交了订单,请等待系统确认。
+        </view>
+      </i-step>
+      <i-step icon="coordinates_fill">
+        <view slot="title">
+          订单已完成
+        </view>
+        <view slot="content">
+          订单已完成,感谢您使用智慧行李。
+        </view>
+      </i-step>
+    </i-steps>
+  </view> -->
