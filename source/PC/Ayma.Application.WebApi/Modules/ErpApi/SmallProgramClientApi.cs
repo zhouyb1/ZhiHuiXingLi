@@ -59,7 +59,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Post["/CancelOrder"] = CancelOrder;
             Get["/NotifyUrl"] = NotifyUrl;
             Post["/GetPhone"] = GetPhone;
-
+            Post["/SaveFeedBack"] = SaveFeedBack;
 
 
         }
