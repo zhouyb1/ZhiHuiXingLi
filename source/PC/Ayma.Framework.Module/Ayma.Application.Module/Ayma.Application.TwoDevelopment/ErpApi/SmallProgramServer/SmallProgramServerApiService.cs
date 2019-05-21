@@ -287,7 +287,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         }
 
         /// <summary>
-        /// 根据订单号获取订单头
+        /// 根据行李号获取订单详细
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
@@ -299,7 +299,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 strSql.Append(@"SELECT F_FlightNumber,F_State,h.F_OrderNo,F_OrderDate,F_AirfieldFloor,F_CustomerName,b.F_ConsignmentNumber,
                                 (SELECT sum (F_Qty) FROM T_OrderBody WHERE F_OrderNo=h.F_OrderNo) F_Qty,
                                 F_CustomerPhone,F_CustomerAddress,F_Stype,F_IsUrgent,F_ExpressCompanyId,
-                                F_ExpressNO,F_Amount
+                                F_ExpressNO,F_PayType,F_Amount
                                 FROM dbo.T_OrderHead h
                                 LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo
                                 LEFT JOIN dbo.T_OrderPayMoney p ON p.F_OrderNo = h.F_OrderNo
