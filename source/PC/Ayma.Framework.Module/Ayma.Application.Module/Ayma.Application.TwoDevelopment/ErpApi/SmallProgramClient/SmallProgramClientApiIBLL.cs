@@ -27,6 +27,13 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         /// <param name="openId"></param>
         /// <returns></returns>
         IEnumerable<OrderModelApi> GetOrderList(string openId, string status);
+
+        /// <summary>
+        /// 根据openId获取旅客常用地址
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <returns></returns>
+        IEnumerable<T_AddressModelApi> GetAddressById(string openId);
         /// <summary>
         /// 根据订单状态查询订单列表
         /// </summary>
@@ -63,6 +70,13 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         /// <param name="OrderNo"></param>
         /// <param name="errText"></param>
         void ClientUpdateOrder(string OrderNo, string status, out string errText);
+
+        /// <summary>
+        /// 地址管理
+        /// </summary>
+        /// <param name="F_Id"></param>
+        /// <param name="errText"></param>
+        void AddressToDo(string F_Id, out string errText);
         
     }
 }
