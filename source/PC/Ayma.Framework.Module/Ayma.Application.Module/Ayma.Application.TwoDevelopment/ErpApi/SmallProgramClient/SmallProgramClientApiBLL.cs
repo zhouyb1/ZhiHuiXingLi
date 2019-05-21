@@ -81,6 +81,30 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 }
             }
         }
+
+        /// <summary>
+        /// 根据openId获取旅客常用地址
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <returns></returns>
+        public IEnumerable<T_AddressModelApi> GetAddressById(string openId)
+        {
+            try
+            {
+                return billClientApiService.GetAddressById(openId);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
         /// <summary>
         /// 根据订单状态查询订单列表
         /// </summary>
@@ -190,6 +214,30 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             try
             {
                 billClientApiService.ClientUpdateOrder(OrderNo, status, out errText);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 地址管理
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <param name="errText"></param>
+        public void AddressToDo(string F_Id, out string errText)
+        {
+            try
+            {
+                billClientApiService.AddressToDo(F_Id, out errText);
             }
             catch (Exception ex)
             {
