@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
 using Ayma.Application.TwoDevelopment.ErpDev;
 using Ayma.Application.TwoDevelopment.TwoDev;
+using Ayma.Application.TwoDevelopment.TwoDev.OpinionFeedback;
 using Ayma.Util;
 using Ayma.Util.Payment;
 using Nancy;
@@ -36,6 +37,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         private static string openId = string.Empty;
         private static string cellPhone = string.Empty;
         private OrderInquiryIBLL order = new OrderInquiryBLL();
+        private T_OpinionFeedbackIBLL feedbackIbll = new T_OpinionFeedbackBLL();
+     
         public SmallProgramClientApi()
             : base("/pdaapi")
             //注册接口
@@ -609,6 +612,35 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 return Success("订单退款成功！");
             }
             return Fail(result.err_code_des);
+        }
+
+        /// <summary>
+        /// 保存用户反馈信息
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response SaveFeedBack(dynamic _)
+        {
+            var openId = this.GetReqData().ToJObject()["OpenId"].ToString();
+            var content = this.GetReqData().ToJObject()["Content"].ToString();
+            var contactWay = this.GetReqData().ToJObject()["contactWay"].ToString();
+            if (openId.IsEmpty())
+            {
+                return Fail("用户标识为空！");
+            }
+            if (content.IsEmpty())
+            {
+                return Fail("内容为空！");
+            }
+
+            T_OpinionFeedbackEntity entity = new T_OpinionFeedbackEntity()
+            {
+                F_ContactWay = contactWay,
+                F_Content = content,
+                F_Openid = openId
+            };
+            feedbackIbll.SaveEntity("",entity);
+            return Fail("反馈成功！");
         }
     }
 
