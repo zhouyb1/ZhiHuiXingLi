@@ -119,6 +119,35 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 }
             }
         }
+
+        /// <summary>
+        /// 根据openId获取旅客常用地址
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <returns></returns>
+        public IEnumerable<T_AddressModelApi> GetAddressById(string openId)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT F_Id,F_Address,F_OpenId FROM dbo.T_Address WHERE F_OpenId=@F_OpenId");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@F_OpenId", openId);
+                return this.BaseRepository().FindList<T_AddressModelApi>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
         /// <summary>
         /// 根据订单状态查询订单列表
         /// </summary>
@@ -341,8 +370,8 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             {
                 var sql = "UPDATE dbo.T_OrderHead SET F_State =@F_State WHERE F_OrderNo =@F_OrderNo ";
                 var dp = new DynamicParameters(new { });
-                dp.Add("F_State", status);
-                dp.Add("F_OrderNo", OrderNo);
+                dp.Add("@F_State", status);
+                dp.Add("@F_OrderNo", OrderNo);
                 db.ExecuteBySql(sql, dp);
                 db.Commit();
                 errText = "修改成功!";
@@ -351,6 +380,36 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             {
                 errText = "修改失败!";
                 db.Rollback();
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 地址管理
+        /// </summary>
+        /// <param name="F_Id"></param>
+        /// <param name="errText"></param>
+        public void AddressToDo(string F_Id, out string errText)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"DELETE FROM dbo.T_Address WHERE F_Id=@F_Id");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@F_Id", F_Id);
+                this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
+                errText = "删除成功!";
+            }
+            catch (Exception ex)
+            {
+                errText = "删除失败!";
                 if (ex is ExceptionEx)
                 {
                     throw;
