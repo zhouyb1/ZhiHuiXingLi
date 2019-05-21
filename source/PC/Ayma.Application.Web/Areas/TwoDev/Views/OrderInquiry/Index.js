@@ -59,6 +59,7 @@ var bootstrap = function ($, ayma) {
                         width: 1000,
                         height: 950,
                         maxmin: true,
+                        btn: ['确认', '关闭'],
                         callBack: function (id) {
                             return top[id].acceptClick(refreshGirdData);
                         }

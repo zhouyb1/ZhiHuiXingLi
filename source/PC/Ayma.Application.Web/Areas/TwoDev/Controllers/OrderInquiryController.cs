@@ -3,6 +3,8 @@ using Ayma.Application.TwoDevelopment.TwoDev;
 using System.Web.Mvc;
 using System.Collections.Generic;
 using System.Data;
+//using Senparc.Weixin.TenPay.V3;
+using Ayma.Util.Payment;
 
 namespace Ayma.Application.Web.Areas.TwoDev.Controllers
 {
@@ -198,6 +200,55 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
             orderInquiryIBLL.UpdateAffirmRefund(keyValue);
             return Success("退款成功！");
         }
+
+        #region 退款
+        //用户退款
+        /* public ActionResult CancelOrder()
+        {
+            var msg = "";
+            var orderNo = this.GetReqData().ToJObject()["orderNo"].ToString();
+            if (orderNo.IsEmpty())
+            {
+                return Fail("订单号为空");
+            }
+
+            var entity = orderInquiryIBLL.GetT_OrderHeadEntity(orderNo);
+            var tmpStatus = new[] { "-1", "-2" };//-1 已取消，-2 已退款
+            if (entity == null)
+            {
+                return Fail("订单不存在！");
+            }
+            if (entity.F_State.ToInt() >= 3)
+            {
+                return Fail("订单正在处理中，不能取消！");
+            }
+            if (tmpStatus.Contains(entity.F_State))
+            {
+                return Fail("订单已完成，请勿重复操作！");
+            }
+            var nonceStr = TenPayV3Util.GetNoncestr();
+            //发起退款申请
+            WXConfig config = new WXConfig();
+            //获取订单总金额
+            var orderAmount = orderInquiryIBLL.GetT_OrderBodyEntity(orderNo).Sum(c => c.F_Price * c.F_Qty);
+            TenPayV3RefundRequestData data = new TenPayV3RefundRequestData(config.AppId,
+                config.MchId, config.Key, null, nonceStr, null, orderNo, orderNo, orderAmount.ToInt(), orderAmount.ToInt(), config.MchId, "REFUND_SOURCE_RECHARGE_FUNDS");
+            //获取服务器证书目录
+            var certPath = @"D:\Ayma_File\HTTPS证书\1533655241_20190517_cert";
+            var result = TenPayV3.Refund(data, certPath, Config.GetValue("Mchid"));
+
+            Logger.Info("订单" + orderNo + "微信退款返回xml" + result.ResultXml);  //记录日志
+            if (result.result_code.ToUpper() == "SUCCESSS")
+            {
+                Logger.Info("退款记录：1.订单" + orderNo + "；2.退款金额" + result.refund_fee);
+                //修改订单状态为已退款
+                orderInquiryIBLL.UpdateOrder(orderNo, OrderStatus.已退款);
+                return Success("订单退款成功！");
+            }
+            return Fail(result.err_code_des);
+        }*/
+        
+        #endregion
         #endregion
 
     }
