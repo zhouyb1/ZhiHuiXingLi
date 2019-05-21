@@ -623,7 +623,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         {
             var openId = this.GetReqData().ToJObject()["OpenId"].ToString();
             var content = this.GetReqData().ToJObject()["Content"].ToString();
-            var contactWay = this.GetReqData().ToJObject()["contactWay"].ToString();
+            var contactWay = this.GetReqData().ToJObject()[" ContactWay"].ToString();
             if (openId.IsEmpty())
             {
                 return Fail("用户标识为空！");
