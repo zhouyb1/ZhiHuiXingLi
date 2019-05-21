@@ -267,6 +267,16 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 dp.Add("@F_OpenId", SubmitOrderModelApi.Head.F_OpenId);
                 dp.Add("@F_IsUrgent", SubmitOrderModelApi.Head.F_IsUrgent);
                 db.ExecuteBySql(strSql.ToString(), dp);
+
+                //保存地址到地址表
+                var InsAddress = new StringBuilder();
+                InsAddress.Append(@"INSERT INTO dbo.T_Address ( F_Id, F_Address, F_OpenId ) VALUES (@F_Id, @F_Address, @F_OpenId)");
+                var ad = new DynamicParameters(new { });
+                ad.Add("@F_Id", Guid.NewGuid().ToString());
+                ad.Add("@F_Address", SubmitOrderModelApi.Head.F_CustomerAddress);
+                ad.Add("@F_OpenId", SubmitOrderModelApi.Head.F_OpenId);
+                db.ExecuteBySql(InsAddress.ToString(), ad);
+
                 //两点之间的距离计算(计算机场与寄件地址的距离)规则
                 //var endStation = airportService.GetT_AirfieldInfoEntity(SubmitOrderModelApi.Head.F_AirfieldId);
                 //var distance = CommonHelper.GetDistance(endStation.F_Longitude.ToDouble(),
