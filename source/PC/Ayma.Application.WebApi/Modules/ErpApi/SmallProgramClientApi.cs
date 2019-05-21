@@ -50,9 +50,11 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/GetOrderDetailByNo"] = GetOrderDetailByNo;//获取订详情
             Post["/SubmitOrder"] = SubmitOrder; //提交订单
             Get["/GetUserInfo"] = GetUserInfo;
-            Get["GetOrderInfo"] = GetOrderInfo;//获取指定订单
+            Get["/GetOrderInfo"] = GetOrderInfo;//获取指定订单
+            Get["/GetAddressById"] = GetAddressById;//根据openId获取旅客常用地址
             //Get["/GetOrderListByStatus"] = GetOrderListByStatus;//根据订单状态查询订单列表
             Get["/ClientUpdateOrder"] = ClientUpdateOrder; //修改订单状态-申请退款
+            Get["/AddressToDo"] = AddressToDo; //地址管理
             Post["/OnLogin"] = OnLogin;
             Post["/SaveUserInfo"] = SaveUserInfo;
             Post["/Register"] = Register;
@@ -355,14 +357,40 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         /// 地址管理
         /// </summary>
         /// <returns></returns>
-        public Response AddressToDo()
+        public Response AddressToDo(dynamic _)
         {
-            var isDel = this.GetReqData().ToJObject()["IsDel"].ToBool();
-            if (isDel)
+            var req = this.GetReqData().ToJObject();// 获取模板请求数据
+            if (req["F_Id"].IsEmpty())
             {
-                
+                return Fail("参数不能为空!");
             }
-            return Success("");
+            string F_Id = req["F_Id"].ToString();  //Id
+            string errText = "";
+            billClientApiBLL.AddressToDo(F_Id, out errText);
+            return Success(errText);
+        }
+
+        /// <summary>
+        /// 根据openId获取旅客常用地址
+        /// </summary>
+        /// <returns></returns>
+        public Response GetAddressById(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject();// 获取模板请求数据
+            if (req["openId"].IsEmpty())
+            {
+                return Fail("用户标识为空!");
+            }
+            string openId = req["openId"].ToString();  //订单号
+            var AddressData = billClientApiBLL.GetAddressById(openId);
+            if (AddressData.Count() > 0)
+            {
+                return Success(AddressData);
+            }
+            else
+            {
+                return Fail("没有数据!");
+            }
         }
 
         /// <summary>
