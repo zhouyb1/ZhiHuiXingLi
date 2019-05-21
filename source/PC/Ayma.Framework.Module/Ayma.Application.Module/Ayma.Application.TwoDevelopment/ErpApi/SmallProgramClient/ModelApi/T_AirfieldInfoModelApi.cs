@@ -25,6 +25,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
     public class T_AddressModelApi
     {
         /// <summary>
+        /// Id
+        /// </summary>
+        public string F_Id { get; set; }
+        /// <summary>
         /// 地址
         /// </summary>
         public string F_Address { get; set; }
