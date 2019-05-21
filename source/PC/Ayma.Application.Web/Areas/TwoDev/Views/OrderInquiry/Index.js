@@ -40,6 +40,9 @@ var bootstrap = function ($, ayma) {
                     page.search();
                 }
             });
+            $('#multiple_condition_query').MultipleQuery(function (queryJson) {
+                page.search(queryJson);
+            }, 220, 400);
             // 刷新
             $('#am_refresh').on('click', function () {
                 location.reload();
@@ -129,6 +132,10 @@ var bootstrap = function ($, ayma) {
                             else if (cellvalue == -1) {
                                 colorcss = "label label-warning";
                                 cellvalue = "已取消";
+                            }else if(cellvalue == -3)
+                            {
+                                colorcss = "label label-warning";
+                                cellvalue = "申请退款";
                             }
                             else if (cellvalue == -2) {
                                 colorcss = "label label-warning";

@@ -21,13 +21,14 @@ var bootstrap = function ($, ayma) {
             } else if (state == 51)
             {
                 $("#am_leaveportt").show();
+            } else if (state == -3)
+            {
+                $("#am_affirmrefundd").show();
             }
 
             //订单分拣操作
             $('#am_sorting').on('click', function () {
-                debugger;
-                //var keyValue = $('#girdtable').jfGridValue('F_Id');
-                //if (ayma.checkrow(keyValue)) {
+                if (ayma.checkrow(keyValue)) {
                     ayma.layerConfirm('是否确认订单分拣完成！', function (res) {
                         if (res) {
                             ayma.postForm(top.$.rootUrl + '/TwoDev/OrderInquiry/PostSorting', { keyValue: keyValue }, function () {
@@ -38,18 +39,33 @@ var bootstrap = function ($, ayma) {
                             });
                         }
                     });
-                //}
+                }
             });
 
             //订单出港操作
             $('#am_leaveport').on('click', function () {
-                //var keyValue = $('#girdtable').jfGridValue('F_Id');
                 if (ayma.checkrow(keyValue)) {
                     ayma.layerConfirm('是否确认订单出港完成！', function (res) {
                         if (res) {
                             ayma.postForm(top.$.rootUrl + '/TwoDev/OrderInquiry/PostLeavePort', { keyValue: keyValue }, function () {
                                 //操作出港完成后隐藏该操作按钮
                                 $('#am_leaveportt').hide();
+                                //重载页面
+                                refreshGirdData();
+                            });
+                        }
+                    });
+                }
+            });
+
+            //确认退款操作
+            $('#am_affirmrefund').on('click', function () {
+                if (ayma.checkrow(keyValue)) {
+                    ayma.layerConfirm('是否确认退款！', function (res) {
+                        if (res) {
+                            ayma.postForm(top.$.rootUrl + '/TwoDev/OrderInquiry/PostAffirmRefund', { keyValue: keyValue }, function () {
+                                //操作出港完成后隐藏该操作按钮
+                                $('#am_affirmrefundd').hide();
                                 //重载页面
                                 refreshGirdData();
                             });

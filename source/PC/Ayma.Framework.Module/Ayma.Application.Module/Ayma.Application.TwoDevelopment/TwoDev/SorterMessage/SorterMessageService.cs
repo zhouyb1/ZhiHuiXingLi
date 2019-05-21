@@ -52,6 +52,16 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 var queryParam = queryJson.ToJObject();
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
+                if (!queryParam["F_Name"].IsEmpty())
+                {
+                    dp.Add("F_Name", "%" + queryParam["F_Name"].ToString() + "%", DbType.String);
+                    strSql.Append(" AND t.F_Name Like @F_Name ");
+                }
+                if (!queryParam["F_Phone"].IsEmpty())
+                {
+                    dp.Add("F_Phone", "%" + queryParam["F_Phone"].ToString() + "%", DbType.String);
+                    strSql.Append(" AND t.F_Phone Like @F_Phone ");
+                }
                 return this.BaseRepository().FindList<T_EmployeeInfoEntity>(strSql.ToString(),dp, pagination);
             }
             catch (Exception ex)

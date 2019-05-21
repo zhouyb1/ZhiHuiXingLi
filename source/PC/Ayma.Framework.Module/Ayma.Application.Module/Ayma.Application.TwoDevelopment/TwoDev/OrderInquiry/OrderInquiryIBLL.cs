@@ -73,6 +73,11 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// <param name="keyValue"></param>
         void UpdateLeaveport(string keyValue);
         /// <summary>
+        /// 修改退款状态
+        /// </summary>
+        /// <param name="keyValue"></param>
+        void UpdateAffirmRefund(string keyValue);
+        /// <summary>
         /// 保存实体数据（新增、修改）
         /// </summary>
         /// <param name="keyValue">主键</param>

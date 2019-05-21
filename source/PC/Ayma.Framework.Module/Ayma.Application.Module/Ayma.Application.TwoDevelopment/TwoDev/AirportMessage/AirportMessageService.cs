@@ -39,6 +39,11 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 var queryParam = queryJson.ToJObject();
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
+                if (!queryParam["F_AirfieldName"].IsEmpty())
+                {
+                    dp.Add("F_AirfieldName", "%" + queryParam["F_AirfieldName"].ToString() + "%", DbType.String);
+                    strSql.Append(" AND t.F_AirfieldName Like @F_AirfieldName ");
+                }
                 return this.BaseRepository().FindList<T_AirfieldInfoEntity>(strSql.ToString(),dp, pagination);
             }
             catch (Exception ex)

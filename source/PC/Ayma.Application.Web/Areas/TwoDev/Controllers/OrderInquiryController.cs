@@ -188,6 +188,16 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
             orderInquiryIBLL.UpdateLeaveport(keyValue);
             return Success("出港成功！");
         }
+        /// <summary>
+        /// 修改申请退款后-》确认退款状态
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <returns></returns>
+        public ActionResult PostAffirmRefund(string keyValue)
+        {
+            orderInquiryIBLL.UpdateAffirmRefund(keyValue);
+            return Success("退款成功！");
+        }
         #endregion
 
     }

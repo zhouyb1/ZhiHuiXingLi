@@ -60,6 +60,21 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                     dp.Add("endTime", queryParam["EndTime"].ToDate(), DbType.DateTime);
                     strSql.Append(" AND ( t.F_CreateTime >= @startTime AND t.F_CreateTime <= @endTime ) ");
                 }
+                if (!queryParam["F_OrderNo"].IsEmpty())
+                {
+                    dp.Add("F_OrderNo", "%" + queryParam["F_OrderNo"].ToString() + "%", DbType.String);
+                    strSql.Append(" AND t.F_OrderNo Like @F_OrderNo ");
+                }
+                if (!queryParam["F_CustomerName"].IsEmpty())
+                {
+                    dp.Add("F_CustomerName", "%" + queryParam["F_CustomerName"].ToString() + "%", DbType.String);
+                    strSql.Append(" AND t.F_CustomerName Like @F_CustomerName ");
+                }
+                if (!queryParam["F_CustomerPhone"].IsEmpty())
+                {
+                    dp.Add("F_CustomerPhone", "%" + queryParam["F_CustomerPhone"].ToString() + "%", DbType.String);
+                    strSql.Append(" AND t.F_CustomerPhone Like @F_CustomerPhone ");
+                }
                 return this.BaseRepository("LocalHost").FindList<T_OrderHeadEntity>(strSql.ToString(),dp, pagination);
             }
             catch (Exception ex)
@@ -360,6 +375,47 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                     var dp = new DynamicParameters(new { });
                     dp.Add("F_Id", keyValue);
                     db.ExecuteBySql("UPDATE T_OrderHead SET F_State='5' WHERE F_Id=@F_Id", dp);
+                    db.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Rollback();
+                    if (ex is ExceptionEx)
+                    {
+                        throw;
+                    }
+                    else
+                    {
+                        throw ExceptionEx.ThrowServiceException(ex);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+        /// <summary>
+        /// 确认退款
+        /// </summary>
+        /// <param name="keyValye"></param>
+        public void UpdateAffirmRefund(string keyValue)
+        {
+            try
+            {
+                var db = this.BaseRepository().BeginTrans();
+                try
+                {
+                    var dp = new DynamicParameters(new { });
+                    dp.Add("F_Id", keyValue);
+                    db.ExecuteBySql("UPDATE T_OrderHead SET F_State='-2' WHERE F_Id=@F_Id", dp);
                     db.Commit();
                 }
                 catch (Exception ex)

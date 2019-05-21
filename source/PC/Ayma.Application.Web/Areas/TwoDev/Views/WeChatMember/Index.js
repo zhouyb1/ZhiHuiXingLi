@@ -40,6 +40,9 @@ var bootstrap = function ($, ayma) {
                     page.search();
                 }
             });
+            $('#multiple_condition_query').MultipleQuery(function (queryJson) {
+                page.search(queryJson);
+            }, 170, 400);
             // 刷新
             $('#am_refresh').on('click', function () {
                 location.reload();
@@ -95,16 +98,16 @@ var bootstrap = function ($, ayma) {
                 url: top.$.rootUrl + '/TwoDev/WeChatMember/GetPageList',
                 headData: [
                     //{ label: "标示", name: "F_Id", width: 160, align: "left"},
-                    { label: "微信OpenId", name: "F_Openid", width: 160, align: "left"},
-                    { label: "微信名称", name: "F_Nickname", width: 160, align: "left"},
+                    //{ label: "微信OpenId", name: "F_Openid", width: 160, align: "left"},
+                    { label: "微信名称", name: "F_Nickname", width: 160, align: "left" },
+                    { label: "真实姓名", name: "F_Name", width: 160, align: "left" },
+                    { label: "联系电话", name: "F_Phone", width: 160, align: "left" },
                     { label: "性别", name: "F_Sex", width: 160, align: "left"},
                     { label: "语言", name: "F_Language", width: 160, align: "left"},
                     { label: "城市", name: "F_City", width: 160, align: "left"},
                     { label: "省份", name: "F_Province", width: 160, align: "left"},
                     { label: "国家", name: "F_Country", width: 160, align: "left"},
                     { label: "图像地址", name: "F_Headimgurl", width: 160, align: "left" },
-                    { label: "真实姓名", name: "F_Name", width: 160, align: "left" },
-                    { label: "联系电话", name: "F_Phone", width: 160, align: "left"},
                     { label: "创建时间", name: "F_CreateTime", width: 160, align: "left"},
                     { label: "身份证号码", name: "F_IdCard", width: 160, align: "left"},
                 ],

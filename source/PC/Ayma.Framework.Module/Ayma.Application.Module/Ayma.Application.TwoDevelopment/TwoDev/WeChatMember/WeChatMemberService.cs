@@ -54,6 +54,16 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                     dp.Add("endTime", queryParam["EndTime"].ToDate(), DbType.DateTime);
                     strSql.Append(" AND ( t.F_CreateTime >= @startTime AND t.F_CreateTime <= @endTime ) ");
                 }
+                if (!queryParam["F_Name"].IsEmpty())
+                {
+                    dp.Add("F_Name", "%" + queryParam["F_Name"].ToString() + "%", DbType.String);
+                    strSql.Append(" AND t.F_Name Like @F_Name ");
+                }
+                if (!queryParam["F_Phone"].IsEmpty())
+                {
+                    dp.Add("F_Phone", "%" + queryParam["F_Phone"].ToString() + "%", DbType.String);
+                    strSql.Append(" AND t.F_Phone Like @F_Phone ");
+                }
                 return this.BaseRepository("LocalHost").FindList<T_CustomerInfoEntity>(strSql.ToString(),dp, pagination);
             }
             catch (Exception ex)

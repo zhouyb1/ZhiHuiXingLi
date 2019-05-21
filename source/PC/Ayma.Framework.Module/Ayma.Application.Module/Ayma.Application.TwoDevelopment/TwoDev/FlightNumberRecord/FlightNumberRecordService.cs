@@ -72,6 +72,26 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 var queryParam = queryJson.ToJObject();
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
+                if (!queryParam["F_AirfieldName"].IsEmpty())
+                {
+                    dp.Add("F_AirfieldName", "%" + queryParam["F_AirfieldName"].ToString() + "%", DbType.String);
+                    strSql.Append(" AND t.F_AirfieldName Like @F_AirfieldName ");
+                }
+                if (!queryParam["F_AirfieldFloor"].IsEmpty())
+                {
+                    dp.Add("F_AirfieldFloor", "%" + queryParam["F_AirfieldFloor"].ToString() + "%", DbType.String);
+                    strSql.Append(" AND t.F_AirfieldFloor Like @F_AirfieldFloor ");
+                }
+                if (!queryParam["F_FlightCompany"].IsEmpty())
+                {
+                    dp.Add("F_FlightCompany", "%" + queryParam["F_FlightCompany"].ToString() + "%", DbType.String);
+                    strSql.Append(" AND t.F_FlightCompany Like @F_FlightCompany ");
+                }
+                if (!queryParam["F_FlightNumber"].IsEmpty())
+                {
+                    dp.Add("F_FlightNumber", "%" + queryParam["F_FlightNumber"].ToString() + "%", DbType.String);
+                    strSql.Append(" AND t.F_FlightNumber Like @F_FlightNumber ");
+                }
                 return this.BaseRepository().FindList<T_FlightNoInfoEntity>(strSql.ToString(),dp, pagination);
             }
             catch (Exception ex)

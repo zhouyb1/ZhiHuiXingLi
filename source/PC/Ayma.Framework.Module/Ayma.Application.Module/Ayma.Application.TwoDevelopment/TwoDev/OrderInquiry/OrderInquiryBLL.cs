@@ -237,6 +237,28 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 }
             }
         }
+        /// <summary>
+        /// 修改退款状态
+        /// </summary>
+        /// <param name="keyValue"></param>
+        public void UpdateAffirmRefund(string keyValue)
+        {
+            try
+            {
+                orderInquiryService.UpdateAffirmRefund(keyValue);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
 
         /// <summary>
         /// 保存实体数据（新增、修改）

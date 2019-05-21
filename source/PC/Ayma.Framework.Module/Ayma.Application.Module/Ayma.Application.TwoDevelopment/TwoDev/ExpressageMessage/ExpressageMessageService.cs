@@ -38,6 +38,11 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 var queryParam = queryJson.ToJObject();
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
+                if (!queryParam["F_ExpressCompanyName"].IsEmpty())
+                {
+                    dp.Add("F_ExpressCompanyName", "%" + queryParam["F_ExpressCompanyName"].ToString() + "%", DbType.String);
+                    strSql.Append(" AND t.F_ExpressCompanyName Like @F_ExpressCompanyName ");
+                }
                 return this.BaseRepository().FindList<T_ExpressCompanyEntity>(strSql.ToString(),dp, pagination);
             }
             catch (Exception ex)
