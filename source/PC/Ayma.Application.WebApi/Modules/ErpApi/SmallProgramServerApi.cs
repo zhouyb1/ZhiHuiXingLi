@@ -117,7 +117,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             string Operator = req["Operator"].ToString(); //操作人
             string errText = "";
             billServerApiBLL.UpdateOrderStatus(OrderNo, ConsignmentNumber, status, Operator, out errText);
-            if (status == "4")
+            if (status == "4")   //行李号状态为运输中,插入快递公司数据
             {
                 if (req["ExpressCompanyId"].IsEmpty())
                 {
