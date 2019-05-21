@@ -14,9 +14,9 @@ $('.am-form-wrap').mCustomScrollbar({theme: "minimal-dark"});
             page.initData();
         },
         bind: function () {
-            $('#F_AirfieldName').select({
+            $('#F_AirfieldId').select({
                 type: 'default',
-                value: 'F_AirfieldName',
+                value: 'F_Id',
                 text: 'F_AirfieldName',
                 // 展开最大高度
                 maxHeight: 200,
@@ -25,9 +25,7 @@ $('.am-form-wrap').mCustomScrollbar({theme: "minimal-dark"});
                 // 访问数据接口地址
                 url: top.$.rootUrl + '/TwoDev/FlightNumberRecord/GetList',
             });
-            //
-            //$("#F_AirfieldId").CompanySelect
-            //$("#DateTimeBegin").val(formatDate(new Date(), "hh:mm"));
+            
             
         },
         initData: function () {
@@ -38,9 +36,12 @@ $('.am-form-wrap').mCustomScrollbar({theme: "minimal-dark"});
                         }
                         else {
                             $('[data-table="' + id + '"]').SetFormData(data[id]);
+                            //起飞时间
                             $('#DateTimeBegin').val(ayma.formatDate("2000-01-01 " + data[id].DateTimeBegin, "hh:mm"));
+                            //预计到达时间
                             $('#DateTimeEnd').val(ayma.formatDate("2000-01-01 " + data[id].DateTimeEnd, "hh:mm"));
-                            //$("#DateTimeEndReality").val(ayma.formatDate("2000-01-01 " + data[id].DateTimeEndReality, "yyyy-MM-dd hh:mm"))
+                            //实际到达时间
+                            $("#DateTimeEndReality").val(ayma.formatDate(data[id].DateTimeEndReality, "yyyy-MM-dd hh:mm"))
                         }
                     }
                 });
@@ -52,9 +53,11 @@ $('.am-form-wrap').mCustomScrollbar({theme: "minimal-dark"});
         if (!$('body').Validform()) {
             return false;
         }
+        $("#F_AirfieldName").val($("#F_AirfieldId").selectGetText());
         var postData = {
             strEntity: JSON.stringify($('body').GetFormData())
         };
+    
         $.SaveForm(top.$.rootUrl + '/TwoDev/FlightNumberRecord/SaveForm?keyValue=' + keyValue, postData, function (res) {
             // 保存成功后才回调
             if (!!callBack) {

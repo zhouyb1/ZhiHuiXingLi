@@ -77,7 +77,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// 实际到达时间
         /// </summary>
         [Column("DATETIMEENDREALITY")]
-        public DateTime? DateTimeEndReality { get; set; }
+        public string DateTimeEndReality { get; set; }
         #endregion
 
         #region 扩展操作
