@@ -146,11 +146,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// <param name="OrderNo"></param>
         /// <param name="status"></param>
         /// <param name="Operator"></param>
-        public void UpdateBatchOrderStatus(string status, out string errText)
+        public void UpdateBatchOrderStatus(List<string> OrderList, List<string> ConNumberList, string status,string Operator, out string errText)
         {
             try
             {
-                billServerApiService.UpdateBatchOrderStatus(status, out errText);
+                billServerApiService.UpdateBatchOrderStatus(OrderList, ConNumberList, status, Operator, out errText);
             }
             catch (Exception ex)
             {
