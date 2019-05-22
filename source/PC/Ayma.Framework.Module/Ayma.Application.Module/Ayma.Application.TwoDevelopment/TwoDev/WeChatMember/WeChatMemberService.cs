@@ -142,8 +142,13 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
             {
                 if (!string.IsNullOrEmpty(keyValue))
                 {
-                    entity.Modify(keyValue);
-                    this.BaseRepository().Update(entity);
+                    var sql ="update T_CustomerInfo set F_Name =@F_Name,F_IdCard=@F_IdCard,F_Phone=@F_Phone where F_Openid =@F_Openid";
+                    var dp = new DynamicParameters(new {});
+                    dp.Add("F_Name",entity.F_Name);
+                    dp.Add("F_IdCard",entity.F_IdCard);
+                    dp.Add("F_Openid",entity.F_Openid);
+                    dp.Add("F_Phone",entity.F_Phone);
+                    this.BaseRepository().ExecuteBySql(sql, dp);
                 }
                 else
                 {

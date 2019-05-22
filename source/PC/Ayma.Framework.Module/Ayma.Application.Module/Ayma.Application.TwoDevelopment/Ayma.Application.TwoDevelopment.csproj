@@ -74,6 +74,9 @@
     <Compile Include="TwoDev\AddressManager\T_Addressentity.cs" />
     <Compile Include="TwoDev\AddressManager\T_AddressIBll.cs" />
     <Compile Include="TwoDev\AddressManager\T_AddressService.cs" />
+    <Compile Include="TwoDev\OpinionFeedback\T_OpinionFeedbackBLL.cs" />
+    <Compile Include="TwoDev\OpinionFeedback\T_OpinionFeedbackIBLL.cs" />
+    <Compile Include="TwoDev\OpinionFeedback\T_OpinionFeedbackService.cs" />
     <Compile Include="TwoDev\OrderInquiry\OrderModel.cs" />
     <Compile Include="TwoDev\OrderLogistics\OrderLogisticsBLL.cs" />
     <Compile Include="TwoDev\OrderLogistics\OrderLogisticsIBLL.cs" />
