@@ -651,7 +651,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         {
             var openId = this.GetReqData().ToJObject()["OpenId"].ToString();
             var content = this.GetReqData().ToJObject()["Content"].ToString();
-            var contactWay = this.GetReqData().ToJObject()[" ContactWay"].ToString();
+            var contactWay = this.GetReqData().ToJObject()["ContactWay"].ToString();
             if (openId.IsEmpty())
             {
                 return Fail("用户标识为空！");
@@ -668,7 +668,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 F_Openid = openId
             };
             feedbackIbll.SaveEntity("",entity);
-            return Fail("反馈成功！");
+            return Success("反馈成功！");
         }
     }
 
