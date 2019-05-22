@@ -113,10 +113,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status WHERE F_ConsignmentNumber=@ConsignmentNumber");
+                strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status,FB_Code=@FB_Code WHERE F_ConsignmentNumber=@ConsignmentNumber");
                  var dp = new DynamicParameters(new { });
                      dp.Add("@ConsignmentNumber", ConsignmentNumber);
                      dp.Add("@Status", status);
+                     dp.Add("@FB_Code", Operator);
                      this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
 
                      var list = this.BaseRepository().FindList<T_OrderBodyEntity>(c => c.F_OrderNo == OrderNo).OrderByDescending(c => c.FB_State);
@@ -197,16 +198,61 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// <param name="status"></param>
         /// <param name="Operator"></param>
         /// <param name="errText"></param>
-        public void UpdateBatchOrderStatus(string status, out string errText)
+        public void UpdateBatchOrderStatus(List<string> OrderList, List<string> ConNumberList, string status, string Operator, out string errText)
         {
             try
             {
-                var strSql = new StringBuilder();
-                strSql.Append(@"UPDATE T_OrderHead SET F_State=@Status WHERE F_State=@F_State");
-                var dp = new DynamicParameters(new { });
-                dp.Add("@F_State", 2);
-                dp.Add("@Status", status);
-                this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
+                foreach (var item in ConNumberList)
+                {
+                    var strSql = new StringBuilder();
+                    strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status WHERE F_ConsignmentNumber=@ConsignmentNumber");
+                    var dp = new DynamicParameters(new { });
+                    dp.Add("@Status", status);
+                    dp.Add("@ConsignmentNumber", item);
+                    this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
+                }
+                foreach (var OrderNo in OrderList)
+                {
+                    var updateSql = new StringBuilder();
+                    updateSql.Append(@"UPDATE T_OrderHead SET F_State=@Status WHERE F_OrderNo=@OrderNo");
+                    var dp = new DynamicParameters(new { });
+                    dp.Add("@Status", status);
+                    dp.Add("@OrderNo", OrderNo);
+                    this.BaseRepository().ExecuteBySql(updateSql.ToString(), dp);
+
+                    var StateDescribe = "";
+                    switch (status)
+                    {
+                        case "3":
+                            StateDescribe = "分拣中";
+                            break;
+                    }
+
+                    var InSql = new StringBuilder();
+                    InSql.Append(@"INSERT  INTO dbo.T_OrderLogisticsInfo
+                                            ( F_Id ,
+                                                F_OrderNo ,
+                                                F_StateDescribe ,
+                                                F_StateDateTime ,
+                                                F_StateOperator ,
+                                                F_CustomerOpen  
+                                            )
+                                    VALUES  ( @F_Id,
+                                                @F_OrderNo,
+                                                @F_StateDescribe ,
+                                                @F_StateDateTime,
+                                                @F_StateOperator ,
+                                                @F_CustomerOpen
+                                            )");
+                    var param = new DynamicParameters(new { });
+                    param.Add("@F_Id", Guid.NewGuid().ToString());
+                    param.Add("@F_OrderNo", OrderNo);
+                    param.Add("@F_StateDescribe", StateDescribe);
+                    param.Add("@F_StateDateTime", DateTime.Now.ToString());
+                    param.Add("@F_StateOperator", Operator);
+                    param.Add("@F_CustomerOpen", "1");
+                    this.BaseRepository().ExecuteBySql(InSql.ToString(), param);
+                }
                 errText = "修改成功!";
             }
             catch (Exception ex)
@@ -375,7 +421,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"select 
+                strSql.Append(@"SELECT 
                                     A.F_FlightNumber,
                                     A.F_AirfieldFloor,
                                     B.F_ConsignmentNumber,
@@ -385,15 +431,19 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                   A.F_OrderNo=b.F_OrderNo
                                   LEFT JOIN T_FlightNoInfo c on
                                   A.F_FlightNumber=c.F_FlightNumber
-                                  where 1=1");
+                                  WHERE 1=1");
                 if (!string.IsNullOrEmpty(FlightNumber))
                 {
                     strSql.Append(" AND A.F_FlightNumber=@F_FlightNumber");
                 }
-                strSql.Append(" OR A.F_OrderDate = @F_OrderDate");
+                if (!string.IsNullOrEmpty(OrderDate))
+                {
+                    strSql.Append(" AND A.F_OrderDate BETWEEN @DateStart AND @DateEnd");
+                }
                 var dp = new DynamicParameters(new { });
                 dp.Add("@F_FlightNumber", FlightNumber);
-                dp.Add("@F_OrderDate", OrderDate);
+                dp.Add("@DateStart", OrderDate + " 00:00:00");
+                dp.Add("@DateEnd", OrderDate + " 23:59:59");
                 return this.BaseRepository().FindList<GetFlightListByDate>(strSql.ToString(), dp);
             }
             catch (Exception ex)
