@@ -12,7 +12,10 @@ Page({
     list: '',
     num_list: '',
     num: '',
-    price: ''
+    price: '',
+    logs:{
+      cancle:["已取消"]
+    }
   },
 
   /**

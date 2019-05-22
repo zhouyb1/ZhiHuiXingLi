@@ -1,10 +1,10 @@
 <!--pages/user/user_addr/user_addr.wxml-->
-<view wx:for="{{addr}}" wx:key="{{item.id}}" wx:if="{{addr.length}}" wx:for-index="index">
-  <i-swipeout i-class="i-swipeout-demo-item" actions="{{actions}}" bind:change="del" data-id="{{index}}">
+<view wx:for="{{addr}}" wx:key="{{item.F_Id}}" wx:if="{{addr.length}}" wx:for-index="index">
+  <i-swipeout i-class="i-swipeout-demo-item" actions="{{actions}}" bind:change="del" data-id="{{index}}" data-f_id="{{item.F_Id}}">
     <view slot="content">
       <i-cell i-class="i-cell-padding">
-        <view class="t1">{{item.name}} {{item.phone}}</view>
-        <view class="t2">{{item.addr}}</view>
+        <view class="t1">{{item.F_Name}} {{item.F_Phone}}</view>
+        <view class="t2">{{item.F_Address}}</view>
       </i-cell>
     </view>
   </i-swipeout>

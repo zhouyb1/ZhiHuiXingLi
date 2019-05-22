@@ -266,7 +266,7 @@ page {
 
 .city_type {
   position: absolute;
-  top: -9rpx;
+  top: -12rpx;
   right: 0rpx;
   width: 120rpx;
   height: 100rpx;

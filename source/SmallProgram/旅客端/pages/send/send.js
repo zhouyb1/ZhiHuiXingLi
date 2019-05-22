@@ -23,19 +23,20 @@ Page({
     num_index: 0, //航班号下标
     name: '', //用户姓名
     phone: '', //用户手机
-    city_data: 0, //用户历史地址下标
+    city_data_index: 0, //用户历史地址下标
     citty_data_list: [], //用户历史地址列表
+    citty_data_data: [], //用户历史地址列表
     can_value: "", //托运单号
     can_list: [], //托运单号列表
     self_city: '', //手动获取的地址
     openid: '', //用户信息
     en_location: '', //到达站坐标
     user_location: '', //用户选择地址
-    page1: false,
-    page2: false,
-    page_index: 1,
-    suggestion: [],
-    backfill: ''
+    page1: false, //违禁物品
+    page2: false, //委托协议
+    page_index: 1, //1航班2用户信息
+    suggestion: [], //地址列表
+    backfill: '' //选择索引地址
   },
 
   /**
@@ -49,7 +50,8 @@ Page({
         var d = JSON.parse(res.data);
         _this.setData({
           openid: d.openId
-        })
+        });
+        _this.get_user_addr(d.openId);
       }
     });
 
@@ -122,7 +124,6 @@ Page({
   },
   end_citty(e) {
     var _this = this;
-    console.log();
     if (_this.data.end_city_list_data[e.detail.value] === '0') {
       return false;
     };
@@ -181,9 +182,17 @@ Page({
   },
   city_data(e) {
     //选择历史地址
-    var d = this.data.citty_data_list[(e.detail.value - 0)]
+    if (!(e.detail.value - 0)) {
+      return false;
+    };
+    console.log(1);
+    var d = this.data.citty_data_list[(e.detail.value - 0)];
+    var info = this.data.citty_data_data[(e.detail.value - 1)];
     this.setData({
-      self_city: d
+      self_city: d,
+      city_data_index: e.detail.value - 0,
+      name: info.F_Name,
+      phone: info.F_Phone
     });
     this.get_addr(d, 1);
   },
@@ -491,19 +500,20 @@ Page({
       return false;
     };
     var _this = this;
-    qqmapsdk.search({
-      keyword: obj,
-      auto_extend: 1,
-      success: function(res) {
+    //调用地址解析接口
+    qqmapsdk.geocoder({
+      //获取表单传入地址
+      deviation:10,
+      address: obj, //地址参数，例：固定地址，address: '北京市海淀区彩和坊路海淀西大街74号'
+      success: function(res) { //成功后的回调
         _this.setData({
-          user_location: res.data[0].location
-        })
-        console.log(res.data[0].location)
+          user_location: res.result.location
+        });
       },
-      fail: function(res) {
-        console.log(res);
+      fail: function(error) {
+        console.error(error);
       }
-    });
+    })
   },
   go_help(event) {
     wx.navigateTo({
@@ -552,9 +562,10 @@ Page({
       index: 0,
       num_index: 0, //航班号下标
       can_numbers: 0,
-      city_data: 0,
+      city_data_index: 0,
       page1: false,
       page2: false,
+      citty_data_list: []
     });
   },
   fly_page() {
@@ -665,5 +676,36 @@ Page({
         console.log(res);
       }
     });
+  },
+  get_user_addr(obj) {
+    var _this = this;
+    var da = {
+      openId: obj
+    };
+    wx.request({
+      url: app.path(1) + "/pdaapi/GetAddressById",
+      data: {
+        sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify(da)}`).toUpperCase(),
+        version: app.path(3),
+        data: JSON.stringify(da)
+      },
+      method: "GET",
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      success(res) {
+        if (res.data.code === 200) {
+          var d = ["请选择地址"];
+          var addr = JSON.parse(res.data.data);
+          for (var i = 0; i < addr.length; i++) {
+            d.push(addr[i].F_Address)
+          };
+          _this.setData({
+            citty_data_list: d,
+            citty_data_data: addr
+          })
+        }
+      }
+    })
   }
 })

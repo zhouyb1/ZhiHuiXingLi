@@ -108,9 +108,9 @@
             <view>手动</view>
             <view>填写</view>
           </view>
-          <picker bindchange="city_data" value="{{index}}" range="{{citty_data_list}}">
+          <picker bindchange="city_data" value="{{city_data_index}}" range="{{citty_data_list}}">
             <view class="picker">
-              {{citty_data_list[index]}}
+              {{citty_data_list[city_data_index]}}
             </view>
           </picker>
         </view>
