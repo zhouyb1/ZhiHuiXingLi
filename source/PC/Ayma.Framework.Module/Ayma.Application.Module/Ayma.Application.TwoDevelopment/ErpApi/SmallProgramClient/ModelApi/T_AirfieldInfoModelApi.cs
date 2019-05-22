@@ -36,5 +36,15 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
         /// openId
         /// </summary>
         public string F_OpenId { get; set; }
+
+        /// <summary>
+        /// 旅客姓名
+        /// </summary>
+        public string F_Name { get; set; }
+
+        /// <summary>
+        /// 旅客电话
+        /// </summary>
+        public string F_Phone { get; set; }
     }
 }
