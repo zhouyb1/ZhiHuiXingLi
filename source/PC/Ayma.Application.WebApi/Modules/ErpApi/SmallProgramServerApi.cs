@@ -21,13 +21,13 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         {
             Post["/SubmitUpdateOrderState"] = SubmitUpdateOrderState; //提交车班补货单
             Post["/UpdateOrderStatus"] = UpdateOrderStatus; //修改订单状态
+            Post["/UpdateBatchOrderStatus"] = UpdateBatchOrderStatus;//批量修改订单状态（未分拣-分拣中）
             Get["/GetOrderListByStatus"] = GetOrderListByStatus; //根据订单状态获取订单列表
             Get["/SerGetOrderDetailByNo"] = SerGetOrderDetailByNo; //根据订单号获取订单详情
             Get["/SerGetFlightList"] = SerGetFlightList; // 根据航班号获取航班时间列表
             Get["/ExpressInformation"] = ExpressInformation;//分拣完成后填写快递信息
             Get["/ReasonNoMessage"] = ReasonNoMessage;//根据航班号或者时间获取航班信息
             Get["/SorterLogin"] = SorterLogin;//分拣员登录  
-            Get["/UpdateBatchOrderStatus"] = UpdateBatchOrderStatus;//批量修改订单状态（未分拣-分拣中）
             Get["/GetExpressCompany"] = GetExpressCompany;//获取所有快递公司记录
             Get["/SerGetPhone"] = SerGetPhone;//获取手机号码
         }
@@ -156,10 +156,18 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 return Fail("订单状态不能为空!");
             }
-            string status = req["status"].ToString();  //订单状态
-            
+            if (req["Operator"].IsEmpty())
+            {
+                return Fail("操作员不能为空!");
+            }
+            List<string> OrderList = new List<string>();
+            OrderList = req["OrderNo"].ToString().ToList<string>(); //订单号
+            List<string> ConNumberList = new List<string>();
+            ConNumberList = req["ConsignmentNumber"].ToString().ToList<string>();//行李号
+            string status = req["status"].ToString();  //订单状态  
+            string Operator = req["Operator"].ToString();  //操作人
             string errText = "";
-            billServerApiBLL.UpdateBatchOrderStatus(status, out errText);
+            billServerApiBLL.UpdateBatchOrderStatus(OrderList, ConNumberList, status, Operator, out errText);
             return Success(errText);
         }
 
