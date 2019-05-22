@@ -19,6 +19,29 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         #region 获取数据
 
         /// <summary>
+        /// 获取所有航班号记录
+        /// </summary>
+        /// <param name="queryJson">查询参数</param>
+        /// <returns></returns>
+        public IEnumerable<T_FlightNoInfoEntity> GetList(string queryJson)
+        {
+            try
+            {
+                return orderInquiryService.GetList();
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+        /// <summary>
         /// 获取页面显示列表数据
         /// </summary>
         /// <param name="queryJson">查询参数</param>
@@ -71,7 +94,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         /// <param name="keyValue">主键</param>
         /// <returns></returns>
-        public IEnumerable<T_OrderBodyEntity> GetT_OrderBodyEntity(string keyValue)
+        public IEnumerable<T_GetBodyNameEntity> GetT_OrderBodyEntity(string keyValue)
         {
             try
             {
@@ -283,6 +306,54 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 }
             }
         }
+
+        /// <summary>
+        /// 修改订单
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <param name="entity"></param>
+        public void SaveHeadEntity(string keyValue, T_OrderHeadEntity entity)
+        {
+            try
+            {
+                orderInquiryService.SaveHeadEntity(keyValue, entity);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+        /// <summary>
+        /// 修改行李
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <param name="entity"></param>
+        public void SaveBodyEntity(string keyValue, T_OrderBodyEntity entity)
+        {
+            try
+            {
+                orderInquiryService.SaveBodyEntity(keyValue, entity);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+        
 
         /// <summary>
         /// 更新订单状态(取消订单、完成订单)

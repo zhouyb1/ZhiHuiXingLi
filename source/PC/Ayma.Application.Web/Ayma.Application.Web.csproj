@@ -460,6 +460,8 @@
     <Content Include="Areas\TwoDev\Views\OrderInquiry\Form.css" />
     <Content Include="Areas\TwoDev\Views\OrderInquiry\LogisticsForm.js" />
     <Content Include="Areas\TwoDev\Views\OrderInquiry\PutpayMoney.js" />
+    <Content Include="Areas\TwoDev\Views\OrderInquiry\UpdateForm.js" />
+    <Content Include="Areas\TwoDev\Views\OrderInquiry\UpdateLuggageForm.js" />
     <Content Include="Content\bootstrap\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\bootstrap.min.css" />
     <Content Include="Content\bootstrap\html5shiv.min.js" />
@@ -1791,6 +1793,8 @@
     <Content Include="Areas\TwoDev\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\TwoDev\Views\OrderInquiry\LogisticsForm.cshtml" />
     <Content Include="Areas\TwoDev\Views\OrderInquiry\PutpayMoney.cshtml" />
+    <Content Include="Areas\TwoDev\Views\OrderInquiry\UpdateForm.cshtml" />
+    <Content Include="Areas\TwoDev\Views\OrderInquiry\UpdateLuggageForm.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

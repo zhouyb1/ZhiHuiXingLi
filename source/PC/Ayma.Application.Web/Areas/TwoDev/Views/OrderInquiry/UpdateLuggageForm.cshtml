@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "行李编辑";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+<div class="am-form-wrap" id="form">
+    <div class="col-xs-6 am-form-item" data-table="T_FlightNoInfo">
+        <div class="am-form-item-title">行李号</div>
+        <input id="F_ConsignmentNumber" type="text" class="form-control" />
+    </div>
+    <div class="col-xs-6 am-form-item" data-table="T_FlightNoInfo">
+        <div class="am-form-item-title">重量</div>
+        <input id="F_Weight" type="text" class="form-control" />
+    </div>
+    <div class="col-xs-12 am-form-item" data-table="T_FlightNoInfo">
+        <div class="am-form-item-title">配送距离</div>
+        <input id="F_Distance" type="text" class="form-control" />
+    </div>
+    <div class="col-xs-6 am-form-item" data-table="T_FlightNoInfo">
+        <div class="am-form-item-title">价格</div>
+        <input id="F_Price" type="text" class="form-control" />
+    </div>
+    <div class="col-xs-6 am-form-item" data-table="T_FlightNoInfo">
+        <div class="am-form-item-title">数量</div>
+        <input id="F_Qty" type="text" class="form-control" />
+    </div>
+    <div class="col-xs-6 am-form-item" data-table="T_FlightNoInfo">
+        <div class="am-form-item-title">订单状态</div>
+        <input id="FB_State" type="text" class="form-control" />
+    </div>
+</div>
+@Html.AppendJsFile("/Areas/TwoDev/Views/OrderInquiry/UpdateLuggageForm.js")

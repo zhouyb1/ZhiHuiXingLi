@@ -26,6 +26,24 @@ var bootstrap = function ($, ayma) {
                 $("#am_affirmrefundd").show();
             }
 
+            // 行李编辑
+            $("#am_edit").on("click", function () {
+                var keyValue = $('#T_OrderBody').jfGridValue('F_Id');
+                if (ayma.checkrow(keyValue)) {
+                    ayma.layerForm({
+                        id: 'UpdateLuggageForm',
+                        title: '行李信息编辑',
+                        url: top.$.rootUrl + '/TwoDev/OrderInquiry/UpdateLuggageForm?keyValue=' + keyValue + '',
+                        width: 500,
+                        height: 350,
+                        maxmin: true,
+                        callBack: function (id) {
+                            return top[id].acceptClick(refreshGirdData);
+                        }
+                    });
+                }
+            });
+
             //订单分拣操作
             $('#am_sorting').on('click', function () {
                 if (ayma.checkrow(keyValue)) {
@@ -77,39 +95,45 @@ var bootstrap = function ($, ayma) {
             $('#T_OrderBody').jfGrid({
                 headData:
                     [
-                        { label: '订单号', name: 'F_OrderNo', width: 160, align: 'left',  hidden: true },
-                        { label: '托运单号', name: 'F_ConsignmentNumber', width: 160, align: 'left' },
-                        { label: '重量', name: 'F_Weight', width: 160, align: 'left' },
-                        { label: '配送距离', name: 'F_Distance', width: 160, align: 'left' },
-                        { label: '价格', name: 'F_Price', width: 120, align: 'left' },
-                        { label: '数量', name: 'F_Qty', width: 120, align: 'left'},
+                        { label: '订单号', name: 'F_OrderNo', width: 130, align: 'left' },//,  hidden: true
+                        { label: '行李号', name: 'F_ConsignmentNumber', width: 160, align: 'left' },
+                        { label: '重量(kg)', name: 'F_Weight', width: 90, align: 'left' },
+                        { label: '配送距离(km)', name: 'F_Distance', width: 90, align: 'left' },
+                        { label: '价格(元)', name: 'F_Price', width: 120, align: 'left' },
+                        { label: '数量', name: 'F_Qty', width: 80, align: 'left'},
                         {
-                            label: '订单状态', name: 'FB_State', width: 148, align: 'left',
+                            label: '订单状态', name: 'FB_State', width: 88, align: 'left',
                             formatter: function (cellvalue, options, rowObject) {
                                 var colorcss = "";
-                                if (cellvalue == 1) {
+                                if (cellvalue == 2) {
                                     colorcss = "label label-warning";
                                     cellvalue = "未分拣";
                                 }
-                                else if (cellvalue == 2) {
+                                else if (cellvalue == 3) {
                                     colorcss = "label label-warning";
                                     cellvalue = "分拣中";
                                 }
-                                else if (cellvalue == 3) {
+                                else if (cellvalue == 4) {
                                     colorcss = "label label-warning";
                                     cellvalue = "运输中";
                                 }
-                                else if (cellvalue == 4) {
+                                else if (cellvalue == 5) {
                                     colorcss = "label label-success";
                                     cellvalue = "已完成";
                                 }
-                                else if (cellvalue == 5) {
+                                else if (cellvalue == 41) {
                                     colorcss = "label label-danger";
-                                    cellvalue = "异常";
+                                    cellvalue = "分拣异常";
+                                }
+                                else if (cellvalue == 51) {
+                                    colorcss = "label label-danger";
+                                    cellvalue = "出港异常";
                                 }
                                 return "<span class='" + colorcss + "'>" + cellvalue + "</span>";
                             }
-                        }
+                        },
+                        { label: '分拣员', name: 'F_Name', width: 120, align: 'left' },
+                        { label: '联系电话', name: 'F_Phone', width: 120, align: 'left' }
                     ],
                 isEidt: true,
                 footerrow: true,
@@ -135,8 +159,6 @@ var bootstrap = function ($, ayma) {
         search: function (param) {
         param = param || {};
         $('#T_OrderBody').jfGridSet('reload', { param: { queryJson: JSON.stringify(param) } });
-        $('#girdtable_formal').jfGridSet('reload', { param: { queryJson: JSON.stringify(param) } });
-        $('#girdtable_temp').jfGridSet('reload', { param: { queryJson: JSON.stringify(param) } });
        }
     };
     refreshGirdData = function () {

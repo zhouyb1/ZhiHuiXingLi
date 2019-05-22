@@ -14,6 +14,12 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         #region 获取数据
 
         /// <summary>
+        /// 获取所有航班号记录
+        /// </summary>
+        /// <param name="queryJson">查询参数</param>
+        /// <returns></returns>
+        IEnumerable<T_FlightNoInfoEntity> GetList(string queryJson);
+        /// <summary>
         /// 获取页面显示列表数据
         /// </summary>
         /// <param name="queryJson">查询参数</param>
@@ -30,7 +36,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         /// <param name="keyValue">主键</param>
         /// <returns></returns>
-        IEnumerable<T_OrderBodyEntity> GetT_OrderBodyEntity(string keyValue);
+        IEnumerable<T_GetBodyNameEntity> GetT_OrderBodyEntity(string keyValue);
         /// <summary>
         /// 获取收款表实体数据
         /// </summary>
@@ -83,6 +89,18 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// <param name="keyValue">主键</param>
         /// <returns></returns>
         void SaveEntity(string keyValue, T_OrderHeadEntity entity,T_OrderBodyEntity t_OrderBodyEntity);
+        /// <summary>
+        /// 修改订单
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <param name="entity"></param>
+        void SaveHeadEntity(string keyValue, T_OrderHeadEntity entity);
+        /// <summary>
+        /// 修改行李
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <param name="entity"></param>
+        void SaveBodyEntity(string keyValue, T_OrderBodyEntity entity);
 
         /// <summary>
         /// 更新订单状态(取消订单、完成订单)

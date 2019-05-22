@@ -30,6 +30,24 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
              return View();
         }
         /// <summary>
+        /// 订单修改页
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult UpdateForm()
+        { 
+            return View();
+        }
+        /// <summary>
+        /// 行李信息修改页
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult UpdateLuggageForm()
+        {
+            return View();
+        }
+        /// <summary>
         /// 订单详情页
         /// </summary>
         /// <returns></returns>
@@ -61,6 +79,19 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
         #endregion
 
         #region 获取数据
+
+        /// <summary>
+        /// 获取所有航班号记录
+        /// </summary>
+        /// <param name="queryJson">查询参数</param>
+        /// <returns></returns>
+        [HttpGet]
+        [AjaxOnly]
+        public ActionResult GetList(string queryJson)
+        {
+            var data = orderInquiryIBLL.GetList(queryJson);
+            return Success(data);
+        }
 
         /// <summary>
         /// 获取页面显示列表数据
@@ -166,6 +197,36 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
             T_OrderHeadEntity entity = strEntity.ToObject<T_OrderHeadEntity>();
             T_OrderBodyEntity t_OrderBodyEntity = strt_OrderBodyEntity.ToObject<T_OrderBodyEntity>();
             orderInquiryIBLL.SaveEntity(keyValue,entity,t_OrderBodyEntity);
+            return Success("保存成功！");
+        }
+        /// <summary>
+        /// 修改订单
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <param name="strEntity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AjaxOnly]
+        public ActionResult SaveHeadForm(string keyValue, string strEntity)
+        {
+            T_OrderHeadEntity entity = strEntity.ToObject<T_OrderHeadEntity>();
+            orderInquiryIBLL.SaveHeadEntity(keyValue, entity);
+            return Success("保存成功！");
+        }
+        /// <summary>
+        /// 修改行李
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <param name="strEntity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AjaxOnly]
+        public ActionResult SaveBodyForm(string keyValue, string strEntity)
+        {
+            T_OrderBodyEntity entity = strEntity.ToObject<T_OrderBodyEntity>();
+            orderInquiryIBLL.SaveBodyEntity(keyValue, entity);
             return Success("保存成功！");
         }
 

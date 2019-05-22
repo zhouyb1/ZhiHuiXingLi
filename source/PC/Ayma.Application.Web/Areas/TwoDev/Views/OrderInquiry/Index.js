@@ -47,6 +47,23 @@ var bootstrap = function ($, ayma) {
             $('#am_refresh').on('click', function () {
                 location.reload();
             });
+            // 订单编辑
+            $("#am_edit").on('click', function () {
+                var keyValue = $('#girdtable').jfGridValue('F_Id');
+                if (ayma.checkrow(keyValue)) {
+                    ayma.layerForm({
+                        id: 'form',
+                        title: '订单编辑',
+                        url: top.$.rootUrl + '/TwoDev/OrderInquiry/UpdateForm?keyValue=' + keyValue +'',
+                        width: 500,
+                        height: 350,
+                        maxmin: true,
+                        callBack: function (id) {
+                            return top[id].acceptClick(refreshGirdData);
+                        }
+                    });
+                }
+            })
             // 查看详情
             $('#am_detail').on('click', function () {
                 var keyValue = $('#girdtable').jfGridValue('F_Id');
@@ -59,7 +76,7 @@ var bootstrap = function ($, ayma) {
                         width: 1000,
                         height: 950,
                         maxmin: true,
-                        btn: ['确认', '关闭'],
+                        btn: null,
                         callBack: function (id) {
                             return top[id].acceptClick(refreshGirdData);
                         }
@@ -115,7 +132,7 @@ var bootstrap = function ($, ayma) {
                     { label: "订单号", name: "F_OrderNo", width: 160, align: "left" },
                     { label: "客户姓名", name: "F_CustomerName", width: 160, align: "left" },
                     { label: "联系电话", name: "F_CustomerPhone", width: 160, align: "left" },
-                    { label: "客户地址", name: "F_CustomerAddress", width: 160, align: "left" },
+                    { label: "客户地址", name: "F_CustomerAddress", width: 220, align: "left" },
                     { label: "客户备注", name: "F_CustomerRemarks", width: 160, align: "left" },
                     { label: "订单创建类型", name: "F_CreateStype", width: 160, align: "left" },
                     {

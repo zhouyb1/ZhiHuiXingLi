@@ -21,6 +21,33 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         #region 获取数据
 
         /// <summary>
+        /// 获取所有航班号记录
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<T_FlightNoInfoEntity> GetList()
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append("SELECT ");
+                strSql.Append(@"t.*");
+                strSql.Append("  FROM T_FlightNoInfo t ");
+                return this.BaseRepository().FindList<T_FlightNoInfoEntity>(strSql.ToString());
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 获取页面显示列表数据
         /// </summary>
         /// <param name="queryJson">查询参数</param>
@@ -119,27 +146,33 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         /// <param name="keyValue">主键</param>
         /// <returns></returns>
-        public IEnumerable<T_OrderBodyEntity> GetT_OrderBodyEntity(string keyValue)
+        public IEnumerable<T_GetBodyNameEntity> GetT_OrderBodyEntity(string keyValue)
         {
             try
             {
                 var strSql = new StringBuilder();
                 strSql.Append(@"SELECT
-                    F_Id,
-                    F_OrderNo,
-                    F_ConsignmentNumber,
-                    F_Weight,
-                    F_Distance,
-                    F_Price,
-                    F_Qty,
-                    FB_State
-                    FROM    T_OrderBody
+                    A.F_Id,
+                    A.F_OrderNo,
+                    A.F_ConsignmentNumber,
+                    A.F_Weight,
+                    A.F_Distance,
+                    A.F_Price,
+                    A.F_Qty,
+                    A.FB_State,
+                    B.F_Name,
+                    B.F_Phone
+                    FROM    T_OrderBody A,T_EmployeeInfo B
                     WHERE   1 = 1");
-                strSql.Append(" And F_OrderNo='" + keyValue + "'");
+                strSql.Append(" And A.F_OrderNo='" + keyValue + "'");
+                //if (state == "3")
+                //{
+                strSql.Append(" And A.FB_Code=B.F_Code");
+                //}
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
                 //return this.BaseRepository().FindTable(strSql.ToString(), dp);
-                return this.BaseRepository().FindList<T_OrderBodyEntity>(strSql.ToString(), dp);
+                return this.BaseRepository().FindList<T_GetBodyNameEntity>(strSql.ToString(), dp);
             }
             catch (Exception ex)
             {
@@ -477,6 +510,62 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
             catch (Exception ex)
             {
                 db.Rollback();
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 修改订单实体数据
+        /// </summary>
+        /// <param name="keyValue">主键</param>
+        /// <returns></returns>
+        public void SaveHeadEntity(string keyValue, T_OrderHeadEntity entity)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(keyValue))
+                {
+                    entity.Modify(keyValue);
+                    this.BaseRepository().Update(entity);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 修改行李实体数据
+        /// </summary>
+        /// <param name="keyValue">主键</param>
+        /// <returns></returns>
+        public void SaveBodyEntity(string keyValue, T_OrderBodyEntity entity)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(keyValue))
+                {
+                    entity.Modify(keyValue);
+                    this.BaseRepository().Update(entity);
+                }
+            }
+            catch (Exception ex)
+            {
                 if (ex is ExceptionEx)
                 {
                     throw;
