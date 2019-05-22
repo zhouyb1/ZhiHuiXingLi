@@ -116,7 +116,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             string status = req["status"].ToString();  //订单状态
             string Operator = req["Operator"].ToString(); //操作人
             string errText = "";
-            billServerApiBLL.UpdateOrderStatus(OrderNo, ConsignmentNumber, status, Operator, out errText);
             if (status == "4")   //行李号状态为运输中,插入快递公司数据
             {
                 if (req["ExpressCompanyId"].IsEmpty())
@@ -141,6 +140,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 string Amount = req["Amount"].ToString(); //快递费用
                 billServerApiBLL.ExpressInformation(OrderNo, ConsignmentNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
             }
+            billServerApiBLL.UpdateOrderStatus(OrderNo, ConsignmentNumber, status, Operator, out errText);
             return Success(errText);
         }
 
