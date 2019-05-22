@@ -130,7 +130,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT F_Id,F_Address,F_OpenId FROM dbo.T_Address WHERE F_OpenId=@F_OpenId");
+                strSql.Append(@"SELECT F_Id,F_Address,F_OpenId,F_Name,F_Phone FROM dbo.T_Address WHERE F_OpenId=@F_OpenId");
                 var dp = new DynamicParameters(new { });
                 dp.Add("@F_OpenId", openId);
                 return this.BaseRepository().FindList<T_AddressModelApi>(strSql.ToString(), dp);
@@ -299,11 +299,13 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
 
                 //保存地址到地址表
                 var InsAddress = new StringBuilder();
-                InsAddress.Append(@"INSERT INTO dbo.T_Address ( F_Id, F_Address, F_OpenId ) VALUES (@F_Id, @F_Address, @F_OpenId)");
+                InsAddress.Append(@"INSERT INTO dbo.T_Address ( F_Id, F_Address, F_OpenId,F_Name,F_Phone ) VALUES (@F_Id, @F_Address, @F_OpenId,@F_Name,@F_Phone)");
                 var ad = new DynamicParameters(new { });
                 ad.Add("@F_Id", Guid.NewGuid().ToString());
                 ad.Add("@F_Address", SubmitOrderModelApi.Head.F_CustomerAddress);
                 ad.Add("@F_OpenId", SubmitOrderModelApi.Head.F_OpenId);
+                ad.Add("@F_Name", SubmitOrderModelApi.Head.F_CustomerName);
+                ad.Add("@F_Phone", SubmitOrderModelApi.Head.F_CustomerPhone);
                 db.ExecuteBySql(InsAddress.ToString(), ad);
 
                 //两点之间的距离计算(计算机场与寄件地址的距离)规则
