@@ -8,7 +8,14 @@ Page({
    */
   data: {
     addr: [],
-    open: ''
+    open: '',
+    actions: [{
+      name: '删除',
+      color: '#fff',
+      fontsize: '20',
+      width: 100,
+      background: '#ed3f14'
+    }]
   },
 
   /**

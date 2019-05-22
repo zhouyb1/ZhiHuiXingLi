@@ -36,7 +36,7 @@ Page({
     page2: false, //委托协议
     page_index: 1, //1航班2用户信息
     suggestion: [], //地址列表
-    backfill: '' //选择索引地址
+    backfill: '', //选择索引地址
   },
 
   /**

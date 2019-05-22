@@ -184,15 +184,14 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       success(res) {
+        wx.hideLoading();
         if (res.data.code === 200) {
-          wx.hideLoading();
           wx.showToast({
             title: '修改成功',
             icon: 'success',
             duration: 2000
           });
         }else{
-          wx.hideLoading();
           wx.showToast({
             title: '修改失败',
             image: "../../../image/error.png",
