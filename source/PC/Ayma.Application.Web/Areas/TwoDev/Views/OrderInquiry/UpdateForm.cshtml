@@ -50,7 +50,20 @@
     </div>
     <div class="col-xs-6 am-form-item" data-table="T_FlightNoInfo">
         <div class="am-form-item-title">订单状态</div>
-        <input id="F_State" type="text" class="form-control" />
+        @*<input id="F_State" type="text" class="form-control" />*@
+        <select id="F_State" class="form-control">
+            <option value="0">待付款</option>
+            <option value="1">已付款</option>
+            <option value="-1">已取消</option>
+            <option value="-2">已退款</option>
+            <option value="-3">申请退款</option>
+            <option value="2">未分拣</option>
+            <option value="3">分拣中</option>
+            <option value="4">运输中</option>
+            <option value="5">已完成</option>
+            <option value="41">分拣异常</option>
+            <option value="51">出港异常</option>
+        </select>
     </div>
     <div class="col-xs-6 am-form-item" data-table="T_FlightNoInfo">
         <div class="am-form-item-title">订单类型</div>

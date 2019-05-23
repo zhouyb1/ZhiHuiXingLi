@@ -246,6 +246,7 @@
     <Compile Include="Areas\TwoDev\Controllers\SorterMessageController.cs" />
     <Compile Include="Areas\TwoDev\Controllers\WeChatMemberController.cs" />
     <Compile Include="Areas\TwoDev\Controllers\OrderInquiryController.cs" />
+    <Compile Include="Areas\TwoDev\Controllers\CustomerPayInfoController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\AM_SystemModule\Views\Annexes\PreviewForm.js" />
@@ -2175,6 +2176,10 @@
     <Content Include="Areas\TwoDev\Views\OrderInquiry\Form.cshtml" />
     <Content Include="Areas\TwoDev\Views\OrderInquiry\Form.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Areas\TwoDev\Views\CustomerPayInfo\Index.cshtml" />
+    <Content Include="Areas\TwoDev\Views\CustomerPayInfo\Index.js" />
+    <Content Include="Areas\TwoDev\Views\CustomerPayInfo\Form.cshtml" />
+    <Content Include="Areas\TwoDev\Views\CustomerPayInfo\Form.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

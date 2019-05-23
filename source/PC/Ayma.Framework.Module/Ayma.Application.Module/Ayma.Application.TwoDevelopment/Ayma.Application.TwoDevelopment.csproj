@@ -111,6 +111,11 @@
     <Compile Include="TwoDev\OrderCollectMoney\T_OrderCollectMoneyEntity.cs" />
     <Compile Include="TwoDev\OrderPayMoney\T_OrderPayMoneyEntity.cs" />
     <Compile Include="TwoDev\OpinionFeedback\T_OpinionFeedbackEntity.cs" />
+    <Compile Include="TwoDev\CustomerPayInfo\T_CustomerPayInfoEntity.cs" />
+    <Compile Include="TwoDev\CustomerPayInfo\CustomerPayInfoService.cs" />
+    <Compile Include="TwoDev\CustomerPayInfo\CustomerPayInfoBLL.cs" />
+    <Compile Include="TwoDev\CustomerPayInfo\CustomerPayInfoIBLL.cs" />
+    <Compile Include="TwoDev\AirfieldFloor\T_AirfieldFloorEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Ayma.Application.Organization\Ayma.Application.Organization.csproj">

@@ -25,6 +25,17 @@ $('.am-form-wrap').mCustomScrollbar({theme: "minimal-dark"});
                 // 访问数据接口地址
                 url: top.$.rootUrl + '/TwoDev/FlightNumberRecord/GetList',
             });
+            $('#F_State').select({
+                type: 'default',
+                value: 'F_State',
+                text: 'F_State',
+                // 展开最大高度
+                maxHeight: 200,
+                // 是否允许搜索
+                allowSearch: true,
+                // 访问数据接口地址
+                //url: top.$.rootUrl + '/TwoDev/OrderInquiry/GetPageList',
+            });
 
             $('#F_FlightNumber').select({
                 type: 'default',
@@ -59,6 +70,7 @@ $('.am-form-wrap').mCustomScrollbar({theme: "minimal-dark"});
         if (!$('body').Validform()) {
             return false;
         }
+        alert($('#F_State').val());
         $("#F_AirfieldName").val($("#F_AirfieldId").selectGetText());
         var postData = {
             strEntity: JSON.stringify($('body').GetFormData())

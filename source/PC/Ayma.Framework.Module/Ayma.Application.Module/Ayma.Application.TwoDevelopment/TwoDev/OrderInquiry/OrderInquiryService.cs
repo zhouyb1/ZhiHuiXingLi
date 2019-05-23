@@ -160,15 +160,11 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                     A.F_Price,
                     A.F_Qty,
                     A.FB_State,
-                    B.F_Name,
-                    B.F_Phone
-                    FROM    T_OrderBody A,T_EmployeeInfo B
+                    A.FB_Name,
+                    A.FB_Phone
+                    FROM    T_OrderBody A
                     WHERE   1 = 1");
                 strSql.Append(" And A.F_OrderNo='" + keyValue + "'");
-                //if (state == "3")
-                //{
-                strSql.Append(" And A.FB_Code=B.F_Code");
-                //}
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
                 //return this.BaseRepository().FindTable(strSql.ToString(), dp);

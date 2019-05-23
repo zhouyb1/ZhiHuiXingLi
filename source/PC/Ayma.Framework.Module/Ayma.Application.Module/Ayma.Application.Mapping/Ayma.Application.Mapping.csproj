@@ -120,6 +120,8 @@
     <Compile Include="TwoDev\T_OrderCollectMoneyMap.cs" />
     <Compile Include="TwoDev\T_OrderPayMoneyMap.cs" />
     <Compile Include="TwoDev\T_OpinionFeedbackMap.cs" />
+    <Compile Include="TwoDev\T_CustomerPayInfoMap.cs" />
+    <Compile Include="TwoDev\T_AirfieldFloorMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -132,8 +132,8 @@ var bootstrap = function ($, ayma) {
                                 return "<span class='" + colorcss + "'>" + cellvalue + "</span>";
                             }
                         },
-                        { label: '分拣员', name: 'F_Name', width: 120, align: 'left' },
-                        { label: '联系电话', name: 'F_Phone', width: 120, align: 'left' }
+                        { label: '分拣员', name: 'FB_Name', width: 120, align: 'left' },
+                        { label: '联系电话', name: 'FB_Phone', width: 120, align: 'left' }
                     ],
                 isEidt: true,
                 footerrow: true,

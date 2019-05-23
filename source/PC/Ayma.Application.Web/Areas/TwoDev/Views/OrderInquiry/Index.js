@@ -72,7 +72,7 @@ var bootstrap = function ($, ayma) {
                     ayma.layerForm({
                         id: 'form',
                         title: '订单详情',
-                        url: top.$.rootUrl + '/TwoDev/OrderInquiry/Form?keyValue=' + keyValue + '&state=' + state + '',
+                        url: top.$.rootUrl + '/TwoDev/OrderInquiry/Form?keyValue=' + keyValue + '&state=' + state,
                         width: 1000,
                         height: 950,
                         maxmin: true,
