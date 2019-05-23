@@ -5,6 +5,7 @@ using Ayma.Util;
 using Dapper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -251,6 +252,34 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         }
 
         /// <summary>
+        /// 根据机场Id获取运费计算规则
+        /// </summary>
+        /// <param name="F_AirfieldId"></param>
+        /// <returns></returns>
+        public DataTable GetFeeRule(string F_AirfieldId)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT * FROM T_CustomerPayInfo  WHERE F_AirfieldId=@F_AirfieldId");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@F_AirfieldId", F_AirfieldId);
+                return this.BaseRepository().FindTable(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 提交订单
         /// </summary>
         /// <param name="SubmitOrderModelApi"></param>
@@ -329,14 +358,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                     para.Add("@F_ConsignmentNumber", item.F_ConsignmentNumber);
                     para.Add("@F_Weight", item.F_Weight);
                     para.Add("@F_Distance", item.F_Distance);
-                    if (SubmitOrderModelApi.Head.F_IsUrgent.Equals("加急"))
-                    {
-                        para.Add("@F_Price", 49 + 2);
-                    }
-                    else if (SubmitOrderModelApi.Head.F_IsUrgent.Equals("普通"))
-                    {
-                        para.Add("@F_Price", 49);
-                    }
+                    para.Add("@F_Price", item.F_Price);
                     para.Add("@F_Qty", item.F_Qty);
                     para.Add("@FB_State", OrderStatus.未分拣);
                     db.ExecuteBySql(strInsert.ToString(), para);
