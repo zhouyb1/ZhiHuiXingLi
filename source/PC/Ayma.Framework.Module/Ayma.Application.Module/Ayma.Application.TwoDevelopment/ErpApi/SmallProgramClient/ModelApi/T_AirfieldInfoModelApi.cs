@@ -22,6 +22,9 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
         public string F__OrderBy { get; set; }
     }
 
+    /// <summary>
+    /// 地址管理
+    /// </summary>
     public class T_AddressModelApi
     {
         /// <summary>
@@ -47,4 +50,5 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
         /// </summary>
         public string F_Phone { get; set; }
     }
+
 }
