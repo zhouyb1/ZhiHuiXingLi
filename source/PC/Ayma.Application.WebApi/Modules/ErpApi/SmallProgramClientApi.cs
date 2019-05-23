@@ -25,6 +25,7 @@ using Config = Ayma.Util.Config;
 using Senparc.CO2NET.Helpers;
 using Ayma.Application.Base.SystemModule;
 using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi;
+using System.Data;
 
 namespace Ayma.Application.WebApi.Modules.ErpApi
 {
@@ -62,10 +63,11 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/NotifyUrl"] = NotifyUrl;
             Post["/GetPhone"] = GetPhone;
             Post["/SaveFeedBack"] = SaveFeedBack;
-
+            Get["/testFee"] = testFee;
 
         }
         private SmallProgramClientApiBLL billClientApiBLL = new SmallProgramClientApiBLL();
+        private AirportMessageBLL airportService = new AirportMessageBLL();
         private WeChatMemberIBLL customerIbll = new WeChatMemberBLL();
         /// <summary>
         /// 获取机场列表
@@ -246,8 +248,100 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             var orderNo = new CodeRuleBLL().GetBillCode("10001", "System");
             new CodeRuleBLL().UseRuleSeed("10001", "System");
             string errText = "";
+            //两点之间的距离计算(计算机场与寄件地址的距离)规则
+            var endStation = airportService.GetT_AirfieldInfoEntity(SubmitOrderModelApi.Head.F_AirfieldId);
+            var distance = CommonHelper.GetDistance(endStation.F_Longitude.ToDouble(),
+                endStation.F_Latitude.ToDouble(),
+                SubmitOrderModelApi.Head.F_Longitude.ToDouble(), SubmitOrderModelApi.Head.F_Latitude.ToDouble());
+
+            //获取机场运费计算规则
+            DataTable FeeRule = billClientApiBLL.GetFeeRule(SubmitOrderModelApi.Head.F_AirfieldId);
+            decimal F_NumberPice = Convert.ToDecimal(FeeRule.Rows[0]["F_NumberPice"]);
+            decimal F_DistanceBaseQty = Convert.ToDecimal(FeeRule.Rows[0]["F_DistanceBaseQty"]);
+            decimal F_DistancePrice = Convert.ToDecimal(FeeRule.Rows[0]["F_DistancePrice"]);
+            decimal F_Discount1 = Convert.ToDecimal(FeeRule.Rows[0]["F_Discount1"]);
+            decimal F_Discount2 = Convert.ToDecimal(FeeRule.Rows[0]["F_Discount2"]);
+
+            double km=Convert.ToDouble(distance)/1000;   //两经纬度之间的距离
+            int RealKM = Convert.ToInt32(Math.Round(km, 1));  
+
+            decimal firstFee = 0;   //第一件行李的运费
+            decimal secondFee = 0; //第二件行李的运费
+            decimal elseFee = 0;  //第三件及以后行李的运费
+            decimal elsetotalFee = 0; //第三件及以后行李的总运费
+            decimal totalFee = 0;  //总运费
+            int packagCount = SubmitOrderModelApi.OrderDetails.Count;
+
+            if (packagCount == 1)
+            {
+                firstFee = BaseFee(SubmitOrderModelApi.Head.F_AirfieldId, RealKM);
+            }
+            else if (packagCount == 2)
+            {
+                firstFee = BaseFee(SubmitOrderModelApi.Head.F_AirfieldId, RealKM);
+                secondFee = firstFee * F_Discount1;
+            }
+            else
+            {
+                firstFee = BaseFee(SubmitOrderModelApi.Head.F_AirfieldId, RealKM);
+                secondFee = firstFee * F_Discount1;
+                elseFee = firstFee * F_Discount2;
+                elsetotalFee = elseFee * (packagCount - 2);
+            }
+            totalFee = firstFee + secondFee + elsetotalFee;   //计算总运费
+
+            for (int i = 1; i <=SubmitOrderModelApi.OrderDetails.Count; i++)
+            {
+                if (i == 1)
+                {
+                    SubmitOrderModelApi.OrderDetails[i - 1].F_Price = Convert.ToDecimal(firstFee);
+                    SubmitOrderModelApi.OrderDetails[i - 1].F_Distance = Convert.ToDecimal(RealKM);
+                }
+                else if (i == 2)
+                {
+                    SubmitOrderModelApi.OrderDetails[i-1].F_Price = Convert.ToDecimal(secondFee);
+                    SubmitOrderModelApi.OrderDetails[i - 1].F_Distance = Convert.ToDecimal(RealKM);
+                }
+                else
+                {
+                    SubmitOrderModelApi.OrderDetails[i - 1].F_Price = Convert.ToDecimal(elseFee);
+                    SubmitOrderModelApi.OrderDetails[i - 1].F_Distance = Convert.ToDecimal(RealKM);
+                }
+            }
+           
             billClientApiBLL.SubmitOrder(SubmitOrderModelApi, orderNo, out errText);
-            return Success("ok",new{OrdeNo=orderNo});
+            return Success("ok", new { totalFee = totalFee });
+        }
+
+        public decimal BaseFee(string F_AirfieldId, int RealKM)
+        {
+            //string F_AirfieldId = "943C717C-9ED7-46ED-B3A2-0744740377B6";
+            //获取机场运费计算规则
+            DataTable FeeRule = billClientApiBLL.GetFeeRule(F_AirfieldId);
+            decimal F_NumberPice = Convert.ToDecimal(FeeRule.Rows[0]["F_NumberPice"]);
+            decimal F_DistanceBaseQty = Convert.ToDecimal(FeeRule.Rows[0]["F_DistanceBaseQty"]);
+            decimal F_DistancePrice = Convert.ToDecimal(FeeRule.Rows[0]["F_DistancePrice"]);
+            decimal F_Discount1 = Convert.ToDecimal(FeeRule.Rows[0]["F_Discount1"]);
+            decimal F_Discount2 = Convert.ToDecimal(FeeRule.Rows[0]["F_Discount2"]);
+            decimal firstFee = 0;
+            if (RealKM <= 5)
+            {
+                firstFee = F_NumberPice;
+            }
+            else
+            {
+                firstFee = F_NumberPice + (RealKM - F_DistanceBaseQty) * F_DistancePrice;
+            }
+            return firstFee.ToDecimal();
+        }
+
+        public Response testFee(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject();// 获取模板请求数据
+            string F_AirfieldId = req["F_AirfieldId"].ToString();
+            DataTable FeeRule = billClientApiBLL.GetFeeRule(F_AirfieldId);
+            string a = FeeRule.Rows[0]["F_AirfieldId"].ToString();
+            return Success(FeeRule);
         }
 
         /// <summary>
