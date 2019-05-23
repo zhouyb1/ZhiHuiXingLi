@@ -8,6 +8,7 @@ using Ayma.Util;
 using System.Text.RegularExpressions;
 using Senparc.Weixin.WxOpen.AdvancedAPIs.Sns;
 using Senparc.Weixin.WxOpen.Entities;
+using Newtonsoft.Json;
 
 namespace Ayma.Application.WebApi.Modules.ErpApi
 {
@@ -141,6 +142,26 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 billServerApiBLL.ExpressInformation(OrderNo, ConsignmentNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
             }
             billServerApiBLL.UpdateOrderStatus(OrderNo, ConsignmentNumber, status, Operator, out errText);
+            //SortedDictionary<string, object> param = new SortedDictionary<string, object>();
+            //param.Add("orderChannelCode","OTP_ZHJXKJ_STD");
+            //param.Add("customerCode","K21000869");
+            //param.Add("customerSecretKey","WILz78gFNINyeLQvKK+LBw==");
+            //param.Add("orderLogisticsCode","");
+            //param.Add("custOrderCreateTime","");
+            //param.Add("goodsType","");
+            //param.Add("senderName","");
+            //param.Add("senderProvName","");
+            //param.Add("senderCityName","");
+            //param.Add("senderAreaName","");
+            //param.Add("senderAddress","");
+            //param.Add("recipientProvName","");
+            //param.Add("recipientCityName","");
+            //param.Add("recipientAreaName","");
+            //param.Add("recipientAddress","");
+            //param.Add("recipientName","");
+            //string json = SerializeObject(param);
+
+
             return Success(errText);
         }
 
@@ -318,6 +339,19 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             var phoneData = EncryptHelper.DecodeEncryptedData(jsonResult.session_key, encrytedData, iv); //解密手机号码
             var result = Newtonsoft.Json.JsonConvert.DeserializeObject<DecodedPhoneNumber>(phoneData);
             return Success("ok", result.phoneNumber);
+        }
+
+        public static string SerializeObject(object o)
+        {
+            //IsoDateTimeConverter timeFormat = new IsoDateTimeConverter();
+            //timeFormat.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            var settings = new JsonSerializerSettings
+            {
+                DateFormatString = "yyyy-MM-dd HH:mm:ss",
+                NullValueHandling = NullValueHandling.Include
+            };
+            string json = JsonConvert.SerializeObject(o, Formatting.Indented, settings);
+            return json;
         }
 
         /// <summary>
