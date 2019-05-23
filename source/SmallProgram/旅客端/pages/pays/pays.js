@@ -11,14 +11,6 @@ Page({
    */
   data: {
     times: false,
-    ems: false,
-    multiArray: [
-      ['今天', '明天', '后天', '5-11'],
-      ['10', '11', '12', '13', '14'],
-      ['30', '00']
-    ],
-    multiIndex: [0, 0, 0],
-    animal: '熊猫',
     checked: false,
     data:''
   },
@@ -28,30 +20,6 @@ Page({
    */
   onLoad: function(options) {
     var _this = this;
-    var times = new Date().getTime();
-    var t = new Date(times + 86400000);
-    var d = '';
-    var arr = [];
-    var arrs = []
-    for (var i = 1; i < 8; i++) {
-      d = new Date(times + 86400000 * i).getMonth() + 1 + '-' + new Date(times + 86400000 * i).getDate();
-      arr.push(d);
-      if (i === 1) {
-        arr[0] = "今天"
-      };
-      if (i === 2) {
-        arr[1] = "明天"
-      };
-      if (i === 3) {
-        arr[2] = "后天"
-      };
-    };
-    arrs[0] = arr;
-    arrs[1] = this.data.multiArray[1];
-    arrs[2] = this.data.multiArray[2]
-    this.setData({
-      multiArray: arrs
-    });
     // 获取订单信息
     wx.showLoading({
       title: '加载中',
@@ -143,28 +111,9 @@ Page({
       times: event.detail.value
     })
   },
-  onChange1(event) {
-    this.setData({
-      ems: event.detail.value
-    })
-  },
-  bindMultiPickerChange: function(e) {
-    var s = this.data.multiArray[1];
-    var t = new Date().getHours();
-    if (t > s[e.detail.value[1]] && this.data.multiArray[0][e.detail.value[0]] === "今天") {
-      wx.showModal({
-        title: '提示',
-        content: '呀！这个点已经过去了，请选择其他时间'
-      })
-      e.detail.value[0] += 1;
-    };
-    this.setData({
-      multiIndex: e.detail.value
-    })
-  },
   handleText() {
     $Toast({
-      content: '这是说明是港内件说明'
+      content: "送达时间是航班到达之后的4-6小时或者2-3小时内派送"
     });
   },
   checkboxChange: function(e) {

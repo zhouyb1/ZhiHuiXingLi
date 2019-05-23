@@ -1,19 +1,49 @@
 <!--pages/orders/orders_info/orders_info.wxml-->
-<view class='list'>姓名：{{list.F_CustomerName}}</view>
-<view class='list'>手机：{{list.F_CustomerPhone}}</view>
-<view class='list'>地址：{{list.F_CustomerAddress}}</view>
-<view class='list'>订单号：{{list.F_OrderNo}}</view>
-<view class='list'>航班号：{{list.F_FlightNumber}}</view>
-<view class='list'>航程：{{list.AddressBegin}} - {{list.AddressEnd}}</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">姓&nbsp;&nbsp;&nbsp;名：</text>
+  </view>
+  <view class='list-cont'> {{list.F_CustomerName}}</view>
+</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">手&nbsp;&nbsp;&nbsp;机：</text>
+  </view>
+  <view class='list-cont'> {{list.F_CustomerPhone}}</view>
+</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">地&nbsp;&nbsp;&nbsp;址：</text>
+  </view>
+  <view class='list-cont'> {{list.F_CustomerAddress}}</view>
+</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">订单号：</text>
+  </view>
+  <view class='list-cont'> {{list.F_OrderNo}}</view>
+</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">航班号：</text>
+  </view>
+  <view class='list-cont'> {{list.F_FlightNumber}}</view>
+</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">航&nbsp;&nbsp;&nbsp;程：</text>
+  </view>
+  <view class='list-cont'>{{list.AddressBegin}} - {{list.AddressEnd}}</view>
+</view>
 
 <view class="text">行李信息</view>
 <view class='list' wx:for="{{num_list}}" wx:for-index="index" wx:key="index">
   托运单号：{{item.F_ConsignmentNumber}}
-  <text>x{{item.F_Qty}}</text>
+  <text decode="true" space="true">&nbsp;x{{item.F_Qty}}</text>
 </view>
 <view class='lists'>
   <text>合计:{{num}}件</text>
-  <text style="color:#ff8d1a;margin-left:30rpx;">实付款：{{price}}</text>
+  <text class="lists-right">实付款：{{price}}</text>
 </view>
 <view class="text">其他信息</view>
 <view class='list'>
@@ -87,8 +117,12 @@
     <view bindtap='close_pay'>申请退款</view>
   </view>
   <view class="order-ok" wx:if="{{type===5}}">
-    <view>投诉</view>
-    <view>评价</view>
+    <view>
+      <text decode="true" space="true">投&nbsp;&nbsp;&nbsp;诉</text>
+    </view>
+    <view>
+      <text decode="true" space="true">评&nbsp;&nbsp;&nbsp;价</text>
+    </view>
   </view>
 </view>
 

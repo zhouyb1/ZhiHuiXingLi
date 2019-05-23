@@ -15,15 +15,15 @@
 <view class='list'>
   送达时间：
   <view wx:if="{{!times}}">
-    <picker mode="multiSelector" bindchange="bindMultiPickerChange" value="{{multiIndex}}" range="{{multiArray}}">
-      <view class="picker">
-        {{multiArray[0][multiIndex[0]]}} {{multiArray[1][multiIndex[1]]}}:{{multiArray[2][multiIndex[2]]}}
-      </view>
-    </picker>
+    4-6小时
   </view>
   <block wx:else>
-    尽快送达
+    2-3小时
   </block>
+  <view class="help" bindtap='go_help' data-type="2">
+    <image src='../../image/helps.png'></image>
+    对送达时间疑问？
+  </view>
   <view class='timers'>
     <i-switch value="{{times}}" size="large" bind:change="onChange" slot="footer">
       <view slot="open">加急</view>
@@ -31,7 +31,7 @@
     </i-switch>
   </view>
 </view>
-<view class='list'>是否港内件
+<!-- <view class='list'>是否港内件
   <view class="help" bindtap='handleText'>
     <image src='../../image/helps.png'></image>
     什么是港内件
@@ -42,12 +42,11 @@
       <view slot="close">港外</view>
     </i-switch>
   </view>
-</view>
+</view> -->
 <view class='list' style="margin-bottom:150rpx;">
   <checkbox-group bindchange="checkboxChange" class="check">
     <label class="checkbox">
-      <checkbox checked="{{checked}}" />
-      阅读并接受
+      <checkbox checked="{{checked}}" /> 阅读并接受
     </label>
     <text bindtap='go_help' data-type="1">《xxx用户协议》</text>
   </checkbox-group>

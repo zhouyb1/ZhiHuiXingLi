@@ -20,7 +20,7 @@ Page({
     };
     if (options.type === '2') {
       this.setData({
-        type: "服务流程"
+        type: "派送时间规则"
       })
     };
     if (options.type === '3') {

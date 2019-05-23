@@ -13,6 +13,16 @@ Page({
    * 页面的初始数据
    */
   data: {
+    multiArray: [
+      ['请选择起始站', '广东'],
+      [],
+    ],
+    multiIndex: [0, 0],
+    multiArray1: [
+      ['请选择到达站', '首都机场'],
+      [],
+    ],
+    multiIndex1: [0, 0],
     city: [0, 0, 0], //航程
     citty_list: ['请选择始发站'], //航程
     index: 0, //到达站下标
@@ -21,8 +31,10 @@ Page({
     end_city_list_data: ['0'], //到达站
     city_num: ['请先选择到达站'], //航班号
     num_index: 0, //航班号下标
-    name: '', //用户姓名
-    phone: '', //用户手机
+    name: '', //收货姓名
+    phone: '', //收获手机
+    name1: '', //乘机人信息
+    phone1: '', //乘机人电话
     city_data_index: 0, //用户历史地址下标
     citty_data_list: [], //用户历史地址列表
     citty_data_data: [], //用户历史地址列表
@@ -37,6 +49,8 @@ Page({
     page_index: 1, //1航班2用户信息
     suggestion: [], //地址列表
     backfill: '', //选择索引地址
+    city_num_hend: false, //航班号手动输入
+    city_num_hend_value: "", //手动输入的航班号
   },
 
   /**
@@ -101,26 +115,90 @@ Page({
   onShareAppMessage: function() {
 
   },
-  name_fun(e) {
+  bindMultiPickerChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
-      name: e.detail.value
-    });
+      multiIndex: e.detail.value
+    })
+    console.log(this.data);
+  },
+  bindMultiPickerColumnChange: function (e) {
+    var data = {
+      multiArray: this.data.multiArray,
+      multiIndex: this.data.multiIndex
+    };
+    data.multiIndex[e.detail.column] = e.detail.value;
+    switch (e.detail.column) {
+      case 0:
+        switch (data.multiIndex[0]) {
+          case 0:
+            data.multiArray[1] = [];
+            break;
+          case 1:
+            data.multiArray[1] = ['广州'];
+            break;
+        }
+        data.multiIndex[1] = 0;
+        data.multiIndex[2] = 0;
+        break;
+    }
+    this.setData(data);
+  },
+  bindMultiPickerChange1: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      multiIndex1: e.detail.value
+    })
+  },
+  bindMultiPickerColumnChange1: function (e) {
+    var data = {
+      multiArray1: this.data.multiArray1,
+      multiIndex1: this.data.multiIndex1
+    };
+    data.multiIndex1[e.detail.column] = e.detail.value;
+    switch (e.detail.column) {
+      case 0:
+        switch (data.multiIndex1[0]) {
+          case 0:
+            data.multiArray1[1] = [];
+            break;
+          case 1:
+            data.multiArray1[1] = ['T1'];
+            break;
+        }
+        data.multiIndex1[1] = 0;
+        data.multiIndex1[2] = 0;
+        break;
+    }
+    this.setData(data);
+  },
+  name_fun(e) {
+    if (e.target.dataset.type) {
+      this.setData({
+        name1: e.detail.value
+      });
+    } else {
+      this.setData({
+        name: e.detail.value
+      });
+    };
   },
   phone_fun(e) {
-    this.setData({
-      phone: e.detail.value
-    });
+    if (e.target.dataset.type) {
+      this.setData({
+        phone1: e.detail.value
+      });
+    } else {
+      this.setData({
+        phone: e.detail.value
+      });
+    };
   },
   city_fun(e) {
     this.setData({
       self_city: e.detail.value
     });
     this.get_addr(e.detail.value, 1);
-  },
-  str_city: function(e) {
-    this.setData({
-      citty_list: e.detail.value
-    });
   },
   end_citty(e) {
     var _this = this;
@@ -185,7 +263,6 @@ Page({
     if (!(e.detail.value - 0)) {
       return false;
     };
-    console.log(1);
     var d = this.data.citty_data_list[(e.detail.value - 0)];
     var info = this.data.citty_data_data[(e.detail.value - 1)];
     this.setData({
@@ -254,6 +331,8 @@ Page({
                     _this.setData({
                       name: d.FullName,
                       phone: d.Phone,
+                      name1: d.FullName,
+                      phone1: d.Phone,
                     })
                   } else {
                     wx.showModal({
@@ -379,6 +458,7 @@ Page({
     });
   },
   go_pay() {
+    var _this = this;
     var d = this.data;
     var da = {
       head: {},
@@ -386,26 +466,36 @@ Page({
     };
     var p = /^1[345789]\d{9}$/;
     var n = /^[\u4e00-\u9fa5]{2,4}$/;
+    var h = /^[a-zA-Z0-9]{6}$/;
     var len = d.can_list.length;
-    if (d.citty_list[0] === "请选择始发站") {
+    if (d.multiArray[0][d.multiIndex[0]] === "请选择始发站") {
       wx.showModal({
         title: '温馨提示',
         content: '请选择始发站'
       })
       return false;
     };
-    if (d.end_city_list[d.index] === "请选择到达站") {
+    if (d.multiArray1[0][d.multiIndex1[0]] === "请选择到达站") {
       wx.showModal({
         title: '温馨提示',
         content: '请选择到达站'
       })
       return false;
     };
-    if (d.city_num[d.num_index] === "请选择航班号" || d.city_num[0] === "请先选择到达站") {
+    if (!d.city_num_hend_value) {
+      if (d.city_num[d.num_index] === "请选择航班号" || d.city_num[0] === "请先选择到达站") {
+        wx.showModal({
+          title: '温馨提示',
+          content: '请选择航班号'
+        })
+        return false;
+      };
+    };
+    if (!h.test(d.city_num_hend_value) && d.city_num_hend_value) {
       wx.showModal({
         title: '温馨提示',
-        content: '请选择航班号'
-      })
+        content: '请填写正确的航班号，通常是6位数字加字母组合'
+      });
       return false;
     };
     if (!n.test(d.name)) {
@@ -436,8 +526,9 @@ Page({
       })
       return false;
     };
-    da.head.F_AirfieldFloor = d.en_data[d.num_index - 1].F_AirfieldFloor;
-    da.head.F_AirfieldId = d.en_data[d.num_index - 1].F_AirfieldId;
+    console.log(d.index,d)
+    da.head.F_AirfieldFloor = d.end_city_list[d.index-0];
+    da.head.F_AirfieldId = d.end_city_list_data[d.index-0];
     da.head.F_AirfieldName = d.en_data[d.index - 0].F_AirfieldName;
     da.head.F_StartStation = d.citty_list[0];
     da.head.F_Longitude = d.user_location.lng;
@@ -445,14 +536,15 @@ Page({
     da.head.F_CustomerAddress = d.self_city;
     da.head.F_CustomerName = d.name;
     da.head.F_CustomerPhone = d.phone;
+    da.head.F_FareName = d.name1;
+    da.head.F_FarePhone = d.phone1;
     da.head.F_CustomerRemarks = "";
     da.head.F_FlightCompany = d.en_data[d.index - 0].F_FlightCompany;
-    da.head.F_FlightNumber = d.city_num[d.num_index];
+    da.head.F_FlightNumber = d.city_num_hend ? d.city_num_hend_value : d.city_num[d.num_index];
     da.head.F_IsUrgent = "普通";
     da.head.F_OpenId = d.openid;
     da.head.F_State = 0;
     da.head.F_Stype = "港内配送";
-
     for (var i = 0; i < d.can_list.length; i++) {
       da.OrderDetails.push({
         F_ConsignmentNumber: d.can_list[i],
@@ -463,6 +555,7 @@ Page({
       });
     };
     console.log(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify(da)}`);
+    // return false;
     wx.showLoading({
       title: '提交中',
     });
@@ -480,7 +573,8 @@ Page({
       success(res) {
         console.log(res.data)
         if (res.data.code === 200) {
-          wx.hideLoading()
+          wx.hideLoading();
+          _this.get_user_addr(d.openid);
           wx.navigateTo({
             url: '../pays/pays?OrdeNo=' + res.data.data.OrdeNo
           });
@@ -503,12 +597,13 @@ Page({
     //调用地址解析接口
     qqmapsdk.geocoder({
       //获取表单传入地址
-      deviation:10,
+      deviation: 10,
       address: obj, //地址参数，例：固定地址，address: '北京市海淀区彩和坊路海淀西大街74号'
       success: function(res) { //成功后的回调
         _this.setData({
           user_location: res.result.location
         });
+        console.log(res.result.location)
       },
       fail: function(error) {
         console.error(error);
@@ -557,6 +652,8 @@ Page({
       page_index: 1,
       name: '',
       phone: '',
+      name1: '',
+      phone1: '',
       self_city: '',
       can_list: [],
       index: 0,
@@ -565,11 +662,15 @@ Page({
       city_data_index: 0,
       page1: false,
       page2: false,
-      citty_data_list: []
+      citty_data_list: [],
+      city_num_hend_value: '',
+      city_num_hend:false,
+
     });
   },
   fly_page() {
     var d = this.data;
+    var h = /^[a-zA-Z0-9]{6}$/;
     var len = d.can_list.length;
     if (d.citty_list[0] === "请选择始发站") {
       wx.showModal({
@@ -585,11 +686,20 @@ Page({
       })
       return false;
     };
-    if (d.city_num[d.num_index] === "请选择航班号" || d.city_num[0] === "请先选择到达站") {
+    if (!d.city_num_hend_value) {
+      if (d.city_num[d.num_index] === "请选择航班号" || d.city_num[0] === "请先选择到达站") {
+        wx.showModal({
+          title: '温馨提示',
+          content: '请选择航班号'
+        })
+        return false;
+      };
+    };
+    if (!h.test(d.city_num_hend_value) && d.city_num_hend_value) {
       wx.showModal({
         title: '温馨提示',
-        content: '请选择航班号'
-      })
+        content: '请填写正确的航班号，通常是6位数字加字母组合'
+      });
       return false;
     };
     if (!len) {
@@ -607,12 +717,13 @@ Page({
       return false;
     };
     this.setData({
-      page_index: 2
+      page_index: 3
     });
   },
-  user_pre() {
+  user_pre(e) {
+    var type = e.target.dataset.type - 0;
     this.setData({
-      page_index: 1
+      page_index: type
     });
   },
   page1_fun() {
@@ -632,6 +743,7 @@ Page({
     var id = e.currentTarget.id;
     for (var i = 0; i < this.data.suggestion.length; i++) {
       if (i == id) {
+        console.log(this.data.suggestion[i]);
         this.setData({
           backfill: this.data.suggestion[i].addr,
           self_city: this.data.suggestion[i].addr,
@@ -706,6 +818,54 @@ Page({
           })
         }
       }
+    })
+  },
+  nexts(e) {
+    var type = e.target.dataset.type - 0;
+    var d = this.data;
+    var p = /^1[345789]\d{9}$/;
+    var n = /^[\u4e00-\u9fa5]{2,4}$/;
+    if (type === 2) {
+      if (!n.test(d.name1)) {
+        wx.showModal({
+          title: '温馨提示',
+          content: '请输入正确的姓名'
+        });
+        return false;
+      };
+      if (!p.test(d.phone1)) {
+        wx.showModal({
+          title: '温馨提示',
+          content: '请输入正确的手机号码'
+        });
+        return false;
+      };
+      if (!d.page2) {
+        wx.showModal({
+          title: '温馨提示',
+          content: '请同意委托服务协议条款'
+        });
+        return false;
+      };
+    };
+    this.setData({
+      page_index: type
+    });
+  },
+  close_addr() {
+    this.setData({
+      suggestion: []
+    })
+  },
+  city_num_hends() {
+    var d = !this.data.city_num_hend;
+    this.setData({
+      city_num_hend: d
+    })
+  },
+  city_num_hends_val(e) {
+    this.setData({
+      city_num_hend_value: e.detail.value
     })
   }
 })
