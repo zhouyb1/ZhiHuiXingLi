@@ -156,6 +156,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                             ( F_Id ,
                                                 F_OrderNo ,
                                                 F_StateDescribe ,
+                                                F_LogState,
                                                 F_StateDateTime ,
                                                 F_StateOperator ,
                                                 F_CustomerOpen  
@@ -163,6 +164,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                     VALUES  ( @F_Id,
                                                 @F_OrderNo,
                                                 @F_StateDescribe ,
+                                                @F_LogState,
                                                 @F_StateDateTime,
                                                 @F_StateOperator ,
                                                 @F_CustomerOpen
@@ -171,6 +173,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                      param.Add("@F_Id",Guid.NewGuid().ToString () );
                      param.Add("@F_OrderNo", OrderNo);
                      param.Add("@F_StateDescribe", StateDescribe);
+                     param.Add("@F_LogState", State);
                      param.Add("@F_StateDateTime", DateTime.Now.ToString());
                      param.Add("@F_StateOperator", Operator);
                      param.Add("@F_CustomerOpen", "1");
@@ -205,9 +208,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 foreach (var item in ConNumberList)
                 {
                     var strSql = new StringBuilder();
-                    strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status WHERE F_ConsignmentNumber=@ConsignmentNumber");
+                    strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status,FB_Code=@Operator WHERE F_ConsignmentNumber=@ConsignmentNumber");
                     var dp = new DynamicParameters(new { });
                     dp.Add("@Status", status);
+                    dp.Add("@Operator", Operator);
                     dp.Add("@ConsignmentNumber", item);
                     this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
                 }
@@ -233,6 +237,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                             ( F_Id ,
                                                 F_OrderNo ,
                                                 F_StateDescribe ,
+                                                F_LogState,
                                                 F_StateDateTime ,
                                                 F_StateOperator ,
                                                 F_CustomerOpen  
@@ -240,6 +245,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                     VALUES  ( @F_Id,
                                                 @F_OrderNo,
                                                 @F_StateDescribe ,
+                                                @F_LogState,
                                                 @F_StateDateTime,
                                                 @F_StateOperator ,
                                                 @F_CustomerOpen
@@ -248,6 +254,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                     param.Add("@F_Id", Guid.NewGuid().ToString());
                     param.Add("@F_OrderNo", OrderNo);
                     param.Add("@F_StateDescribe", StateDescribe);
+                    param.Add("@F_LogState", status);
                     param.Add("@F_StateDateTime", DateTime.Now.ToString());
                     param.Add("@F_StateOperator", Operator);
                     param.Add("@F_CustomerOpen", "1");
