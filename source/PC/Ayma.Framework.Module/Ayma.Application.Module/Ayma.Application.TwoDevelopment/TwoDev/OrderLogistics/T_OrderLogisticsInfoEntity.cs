@@ -31,6 +31,12 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         [Column("F_STATEDESCRIBE")]
         public string F_StateDescribe { get; set; }
         /// <summary>
+        /// 状态
+        /// </summary>
+        /// <returns></returns>
+        [Column("F_LOGSTATE")]
+        public string F_LogState { get; set; }
+        /// <summary>
         /// 操作时间
         /// </summary>
         /// <returns></returns>
