@@ -1,6 +1,7 @@
 ﻿using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,6 +55,13 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         /// <param name="OrderNo"></param>
         /// <returns></returns>
         IEnumerable<OrderDetailsModelApi> GetOrderBodyByNo(string OrderNo);
+
+        /// <summary>
+        /// 根据机场Id获取运费计算规则
+        /// </summary>
+        /// <param name="F_AirfieldId"></param>
+        /// <returns></returns>
+        DataTable GetFeeRule(string F_AirfieldId);
 
         /// <summary>
         /// 提交订单
