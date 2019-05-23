@@ -117,15 +117,15 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         [Column("FB_STATE")]
         public string FB_State { get; set; }
         /// <summary>
-        /// 分拣员
+        /// 分拣员姓名
         /// </summary>
-        [Column("F_NAME")]
-        public string F_Name { get; set; }
+        [Column("FB_NAME")]
+        public string FB_Name { get; set; }
         /// <summary>
         /// 分拣员电话
         /// </summary>
-        [Column("F_PHONE")]
-        public string F_Phone { get; set; }
+        [Column("FB_PHONE")]
+        public string FB_Phone { get; set; }
         #endregion
     }
 }
