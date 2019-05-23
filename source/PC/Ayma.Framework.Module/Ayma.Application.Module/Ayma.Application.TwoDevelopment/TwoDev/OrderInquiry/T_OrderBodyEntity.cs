@@ -116,6 +116,8 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         [Column("FB_STATE")]
         public string FB_State { get; set; }
+        [Column("F_NAME")]
+        public string F_Name { get; set; }
         /// <summary>
         /// 分拣员姓名
         /// </summary>
