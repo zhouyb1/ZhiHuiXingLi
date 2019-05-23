@@ -125,6 +125,16 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         [Column("F_LATITUDE")]
         public decimal? F_Latitude { get; set; }
+        /// <summary>
+        /// 乘机人姓名
+        /// </summary>
+        [Column("F_FARENAME")]
+        public string F_FareName { get; set; }
+        /// <summary>
+        /// 乘机人电话
+        /// </summary>
+        [Column("F_FAREPHONE")]
+        public string F_FarePhone { get; set; }
 
 
         #endregion
