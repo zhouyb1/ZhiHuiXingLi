@@ -2,6 +2,7 @@
 using Ayma.Util;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -105,6 +106,31 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 }
             }
         }
+
+        /// <summary>
+        /// 根据机场Id获取运费计算规则
+        /// </summary>
+        /// <param name="F_AirfieldId"></param>
+        /// <returns></returns>
+        public DataTable GetFeeRule(string F_AirfieldId)
+        {
+            try
+            {
+                return billClientApiService.GetFeeRule(F_AirfieldId);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
         /// <summary>
         /// 根据订单状态查询订单列表
         /// </summary>
