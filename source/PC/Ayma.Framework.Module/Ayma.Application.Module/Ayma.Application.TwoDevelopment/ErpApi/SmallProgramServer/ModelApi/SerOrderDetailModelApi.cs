@@ -8,11 +8,6 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
 {
     public class SerOrderDetailModelApi
     {
-        public SerOrderDetail  OrderDetail { get; set; }
-
-}
-    public class SerOrderDetail
-    {
         /// <summary>
         /// 航班号
         /// </summary>
@@ -29,14 +24,9 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         public string F_OrderNo { get; set; }
 
         /// <summary>
-        /// 行李号
-        /// </summary>
-        public string F_ConsignmentNumber { get; set; }
-
-        /// <summary>
         /// 下单时间
         /// </summary>
-        public DateTime F_OrderDate{get;set;}
+        public DateTime F_OrderDate { get; set; }
 
         /// <summary>
         /// 客户姓名
@@ -53,7 +43,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// </summary>
         public int F_Qty { get; set; }
 
-         /// <summary>
+        /// <summary>
         /// 联系电话
         /// </summary>
         public string F_CustomerPhone { get; set; }
@@ -63,7 +53,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// </summary>
         public string F_CustomerAddress { get; set; }
 
-         /// <summary>
+        /// <summary>
         /// 是否加急
         /// </summary>
         public string F_IsUrgent { get; set; }
@@ -71,14 +61,14 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// <summary>
         /// 是否港内
         /// </summary>
-        public string F_Stype{get; set;}
+        public string F_Stype { get; set; }
 
         /// <summary>
         /// 快递公司
         /// </summary>
-        public string F_ExpressCompanyId { get; set; } 
+        public string F_ExpressCompanyId { get; set; }
 
-         /// <summary>
+        /// <summary>
         /// 快递单号
         /// </summary>
         public string F_ExpressNO { get; set; }
@@ -88,5 +78,6 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// </summary>
         public decimal? F_Amount { get; set; }
 
+        public List<ConsignmentNumber> CNumberList { get; set; }
     }
 }
