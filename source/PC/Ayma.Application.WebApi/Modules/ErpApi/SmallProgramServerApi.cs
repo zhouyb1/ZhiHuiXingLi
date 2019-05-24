@@ -269,7 +269,9 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         {
             var req = this.GetReqData().ToJObject(); //获取模板请求数据
             string ConsignmentNumber = req["ConsignmentNumber"].ToString(); //行李号
-            var data = billServerApiBLL.SerGetOrderDetailByNo(ConsignmentNumber);
+            string OrderNo = req["OrderNo"].ToString(); //订单号
+            string CustPhone = req["CustPhone"].ToString(); //电话号码
+            var data = billServerApiBLL.SerGetOrderDetailByNo(ConsignmentNumber, OrderNo, CustPhone);
             //var orderbody = billServerApiBLL.SerGetOrderBodyByNo(OrderNo);
             if (data.Count() > 0 )
             {
