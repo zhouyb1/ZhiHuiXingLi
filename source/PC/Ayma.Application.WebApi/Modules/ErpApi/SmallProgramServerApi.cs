@@ -22,7 +22,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         public SmallProgramServerApi()
             : base("/pdaapi")
         {
-            Post["GetExpressNo"] = GetExpressNo;
+            Post["GetExpressNo"]=GetExpressNo;
             Post["/SubmitUpdateOrderState"] = SubmitUpdateOrderState; //提交车班补货单
             Post["/UpdateOrderStatus"] = UpdateOrderStatus; //修改订单状态
             Post["/UpdateBatchOrderStatus"] = UpdateBatchOrderStatus;//批量修改订单状态（未分拣-分拣中）
@@ -40,9 +40,10 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
 
         private static string expressServer = Config.GetValue("expressServer");
         private static string logisticProviderId = Config.GetValue("logisticProviderId");
+
         private string targetFomart = "logisticProviderId=" + HttpUtility.UrlEncode(logisticProviderId, Encoding.UTF8) +
-                            "&logisticsInterface=" + HttpUtility.UrlEncode("{0}", Encoding.UTF8) + "&dataDigest=" +
-                            HttpUtility.UrlEncode("{1}", Encoding.UTF8);
+                                      "&logisticsInterface={0}&dataDigest={1}";
+                   
 
 
         /// <summary>
@@ -277,7 +278,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         }
 
         /// <summary>
-        /// 根据行李号,订单号，手机号码获取订单详情
+        /// 根据行李号获取订单详情
         /// </summary>
         /// <param name="_"></param>
         /// <returns></returns>
@@ -406,6 +407,11 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
 
         }
 
+        /// <summary>
+        /// 获取承诺达运单号接口
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
         public Response GetExpressNo(dynamic _)
         {
             var orderNo = this.GetReqData().ToJObject()["orderNo"].ToString();
@@ -415,12 +421,14 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
             //查询订单
             var orderEntity = orderBll.GetT_OrderHeadEntity(orderNo);
+            //以下为测试数据，请用真实数据替代
             OrderModel model = new OrderModel()
             {
                 customerCode = Config.GetValue("customerCode"),
+                orderChannelCode = logisticProviderId,
                 customerSecretKey = Config.GetValue("customerSecretKey"),
                 orderLogisticsCode = orderEntity.F_OrderNo,
-                custOrderCreateTime = orderEntity.F_CreateTime.Value.ToString("yyyy-MM-dd"),
+                custOrderCreateTime = orderEntity.F_CreateTime.Value.ToString("yyyy-MM-dd hh:mm:ss"),
                 goodsType = "G1",
                 senderAddress = "华徐公路 3029 弄 28 号",
                 senderAreaName = "青浦区",
@@ -441,35 +449,35 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 recipientTownCode = "徐泾镇"
 
             };
-            var result = GetExpressNos(model);
-            return Success("ok", result);
+            string msg;
+            var result = GetExpressNos(model,out msg);
+            if (result==null)
+            {
+                return Fail(msg);
+            }
+            return Success(result.ToJson());
         }
 
 
         #region 方法
 
-        public string GetExpressNos(OrderModel model)
+        public ExpressModel GetExpressNos(OrderModel model,out string msg)
         {
             var dataSign = Md5Helper.MD5Encrypt(model.ToJson(), Config.GetValue("secretKey"));
-            string target = string.Format(targetFomart, model.ToJson(), dataSign);
+            string target = string.Format(targetFomart, HttpUtility.UrlEncode(model.ToJson(),Encoding.UTF8), HttpUtility.UrlEncode(dataSign,Encoding.UTF8));
             var result = HttpMethods.Post(expressServer, target);
-            var response = result.ToObject<responseData>();
-            if (response.status==200)
+            var resultObj = result.ToJObject();
+            if (resultObj["status"].ToInt()==200)
             {
-                return "ok";
+                msg = resultObj["message"].ToString();
+                return resultObj["data"].ToObject<ExpressModel>();
             }
-            return response.message;
+            msg = resultObj["message"].ToString();
+            return null;
         }
 
         #endregion
     }
 
-    public class responseData
-    {
-        public string data { get; set; }
-        public int status { get; set; }
-        public string message { get; set; }
-        public int time { get; set; }
-
-    }
+   
 }
