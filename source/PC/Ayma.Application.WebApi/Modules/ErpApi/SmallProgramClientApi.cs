@@ -686,7 +686,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                     //正确的订单处理 改变订单状态
                     var orderData = order.GetT_OrderHeadEntity(orderNo);
                     orderData.F_State = "2";
-                    order.UpdateOrder(orderNo, OrderStatus.已付款);
+                    order.UpdateOrder(orderNo, OrderStatus.未分拣);
                     paySuccess = true;
                 }
                 else

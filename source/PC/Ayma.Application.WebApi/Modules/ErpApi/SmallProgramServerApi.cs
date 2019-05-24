@@ -459,6 +459,33 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         }
 
 
+        public Response PushExpressInfo (dynamic _){
+            var orderNo = this.GetReqData().ToJObject()["orderNo"].ToString();
+            var code=this.GetReqData().ToJObject()["code"].ToString();
+            if (orderNo.IsEmpty())
+            {
+                return Fail("orderNo为空");
+            }
+            if (code.IsEmpty())
+            {
+                return Fail("物流状态为空");
+            }
+            //查询订单
+            var orderEntity = orderBll.GetT_OrderHeadEntity(orderNo);
+            PushExpressInfo model=new PushExpressInfo (){
+                code="05",
+                customerCode=Config.GetValue("customerCode"),
+                orderChannelCode=Config.GetValue("logisticProviderId"),
+                orderLogisticsCode="BCND_TEST123456789",
+                takingEmpMobile="15800772008",
+                takingEmpName="王二小",
+                takingTime=DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                createTime=DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                waybillNo="B90000000001"
+            };
+            return Success("");
+        }
+
         #region 方法
 
         public ExpressModel GetExpressNos(OrderModel model,out string msg)
@@ -471,6 +498,21 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 msg = resultObj["message"].ToString();
                 return resultObj["data"].ToObject<ExpressModel>();
+            }
+            msg = resultObj["message"].ToString();
+            return null;
+        }
+
+         public GetExpressInfo GetExpressNos(PushExpressInfo model,out string msg)
+        {
+            var dataSign = Md5Helper.MD5Encrypt(model.ToJson(), Config.GetValue("secretKey"));
+            string target = string.Format(targetFomart, HttpUtility.UrlEncode(model.ToJson(),Encoding.UTF8), HttpUtility.UrlEncode(dataSign,Encoding.UTF8));
+            var result = HttpMethods.Post(expressServer, target);
+            var resultObj = result.ToJObject();
+            if (resultObj["status"].ToInt()==200)
+            {
+                msg = resultObj["message"].ToString();
+                return resultObj["data"].ToObject<GetExpressInfo>();
             }
             msg = resultObj["message"].ToString();
             return null;
