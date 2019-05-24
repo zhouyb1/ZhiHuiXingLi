@@ -51,4 +51,28 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
         public string F_Phone { get; set; }
     }
 
+    /// <summary>
+    /// 根据机场id获取航站楼
+    /// </summary>
+    public class T_AirfieldFloor
+    {
+        /// <summary>
+        /// Id
+        /// </summary>
+        public string F_Id { get; set; }
+        /// <summary>
+        /// 机场Id
+        /// </summary>
+        public string F_AirfieParentId { get; set; }
+        /// <summary>
+        /// 机场名称
+        /// </summary>
+        public string F_AirfieldName { get; set; }
+
+        /// <summary>
+        /// 航站楼
+        /// </summary>
+        public string F_ExpressCompanyName { get; set; }
+    }
+
 }
