@@ -90,7 +90,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
-        IEnumerable<SerOrderDetail> SerGetOrderDetailByNo(string ConsignmentNumber, string OrderNo, string CustPhone);
+        IEnumerable<SerOrderDetailModelApi> SerGetOrderDetailByNo(string ConsignmentNumber, string OrderNo, string CustPhone);
 
         /// <summary>
         /// 根据航班号获取航班列表
@@ -99,7 +99,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// <returns></returns>
         IEnumerable<GetFlightListByFNo> SerGetFlightList(string FlightNumber);
         /// <summary>
-        /// 根据航班号获取订单记录
+        /// 根据航班号或航班号+日期查询订单查询订单列表
         /// </summary>
         /// <param name="ConsignmentNumber"></param>
         /// <returns></returns>
