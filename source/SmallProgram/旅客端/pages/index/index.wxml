@@ -7,11 +7,12 @@
       <text class="userinfo-nickname"> 欢迎 {{userInfo.nickName}}</text>
     </block>
   </view>
+  <image src='../../image/welcome.jpg' class='welcomes'></image>
 </view>
 <!-- 通过授权显示首页内容 -->
 <block wx:else>
   <!-- 通知 -->
-  <i-notice-bar icon="systemprompt" loop wx:if="tipdata">
+  <i-notice-bar icon="systemprompt" loop closable wx:if="tipdata">
     {{tipdata}}
   </i-notice-bar>
   <!-- 轮播图 -->
@@ -24,7 +25,7 @@
   </swiper>
   <!-- 九宫格 -->
   <i-grid>
-    <i-grid-item bindtap="paths" data-url="/pages/sends/sends">
+    <i-grid-item bindtap="paths" data-url="/pages/send/send">
       <i-grid-icon>
         <image src="../../image/orders.png" />
       </i-grid-icon>

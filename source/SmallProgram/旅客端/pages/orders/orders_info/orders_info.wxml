@@ -53,12 +53,12 @@
 </view>
 <view class="text">物流信息</view>
 <view class="ems">
-  <view class="text" wx:if="{{type===-1}}" style="background:red;color:#fff;">已取消</view>
-  <view class="text" wx:if="{{type===0}}" style="background:#ff8d1a;color:#fff;">待付款</view>
-  <view class="text" wx:if="{{type===4}}" style="background:#3cb4ff;color:#fff;">派送中</view>
-  <view class="text" wx:if="{{type===5}}" style="background:green;color:#fff;">已完成</view>
-  <view class="text" wx:if="{{type===-3}}" style="background:#ccc;color:#fff;">退款中</view>
-  <view class="text" wx:if="{{type===-2}}" style="background:#ccc;color:#fff;">已退款</view>
+  <view class="text" wx:if="{{type===-1}}" style="background:#f4f4f5;color:#909399;">已取消</view>
+  <view class="text" wx:if="{{type===0}}" style="background:#fdf6ec;color:#e6a23c;">待付款</view>
+  <view class="text" wx:if="{{type===1 || type===4 || type===2}}" style="background:#ecf5ff;color:#409eff;">派送中</view>
+  <view class="text" wx:if="{{type===5}}" style="background:#f0f9eb;color:#67c23a;">已完成</view>
+  <view class="text" wx:if="{{type===-3}}" style="background:#f4f4f5;color:#909399;">退款中</view>
+  <view class="text" wx:if="{{type===-2}}" style="background:#f0f9eb;color:#67c23a;">已退款</view>
   <view class='i-steps' wx:if="{{type===4 || type===5}}">
     <i-steps current="{{verticalCurrent}}" direction="vertical" i-class="ems-top">
       <i-step>
@@ -99,30 +99,33 @@
 <!-- 底部 -->
 <view class='footer'>
   <view class="order-ok" wx:if="{{type===-1}}">
-    <view style="background:#ccc;width:100%">已取消</view>
+    <view style="background:#f4f4f5;color:#909399;width:100%">已取消</view>
   </view>
   <view class="order-ok" wx:if="{{type===-3}}">
-    <view style="background:#ccc;width:100%">退款中</view>
+    <view style="background:#f4f4f5;color:#909399;width:100%">退款中</view>
   </view>
   <view class="order-ok" wx:if="{{type===-2}}">
-    <view style="background:#ccc;width:100%">已退款</view>
+    <view style="background:#f4f4f5;color:#909399;width:100%">已退款</view>
   </view>
   <view class="order-ok" wx:if="{{type===0}}">
-    <view bindtap='pays'>去支付</view>
-    <view bindtap='close_order'>取消订单</view>
+    <view bindtap='pays' style="background:#409eff;">去支付</view>
+    <view bindtap='close_order' style="background:#f56c6c;">取消订单</view>
   </view>
-  <view class="order-type" wx:if="{{type===1 || type===4}}">
-    <view>催单</view>
-    <view>确定签收</view>
-    <view bindtap='close_pay'>申请退款</view>
+  <view class="order-type" wx:if="{{type===1 || type===4 || type===2}}">
+    <view style="background:#e6a23c;">
+      <text decode="true" space="true">催&nbsp;&nbsp;&nbsp;&nbsp;单：</text>
+    </view>
+    <view bindtap='order_success' style="background:#409eff;">确定签收</view>
+    <view bindtap='close_pay' style="background:#f56c6c;">申请退款</view>
   </view>
   <view class="order-ok" wx:if="{{type===5}}">
-    <view>
+    <!-- <view style="background:#f56c6c;">
       <text decode="true" space="true">投&nbsp;&nbsp;&nbsp;诉</text>
     </view>
-    <view>
+    <view style="background:#409eff;">
       <text decode="true" space="true">评&nbsp;&nbsp;&nbsp;价</text>
-    </view>
+    </view> -->
+    <view style="background:#f0f9eb;color:#67c23a;width:100%">已完成</view>
   </view>
 </view>
 

@@ -37,11 +37,10 @@ Page({
     can_list: [], //托运单号列表
     self_city: '', //手动获取的地址
     openid: '', //用户信息
-    en_location: '', //到达站坐标
     user_location: '', //用户选择地址
     page1: false, //违禁物品
     page2: false, //委托协议
-    page_index: 1, //1航班2用户信息
+    page_index: 1, //1寄件人 2航班与行李 3收件人
     suggestion: [], //地址列表
     backfill: '', //选择索引地址
     city_num_hend: false, //航班号手动输入
@@ -65,7 +64,7 @@ Page({
       }
     });
   },
-  onShow: function () {
+  onShow: function() {
     //获取机场列表
     var _this = this;
     wx.request({
@@ -82,7 +81,10 @@ Page({
       success(res) {
         if (res.data.code === 200) {
           var d = JSON.parse(res.data.data);
-          var last_city = _this.data.multiArray1;
+          var last_city = [
+            ["请选择到达站"],
+            []
+          ];
           for (var i = 0; i < d.length; i++) {
             last_city[0].push(d[i].F_AirfieldName);
           };
@@ -313,7 +315,8 @@ Page({
       success(res) {
         if (res.confirm) {
           _this.setData({
-            citty_data_list: []
+            citty_data_list: [],
+            self_city: ""
           });
         };
       }
@@ -450,44 +453,6 @@ Page({
       }
     });
   },
-  get_city() {
-    wx.showLoading({
-      title: '获取位置中.',
-    });
-    var that = this;
-    wx.getLocation({
-      type: 'wgs84',
-      success(res) {
-        var _this = this;
-        qqmapsdk.reverseGeocoder({
-          //位置坐标，默认获取当前位置，非必须参数
-          location: {
-            latitude: res.latitude,
-            longitude: res.longitude
-          } || '',
-          success: function(res) { //成功后的回调
-            that.setData({
-              self_city: res.result.address
-            });
-            wx.hideLoading();
-            that.get_addr(res.result.address, 1);
-          },
-          fail: function(error) {
-            wx.setStorage({
-              key: 'city',
-              data: ''
-            });
-          },
-          complete: function(res) {
-            console.log(res);
-          }
-        })
-      },
-      fail(res) {
-        console.log("用户拒绝定位");
-      }
-    });
-  },
   go_pay() {
     var _this = this;
     var d = this.data;
@@ -543,11 +508,18 @@ Page({
       })
       return false;
     };
-    if (!d.self_city) {
+    if (!d.self_city && !d.backfill) {
       wx.showModal({
         title: '温馨提示',
         content: '请输入收货地址'
       })
+      return false;
+    };
+    if (!d.user_location) {
+      wx.showModal({
+        title: '温馨提示',
+        content: '请输入详细地址'
+      });
       return false;
     };
     if (!len) {
@@ -559,7 +531,7 @@ Page({
     };
     da.head.F_AirfieldFloor = d.multiArray1[1][d.multiIndex1[1]]; //航站楼
     da.head.F_AirfieldId = d.last_city[d.multiIndex1[0] - 1].F_Id; //机场id
-    da.head.F_AirfieldName = d.last_city[d.multiIndex[0] - 1].F_AirfieldName; //机场名
+    da.head.F_AirfieldName = d.last_city[d.multiIndex1[0] - 1].F_AirfieldName; //机场名
     da.head.F_StartStation = d.multiArray[0][d.multiIndex[0]] + d.multiArray[1][d.multiIndex[1]]; //起始站
     da.head.F_Longitude = d.user_location.lng; //收货地址坐标
     da.head.F_Latitude = d.user_location.lat; //收货地址坐标
@@ -590,7 +562,7 @@ Page({
       title: '提交中',
     });
     wx.request({
-      url: app.path(1) + "/pdaapi/SubmitOrder", 
+      url: app.path(1) + "/pdaapi/SubmitOrder",
       data: {
         sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify(da)}`).toUpperCase(),
         version: app.path(3),
@@ -606,7 +578,7 @@ Page({
           wx.hideLoading();
           _this.get_user_addr(d.openid);
           wx.navigateTo({
-            url: '../pays/pays?OrdeNo=' + res.data.data.OrdeNo
+            url: '../pays/pays?OrdeNo=' + res.data.data.orderNo + '&totalFee=' + res.data.data.totalFee
           });
         } else {
           wx.hideLoading();
@@ -663,7 +635,7 @@ Page({
       })
       return false;
     };
-    if (!d.self_city) {
+    if (!d.self_city && !d.backfill) {
       wx.showModal({
         title: '温馨提示',
         content: '请输入收货地址'
@@ -674,6 +646,13 @@ Page({
       wx.showModal({
         title: '温馨提示',
         content: '请同意委托服务协议条款'
+      });
+      return false;
+    };
+    if (!d.user_location) {
+      wx.showModal({
+        title: '温馨提示',
+        content: '请输入详细地址'
       });
       return false;
     };
@@ -808,6 +787,9 @@ Page({
       keyword: e.detail.value,
       success: function(res) {
         var sug = [];
+        if (res.data[0]) {
+          _this.get_addr(res.data[0].address);
+        };
         for (var i = 0; i < res.data.length; i++) {
           sug.push({
             title: res.data[i].title,
@@ -820,7 +802,9 @@ Page({
           });
         }
         _this.setData({ //设置suggestion属性，将关键词搜索结果以列表形式展示
-          suggestion: sug
+          suggestion: sug,
+          self_city: e.detail.value,
+          backfill: e.detail.value
         });
       },
       fail: function(error) {
@@ -894,10 +878,19 @@ Page({
       page_index: type
     });
   },
-  close_addr() {
+  close_addr(e) {
     this.setData({
-      suggestion: []
-    })
+      suggestion: [],
+      self_city: e.detail.value,
+      backfill:e.detail.value
+    });
+    var d = this.data.backfill || this.data.self_city;
+    this.get_addr(d);
+    console.log(this.data.backfill,1,'----', this.data.self_city,2)
+    var _this = this;
+    setTimeout(function(){
+      console.log(_this.user_location);
+    },1500)
   },
   city_num_hends() {
     var d = !this.data.city_num_hend;

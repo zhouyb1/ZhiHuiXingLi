@@ -3,7 +3,7 @@
 .save {
   position: fixed;
   left: 10%;
-  bottom: 20rpx;
+  top:30%;
   background-color: #3cb4ff;
   color: #fff;
   width: 80%;

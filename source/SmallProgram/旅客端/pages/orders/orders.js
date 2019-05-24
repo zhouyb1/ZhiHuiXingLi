@@ -9,7 +9,8 @@ Page({
   data: {
     index: '0',
     openid: "",
-    list: ''
+    list: '',
+    id:0,
   },
 
   /**
@@ -38,7 +39,8 @@ Page({
       success(res) {
         var d = JSON.parse(res.data);
         _this.setData({
-          openid: d.openId
+          openid: d.openId,
+          id:id
         });
         _this.get_order(id);
       }
@@ -77,7 +79,9 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function() {
-
+    wx.showNavigationBarLoading();
+    this.get_order(this.data.id);
+    wx.stopPullDownRefresh();
   },
 
   /**
@@ -142,6 +146,7 @@ Page({
       },
       success(res) {
         wx.hideLoading();
+        wx.hideNavigationBarLoading()
         var d = JSON.stringify(res.data.data) == '{}' ? [] : JSON.parse(res.data.data);
         if (res.data.code === 200) {
           _this.setData({

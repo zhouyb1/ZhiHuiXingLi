@@ -11,9 +11,9 @@ Page({
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     tipdata: "欢度国庆，国庆寄件第二件半价！",
     imgUrls: [
-      'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640',
-      'https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640',
-      'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640'
+      '../../image/1.jpg',
+      '../../image/2.jpg',
+      '../../image/3.jpg'
     ],
     indicatorDots: true,
     autoplay: true,
@@ -202,9 +202,9 @@ Page({
   paths(event) {
     var href = event.currentTarget.dataset.url;
     if (href) {
-      wx.navigateTo({
-        url: href
-      })
+      wx.switchTab({
+        url: href,
+      });
     } else {
       wx.showModal({
         title: '温馨提示',
@@ -256,3 +256,5 @@ Page({
     });
   }
 })
+
+

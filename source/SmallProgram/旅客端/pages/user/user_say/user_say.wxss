@@ -10,11 +10,12 @@ textarea {
 
 .save {
   position: fixed;
-  left: 10%;
-  bottom:100rpx;
+  left: 50%;
+  top:400rpx;
   background-color: #3cb4ff;
   color: #fff;
-  width: 80%;
+  width: 308px;
+  margin-left:-155px;
 }
 
 input {

@@ -14,6 +14,7 @@
   position: relative;
   border-bottom: 1px solid #ccc;
   margin-bottom: 20rpx;
+  box-sizing: border-box;
 }
 
 .list-title, .list-cont, .list-time {
@@ -38,12 +39,17 @@
 }
 
 .list-type {
+  width: 80rpx;
+  height: 30rpx;
   padding: 10rpx;
   background: red;
   margin-left: 20rpx;
   border-radius: 30rpx;
-  font-size: 12px;
+  font-size: 23rpx;
   color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .list-btn {
@@ -52,12 +58,12 @@
   right: 1rpx;
   width: 130rpx;
   height: 60rpx;
-  background: #3cb4ff;
-  font-size: 12px;
+  /* background: #3cb4ff; */
+  font-size: 30rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: #ccc;
   border-radius: 30rpx;
 }
 

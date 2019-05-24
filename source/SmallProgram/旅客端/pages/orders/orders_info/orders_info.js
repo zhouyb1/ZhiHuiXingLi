@@ -13,9 +13,6 @@ Page({
     num_list: '',
     num: '',
     price: '',
-    logs:{
-      cancle:["已取消"]
-    }
   },
 
   /**
@@ -150,6 +147,18 @@ Page({
       }
     });
   },
+  order_success() {
+    var _this = this;
+    wx.showModal({
+      title: '温馨提示',
+      content: '确定收到行李吗？',
+      success(res) {
+        if (res.confirm) {
+          _this.refund(5);
+        };
+      }
+    });
+  },
   refund(obj) {
     var d = {
       OrderNo: this.data.list.F_OrderNo,
@@ -176,8 +185,8 @@ Page({
             duration: 2000
           });
           _this.setData({
-            type: -1
-          })
+            type: obj
+          });
         } else {
           wx.showToast({
             title: '操作失败',

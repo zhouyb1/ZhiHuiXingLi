@@ -6,10 +6,20 @@
   position: fixed;
   top: 0;
   left: 0;
-  background: #3cb4ff;
+  /* background: #3cb4ff; */
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.welcomes{
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+  z-index:-2;
 }
 
 .userinfo {
@@ -19,7 +29,7 @@
 }
 
 .userinfo button {
-  background: #ff8d1a;
+  background: #3cb4ff;
   color: #fff;
 }
 
@@ -60,4 +70,9 @@
 }
 .slide-image{
   width:100%;
+  height: 100%;
+}
+swiper {
+display:block;
+height:430rpx;
 }

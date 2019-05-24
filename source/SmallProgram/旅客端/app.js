@@ -94,5 +94,19 @@ App({
     if (obj === 3) {
       return "1";
     };
+  },
+  getFloatSt(num) {
+    num += '';
+    num = num.replace(/[^0-9|\.]/g, '');
+
+    if (/^0+/)
+      num = num.replace(/^0+/, '');
+    if (!/\./.test(num))
+      num += '.00';
+    if (/^\./.test(num))
+      num = '0' + num;
+    num += '00';
+    num = num.match(/\d+\.\d{2}/)[0];
+    return num - 0;
   }
 })

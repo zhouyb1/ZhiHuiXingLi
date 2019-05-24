@@ -1,7 +1,4 @@
 // pages/pays/pays.js
-const {
-  $Toast
-} = require('../../dist/base/index');
 var md5 = require('../../dist/md5.js');
 var app = getApp();
 Page({
@@ -12,7 +9,9 @@ Page({
   data: {
     times: false,
     checked: false,
-    data:''
+    data: '',
+    totalFee: '--',
+    flag: true
   },
 
   /**
@@ -20,6 +19,9 @@ Page({
    */
   onLoad: function(options) {
     var _this = this;
+    _this.setData({
+      totalFee: app.getFloatSt(options.totalFee)
+    });
     // 获取订单信息
     wx.showLoading({
       title: '加载中',
@@ -39,14 +41,14 @@ Page({
       method: "GET",
       success(res) {
         console.log(res.data)
-        if(res.data.code === 200){
+        if (res.data.code === 200) {
           wx.hideLoading();
           var d = JSON.parse(res.data.data);
           _this.setData({
             data: d
           });
           console.log(d.Details);
-        }else{
+        } else {
           wx.hideLoading();
           wx.showToast({
             title: '获取订单失败',
@@ -69,7 +71,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-
+    if (!this.data.flag){
+      wx.switchTab({
+        url: '/pages/index/index',
+      });
+    };
   },
 
   /**
@@ -107,14 +113,11 @@ Page({
 
   },
   onChange(event) {
+    var num = event.detail.value ? 20 : -20;
     this.setData({
-      times: event.detail.value
+      times: event.detail.value,
+      totalFee: this.data.totalFee + num
     })
-  },
-  handleText() {
-    $Toast({
-      content: "送达时间是航班到达之后的4-6小时或者2-3小时内派送"
-    });
   },
   checkboxChange: function(e) {
     var c = !this.data.checked;
@@ -129,6 +132,8 @@ Page({
     });
   },
   pays() {
+
+    // return false;
     var d = this.data.checked;
     if (!d) {
       wx.showModal({
@@ -145,6 +150,14 @@ Page({
       wx.navigateTo({
         url: '../../pages/orders/orders',
       });
+      this.setData({
+        flag: false
+      });
     };
+  },
+  go_index() {
+    wx.switchTab({
+      url: '/pages/index/index',
+    });
   }
 })

@@ -1,6 +1,5 @@
 {
   "usingComponents": {
-    "i-switch": "../../dist/switch/index",
-    "i-toast": "../../dist/toast/index"
+    "i-switch": "../../dist/switch/index"
   }
 }

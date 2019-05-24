@@ -1,5 +1,7 @@
 <!--pages/send/send.wxml-->
-
+<!-- <view class='image-box'>
+  <image src="../../image/3.jpg" class="img-cont"></image>
+</view> -->
 <!-- 乘机人信息 -->
 <view class='page_box' wx:if="{{page_index===1}}">
   <view class="pages">

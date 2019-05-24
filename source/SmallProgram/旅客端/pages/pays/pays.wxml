@@ -1,15 +1,44 @@
 <!--pages/pays/pays.wxml-->
 <view class="text">航班信息</view>
-<view class='list'>航班号：{{data.F_FlightNumber}}</view>
-<view class='list'>航程：{{data.F_StartStation}}-{{data.F_AirfieldName}}</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">航班号：</text>
+  </view>
+  <view class='list-cont'> {{data.F_FlightNumber}}</view>
+</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">航&nbsp;&nbsp;&nbsp;程：</text>
+  </view>
+  <view class='list-cont'> {{data.F_StartStation}}-{{data.F_AirfieldName}}</view>
+</view>
 
 <view class="text">旅客信息</view>
-<view class='list'>姓名：{{data.F_CustomerName}}</view>
-<view class='list'>手机：{{data.F_CustomerPhone}}</view>
-<view class='list'>地址：{{data.F_CustomerAddress}}</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">姓&nbsp;&nbsp;&nbsp;名：</text>
+  </view>
+  <view class='list-cont'> {{data.F_CustomerName}}</view>
+</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">手&nbsp;&nbsp;&nbsp;机：</text>
+  </view>
+  <view class='list-cont'> {{data.F_CustomerPhone}}</view>
+</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">地&nbsp;&nbsp;&nbsp;址：</text>
+  </view>
+  <view class='list-cont'> {{data.F_CustomerAddress}}</view>
+</view>
 
 <view class="text">行李信息</view>
-<view class='list' wx:for="{{data.Details}}" wx:key="{{item}}">托运单号：{{item.ConsignmentNumber}}</view>
+<view class='list' wx:for="{{data.Details}}" wx:key="{{item}}">托运单号：{{item.ConsignmentNumber}} X1</view>
+<view class='lists'>
+  <text>合计:{{data.Details.length}}件</text>
+  <text class="lists-right">￥ {{totalFee}} 起</text>
+</view>
 
 <view class="text">其他信息</view>
 <view class='list'>
@@ -54,9 +83,14 @@
 <!-- 底部 -->
 <view class='footer'>
   <view class="goods_info">
-    <view>合计：￥49.99</view>
-    <view>已优惠49.00，第二件5折</view>
+    <view wx:if="{{data.Details.length>1}}">合计：￥{{totalFee}}</view>
+    <view wx:if="{{data.Details.length>1}}">已优惠24.50，第二件5折</view>
+    <view wx:if="{{data.Details.length<=1 || !data.Details.length}}" style="height:100%;font-size:35rpx;color:#000;">合计：￥{{totalFee}}</view>
   </view>
   <view class="pay" bindtap='pays'>去支付</view>
 </view>
-<i-toast id="toast" />
+<!-- <i-toast id="toast" /> -->
+
+<view class='go-index' wx:if="{{!flag}}">
+  <view class='go-index-btn' bindtap='go_index'>返回首页</view>
+</view>
