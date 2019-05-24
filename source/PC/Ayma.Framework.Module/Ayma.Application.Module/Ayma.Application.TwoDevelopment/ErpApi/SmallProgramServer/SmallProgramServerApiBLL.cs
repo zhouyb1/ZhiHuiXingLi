@@ -218,11 +218,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
-        public IEnumerable<SerOrderDetail> SerGetOrderDetailByNo(string ConsignmentNumber)
+        public IEnumerable<SerOrderDetail> SerGetOrderDetailByNo(string ConsignmentNumber, string OrderNo, string CustPhone)
         {
             try
             {
-                return billServerApiService.SerGetOrderDetailByNo(ConsignmentNumber);
+                return billServerApiService.SerGetOrderDetailByNo(ConsignmentNumber, OrderNo, CustPhone);
             }
             catch (Exception ex)
             {
