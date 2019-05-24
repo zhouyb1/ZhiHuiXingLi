@@ -170,11 +170,30 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="status"></param>
         /// <returns></returns>
-        public IEnumerable<OrderListModelApi> GetOrderListByStatus(string status)
+        public IEnumerable<OrderList> GetOrderListByStatus(string status)
         {
             try
             {
                 return billServerApiService.GetOrderListByStatus(status);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        public IEnumerable<ConsignmentNumber> GetConsignmentNumberByNo(string OrderNo)
+        {
+            try
+            {
+                return billServerApiService.GetConsignmentNumberByNo(OrderNo);
             }
             catch (Exception ex)
             {
