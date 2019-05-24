@@ -4,6 +4,7 @@
  */
 var acceptClick;
 var keyValue = request('keyValue');
+var ConsignmentNumber = request("ConsignmentNumber");
 var bootstrap = function ($, ayma) {
     "use strict";
     var selectedRow = ayma.frameTab.currentIframe().selectedRow;
@@ -14,10 +15,11 @@ var bootstrap = function ($, ayma) {
             page.initData();
         },
         bind: function () {
+            $('#FB_State').DataItemSelect({ code: "OrderDetailsState" });
         },
         initData: function () {
             if (!!keyValue) {
-                $.SetForm(top.$.rootUrl + '/TwoDev/OrderInquiry/GetFormData?keyValue=' + keyValue, function (data) {
+                $.SetForm(top.$.rootUrl + '/TwoDev/OrderInquiry/GetBodyData?keyValue=' + ConsignmentNumber, function (data) {
                     for (var id in data) {
                         if (!!data[id].length && data[id].length > 0) {
                         }

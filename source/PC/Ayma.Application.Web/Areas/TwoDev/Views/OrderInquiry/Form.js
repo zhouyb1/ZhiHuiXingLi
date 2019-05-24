@@ -1,15 +1,12 @@
 ﻿var keyValue = request('keyValue');
 var state = request('state');
-//var CurrentCompanyId = $("#CurrentCompanyId").val();
 var refreshGirdData;
-//var tabTitle = "";//Tab名字
 
 var bootstrap = function ($, ayma) {
     "use strict";
     var page = {
         init: function () {
             $('.am-form-wrap').mCustomScrollbar({ theme: "minimal-dark" });
-            //page.initGird();
             page.bind();
             page.initData();
         },
@@ -28,14 +25,15 @@ var bootstrap = function ($, ayma) {
 
             // 行李编辑
             $("#am_edit").on("click", function () {
-                var keyValue = $('#T_OrderBody').jfGridValue('F_Id');
-                if (ayma.checkrow(keyValue)) {
+                var ConsignmentNumber = $('#girdtable').jfGridValue('F_ConsignmentNumber');
+                var Fid = $('#girdtable').jfGridValue('F_Id');
+                if (ayma.checkrow(ConsignmentNumber)) {
                     ayma.layerForm({
-                        id: 'UpdateLuggageForm',
+                        id: 'Form',
                         title: '行李信息编辑',
-                        url: top.$.rootUrl + '/TwoDev/OrderInquiry/UpdateLuggageForm?keyValue=' + keyValue + '',
+                        url: top.$.rootUrl + '/TwoDev/OrderInquiry/UpdateLuggageForm?keyValue=' + Fid + '&ConsignmentNumber=' + ConsignmentNumber,
                         width: 500,
-                        height: 350,
+                        height: 300,
                         maxmin: true,
                         callBack: function (id) {
                             return top[id].acceptClick(refreshGirdData);
@@ -92,7 +90,7 @@ var bootstrap = function ($, ayma) {
                 }
             });
             //详情表单
-            $('#T_OrderBody').jfGrid({
+            $('#girdtable').jfGrid({
                 headData:
                     [
                         { label: '订单号', name: 'F_OrderNo', width: 130, align: 'left' },//,  hidden: true
@@ -105,16 +103,20 @@ var bootstrap = function ($, ayma) {
                             label: '订单状态', name: 'FB_State', width: 88, align: 'left',
                             formatter: function (cellvalue, options, rowObject) {
                                 var colorcss = "";
-                                if (cellvalue == 2) {
+                                if (cellvalue == 1) {
                                     colorcss = "label label-warning";
                                     cellvalue = "未分拣";
                                 }
-                                else if (cellvalue == 3) {
+                                else if (cellvalue == 2) {
                                     colorcss = "label label-warning";
                                     cellvalue = "分拣中";
                                 }
-                                else if (cellvalue == 4) {
+                                else if (cellvalue == 3) {
                                     colorcss = "label label-warning";
+                                    cellvalue = "分拣完成";
+                                }
+                                else if (cellvalue == 4) {
+                                    colorcss = "label label-success";
                                     cellvalue = "运输中";
                                 }
                                 else if (cellvalue == 5) {
@@ -138,8 +140,8 @@ var bootstrap = function ($, ayma) {
                 isEidt: true,
                 footerrow: true,
                 height: 420,
-                isStatistics: true,
-                isMultiselect: true
+                isStatistics: true
+                //isMultiselect: true
             });
         },
         initData: function () {
@@ -147,7 +149,7 @@ var bootstrap = function ($, ayma) {
                 $.SetForm(top.$.rootUrl + '/TwoDev/OrderInquiry/GetFormData?keyValue=' + keyValue, function (data) {
                     for (var id in data) {
                         if (!!data[id].length && data[id].length > 0) {
-                            $('#T_OrderBody').jfGridSet('refreshdata', { rowdatas: data[id] });
+                            $('#girdtable').jfGridSet('refreshdata', { rowdatas: data[id] });
                         }
                         else {
                             $('[data-table="' + id + '"]').SetFormData(data[id]);
@@ -157,8 +159,9 @@ var bootstrap = function ($, ayma) {
             }
         },
         search: function (param) {
-        param = param || {};
-        $('#T_OrderBody').jfGridSet('reload', { param: { queryJson: JSON.stringify(param) } });
+            param = param || {};
+            param.F_OrderNo = keyValue;
+            $('#girdtable').jfGridSet('reload', { param: { queryJson: JSON.stringify(param) } });
        }
     };
     refreshGirdData = function () {

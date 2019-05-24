@@ -112,6 +112,29 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 }
             }
         }
+        /// <summary>
+        /// 获取T_OrderBody表行李详情实体数据
+        /// </summary>
+        /// <param name="keyValue">主键</param>
+        /// <returns></returns>
+        public T_OrderBodyEntity GetT_OrderDetailsEntity(string keyValue)
+        {
+            try
+            {
+                return orderInquiryService.GetT_OrderDetailsEntity(keyValue);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
 
         /// <summary>
         /// 获取收款表实体数据

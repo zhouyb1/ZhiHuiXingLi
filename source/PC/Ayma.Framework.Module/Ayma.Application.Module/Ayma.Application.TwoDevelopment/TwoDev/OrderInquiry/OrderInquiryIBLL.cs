@@ -26,7 +26,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// <returns></returns>
         IEnumerable<T_OrderHeadEntity> GetPageList(Pagination pagination, string queryJson);
         /// <summary>
-        /// 获取T_OrderHead表实体数据
+        /// 获取T_OrderHead表实体数据 
         /// </summary>
         /// <param name="keyValue">主键</param>
         /// <returns></returns>
@@ -37,6 +37,12 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// <param name="keyValue">主键</param>
         /// <returns></returns>
         IEnumerable<T_GetBodyNameEntity> GetT_OrderBodyEntity(string keyValue);
+        /// <summary>
+        /// 获取T_OrderHead表行李详情实体数据 
+        /// </summary>
+        /// <param name="keyValue">主键</param>
+        /// <returns></returns>
+        T_OrderBodyEntity GetT_OrderDetailsEntity(string keyValue);
         /// <summary>
         /// 获取收款表实体数据
         /// </summary>

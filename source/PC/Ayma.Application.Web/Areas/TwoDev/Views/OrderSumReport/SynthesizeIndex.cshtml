@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "业务综合数据查询";
+    Layout = "~/Views/Shared/_Index.cshtml";
+}
+<div class="am-layout">
+    <div class="am-layout-center">
+        <div class="am-layout-wrap am-layout-wrap-notitle">
+            <div class="am-layout-tool">
+                <div class="am-layout-tool-left">
+                    <div class="am-layout-tool-item">
+                        <div id="datesearch"></div>
+                    </div>
+                    <div class="am-layout-tool-item">
+                        <div id="multiple_condition_query">
+                            <div class="am-query-formcontent">
+                                <div class="col-xs-12 am-form-item">
+                                    <div class="am-form-item-title">航空公司</div>
+                                    <input id="F_FlightCompany" type="text" class="form-control" placeholder="请输入航空公司">
+                                </div>
+                                <div class="col-xs-12 am-form-item">
+                                    <div class="am-form-item-title">开始日期</div>
+                                    <input id="StartTime" type="text" class="form-control" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" />
+                                </div>
+                                <div class="col-xs-12 am-form-item">
+                                    <div class="am-form-item-title">结束日期</div>
+                                    <input id="EndTime" type="text" class="form-control" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm' })" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="am-layout-tool-right">
+                    <div class=" btn-group btn-group-sm">
+                        <a id="am_refresh" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class=" btn-group btn-group-sm" ayma-authorize="yes">
+                        <a id="am_logdetail" class="btn btn-default"><i class="fa fa-search"></i>&nbsp;导出</a>
+                    </div>
+                </div>
+            </div>
+            <div class="am-layout-body" id="girdtable"></div>
+        </div>
+    </div>
+</div>
+@Html.AppendJsFile("/Areas/TwoDev/Views/OrderSumReport/SynthesizeIndex.js")

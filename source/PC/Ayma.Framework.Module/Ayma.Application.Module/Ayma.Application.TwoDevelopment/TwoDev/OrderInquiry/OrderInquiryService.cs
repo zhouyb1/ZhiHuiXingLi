@@ -167,8 +167,30 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 strSql.Append(" And A.F_OrderNo='" + keyValue + "'");
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
-                //return this.BaseRepository().FindTable(strSql.ToString(), dp);
                 return this.BaseRepository().FindList<T_GetBodyNameEntity>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+        /// <summary>
+        /// 获取行李详情实体数据
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <returns></returns>
+        public T_OrderBodyEntity GetT_OrderDetailsEntity(string keyValue)
+        {
+            try
+            {
+                return this.BaseRepository("BaseDb").FindEntity<T_OrderBodyEntity>(c => c.F_ConsignmentNumber == keyValue);
             }
             catch (Exception ex)
             {

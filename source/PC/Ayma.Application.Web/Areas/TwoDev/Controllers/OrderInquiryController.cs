@@ -122,10 +122,22 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
         public ActionResult GetFormData(string keyValue)
         {
             var T_OrderHeadData = orderInquiryIBLL.GetT_OrderHeadEntity( keyValue );
-            var T_OrderBodyData = orderInquiryIBLL.GetT_OrderBodyEntity( T_OrderHeadData.F_OrderNo );
+            var T_OrderBodyData = orderInquiryIBLL.GetT_OrderBodyEntity(T_OrderHeadData.F_OrderNo);
             var jsonData = new {
                 T_OrderHeadData = T_OrderHeadData,
                 T_OrderBodyData = T_OrderBodyData,
+            };
+            return Success(jsonData);
+        }
+
+        [HttpGet]
+        [AjaxOnly]
+        public ActionResult GetBodyData(string keyValue)
+        {
+            var T_OrderBodyData = orderInquiryIBLL.GetT_OrderDetailsEntity(keyValue);
+            var jsonData = new
+            {
+                T_OrderBodyData = T_OrderBodyData
             };
             return Success(jsonData);
         }

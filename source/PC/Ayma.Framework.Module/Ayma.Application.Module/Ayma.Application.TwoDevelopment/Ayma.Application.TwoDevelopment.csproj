@@ -81,6 +81,10 @@
     <Compile Include="TwoDev\OrderLogistics\OrderLogisticsBLL.cs" />
     <Compile Include="TwoDev\OrderLogistics\OrderLogisticsIBLL.cs" />
     <Compile Include="TwoDev\OrderLogistics\OrderLogisticsService.cs" />
+    <Compile Include="TwoDev\OrderSumReport\OrderSumReportBLL.cs" />
+    <Compile Include="TwoDev\OrderSumReport\OrderSumReportIBLL.cs" />
+    <Compile Include="TwoDev\OrderSumReport\OrderSumReportModel.cs" />
+    <Compile Include="TwoDev\OrderSumReport\OrderSumReportService.cs" />
     <Compile Include="TwoDev\Test\TestService.cs" />
     <Compile Include="TwoDev\AirportMessage\T_AirfieldInfoEntity.cs" />
     <Compile Include="TwoDev\AirportMessage\AirportMessageService.cs" />
