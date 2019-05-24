@@ -1,6 +1,47 @@
 <!--pages/send/send.wxml-->
-<!-- 航班信息 -->
+
+<!-- 乘机人信息 -->
 <view class='page_box' wx:if="{{page_index===1}}">
+  <view class="pages">
+    <view class='page_title'>
+      <view>身份证信息验证</view>
+      <view>为防止您的行李丢失,请检查您的个人信息</view>
+    </view>
+    <!-- 姓名 -->
+    <view class="list">
+      <view class="list_l">姓名</view>
+      <view class="list_rs">
+        <input type='text' placeholder='请输入姓名' value="{{name1}}" bindinput='name_fun' data-type="1"></input>
+        <view class="phone_btn" bindtap='get_info'>
+          <view>
+            <image src='../../image/phone.png'></image>
+          </view>
+          <view>快速填写</view>
+        </view>
+      </view>
+    </view>
+    <!-- 手机号码 -->
+    <view class="list">
+      <view class="list_l">手机</view>
+      <view class="list_rs">
+        <input type='number' placeholder='请输入手机号码' maxlength='11' value="{{phone1}}" bindinput='phone_fun' data-type="1"></input>
+      </view>
+    </view>
+    <!-- 其他信息 -->
+    <view class="test-l" bindtap='go_help' data-type="1">委托服务协议条款</view>
+    <view class="test">
+      <checkbox-group bindchange="page2_fun">
+        <label class="checkbox">
+          <checkbox value="委托服务协议条款" checked="{{page2}}" /> 我已阅读并同意委托服务协议条款的内容
+        </label>
+      </checkbox-group>
+    </view>
+    <button class="nexts" bindtap='nexts' data-type="2">下一步</button>
+  </view>
+</view>
+
+<!-- 航班信息 -->
+<view class='page_box' wx:if="{{page_index===2}}">
   <view class="pages">
     <view class='page_title'>
       <view>航班及行李信息</view>
@@ -10,18 +51,28 @@
       <view class="list_l">航程</view>
       <view class="list_r">
         <view class="s_city">
-          <picker mode="region" bindchange="str_city" value="{{citty_list}}" custom-item="{{customItem}}">
-            <view class="picker">
-              {{citty_list[0]}}{{citty_list[1]}}
+          <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
+            <view class="picker" wx:if="{{multiArray[1][multiIndex[1]]}}">
+              {{multiArray[0][multiIndex[0]]}}{{multiArray[1][multiIndex[1]]}}
             </view>
+            <block wx:else>
+              <view class="picker">
+                {{multiArray[0][multiIndex[0]]}}
+              </view>
+            </block>
           </picker>
         </view>
         <view class='lines'></view>
         <view class="e_city">
-          <picker bindchange="end_citty" value="{{index}}" range="{{end_city_list}}">
-            <view class="picker">
-              {{end_city_list[index]}}
+          <picker mode="multiSelector" bindchange="bindMultiPickerChange1" bindcolumnchange="bindMultiPickerColumnChange1" value="{{multiIndex1}}" range="{{multiArray1}}">
+            <view class="picker" wx:if="{{multiArray1[1][multiIndex[1]]}}">
+              {{multiArray1[0][multiIndex1[0]]}}{{multiArray1[1][multiIndex1[1]]}}
             </view>
+            <block wx:else>
+              <view class="picker">
+                {{multiArray1[0][multiIndex1[0]]}}
+              </view>
+            </block>
           </picker>
         </view>
       </view>
@@ -30,13 +81,26 @@
     <view class="list">
       <view class="list_l">航班号</view>
       <view class="list_r">
-        <view class="filght_num">
+        <view class="filght_num" wx:if="{{!city_num_hend}}">
           <picker bindchange="city_nums" value="{{num_index}}" range="{{city_num}}">
             <view class="picker">
               {{city_num[num_index]}}
             </view>
           </picker>
+          <view class="city_type" bindtap='city_num_hends' data-type="1">
+            <view>手动</view>
+            <view>填写</view>
+          </view>
         </view>
+        <block wx:else>
+          <view class="filght_num">
+            <input value="{{city_num_hend_value}}" bindinput='city_num_hends_val' placeholder='请输入航班号通常是字母数字的组合' style="width:100%" focus="true"></input>
+            <view class="city_type" bindtap='city_num_hends' data-type="2">
+              <view>手动</view>
+              <view>选择</view>
+            </view>
+          </view>
+        </block>
       </view>
     </view>
     <view class="list">
@@ -68,15 +132,18 @@
       </checkbox-group>
     </view>
     <view class="test">温馨提示：为避免损失、贵重物品、易碎物品请勿托运</view>
-    <button class="nexts" bindtap='fly_page'>下一步</button>
+    <view class='btn_page'>
+      <text class='pre' bindtap='user_pre' data-type="1">上一步</text>
+      <button class="nexts" bindtap='fly_page'>下一步</button>
+    </view>
   </view>
 </view>
 
-<!-- 用户信息 -->
-<view class='page_box' wx:if="{{page_index===2}}">
+<!-- 收件人信息 -->
+<view class='page_box' wx:if="{{page_index===3}}">
   <view class="pages">
     <view class='page_title'>
-      <view>身份证信息验证</view>
+      <view>收获地址</view>
       <view>为防止您的行李丢失,请检查您的个人信息</view>
     </view>
     <!-- 姓名 -->
@@ -122,13 +189,15 @@
         <view class="list_rs">
 
           <view class="citys">
-            <input bindinput="getsuggest" value="{{backfill}}" placeholder='请输入地址'></input>
+            <input bindinput="getsuggest" bindblur="close_addr" value="{{backfill}}" placeholder='请输入地址'></input>
             <!--关键词输入提示列表渲染-->
+
             <view wx:for="{{suggestion}}" wx:key="index" wx:if="{{suggestion.length}}" class='city_list'>
               <view class="citty-item" bindtap="backfill" id="{{index}}">
                 <view>{{item.title}}</view>
                 <view>{{item.addr}}</view>
               </view>
+              <button class="close_addrs" bindtap='close_addr'>关闭</button>
             </view>
 
           </view>
@@ -146,7 +215,7 @@
       </checkbox-group>
     </view>
     <view class='btn_page'>
-      <text class='pre' bindtap='user_pre'>上一步</text>
+      <text class='pre' bindtap='user_pre' data-type="2">上一步</text>
       <button class="nexts" bindtap='user_page'>立即寄件</button>
     </view>
   </view>

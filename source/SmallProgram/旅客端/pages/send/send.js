@@ -14,21 +14,16 @@ Page({
    */
   data: {
     multiArray: [
-      ['请选择起始站', '广东'],
+      ['请选择始发站', '广东', '福建'],
       [],
     ],
     multiIndex: [0, 0],
     multiArray1: [
-      ['请选择到达站', '首都机场'],
+      ['请选择到达站'],
       [],
-    ],
-    multiIndex1: [0, 0],
-    city: [0, 0, 0], //航程
-    citty_list: ['请选择始发站'], //航程
-    index: 0, //到达站下标
-    end_city_list: ["请选择到达站"], //到达站
-    en_data: [], //到达站数据
-    end_city_list_data: ['0'], //到达站
+    ], //机场显示数据
+    multiIndex1: [0, 0], //机场下标
+    last_city: '', //机场数据
     city_num: ['请先选择到达站'], //航班号
     num_index: 0, //航班号下标
     name: '', //收货姓名
@@ -58,6 +53,7 @@ Page({
    */
   onLoad: function(options) {
     var _this = this;
+    // 获取用户信息
     wx.getStorage({
       key: 'open',
       success(res) {
@@ -68,22 +64,10 @@ Page({
         _this.get_user_addr(d.openId);
       }
     });
-
-    wx.getStorage({
-      key: 'city',
-      success(res) {
-        _this.setData({
-          citty_list: [res.data]
-        })
-      },
-      fail(res) {
-        _this.setData({
-          citty_list: ['请选择起始位置']
-        })
-      }
-    });
-
+  },
+  onShow: function () {
     //获取机场列表
+    var _this = this;
     wx.request({
       url: app.path(1) + "/pdaapi/GetAirPort",
       data: {
@@ -97,17 +81,16 @@ Page({
       },
       success(res) {
         if (res.data.code === 200) {
-          var arr = _this.data.end_city_list;
-          var arr1 = ['0'];
           var d = JSON.parse(res.data.data);
+          var last_city = _this.data.multiArray1;
           for (var i = 0; i < d.length; i++) {
-            arr.push(d[i].F_AirfieldName);
-            arr1.push(d[i].F_Id);
+            last_city[0].push(d[i].F_AirfieldName);
           };
           _this.setData({
-            end_city_list: arr,
-            end_city_list_data: arr1,
-          })
+            last_city: d,
+            multiArray1: last_city,
+            multiIndex1: [0, 0]
+          });
         };
       }
     })
@@ -115,62 +98,109 @@ Page({
   onShareAppMessage: function() {
 
   },
-  bindMultiPickerChange: function (e) {
+  bindMultiPickerChange: function(e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       multiIndex: e.detail.value
-    })
-    console.log(this.data);
+    });
   },
-  bindMultiPickerColumnChange: function (e) {
+  bindMultiPickerColumnChange: function(e) {
     var data = {
       multiArray: this.data.multiArray,
       multiIndex: this.data.multiIndex
     };
     data.multiIndex[e.detail.column] = e.detail.value;
-    switch (e.detail.column) {
-      case 0:
-        switch (data.multiIndex[0]) {
-          case 0:
-            data.multiArray[1] = [];
-            break;
-          case 1:
-            data.multiArray[1] = ['广州'];
-            break;
-        }
+    var obj = [];
+    var _this = this;
+
+    if (e.detail.value === 1) {
+      obj = ["广州", "深圳"];
+    } else if (e.detail.value === 2) {
+      obj = ["厦门"];
+    } else {
+      obj = [];
+    };
+    picks(obj);
+
+    function picks(obj) {
+      var data = {
+        multiArray: _this.data.multiArray,
+        multiIndex: _this.data.multiIndex
+      };
+      data.multiIndex[e.detail.column] = e.detail.value;
+
+      if (e.detail.column === 0) {
+        if (data.multiIndex[0] === e.detail.value) {
+          data.multiArray[1] = obj;
+        };
         data.multiIndex[1] = 0;
         data.multiIndex[2] = 0;
-        break;
+      };
+      _this.setData(data);
     }
-    this.setData(data);
   },
-  bindMultiPickerChange1: function (e) {
+  bindMultiPickerChange1: function(e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       multiIndex1: e.detail.value
-    })
+    });
+    this.end_citty(this.data.last_city[e.detail.value[0] - 1].F_Id);
   },
-  bindMultiPickerColumnChange1: function (e) {
-    var data = {
-      multiArray1: this.data.multiArray1,
-      multiIndex1: this.data.multiIndex1
+  bindMultiPickerColumnChange1: function(e) {
+    var _this = this;
+    var F_AirfieldId = {
+      F_AirfieldId: this.data.last_city[e.detail.value - 1] ? this.data.last_city[e.detail.value - 1].F_Id : false
     };
-    data.multiIndex1[e.detail.column] = e.detail.value;
-    switch (e.detail.column) {
-      case 0:
-        switch (data.multiIndex1[0]) {
-          case 0:
-            data.multiArray1[1] = [];
-            break;
-          case 1:
-            data.multiArray1[1] = ['T1'];
-            break;
-        }
+    wx.showLoading({
+      title: '加载中',
+    });
+    wx.request({
+      url: app.path(1) + "/pdaapi/GetFlightFloorById",
+      data: {
+        sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify(F_AirfieldId)}`).toUpperCase(),
+        version: app.path(3),
+        data: JSON.stringify(F_AirfieldId)
+      },
+      method: "GET",
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success(res) {
+        wx.hideLoading();
+        var d = F_AirfieldId.F_AirfieldId === false ? res.data.data : JSON.parse(res.data.data);
+        if (res.data.code === 200) {
+          var d_arr = [];
+          for (var i = 0; i < d.length; i++) {
+            d_arr.push(d[i].F_ExpressCompanyName);
+          };
+          picks(d_arr);
+        } else {
+          picks([]);
+        };
+        if (_this.data.last_city[e.detail.value - 1]) {
+          _this.end_citty(_this.data.last_city[e.detail.value - 1].F_Id);
+        } else {
+          _this.end_citty(false);
+        };
+      }
+    });
+
+    function picks(obj) {
+      var data = {
+        multiArray1: _this.data.multiArray1,
+        multiIndex1: _this.data.multiIndex1
+      };
+      data.multiIndex1[e.detail.column] = e.detail.value;
+
+      if (e.detail.column === 0) {
+        if (data.multiIndex1[0] === e.detail.value) {
+          data.multiArray1[1] = obj;
+        };
         data.multiIndex1[1] = 0;
         data.multiIndex1[2] = 0;
-        break;
+      };
+      _this.setData(data);
     }
-    this.setData(data);
   },
   name_fun(e) {
     if (e.target.dataset.type) {
@@ -200,26 +230,27 @@ Page({
     });
     this.get_addr(e.detail.value, 1);
   },
-  end_citty(e) {
-    var _this = this;
-    if (_this.data.end_city_list_data[e.detail.value] === '0') {
+  //获取航班号
+  end_citty(obj) {
+    if (!obj) {
+      this.setData({
+        city_num: ['请选择航班号'],
+        en_data: [],
+        num_index: 0
+      });
       return false;
     };
-    // this.get_addr(_this.data.end_city_list[e.detail.value]);
+    var _this = this;
     wx.showLoading({
       title: '加载中',
     });
-    this.setData({
-      index: e.detail.value
-    });
-    //获取航班号
     wx.request({
       url: app.path(1) + "/pdaapi/GetFlightNoInfo",
       data: {
-        sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify({ F_AirfieldId: _this.data.end_city_list_data[e.detail.value] })}`).toUpperCase(),
+        sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify({ F_AirfieldId: obj})}`).toUpperCase(),
         version: app.path(3),
         data: {
-          F_AirfieldId: _this.data.end_city_list_data[e.detail.value]
+          F_AirfieldId: obj
         }
       },
       method: "GET",
@@ -526,25 +557,24 @@ Page({
       })
       return false;
     };
-    console.log(d.index,d)
-    da.head.F_AirfieldFloor = d.end_city_list[d.index-0];
-    da.head.F_AirfieldId = d.end_city_list_data[d.index-0];
-    da.head.F_AirfieldName = d.en_data[d.index - 0].F_AirfieldName;
-    da.head.F_StartStation = d.citty_list[0];
-    da.head.F_Longitude = d.user_location.lng;
-    da.head.F_Latitude = d.user_location.lat;
-    da.head.F_CustomerAddress = d.self_city;
-    da.head.F_CustomerName = d.name;
-    da.head.F_CustomerPhone = d.phone;
-    da.head.F_FareName = d.name1;
-    da.head.F_FarePhone = d.phone1;
+    da.head.F_AirfieldFloor = d.multiArray1[1][d.multiIndex1[1]]; //航站楼
+    da.head.F_AirfieldId = d.last_city[d.multiIndex1[0] - 1].F_Id; //机场id
+    da.head.F_AirfieldName = d.last_city[d.multiIndex[0] - 1].F_AirfieldName; //机场名
+    da.head.F_StartStation = d.multiArray[0][d.multiIndex[0]] + d.multiArray[1][d.multiIndex[1]]; //起始站
+    da.head.F_Longitude = d.user_location.lng; //收货地址坐标
+    da.head.F_Latitude = d.user_location.lat; //收货地址坐标
+    da.head.F_CustomerAddress = d.self_city; //收货地址
+    da.head.F_CustomerName = d.name; //收货人姓名
+    da.head.F_CustomerPhone = d.phone; //收货人手机
+    da.head.F_FareName = d.name1; //寄件人姓名
+    da.head.F_FarePhone = d.phone1; //寄件人手机
     da.head.F_CustomerRemarks = "";
-    da.head.F_FlightCompany = d.en_data[d.index - 0].F_FlightCompany;
-    da.head.F_FlightNumber = d.city_num_hend ? d.city_num_hend_value : d.city_num[d.num_index];
-    da.head.F_IsUrgent = "普通";
-    da.head.F_OpenId = d.openid;
-    da.head.F_State = 0;
-    da.head.F_Stype = "港内配送";
+    da.head.F_FlightCompany = d.num_index - 0 === 1 ? d.en_data[d.num_index - 0].F_FlightCompany : d.en_data[d.num_index - 1].F_FlightCompany; //航空公司名
+    da.head.F_FlightNumber = d.city_num_hend ? d.city_num_hend_value : d.city_num[d.num_index]; //航班号
+    da.head.F_IsUrgent = "普通"; //寄件类型，默认普通
+    da.head.F_OpenId = d.openid; //用户openid
+    da.head.F_State = 0; //默认状态
+    da.head.F_Stype = "港内配送"; //配送类别
     for (var i = 0; i < d.can_list.length; i++) {
       da.OrderDetails.push({
         F_ConsignmentNumber: d.can_list[i],
@@ -553,14 +583,14 @@ Page({
         F_Price: 10.0,
         F_Qty: 1
       });
-    };
+    }; //托运单号
+    console.log(da, d)
     console.log(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify(da)}`);
-    // return false;
     wx.showLoading({
       title: '提交中',
     });
     wx.request({
-      url: app.path(1) + "/pdaapi/SubmitOrder", // 仅为示例，并非真实的接口地址
+      url: app.path(1) + "/pdaapi/SubmitOrder", 
       data: {
         sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify(da)}`).toUpperCase(),
         version: app.path(3),
@@ -664,22 +694,34 @@ Page({
       page2: false,
       citty_data_list: [],
       city_num_hend_value: '',
-      city_num_hend:false,
-
+      city_num_hend: false,
+      multiArray: [
+        ['请选择始发站', '广东', '福建'],
+        [],
+      ],
+      multiIndex: [0, 0],
+      multiArray1: [
+        ['请选择到达站'],
+        [],
+      ], //机场显示数据
+      multiIndex1: [0, 0], //机场下标
+      last_city: '', //机场数据
     });
   },
   fly_page() {
     var d = this.data;
     var h = /^[a-zA-Z0-9]{6}$/;
     var len = d.can_list.length;
-    if (d.citty_list[0] === "请选择始发站") {
+    var first_city = d.multiArray[0][d.multiIndex[0]]; //始发站
+    var last_city = d.multiArray1[0][d.multiIndex1[0]]; //到达站
+    if (first_city === "请选择始发站") {
       wx.showModal({
         title: '温馨提示',
         content: '请选择始发站'
       })
       return false;
     };
-    if (d.end_city_list[d.index] === "请选择到达站") {
+    if (last_city === "请选择到达站") {
       wx.showModal({
         title: '温馨提示',
         content: '请选择到达站'
