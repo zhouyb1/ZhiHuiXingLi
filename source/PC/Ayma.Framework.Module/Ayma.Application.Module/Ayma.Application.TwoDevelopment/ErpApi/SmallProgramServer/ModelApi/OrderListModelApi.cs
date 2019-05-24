@@ -32,6 +32,26 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// 托运单号
         /// </summary>
         public string F_ConsignmentNumber { get; set; }
+
+        /// <summary>
+        /// 到达时间
+        /// </summary>
+        public DateTime DateTimeEnd { get; set; }
+
+        /// <summary>
+        /// 分拣口
+        /// </summary>
+        public string F_AirfieldCoding { get; set; }
+
+        /// <summary>
+        /// 分拣员
+        /// </summary>
+        public string FB_Name { get; set; }
+        /// <summary>
+        /// 分拣员电话
+        /// </summary>
+        public string FB_Phone { get; set; }
+
     }
 
 }
