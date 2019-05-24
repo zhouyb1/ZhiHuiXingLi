@@ -113,11 +113,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status,FB_Code=@FB_Code WHERE F_ConsignmentNumber=@ConsignmentNumber");
+                strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status WHERE F_ConsignmentNumber=@ConsignmentNumber");
                  var dp = new DynamicParameters(new { });
                      dp.Add("@ConsignmentNumber", ConsignmentNumber);
                      dp.Add("@Status", status);
-                     dp.Add("@FB_Code", Operator);
                      this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
 
                      var list = this.BaseRepository().FindList<T_OrderBodyEntity>(c => c.F_OrderNo == OrderNo).OrderByDescending(c => c.FB_State);
@@ -132,11 +131,14 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                  var StateDescribe="";
                  switch (State)
                  {
+                     case "1":
+                         StateDescribe = "未分拣";
+                         break;
                      case "2":
-                         StateDescribe="未分拣";
+                         StateDescribe = "分拣中";
                          break;
                      case "3":
-                         StateDescribe="分拣中";
+                         StateDescribe = "行李号分拣完成";
                          break;
                      case"4":
                          StateDescribe="运输中";
@@ -228,7 +230,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                     switch (status)
                     {
                         case "3":
-                            StateDescribe = "分拣中";
+                            StateDescribe = "行李分拣完成";
                             break;
                     }
 
@@ -290,9 +292,9 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                 DateTimeEnd,a.F_AirfieldCoding,
                                 F_FareName,F_FarePhone
                                 FROM dbo.T_OrderHead h 
-                                LEFT JOIN dbo.T_FlightNoInfo f ON f.F_AirfieldId = h.F_AirfieldId AND f.F_FlightCompany = h.F_FlightCompany
+                                LEFT JOIN dbo.T_FlightNoInfo f ON f.F_AirfieldId = h.F_AirfieldId AND f.F_FlightCompany = h.F_FlightCompany AND f.F_FlightNumber = h.F_FlightNumber
                                 LEFT JOIN dbo.T_AirfieldInfo a ON a.F_Id=f.F_AirfieldId
-                                WHERE F_State IN ('2','3,','4','5','41','51') ");
+                                WHERE F_State IN ('1','2','3','4','5','41','51') ");
                 if (!string.IsNullOrEmpty(status))
                 {
                     strSql.Append(" And F_State=@F_State");
