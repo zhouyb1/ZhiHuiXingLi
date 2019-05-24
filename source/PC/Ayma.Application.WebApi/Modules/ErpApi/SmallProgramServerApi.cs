@@ -142,27 +142,30 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 billServerApiBLL.ExpressInformation(OrderNo, ConsignmentNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
             }
             billServerApiBLL.UpdateOrderStatus(OrderNo, ConsignmentNumber, status, Operator, out errText);
-            //SortedDictionary<string, object> param = new SortedDictionary<string, object>();
-            //param.Add("orderChannelCode","OTP_ZHJXKJ_STD");
-            //param.Add("customerCode","K21000869");
-            //param.Add("customerSecretKey","WILz78gFNINyeLQvKK+LBw==");
-            //param.Add("orderLogisticsCode","");
-            //param.Add("custOrderCreateTime","");
-            //param.Add("goodsType","");
-            //param.Add("senderName","");
-            //param.Add("senderProvName","");
-            //param.Add("senderCityName","");
-            //param.Add("senderAreaName","");
-            //param.Add("senderAddress","");
-            //param.Add("recipientProvName","");
-            //param.Add("recipientCityName","");
-            //param.Add("recipientAreaName","");
-            //param.Add("recipientAddress","");
-            //param.Add("recipientName","");
-            //string json = SerializeObject(param);
-
-
             return Success(errText);
+        }
+
+        public string OrderLogisticsNo()
+        {
+            SortedDictionary<string, object> param = new SortedDictionary<string, object>();
+            param.Add("orderChannelCode", "OTP_ZHJXKJ_STD");
+            param.Add("customerCode", "K21000869");
+            param.Add("customerSecretKey", "WILz78gFNINyeLQvKK+LBw==");
+            param.Add("orderLogisticsCode", "");
+            param.Add("custOrderCreateTime", "");
+            param.Add("goodsType", "");
+            param.Add("senderName", "");
+            param.Add("senderProvName", "");
+            param.Add("senderCityName", "");
+            param.Add("senderAreaName", "");
+            param.Add("senderAddress", "");
+            param.Add("recipientProvName", "");
+            param.Add("recipientCityName", "");
+            param.Add("recipientAreaName", "");
+            param.Add("recipientAddress", "");
+            param.Add("recipientName", "");
+            string json = SerializeObject(param);
+            return "";
         }
 
         /// <summary>
@@ -239,6 +242,11 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 return Fail("没有数据!");
             }
+        }
+
+        public class ConsignmentNumber
+        {
+            public string ConsNumber { get; set; }
         }
 
         /// <summary>
