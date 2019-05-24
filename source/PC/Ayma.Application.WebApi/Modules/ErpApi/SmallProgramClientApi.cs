@@ -367,7 +367,11 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             billClientApiBLL.ClientUpdateOrder(OrderNo, status, out errText);
             return Success(errText);
         }
-
+        /// <summary>
+        /// 根据机场Id获取航站楼
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
         public Response GetFlightFloorById(dynamic _)
         {
             var req = this.GetReqData().ToJObject();// 获取模板请求数据
