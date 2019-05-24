@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Ayma.Util
@@ -63,6 +64,20 @@ namespace Ayma.Util
 
             return strEncrypt;
         }
+
+        /// <summary>
+        /// MD5加密 针对承诺达接口
+        /// </summary>
+        /// <returns></returns>
+        public static string MD5Encrypt(string str,string key)
+        {
+            var encryptStr = str + key;
+            var md5 = System.Security.Cryptography.MD5.Create();
+            var strBytes = Encoding.UTF8.GetBytes(encryptStr);
+            var hashBytes = md5.ComputeHash(strBytes);
+           return Convert.ToBase64String(hashBytes);
+        }
+
         #endregion
     }
 }
