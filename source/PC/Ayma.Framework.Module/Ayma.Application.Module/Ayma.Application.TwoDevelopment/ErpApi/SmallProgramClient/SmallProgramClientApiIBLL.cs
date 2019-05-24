@@ -57,6 +57,13 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         IEnumerable<OrderDetailsModelApi> GetOrderBodyByNo(string OrderNo);
 
         /// <summary>
+        /// 根据机场Id获取航站楼
+        /// </summary>
+        /// <param name="F_AirfieldId"></param>
+        /// <returns></returns>
+        IEnumerable<T_AirfieldFloor> GetFlightFloorById(string F_AirfieldId);
+
+        /// <summary>
         /// 根据机场Id获取运费计算规则
         /// </summary>
         /// <param name="F_AirfieldId"></param>
