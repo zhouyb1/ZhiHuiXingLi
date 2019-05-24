@@ -311,9 +311,15 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
            
             billClientApiBLL.SubmitOrder(SubmitOrderModelApi, orderNo, out errText);
-            return Success("ok", new { totalFee = totalFee });
+            return Success("ok", new { orderNo = orderNo, totalFee = totalFee });
         }
 
+        /// <summary>
+        /// 计算基础运费及第一件行李运费
+        /// </summary>
+        /// <param name="F_AirfieldId"></param>
+        /// <param name="RealKM"></param>
+        /// <returns></returns>
         public decimal BaseFee(string F_AirfieldId, int RealKM)
         {
             //string F_AirfieldId = "943C717C-9ED7-46ED-B3A2-0744740377B6";
