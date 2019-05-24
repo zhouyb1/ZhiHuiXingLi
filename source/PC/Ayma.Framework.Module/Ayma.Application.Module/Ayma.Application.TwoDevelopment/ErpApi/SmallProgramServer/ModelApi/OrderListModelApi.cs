@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
 {
-    public class OrderListModelApi
+    public class OrderList
     {
-        /// <summary>
         /// 航班号
         /// </summary>
         public string F_FlightNumber { get; set; }
@@ -28,10 +27,6 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// </summary>
         public string F_OrderNo { get; set; }
 
-        /// <summary>
-        /// 托运单号
-        /// </summary>
-        public string F_ConsignmentNumber { get; set; }
 
         /// <summary>
         /// 到达时间
@@ -51,7 +46,13 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// 分拣员电话
         /// </summary>
         public string FB_Phone { get; set; }
+        public List<ConsignmentNumber> CNumberList { get; set; }
+    }
+    
 
+    public class ConsignmentNumber
+    {
+        public string F_ConsignmentNumber { get; set; }
     }
 
 }
