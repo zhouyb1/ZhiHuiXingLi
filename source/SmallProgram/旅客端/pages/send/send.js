@@ -882,7 +882,6 @@ Page({
     this.setData({
       suggestion: [],
       self_city: e.detail.value,
-      backfill:e.detail.value
     });
     var d = this.data.backfill || this.data.self_city;
     this.get_addr(d);
