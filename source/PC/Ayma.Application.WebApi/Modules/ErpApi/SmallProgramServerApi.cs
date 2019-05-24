@@ -269,7 +269,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         }
 
         /// <summary>
-        /// 根据行李号获取订单详情
+        /// 根据行李号,订单号，手机号码获取订单详情
         /// </summary>
         /// <param name="_"></param>
         /// <returns></returns>
