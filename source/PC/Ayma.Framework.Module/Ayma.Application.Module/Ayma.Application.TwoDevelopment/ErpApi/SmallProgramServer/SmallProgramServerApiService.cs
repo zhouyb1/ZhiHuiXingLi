@@ -374,12 +374,12 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
-        public IEnumerable<SerOrderDetail> SerGetOrderDetailByNo(string ConsignmentNumber, string OrderNo, string CustPhone)
+        public IEnumerable<SerOrderDetailModelApi> SerGetOrderDetailByNo(string ConsignmentNumber, string OrderNo, string CustPhone)
         {
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT F_FlightNumber,F_State,h.F_OrderNo,F_OrderDate,F_AirfieldFloor,F_CustomerName,b.F_ConsignmentNumber,
+                strSql.Append(@"SELECT DISTINCT F_FlightNumber,F_State,h.F_OrderNo,F_OrderDate,F_AirfieldFloor,F_CustomerName,
                                 (SELECT sum (F_Qty) FROM T_OrderBody WHERE F_OrderNo=h.F_OrderNo) F_Qty,
                                 F_CustomerPhone,F_CustomerAddress,F_Stype,F_IsUrgent,F_ExpressCompanyId,
                                 F_ExpressNO,F_PayType,F_Amount
@@ -403,7 +403,9 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                     strSql.Append(" AND h.F_CustomerPhone=@CustPhone");
                     dp.Add("@CustPhone", CustPhone);
                 }
-                return this.BaseRepository().FindList<SerOrderDetail>(strSql.ToString(), dp);
+                var list = this.BaseRepository().FindList<SerOrderDetailModelApi>(strSql.ToString(), dp).ToList();
+                list.ForEach(c => c.CNumberList = GetConsignmentNumberByNo(c.F_OrderNo).ToList());
+                return list;
             }
             catch (Exception ex)
             {
@@ -462,7 +464,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         }
 
         /// <summary>
-        /// 根据航班号获取订单信息
+        /// 根据航班号或航班号+日期查询订单查询订单列表
         /// </summary>
         /// <param name="FlightNumber"></param>
         /// <returns></returns>
@@ -471,17 +473,18 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT 
-                                    A.F_FlightNumber,
-                                    A.F_AirfieldFloor,
-                                    B.F_ConsignmentNumber,
-                                    A.F_OrderNo,
-                                    A.F_State
-                                    from T_OrderHead A LEFT JOIN T_OrderBody B on
-                                  A.F_OrderNo=b.F_OrderNo
-                                  LEFT JOIN T_FlightNoInfo c on
-                                  A.F_FlightNumber=c.F_FlightNumber
-                                  WHERE 1=1");
+                strSql.Append(@"SELECT DISTINCT
+                                A.F_FlightNumber,
+                                A.F_AirfieldFloor,
+                                A.F_OrderNo,
+                                c.DateTimeEnd,
+                                d.F_AirfieldCoding,
+                                A.F_State
+                                from T_OrderHead A LEFT JOIN T_OrderBody B on
+                                A.F_OrderNo=b.F_OrderNo
+                                LEFT JOIN T_FlightNoInfo c ON A.F_FlightNumber=c.F_FlightNumber
+                                LEFT JOIN dbo.T_AirfieldInfo d ON d.F_Id=A.F_AirfieldId
+                                WHERE 1=1");
                 if (!string.IsNullOrEmpty(FlightNumber))
                 {
                     strSql.Append(" AND A.F_FlightNumber=@F_FlightNumber");
@@ -494,7 +497,9 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 dp.Add("@F_FlightNumber", FlightNumber);
                 dp.Add("@DateStart", OrderDate + " 00:00:00");
                 dp.Add("@DateEnd", OrderDate + " 23:59:59");
-                return this.BaseRepository().FindList<GetFlightListByDate>(strSql.ToString(), dp);
+                var list = this.BaseRepository().FindList<GetFlightListByDate>(strSql.ToString(), dp).ToList();
+                list.ForEach(c => c.CNumberList = GetConsignmentNumberByNo(c.F_OrderNo).ToList());
+                return list;
             }
             catch (Exception ex)
             {
