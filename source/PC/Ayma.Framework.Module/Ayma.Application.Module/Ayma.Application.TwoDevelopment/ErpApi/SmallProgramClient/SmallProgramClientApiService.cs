@@ -74,6 +74,34 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         }
 
         /// <summary>
+        /// 根据机场Id获取航站楼
+        /// </summary>
+        /// <param name="F_AirfieldId"></param>
+        /// <returns></returns>
+        public IEnumerable<T_AirfieldFloor> GetFlightFloorById(string F_AirfieldId)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT F_Id,F_AirfieParentId,F_AirfieldName,F_ExpressCompanyName FROM dbo.T_AirfieldFloor WHERE F_AirfieParentId=@F_AirfieldId");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@F_AirfieldId", F_AirfieldId);
+                return this.BaseRepository().FindList<T_AirfieldFloor>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 根据openId获取订单列表
         /// </summary>
         /// <param name="openId"></param>
