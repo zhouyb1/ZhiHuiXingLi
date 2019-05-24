@@ -237,7 +237,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
-        public IEnumerable<SerOrderDetail> SerGetOrderDetailByNo(string ConsignmentNumber, string OrderNo, string CustPhone)
+        public IEnumerable<SerOrderDetailModelApi> SerGetOrderDetailByNo(string ConsignmentNumber, string OrderNo, string CustPhone)
         {
             try
             {
@@ -280,7 +280,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             }
         }
         /// <summary>
-        /// 根据航班号获取订单信息
+        /// 根据航班号或航班号+日期查询订单查询订单列表
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
