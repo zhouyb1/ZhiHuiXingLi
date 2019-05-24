@@ -56,6 +56,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             //Get["/GetOrderListByStatus"] = GetOrderListByStatus;//根据订单状态查询订单列表
             Get["/ClientUpdateOrder"] = ClientUpdateOrder; //修改订单状态-申请退款
             Get["/AddressToDo"] = AddressToDo; //地址管理
+            Get["/GetFlightFloorById"] = GetFlightFloorById; //根据机场Id获取航站楼
             Post["/OnLogin"] = OnLogin;
             Post["/SaveUserInfo"] = SaveUserInfo;
             Post["/Register"] = Register;
@@ -367,6 +368,24 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             return Success(errText);
         }
 
+        public Response GetFlightFloorById(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject();// 获取模板请求数据
+            if (req["F_AirfieldId"].IsEmpty())
+            {
+                return Fail("机场标识不能为空!");
+            }
+            string F_AirfieldId = req["F_AirfieldId"].ToString();  //机场Id
+            var data = billClientApiBLL.GetFlightFloorById(F_AirfieldId);
+            if (data.Count() > 0)
+            {
+                return Success(data);
+            }
+            else
+            {
+                return Fail("没有数据!");
+            }
+        }
 
         /// <summary>
         /// 提交车班补货单
