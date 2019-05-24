@@ -2,7 +2,6 @@
   "pages": [
     "pages/index/index",
     "pages/send/send",
-    "pages/sends/sends",
     "pages/pays/pays",
     "pages/user/user",
     "pages/user/user_say/user_say",
