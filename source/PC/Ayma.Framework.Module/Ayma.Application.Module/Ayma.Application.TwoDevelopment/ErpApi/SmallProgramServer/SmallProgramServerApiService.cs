@@ -286,10 +286,14 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT F_FlightNumber,F_AirfieldFloor,F_State,h.F_OrderNo,F_ConsignmentNumber
+                strSql.Append(@"SELECT DISTINCT h.F_FlightNumber,h.F_AirfieldFloor,F_State,h.F_OrderNo,F_ConsignmentNumber,
+                                DateTimeEnd,a.F_AirfieldCoding,
+                                FB_Name,FB_Phone
                                 FROM dbo.T_OrderHead h 
-                                LEFT JOIN dbo.T_OrderBody b
-                                ON b.F_OrderNo = h.F_OrderNo WHERE 1=1");
+                                LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo 
+                                LEFT JOIN dbo.T_FlightNoInfo f ON f.F_AirfieldId = h.F_AirfieldId AND f.F_FlightCompany = h.F_FlightCompany
+                                LEFT JOIN dbo.T_AirfieldInfo a ON a.F_Id=f.F_AirfieldId
+                                WHERE F_State IN ('2','3,','4','5','41','51') ");
                 if (!string.IsNullOrEmpty(status))
                 {
                     strSql.Append(" And F_State=@F_State");
@@ -344,7 +348,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
-        public IEnumerable<SerOrderDetail> SerGetOrderDetailByNo(string ConsignmentNumber)
+        public IEnumerable<SerOrderDetail> SerGetOrderDetailByNo(string ConsignmentNumber, string OrderNo, string CustPhone)
         {
             try
             {
@@ -357,9 +361,22 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                 LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo
                                 LEFT JOIN dbo.T_OrderPayMoney p ON p.F_OrderNo = h.F_OrderNo
                                 WHERE 1=1");
-                strSql.Append(" AND b.F_ConsignmentNumber=@ConsignmentNumber");
-                var dp = new DynamicParameters(new { });
-                dp.Add("@ConsignmentNumber", ConsignmentNumber);
+                 var dp = new DynamicParameters(new { });
+                if (!string.IsNullOrEmpty(ConsignmentNumber))
+                {
+                    strSql.Append(" AND b.F_ConsignmentNumber=@ConsignmentNumber");
+                    dp.Add("@ConsignmentNumber", ConsignmentNumber);
+                }
+                if (!string.IsNullOrEmpty(OrderNo))
+                {
+                    strSql.Append(" AND h.F_OrderNo=@F_OrderNo");
+                    dp.Add("@F_OrderNo", OrderNo);
+                }
+                if (!string.IsNullOrEmpty(CustPhone))
+                {
+                    strSql.Append(" AND h.F_CustomerPhone=@CustPhone");
+                    dp.Add("@CustPhone", CustPhone);
+                }
                 return this.BaseRepository().FindList<SerOrderDetail>(strSql.ToString(), dp);
             }
             catch (Exception ex)
