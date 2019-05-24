@@ -204,6 +204,25 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             }
         }
 
+        public IEnumerable<T_AirfieldFloor> GetFlightFloorById(string F_AirfieldId)
+        {
+            try
+            {
+                return billClientApiService.GetFlightFloorById(F_AirfieldId);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
         /// <summary>
         /// 提交订单
         /// </summary>
