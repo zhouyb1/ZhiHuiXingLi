@@ -1,4 +1,6 @@
-﻿using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer;
+﻿using System.Text;
+using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer;
+using Ayma.Application.TwoDevelopment.TwoDev;
 using Nancy;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         public SmallProgramServerApi()
             : base("/pdaapi")
         {
+            Post["GetExpressNo"] = GetExpressNo;
             Post["/SubmitUpdateOrderState"] = SubmitUpdateOrderState; //提交车班补货单
             Post["/UpdateOrderStatus"] = UpdateOrderStatus; //修改订单状态
             Post["/UpdateBatchOrderStatus"] = UpdateBatchOrderStatus;//批量修改订单状态（未分拣-分拣中）
@@ -33,8 +36,13 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/SerGetPhone"] = SerGetPhone;//获取手机号码
         }
         private SmallProgramServerApiIBLL billServerApiBLL = new SmallProgramServerApiBLL();
+        private OrderInquiryIBLL orderBll = new OrderInquiryBLL();
 
-
+        private static string expressServer = Config.GetValue("expressServer");
+        private static string logisticProviderId = Config.GetValue("logisticProviderId");
+        private string targetFomart = "logisticProviderId=" + HttpUtility.UrlEncode(logisticProviderId, Encoding.UTF8) +
+                            "&logisticsInterface=" + HttpUtility.UrlEncode("{0}", Encoding.UTF8) + "&dataDigest=" +
+                            HttpUtility.UrlEncode("{1}", Encoding.UTF8);
 
 
         /// <summary>
@@ -397,5 +405,71 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
 
 
         }
+
+        public Response GetExpressNo(dynamic _)
+        {
+            var orderNo = this.GetReqData().ToJObject()["orderNo"].ToString();
+            if (orderNo.IsEmpty())
+            {
+                return Fail("orderNo为空");
+            }
+            //查询订单
+            var orderEntity = orderBll.GetT_OrderHeadEntity(orderNo);
+            OrderModel model = new OrderModel()
+            {
+                customerCode = Config.GetValue("customerCode"),
+                customerSecretKey = Config.GetValue("customerSecretKey"),
+                orderLogisticsCode = orderEntity.F_OrderNo,
+                custOrderCreateTime = orderEntity.F_CreateTime.Value.ToString("yyyy-MM-dd"),
+                goodsType = "G1",
+                senderAddress = "华徐公路 3029 弄 28 号",
+                senderAreaName = "青浦区",
+                senderCityName = "上海市",
+                senderMobile = "15800777777",
+                senderName= "yang",
+                senderPhone = "021-69773588",
+                senderProvName = "上海",
+                senderTownName = "华新镇",
+                weight = 1,
+                recipientAddress = "盈港东路 2165 弄 24 号",
+                recipientAreaName = "青浦区",
+                recipientCityName = "上海市",
+                recipientMobile = "1377777777",
+                recipientName = "张三",
+                recipientPhone = "0379-65630357",
+                recipientProvName = "上海",
+                recipientTownCode = "徐泾镇"
+
+            };
+            var result = GetExpressNos(model);
+            return Success("ok", result);
+        }
+
+
+        #region 方法
+
+        public string GetExpressNos(OrderModel model)
+        {
+            var dataSign = Md5Helper.MD5Encrypt(model.ToJson(), Config.GetValue("secretKey"));
+            string target = string.Format(targetFomart, model.ToJson(), dataSign);
+            var result = HttpMethods.Post(expressServer, target);
+            var response = result.ToObject<responseData>();
+            if (response.status==200)
+            {
+                return "ok";
+            }
+            return response.message;
+        }
+
+        #endregion
+    }
+
+    public class responseData
+    {
+        public string data { get; set; }
+        public int status { get; set; }
+        public string message { get; set; }
+        public int time { get; set; }
+
     }
 }

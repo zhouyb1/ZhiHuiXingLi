@@ -165,6 +165,7 @@
   <ItemGroup>
     <Compile Include="Bootstraper.cs" />
     <Compile Include="EncryptHelper.cs" />
+    <Compile Include="ModelView\Class1.cs" />
     <Compile Include="Modules\BaseApi.cs" />
     <Compile Include="Modules\ClientDataApi.cs" />
     <Compile Include="Modules\CodeRuleApi.cs" />
