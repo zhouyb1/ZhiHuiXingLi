@@ -82,7 +82,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
-        IEnumerable<SerOrderDetail> SerGetOrderDetailByNo(string ConsignmentNumber);
+        IEnumerable<SerOrderDetail> SerGetOrderDetailByNo(string ConsignmentNumber, string OrderNo, string CustPhone);
 
         /// <summary>
         /// 根据航班号获取航班列表
