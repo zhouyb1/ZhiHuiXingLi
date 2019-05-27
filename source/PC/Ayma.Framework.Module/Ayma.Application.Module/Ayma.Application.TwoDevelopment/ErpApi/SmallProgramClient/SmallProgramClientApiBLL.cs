@@ -60,6 +60,30 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         }
 
         /// <summary>
+        /// 根据航班号模糊查询航班信息
+        /// </summary>
+        /// <param name="FlightNumber"></param>
+        /// <returns></returns>
+        public IEnumerable<GetFlightMessage> GetFlightMessage(string FlightNumber)
+        {
+            try
+            {
+                return billClientApiService.GetFlightMessage(FlightNumber);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 根据openId获取订单列表
         /// </summary>
         /// <param name="openId"></param>
