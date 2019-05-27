@@ -189,6 +189,31 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             }
         }
 
+        /// <summary>
+        /// 根据航班号获取行李号列表
+        /// </summary>
+        /// <param name="FlightNumber"></param>
+        /// <returns></returns>
+        public IEnumerable<ConsignmentNumberList> GetConNumberListByFNo(string FlightNumber)
+        {
+            try
+            {
+                return billServerApiService.GetConNumberListByFNo(FlightNumber);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+
         public IEnumerable<ConsignmentNumber> GetConsignmentNumberByNo(string OrderNo)
         {
             try
