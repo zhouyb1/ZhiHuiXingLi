@@ -36,7 +36,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// <summary>
         /// 分拣口
         /// </summary>
-        public string F_AirfieldCoding { get; set; }
+        public string F_ConveyorNumber { get; set; }
 
         /// <summary>
         /// 分拣员
