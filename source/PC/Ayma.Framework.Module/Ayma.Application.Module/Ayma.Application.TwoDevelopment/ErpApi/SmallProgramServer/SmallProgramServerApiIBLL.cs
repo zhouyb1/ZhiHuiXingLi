@@ -76,7 +76,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="FlightNumber"></param>
         /// <returns></returns>
-        IEnumerable<ConsignmentNumberList> GetConNumberListByFNo(string FlightNumber);
+        IEnumerable<ConsignmentNumberList> GetConNumberListByFNo(string FlightNumber, string OrderDate);
 
         /// <summary>
         /// 根据订单号获取行李号
