@@ -218,10 +218,9 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 foreach (var item in ConNumberList)
                 {
                     var strSql = new StringBuilder();
-                    strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status,FB_Code=@Operator WHERE F_ConsignmentNumber=@ConsignmentNumber");
+                    strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status WHERE F_ConsignmentNumber=@ConsignmentNumber");
                     var dp = new DynamicParameters(new { });
                     dp.Add("@Status", status);
-                    dp.Add("@Operator", Operator);
                     dp.Add("@ConsignmentNumber", item);
                     this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
                 }
@@ -296,18 +295,21 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT DISTINCT h.F_FlightNumber,h.F_AirfieldFloor,F_State,h.F_OrderNo,
-                                DateTimeEnd,a.F_AirfieldCoding,
+                strSql.Append(@"SELECT DISTINCT h.F_FlightNumber,h.F_AirfieldFloor,h.F_OrderDate,F_State,h.F_OrderNo,
+                                DateTimeEnd,f.F_ConveyorNumber,
                                 F_FareName,F_FarePhone
                                 FROM dbo.T_OrderHead h 
                                 LEFT JOIN dbo.T_FlightNoInfo f ON f.F_AirfieldId = h.F_AirfieldId AND f.F_FlightCompany = h.F_FlightCompany AND f.F_FlightNumber = h.F_FlightNumber
-                                LEFT JOIN dbo.T_AirfieldInfo a ON a.F_Id=f.F_AirfieldId
                                 WHERE F_State IN ('1','2','3','4','5','41','51') ");
+                strSql.Append(" AND h.F_OrderDate BETWEEN @DateBegin AND @DateEnd");
                 if (!string.IsNullOrEmpty(status))
                 {
                     strSql.Append(" And F_State=@F_State");
                 }
+                strSql.Append(" ORDER BY h.F_OrderDate DESC");
                 var dp = new DynamicParameters(new { });
+                dp.Add("@DateBegin", DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
+                dp.Add("@DateEnd", DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59");
                 if (!string.IsNullOrEmpty(status))
                 {
                     dp.Add("@F_State", status);
@@ -329,6 +331,40 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 }
             }
         }
+
+        /// <summary>
+        /// 根据航班号获取行李号列表
+        /// </summary>
+        /// <param name="FlightNumber"></param>
+        /// <returns></returns>
+        public IEnumerable<ConsignmentNumberList> GetConNumberListByFNo(string FlightNumber)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT b.F_OrderNo,F_ConsignmentNumber,FB_State FROM dbo.T_OrderBody b
+                                LEFT JOIN dbo.T_OrderHead h ON h.F_OrderNo = b.F_OrderNo
+                                WHERE F_FlightNumber=@FlightNumber AND h.F_OrderDate BETWEEN @DateBegin AND @DateEnd");
+                strSql.Append(" ORDER BY h.F_OrderDate DESC");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@FlightNumber", FlightNumber);
+                dp.Add("@DateBegin", DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
+                dp.Add("@DateEnd", DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59");
+                return this.BaseRepository().FindList<ConsignmentNumberList>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
 
         public IEnumerable<ConsignmentNumber> GetConsignmentNumberByNo(string OrderNo)
         {
@@ -440,8 +476,8 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT h.F_FlightCompany,h.F_FlightNumber,f.AddressBegin,f.AddressEnd,
-                                  f.DateTimeEnd,f.DateTimeEndReality,
+                strSql.Append(@"SELECT h.F_FlightCompany,h.F_FlightNumber,h.F_OrderDate,f.AddressBegin,f.AddressEnd,
+                                  f.DateTimeEnd,f.DateTimeEndReality,f.F_ConveyorNumber,f.F_Placement,
                                   SUM(F_Qty) TotalQty
                                   FROM T_OrderHead h
                                   LEFT JOIN dbo.T_OrderBody b
@@ -453,7 +489,8 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                     strSql.Append(" AND h.F_FlightNumber=@F_FlightNumber");
                 }
                 strSql.Append(" AND h.F_OrderDate BETWEEN @StartTime AND @EndTime");
-                strSql.Append(" GROUP BY h.F_FlightCompany,h.F_FlightNumber,f.AddressBegin,f.AddressEnd,f.DateTimeEndReality,f.DateTimeEnd ");
+                strSql.Append(" GROUP BY h.F_FlightCompany,h.F_FlightNumber,f.AddressBegin,f.AddressEnd,f.DateTimeEndReality,f.DateTimeEnd,f.F_ConveyorNumber,f.F_Placement,h.F_OrderDate ");
+                strSql.Append(" ORDER BY h.F_OrderDate DESC");
                 var dp = new DynamicParameters(new { });
                 dp.Add("@F_FlightNumber", FlightNumber);
                 dp.Add("@StartTime", DateTime.Now.ToString("yyyy-MM-dd")+" 00:00:00");
@@ -487,8 +524,9 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                 A.F_FlightNumber,
                                 A.F_AirfieldFloor,
                                 A.F_OrderNo,
+                                A.F_OrderDate,
                                 c.DateTimeEnd,
-                                d.F_AirfieldCoding,
+                                c.F_ConveyorNumber,
                                 A.F_State
                                 from T_OrderHead A LEFT JOIN T_OrderBody B on
                                 A.F_OrderNo=b.F_OrderNo
@@ -503,6 +541,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 {
                     strSql.Append(" AND A.F_OrderDate BETWEEN @DateStart AND @DateEnd");
                 }
+                strSql.Append(" ORDER BY A.F_OrderDate DESC");
                 var dp = new DynamicParameters(new { });
                 dp.Add("@F_FlightNumber", FlightNumber);
                 dp.Add("@DateStart", OrderDate + " 00:00:00");
