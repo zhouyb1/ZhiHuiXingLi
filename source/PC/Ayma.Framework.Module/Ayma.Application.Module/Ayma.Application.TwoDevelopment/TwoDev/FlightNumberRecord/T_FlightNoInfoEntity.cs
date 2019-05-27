@@ -38,7 +38,12 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         [Column("F_PLACEMENT")]
         public string F_Placement { get; set; }
         /// <summary>
-        /// 航站楼
+        /// 起飞航站楼
+        /// </summary>
+        [Column("F_AIRFIELDFLOORBEGIN")]
+        public string F_AirfieldFloorBegin { get; set; }
+        /// <summary>
+        /// 到达航站楼
         /// </summary>
         [Column("F_AIRFIELDFLOOR")]
         public string F_AirfieldFloor { get; set; }
@@ -68,6 +73,16 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         [Column("ADDRESSEND")]
         public string AddressEnd { get; set; }
+        /// <summary>
+        /// 起飞机场
+        /// </summary>
+        [Column("F_AIRFIELDBEGIN")]
+        public string F_AirfieldBegin { get; set; }
+        /// <summary>
+        /// 到达机场
+        /// </summary>
+        [Column("F_AIRFIELDEND")]
+        public string F_AirfieldEnd { get; set; }
         /// <summary>
         /// 起飞时间
         /// </summary>
