@@ -103,7 +103,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 return Fail("航班号不能为空!");
             }
             string FlightNumber = req["FlightNumber"].ToString();  //航班号
-            var data = billServerApiBLL.GetConNumberListByFNo(FlightNumber);
+            string OrderDate = req["OrderDate"].ToString();//日期
+            var data = billServerApiBLL.GetConNumberListByFNo(FlightNumber, OrderDate);
             if (data.Count() > 0)
             {
                 return Success(data);
