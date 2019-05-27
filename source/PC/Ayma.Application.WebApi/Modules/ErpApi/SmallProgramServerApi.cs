@@ -34,6 +34,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/SorterLogin"] = SorterLogin;//分拣员登录  
             Get["/GetExpressCompany"] = GetExpressCompany;//获取所有快递公司记录
             Get["/SerGetPhone"] = SerGetPhone;//获取手机号码
+            Get["/GetConNumberListByFNo"] = GetConNumberListByFNo;//根据航班号获取行李号列表
         }
         private SmallProgramServerApiIBLL billServerApiBLL = new SmallProgramServerApiBLL();
         private OrderInquiryIBLL orderBll = new OrderInquiryBLL();
@@ -87,6 +88,30 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             string errText = "";
             billServerApiBLL.ExpressInformation(OrderNo, ConsignmentNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
             return Success(errText);
+        }
+
+        /// <summary>
+        /// 根据航班号获取行李号列表
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response GetConNumberListByFNo(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject();// 获取模板请求数据
+            if (req["FlightNumber"].IsEmpty())
+            {
+                return Fail("航班号不能为空!");
+            }
+            string FlightNumber = req["FlightNumber"].ToString();  //航班号
+            var data = billServerApiBLL.GetConNumberListByFNo(FlightNumber);
+            if (data.Count() > 0)
+            {
+                return Success(data);
+            }
+            else
+            {
+                return Fail("没有数据!");
+            }
         }
 
         /// <summary>
@@ -149,29 +174,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
             billServerApiBLL.UpdateOrderStatus(OrderNo, ConsignmentNumber, status, Operator, out errText);
             return Success(errText);
-        }
-
-        public string OrderLogisticsNo()
-        {
-            SortedDictionary<string, object> param = new SortedDictionary<string, object>();
-            param.Add("orderChannelCode", "OTP_ZHJXKJ_STD");
-            param.Add("customerCode", "K21000869");
-            param.Add("customerSecretKey", "WILz78gFNINyeLQvKK+LBw==");
-            param.Add("orderLogisticsCode", "");
-            param.Add("custOrderCreateTime", "");
-            param.Add("goodsType", "");
-            param.Add("senderName", "");
-            param.Add("senderProvName", "");
-            param.Add("senderCityName", "");
-            param.Add("senderAreaName", "");
-            param.Add("senderAddress", "");
-            param.Add("recipientProvName", "");
-            param.Add("recipientCityName", "");
-            param.Add("recipientAreaName", "");
-            param.Add("recipientAddress", "");
-            param.Add("recipientName", "");
-            string json = SerializeObject(param);
-            return "";
         }
 
         /// <summary>
