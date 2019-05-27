@@ -194,11 +194,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="FlightNumber"></param>
         /// <returns></returns>
-        public IEnumerable<ConsignmentNumberList> GetConNumberListByFNo(string FlightNumber)
+        public IEnumerable<ConsignmentNumberList> GetConNumberListByFNo(string FlightNumber, string OrderDate)
         {
             try
             {
-                return billServerApiService.GetConNumberListByFNo(FlightNumber);
+                return billServerApiService.GetConNumberListByFNo(FlightNumber, OrderDate);
             }
             catch (Exception ex)
             {
