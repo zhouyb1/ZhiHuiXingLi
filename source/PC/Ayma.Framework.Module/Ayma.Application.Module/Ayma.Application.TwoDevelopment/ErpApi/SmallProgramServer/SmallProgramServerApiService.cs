@@ -181,7 +181,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                             )");
                 var param = new DynamicParameters(new { });
                      param.Add("@F_Id",Guid.NewGuid().ToString () );
-                     param.Add("@F_OrderNo", OrderNo);
+                     param.Add("@F_OrderNo", ConsignmentNumber);
                      param.Add("@F_StateDescribe", StateDescribe);
                      param.Add("@F_LogState", State);
                      param.Add("@F_StateDateTime", DateTime.Now.ToString());
@@ -337,19 +337,27 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="FlightNumber"></param>
         /// <returns></returns>
-        public IEnumerable<ConsignmentNumberList> GetConNumberListByFNo(string FlightNumber)
+        public IEnumerable<ConsignmentNumberList> GetConNumberListByFNo(string FlightNumber, string OrderDate)
         {
             try
             {
                 var strSql = new StringBuilder();
                 strSql.Append(@"SELECT b.F_OrderNo,F_ConsignmentNumber,FB_State FROM dbo.T_OrderBody b
                                 LEFT JOIN dbo.T_OrderHead h ON h.F_OrderNo = b.F_OrderNo
-                                WHERE F_FlightNumber=@FlightNumber AND h.F_OrderDate BETWEEN @DateBegin AND @DateEnd");
+                                WHERE 1=1");
+                if (!string.IsNullOrEmpty(FlightNumber))
+                {
+                    strSql.Append(" AND F_FlightNumber=@FlightNumber");
+                }
+                if (!string.IsNullOrEmpty(OrderDate))
+                {
+                    strSql.Append(" AND h.F_OrderDate BETWEEN @DateBegin AND @DateEnd");
+                }
                 strSql.Append(" ORDER BY h.F_OrderDate DESC");
                 var dp = new DynamicParameters(new { });
                 dp.Add("@FlightNumber", FlightNumber);
-                dp.Add("@DateBegin", DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
-                dp.Add("@DateEnd", DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59");
+                dp.Add("@DateBegin", OrderDate + " 00:00:00");
+                dp.Add("@DateEnd", OrderDate + " 23:59:59");
                 return this.BaseRepository().FindList<ConsignmentNumberList>(strSql.ToString(), dp);
             }
             catch (Exception ex)
@@ -371,7 +379,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT F_ConsignmentNumber FROM dbo.T_OrderBody WHERE F_OrderNo=@OrderNo");
+                strSql.Append(@"SELECT F_ConsignmentNumber,FB_State FROM dbo.T_OrderBody WHERE F_OrderNo=@OrderNo");
                 var dp = new DynamicParameters(new { });
                 dp.Add("@OrderNo", OrderNo);
                 return this.BaseRepository().FindList<ConsignmentNumber>(strSql.ToString(), dp);
