@@ -118,6 +118,16 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         public string F_FlightNumber { get; set; }
 
         /// <summary>
+        /// 机位口
+        /// </summary>
+        public string F_Placement { get; set; }
+
+        /// <summary>
+        /// 分拣口
+        /// </summary>
+        public string F_ConveyorNumber { get; set; }
+
+        /// <summary>
         /// 始发站
         /// </summary>
         public string AddressBegin { get; set; }
@@ -166,7 +176,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// <summary>
         /// 分拣口
         /// </summary>
-        public string F_AirfieldCoding { get; set; }
+        public string F_ConveyorNumber { get; set; }
 
         /// <summary>
         /// 订单状态
