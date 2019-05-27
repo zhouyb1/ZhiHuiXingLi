@@ -33,6 +33,11 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         [Column("F_CONVEYORNUMBER")]
         public string F_ConveyorNumber { get; set; }
         /// <summary>
+        /// 机位口
+        /// </summary>
+        [Column("F_PLACEMENT")]
+        public string F_Placement { get; set; }
+        /// <summary>
         /// 航站楼
         /// </summary>
         [Column("F_AIRFIELDFLOOR")]
