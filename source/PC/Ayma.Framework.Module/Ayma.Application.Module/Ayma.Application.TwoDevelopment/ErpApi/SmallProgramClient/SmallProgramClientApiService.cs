@@ -101,6 +101,31 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             }
         }
 
+        public IEnumerable<GetFlightMessage> GetFlightMessage(string FlightNumber)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT F_FlightNumber,F_AirfieldFloorBegin,AddressBegin,F_AirfieldBegin,F_AirfieldFloor,AddressEnd,F_AirfieldEnd,F_FlightCompany
+                                FROM T_FlightNoInfo WHERE F_FlightNumber LIKE '%'+@FlightNumber+'%'");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@FlightNumber", FlightNumber);
+                return this.BaseRepository().FindList<GetFlightMessage>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+
         /// <summary>
         /// 根据openId获取订单列表
         /// </summary>
