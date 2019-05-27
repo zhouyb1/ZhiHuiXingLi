@@ -45,4 +45,32 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
         /// </summary>
         public DateTime DateTimeEnd { get; set; }
     }
+
+    public class GetFlightMessage
+    {
+        /// <summary>
+        /// 航班号
+        /// </summary>
+        public string F_FlightNumber { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string AddressBegin { get; set; }
+
+        public string F_AirfieldBegin { get; set; }
+
+        /// <summary>
+        /// 起飞机场航站楼
+        /// </summary>
+        public string F_AirfieldFloorBegin { get; set; }
+
+        public string AddressEnd { get; set; }
+
+        public string F_AirfieldEnd { get; set; }
+
+        public string F_AirfieldFloor { get; set; }
+
+        public string F_FlightCompany { get; set; }
+    }
 }
