@@ -57,6 +57,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/ClientUpdateOrder"] = ClientUpdateOrder; //修改订单状态-申请退款
             Get["/AddressToDo"] = AddressToDo; //地址管理
             Get["/GetFlightFloorById"] = GetFlightFloorById; //根据机场Id获取航站楼
+            Get["/GetFlightMessage"] = GetFlightMessage;  // 根据航班号模糊查询航班信息
             Post["/OnLogin"] = OnLogin;
             Post["/SaveUserInfo"] = SaveUserInfo;
             Post["/Register"] = Register;
@@ -101,6 +102,26 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
             var orderEntity = order.GetOrderInfoByNo(orderNo);
             return Success(orderEntity);
+        }
+
+        /// <summary>
+        /// 输入航班号模糊查询航班信息
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response GetFlightMessage(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject();// 获取模板请求数据
+            string FlightNumber = req["FlightNumber"].ToString(); //航班号 
+            var data = billClientApiBLL.GetFlightMessage(FlightNumber);
+            if (data.Count() > 0)
+            {
+                return Success(data);
+            }
+            else
+            {
+                return Fail("没有数据!");
+            }   
         }
 
         /// <summary>
@@ -249,7 +270,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             var orderNo = new CodeRuleBLL().GetBillCode("10001", "System");
             new CodeRuleBLL().UseRuleSeed("10001", "System");
             string errText = "";
-            //两点之间的距离计算(计算机场与寄件地址的距离)规则
+            //两点之间的驾车距离计算(计算机场与寄件地址的距离)规则
             var endStation = airportService.GetT_AirfieldInfoEntity(SubmitOrderModelApi.Head.F_AirfieldId);
             var distance = CommonHelper.GetDistance(endStation.F_Longitude.ToDouble(),
                 endStation.F_Latitude.ToDouble(),
