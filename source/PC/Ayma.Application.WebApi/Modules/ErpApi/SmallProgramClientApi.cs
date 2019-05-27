@@ -253,8 +253,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             var endStation = airportService.GetT_AirfieldInfoEntity(SubmitOrderModelApi.Head.F_AirfieldId);
             var distance = CommonHelper.GetDistance(endStation.F_Longitude.ToDouble(),
                 endStation.F_Latitude.ToDouble(),
-                SubmitOrderModelApi.Head.F_Longitude.ToDouble(), SubmitOrderModelApi.Head.F_Latitude.ToDouble());
-
+                SubmitOrderModelApi.Head.F_Longitude.ToDouble(), SubmitOrderModelApi.Head.F_Latitude.ToDouble()).ToObject<Root>();
+           
             //获取机场运费计算规则
             DataTable FeeRule = billClientApiBLL.GetFeeRule(SubmitOrderModelApi.Head.F_AirfieldId);
             decimal F_NumberPice = Convert.ToDecimal(FeeRule.Rows[0]["F_NumberPice"]);
@@ -263,7 +263,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             decimal F_Discount1 = Convert.ToDecimal(FeeRule.Rows[0]["F_Discount1"]);
             decimal F_Discount2 = Convert.ToDecimal(FeeRule.Rows[0]["F_Discount2"]);
 
-            double km=Convert.ToDouble(distance)/1000;   //两经纬度之间的距离
+            double km = Convert.ToDouble(distance.result.elements[0].distance) / 1000;   //两经纬度之间的距离
             int RealKM = Convert.ToInt32(Math.Round(km, 1));  
 
             decimal firstFee = 0;   //第一件行李的运费
