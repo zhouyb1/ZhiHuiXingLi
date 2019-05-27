@@ -35,6 +35,14 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         /// <param name="openId"></param>
         /// <returns></returns>
         IEnumerable<T_AddressModelApi> GetAddressById(string openId);
+
+        /// <summary>
+        /// 根据航班号模糊查询航班信息
+        /// </summary>
+        /// <param name="FlightNumber"></param>
+        /// <returns></returns>
+        IEnumerable<GetFlightMessage> GetFlightMessage(string FlightNumber);
+
         /// <summary>
         /// 根据订单状态查询订单列表
         /// </summary>
