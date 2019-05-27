@@ -80,4 +80,13 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
 
         public List<ConsignmentNumber> CNumberList { get; set; }
     }
+
+    public class ConsignmentNumberList
+    {
+        public string F_OrderNo { get; set; }
+
+        public string F_ConsignmentNumber { get; set; }
+
+        public string FB_State { get; set; }
+    }
 }
