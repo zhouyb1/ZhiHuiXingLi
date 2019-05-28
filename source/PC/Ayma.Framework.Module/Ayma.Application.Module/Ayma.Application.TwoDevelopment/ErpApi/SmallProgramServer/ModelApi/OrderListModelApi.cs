@@ -55,5 +55,4 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         public string F_ConsignmentNumber { get; set; }
         public string FB_State { get; set; }
     }
-
 }
