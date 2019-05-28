@@ -331,15 +331,15 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         }
 
         /// <summary>
-        /// 根据行李号获取时间节点
+        /// 根据订单号获取时间节点
         /// </summary>
         /// <param name="ConsignmentNumber"></param>
         /// <returns></returns>
-        public IEnumerable<OrderLogisticsInfo> GetOrderLogisticsInfo(string ConNumber)
+        public IEnumerable<OrderLogisticsInfo> GetOrderLogisticsInfo(string OrderNo)
         {
             try
             {
-                return billServerApiService.GetOrderLogisticsInfo(ConNumber);
+                return billServerApiService.GetOrderLogisticsInfo(OrderNo);
             }
             catch (Exception ex)
             {
