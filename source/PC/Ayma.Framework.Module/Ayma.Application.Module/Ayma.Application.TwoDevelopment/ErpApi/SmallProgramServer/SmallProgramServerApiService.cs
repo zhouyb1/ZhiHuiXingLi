@@ -616,28 +616,52 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         }
 
         /// <summary>
-        /// 根据行李号获取时间节点
+        /// 根据订单号获取时间节点
         /// </summary>
         /// <param name="_"></param>
         /// <returns></returns>
-        public IEnumerable<OrderLogisticsInfo> GetOrderLogisticsInfo(string ConNumber)
+        public IEnumerable<OrderLogisticsInfo> GetOrderLogisticsInfo(string OrderNo)
         {
             try
             {
-
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT  F_OrderNo ,
-                                        F_StateDescribe ,
+                strSql.Append(@"SELECT  DISTINCT a.F_OrderNo        
+                                FROM    dbo.T_OrderLogisticsInfo a
+                                LEFT JOIN dbo.T_OrderBody b ON b.F_ConsignmentNumber=a.F_OrderNo
+                                WHERE   b.F_OrderNo=@OrderNo");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@OrderNo", OrderNo);
+                var list = this.BaseRepository().FindList<OrderLogisticsInfo>(strSql.ToString(), dp).ToList();
+                list.ForEach(c => c.LogisticsInfo = GetLogisticsInfo(c.F_OrderNo).ToList());
+                return list;
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        public IEnumerable<LogisticsInfo> GetLogisticsInfo(string ConNumber)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT  F_StateDescribe ,
                                         F_LogState ,
                                         F_StateDateTime ,
                                         F_StateOperator
-                                FROM    dbo.T_OrderLogisticsInfo
-                                WHERE   F_OrderNo =@ConsignmentNumber");
-                strSql.Append(" ORDER BY F_StateDateTime  ");
+                                FROM    T_OrderLogisticsInfo
+                                WHERE   F_OrderNo=@ConsignmentNumber");
                 var dp = new DynamicParameters(new { });
                 dp.Add("@ConsignmentNumber", ConNumber);
-                return this.BaseRepository().FindList<OrderLogisticsInfo>(strSql.ToString(), dp);
-
+                return this.BaseRepository().FindList<LogisticsInfo>(strSql.ToString(), dp);
             }
             catch (Exception ex)
             {
