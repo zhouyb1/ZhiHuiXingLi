@@ -26,10 +26,10 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Post["/SubmitUpdateOrderState"] = SubmitUpdateOrderState; //提交车班补货单
             Post["/UpdateOrderStatus"] = UpdateOrderStatus; //修改订单状态
             Post["/UpdateBatchOrderStatus"] = UpdateBatchOrderStatus;//批量修改订单状态（未分拣-分拣中）
+            Post["/ExpressInformations"] = ExpressInformations;  //分拣完成后填写快递信息
             Get["/GetOrderListByStatus"] = GetOrderListByStatus; //根据订单状态获取订单列表
             Get["/SerGetOrderDetailByNo"] = SerGetOrderDetailByNo; //根据行李号,订单号,电话号码获取订单详细
             Get["/SerGetFlightList"] = SerGetFlightList; // 根据航班号获取航班时间列表
-            Get["/ExpressInformation"] = ExpressInformation;//分拣完成后填写快递信息
             Get["/ReasonNoMessage"] = ReasonNoMessage;//根据航班号或者时间获取航班信息
             Get["/SorterLogin"] = SorterLogin;//分拣员登录  
             Get["/GetExpressCompany"] = GetExpressCompany;//获取所有快递公司记录
@@ -47,13 +47,12 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                                       "&logisticsInterface={0}&dataDigest={1}";
                    
 
-
         /// <summary>
         /// 填写快递公司,单号,费用信息
         /// </summary>
         /// <param name="_"></param>
         /// <returns></returns>
-        public Response ExpressInformation(dynamic _)
+        public Response ExpressInformations(dynamic _)
         {
             var req = this.GetReqData().ToJObject();//获取模板请求数据
             if (req["OrderNo"].IsEmpty())
@@ -81,13 +80,14 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 return Fail("费用只能为数字");
             }
             string OrderNo = req["OrderNo"].ToString();  //订单号
-            string ConsignmentNumber = req["ConsignmentNumber"].ToString();  //行李号
+            List<string> ConNumber = new List<string>();
+            ConNumber = req["ConsignmentNumber"].ToString().ToList<string>();//行李号
             string ExpressCompanyId = req["ExpressCompanyId"].ToString();  //快递公司
             string ExpressNO = req["ExpressNO"].ToString(); //快递单号
             string PayType = req["PayType"].ToString(); //收款方式
             string Amount = req["Amount"].ToString(); //快递费用
             string errText = "";
-            billServerApiBLL.ExpressInformation(OrderNo, ConsignmentNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
+            billServerApiBLL.ExpressInformations(OrderNo, ConNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
             return Success(errText);
         }
 
@@ -140,13 +140,14 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 return Fail("操作员不能为空!");
             }
-            var ConsignmentOrder = billServerApiBLL.GetConsignmentNumber(req["ConsignmentNumber"].ToString());
-            if (ConsignmentOrder.Count() < 1)
-            {
-                return Fail("行李号不存在!");
-            }
+            //var ConsignmentOrder = billServerApiBLL.GetConsignmentNumber(req["ConsignmentNumber"].ToString());
+            //if (ConsignmentOrder.Count() < 1)
+            //{
+            //    return Fail("行李号不存在!");
+            //}
             string OrderNo = req["OrderNo"].ToString();  //订单号
-            string ConsignmentNumber = req["ConsignmentNumber"].ToString();  //行李号
+            List<string> ConNumber = new List<string>();
+            ConNumber = req["ConsignmentNumber"].ToString().ToList<string>();  //行李号
             string status = req["status"].ToString();  //订单状态
             string Operator = req["Operator"].ToString(); //操作人
             string errText = "";
@@ -172,9 +173,9 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 string ExpressNO = req["ExpressNO"].ToString(); //快递单号
                 string PayType = req["PayType"].ToString(); //收款方式
                 string Amount = req["Amount"].ToString(); //快递费用
-                billServerApiBLL.ExpressInformation(OrderNo, ConsignmentNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
+                billServerApiBLL.ExpressInformations(OrderNo, ConNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
             }
-            billServerApiBLL.UpdateOrderStatus(OrderNo, ConsignmentNumber, status, Operator, out errText);
+            billServerApiBLL.UpdateOrderStatus(OrderNo, ConNumber, status, Operator, out errText);
             return Success(errText);
         }
 
@@ -330,8 +331,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         public Response GetOrderLogisticsInfo(dynamic _)
         {
             var req = this.GetReqData().ToJObject(); //获取模板请求数据 
-            string ConsignmentNumber = req["ConsignmentNumber"].ToString(); //行李号
-            var data = billServerApiBLL.GetOrderLogisticsInfo(ConsignmentNumber);
+            string ConNumber = req["ConsignmentNumber"].ToString(); //行李号
+            var data = billServerApiBLL.GetOrderLogisticsInfo(ConNumber);
             if (data.Count() > 0)
             {
                 return Success(data);
