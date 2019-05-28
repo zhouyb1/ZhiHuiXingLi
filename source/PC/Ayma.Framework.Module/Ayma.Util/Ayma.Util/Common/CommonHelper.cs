@@ -174,15 +174,19 @@ namespace Ayma.Util
         /// <param name="lng2">第二点经度</param>
         /// <param name="lat2">第二点纬度</param>
         /// <returns></returns>
-        public static double GetDistance(double lng1, double lat1, double lng2, double lat2)
+        public static string GetDistance(double lng1, double lat1, double lng2, double lat2)
         {
-            double radLat1 = Rad(lat1);
-            double radLng1 = Rad(lng1);
-            double radLat2 = Rad(lat2);
-            double radLng2 = Rad(lng2);
-            double a = radLat1 - radLat2;
-            double b = radLng1 - radLng2;
-            double result = 2 * Math.Asin(Math.Sqrt(Math.Pow(Math.Sin(a / 2), 2) + Math.Cos(radLat1) * Math.Cos(radLat2) * Math.Pow(Math.Sin(b / 2), 2))) * EARTH_RADIUS;
+            var key = Config.GetValue("MapId");
+            var mode = Config.GetValue("MapMode");
+            string MapServer = "https://apis.map.qq.com/ws/distance/v1/?mode=" + mode + "&from=" + lat1 + "," + lng1 + "&to=" + lat2 + "," + lng2 + "&key=" + key + "";
+            var result = HttpMethods.Get(MapServer);
+            //double radLat1 = Rad(lat1);
+            //double radLng1 = Rad(lng1);
+            //double radLat2 = Rad(lat2);
+            //double radLng2 = Rad(lng2);
+            //double a = radLat1 - radLat2;
+            //double b = radLng1 - radLng2;
+            //double result = 2 * Math.Asin(Math.Sqrt(Math.Pow(Math.Sin(a / 2), 2) + Math.Cos(radLat1) * Math.Cos(radLat2) * Math.Pow(Math.Sin(b / 2), 2))) * EARTH_RADIUS;
             return result;
         }
         /// <summary>
