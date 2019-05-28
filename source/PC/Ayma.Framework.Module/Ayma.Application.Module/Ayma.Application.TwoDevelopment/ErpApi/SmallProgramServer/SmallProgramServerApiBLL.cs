@@ -258,7 +258,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         }
 
         /// <summary>
-        /// 根据行李号获取订单详细
+        /// 根据行李号,订单号,电话号码获取订单详细
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
@@ -328,5 +328,28 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             }
         }
 
+        /// <summary>
+        /// 根据行李号获取时间节点
+        /// </summary>
+        /// <param name="ConsignmentNumber"></param>
+        /// <returns></returns>
+        public IEnumerable<OrderLogisticsInfo> GetOrderLogisticsInfo(string ConsignmentNumber)
+        {
+            try
+            {
+                return billServerApiService.GetOrderLogisticsInfo(ConsignmentNumber);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
     }
 }
