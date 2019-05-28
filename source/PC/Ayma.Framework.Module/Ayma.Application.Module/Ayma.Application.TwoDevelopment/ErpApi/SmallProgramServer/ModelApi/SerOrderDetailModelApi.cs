@@ -63,22 +63,8 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// </summary>
         public string F_Stype { get; set; }
 
-        /// <summary>
-        /// 快递公司
-        /// </summary>
-        public string F_ExpressCompanyId { get; set; }
-
-        /// <summary>
-        /// 快递单号
-        /// </summary>
-        public string F_ExpressNO { get; set; }
-
-        /// <summary>
-        /// 费用
-        /// </summary>
-        public decimal? F_Amount { get; set; }
-
         public List<ConsignmentNumber> CNumberList { get; set; }
+        public List<ExpressNo> ExpressNoList { get; set; }
     }
 
 
@@ -90,5 +76,27 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         public string F_ConsignmentNumber { get; set; }
 
         public string FB_State { get; set; }
+    }
+
+        public class ExpressNo
+    {
+        /// <summary>
+        /// 行李号
+        /// </summary>
+        public string F_ConsignmentNumber { get; set; }
+        /// <summary>
+        /// 快递单号
+        /// </summary>
+        public string F_ExpressNO { get; set; }
+        /// <summary>
+        /// 快递公司
+        /// </summary>
+        public string F_ExpressCompanyId { get; set; }
+
+        /// <summary>
+        /// 费用
+        /// </summary>
+        public decimal? F_Amount { get; set; }
+
     }
 }
