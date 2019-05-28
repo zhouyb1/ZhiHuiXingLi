@@ -93,7 +93,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         IEnumerable<T_ExpressCompanyEntity> GetExpressCompany();
 
         /// <summary>
-        /// 根据行李号获取订单详情
+        /// 根据行李号,订单号,电话号码获取订单详细
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
@@ -105,6 +105,13 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// <param name="ConsignmentNumber"></param>
         /// <returns></returns>
         IEnumerable<GetFlightListByFNo> SerGetFlightList(string FlightNumber);
+
+        /// <summary>
+        /// 根据行李号获取时间节点
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        IEnumerable<OrderLogisticsInfo> GetOrderLogisticsInfo(string ConsignmentNumber);
         /// <summary>
         /// 根据航班号或航班号+日期查询订单查询订单列表
         /// </summary>
