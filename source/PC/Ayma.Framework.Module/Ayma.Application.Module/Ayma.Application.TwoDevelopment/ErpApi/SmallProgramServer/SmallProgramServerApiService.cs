@@ -54,12 +54,19 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             }
         }
 
-        public void ExpressInformation(string OrderNo, string ConsignmentNumber, string ExpressCompanyId, string ExpressNO, string PayType,string Amount,out string errText)
+         /// <summary>
+        /// 填写快递公司,单号,费用信息
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public void ExpressInformations(string OrderNo, List<string> ConNumber, string ExpressCompanyId, string ExpressNO, string PayType, string Amount, out string errText)
         {
             try
             {
-                var InSql = new StringBuilder();
-                InSql.Append(@"INSERT  INTO dbo.T_OrderPayMoney
+                foreach (var item in ConNumber)
+                {
+                    var InSql = new StringBuilder();
+                    InSql.Append(@"INSERT  INTO dbo.T_OrderPayMoney
                                             ( F_Id ,
                                                 F_OrderNo ,
                                                 F_ConsignmentNumber ,
@@ -76,15 +83,16 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                                 @F_PayType,
                                                 @F_Amount
                                             )");
-                var param = new DynamicParameters(new { });
-                param.Add("@F_Id", Guid.NewGuid().ToString());
-                param.Add("@F_OrderNo", OrderNo);
-                param.Add("@F_ConsignmentNumber", ConsignmentNumber);
-                param.Add("@F_ExpressCompanyId", ExpressCompanyId);
-                param.Add("@F_ExpressNO", ExpressNO);
-                param.Add("@F_PayType", PayType);
-                param.Add("@F_Amount", Amount);
-                this.BaseRepository().ExecuteBySql(InSql.ToString(), param);
+                    var param = new DynamicParameters(new { });
+                    param.Add("@F_Id", Guid.NewGuid().ToString());
+                    param.Add("@F_OrderNo", OrderNo);
+                    param.Add("@F_ConsignmentNumber", item);
+                    param.Add("@F_ExpressCompanyId", ExpressCompanyId);
+                    param.Add("@F_ExpressNO", ExpressNO);
+                    param.Add("@F_PayType", PayType);
+                    param.Add("@F_Amount", Amount);
+                    this.BaseRepository().ExecuteBySql(InSql.ToString(), param);
+                }
                 errText = "保存成功!";
             }
             catch (Exception ex)
@@ -108,17 +116,73 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// <param name="status"></param>
         /// <param name="Operator"></param>
         /// <param name="errText"></param>
-        public void UpdateOrderStatus(string OrderNo, string ConsignmentNumber, string status, string Operator, out string errText)
+        public void UpdateOrderStatus(string OrderNo,List<string> ConsignmentNumber, string status, string Operator, out string errText)
         {
             try
             {
-                var strSql = new StringBuilder();
-                strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status WHERE F_ConsignmentNumber=@ConsignmentNumber");
-                 var dp = new DynamicParameters(new { });
-                     dp.Add("@ConsignmentNumber", ConsignmentNumber);
-                     dp.Add("@Status", status);
-                     this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
+                foreach (var item in ConsignmentNumber)
+                {
+                    var strSql = new StringBuilder();
+                    strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status WHERE F_ConsignmentNumber=@ConsignmentNumber");
+                    var dp = new DynamicParameters(new { });
+                    dp.Add("@ConsignmentNumber", item);
+                    dp.Add("@Status", status);
+                    this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
 
+                    var StateDescribe = "";
+                    switch (status)
+                    {
+                        case "1":
+                            StateDescribe = "未分拣";
+                            break;
+                        case "2":
+                            StateDescribe = "分拣中";
+                            break;
+                        case "3":
+                            StateDescribe = "行李分拣完成";
+                            break;
+                        case "4":
+                            StateDescribe = "运输中";
+                            break;
+                        case "5":
+                            StateDescribe = "已完成";
+                            break;
+                        case "41":
+                            StateDescribe = "分拣异常";
+                            break;
+                        case "51":
+                            StateDescribe = "出港异常";
+                            break;
+                    }
+                    var InSql = new StringBuilder();
+                    InSql.Append(@"INSERT  INTO dbo.T_OrderLogisticsInfo
+                                            ( F_Id ,
+                                                F_OrderNo ,
+                                                F_StateDescribe ,
+                                                F_LogState,
+                                                F_StateDateTime ,
+                                                F_StateOperator ,
+                                                F_CustomerOpen  
+                                            )
+                                    VALUES  ( @F_Id,
+                                                @F_OrderNo,
+                                                @F_StateDescribe ,
+                                                @F_LogState,
+                                                @F_StateDateTime,
+                                                @F_StateOperator ,
+                                                @F_CustomerOpen
+                                            )");
+                    var param = new DynamicParameters(new { });
+                    param.Add("@F_Id", Guid.NewGuid().ToString());
+                    param.Add("@F_OrderNo", item);
+                    param.Add("@F_StateDescribe", StateDescribe);
+                    param.Add("@F_LogState", status);
+                    param.Add("@F_StateDateTime", DateTime.Now.ToString());
+                    param.Add("@F_StateOperator", Operator);
+                    param.Add("@F_CustomerOpen", "1");
+                    this.BaseRepository().ExecuteBySql(InSql.ToString(), param);
+                }
+              
                      var State = "";
                      var strUpdate = new StringBuilder();
                      if (status == "41" || status == "51")
@@ -144,60 +208,6 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                              this.BaseRepository().ExecuteBySql(strUpdate.ToString(), par);
                          }
                      }
-
-
-                 var StateDescribe="";
-                 switch (State)
-                 {
-                     case "1":
-                         StateDescribe = "未分拣";
-                         break;
-                     case "2":
-                         StateDescribe = "分拣中";
-                         break;
-                     case "3":
-                         StateDescribe = "行李分拣完成";
-                         break;
-                     case"4":
-                         StateDescribe="运输中";
-                         break;
-                     case "5":
-                         StateDescribe="已完成";
-                         break;
-                     case "41":
-                         StateDescribe="分拣异常";
-                         break;
-                     case "51":
-                         StateDescribe="出港异常";
-                         break;
-                }
-                 var InSql = new StringBuilder();
-                     InSql.Append(@"INSERT  INTO dbo.T_OrderLogisticsInfo
-                                            ( F_Id ,
-                                                F_OrderNo ,
-                                                F_StateDescribe ,
-                                                F_LogState,
-                                                F_StateDateTime ,
-                                                F_StateOperator ,
-                                                F_CustomerOpen  
-                                            )
-                                    VALUES  ( @F_Id,
-                                                @F_OrderNo,
-                                                @F_StateDescribe ,
-                                                @F_LogState,
-                                                @F_StateDateTime,
-                                                @F_StateOperator ,
-                                                @F_CustomerOpen
-                                            )");
-                var param = new DynamicParameters(new { });
-                     param.Add("@F_Id",Guid.NewGuid().ToString () );
-                     param.Add("@F_OrderNo", ConsignmentNumber);
-                     param.Add("@F_StateDescribe", StateDescribe);
-                     param.Add("@F_LogState", State);
-                     param.Add("@F_StateDateTime", DateTime.Now.ToString());
-                     param.Add("@F_StateOperator", Operator);
-                     param.Add("@F_CustomerOpen", "1");
-                     this.BaseRepository().ExecuteBySql(InSql.ToString(), param);
                      errText = "修改成功!";
             }
             catch (Exception ex)
@@ -471,8 +481,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                 F_CustomerPhone,F_CustomerAddress,F_Stype,F_IsUrgent
                                 FROM dbo.T_OrderHead h
                                 LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo
-                                WHERE 1=1");
+                                WHERE 1=1 AND F_OrderDate BETWEEN @DateStart AND @DateEnd");
                  var dp = new DynamicParameters(new { });
+                 dp.Add("@DateStart", DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
+                 dp.Add("@DateEnd", DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59");
                 if (!string.IsNullOrEmpty(ConsignmentNumber))
                 {
                     strSql.Append(" AND b.F_ConsignmentNumber=@ConsignmentNumber");
@@ -608,10 +620,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="_"></param>
         /// <returns></returns>
-        public IEnumerable<OrderLogisticsInfo> GetOrderLogisticsInfo(string ConsignmentNumber)
+        public IEnumerable<OrderLogisticsInfo> GetOrderLogisticsInfo(string ConNumber)
         {
             try
             {
+
                 var strSql = new StringBuilder();
                 strSql.Append(@"SELECT  F_OrderNo ,
                                         F_StateDescribe ,
@@ -622,8 +635,9 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                 WHERE   F_OrderNo =@ConsignmentNumber");
                 strSql.Append(" ORDER BY F_StateDateTime  ");
                 var dp = new DynamicParameters(new { });
-                dp.Add("@ConsignmentNumber", ConsignmentNumber);
+                dp.Add("@ConsignmentNumber", ConNumber);
                 return this.BaseRepository().FindList<OrderLogisticsInfo>(strSql.ToString(), dp);
+
             }
             catch (Exception ex)
             {
