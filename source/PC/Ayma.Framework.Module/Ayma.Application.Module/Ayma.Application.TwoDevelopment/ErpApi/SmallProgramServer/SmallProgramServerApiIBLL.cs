@@ -44,7 +44,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// <param name="status"></param>
         /// <param name="Operator"></param>
         /// <param name="errText"></param>
-        void ExpressInformation(string OrderNo, string ConsignmentNumber, string ExpressCompanyId, string ExpressNO, string PayType, string Amount, out string errText);
+        void ExpressInformations(string OrderNo, List<string> ConNumber, string ExpressCompanyId, string ExpressNO, string PayType, string Amount, out string errText);
 
         /// <summary>
         /// 修改订单状态
@@ -53,7 +53,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// <param name="status"></param>
         /// <param name="Operator"></param>
         /// <param name="errText"></param> 
-        void UpdateOrderStatus(string OrderNo,string ConsignmentNumber, string status, string Operator, out string errText);
+        void UpdateOrderStatus(string OrderNo,List<string> ConsignmentNumber, string status, string Operator, out string errText);
 
         /// <summary>
         /// 批量修改订单状态（未分拣-分拣中）
@@ -111,7 +111,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// </summary>
         /// <param name="_"></param>
         /// <returns></returns>
-        IEnumerable<OrderLogisticsInfo> GetOrderLogisticsInfo(string ConsignmentNumber);
+        IEnumerable<OrderLogisticsInfo> GetOrderLogisticsInfo(string ConNumber);
         /// <summary>
         /// 根据航班号或航班号+日期查询订单查询订单列表
         /// </summary>
