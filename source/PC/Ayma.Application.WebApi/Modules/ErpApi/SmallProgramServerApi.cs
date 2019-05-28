@@ -27,7 +27,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Post["/UpdateOrderStatus"] = UpdateOrderStatus; //修改订单状态
             Post["/UpdateBatchOrderStatus"] = UpdateBatchOrderStatus;//批量修改订单状态（未分拣-分拣中）
             Get["/GetOrderListByStatus"] = GetOrderListByStatus; //根据订单状态获取订单列表
-            Get["/SerGetOrderDetailByNo"] = SerGetOrderDetailByNo; //根据订单号获取订单详情
+            Get["/SerGetOrderDetailByNo"] = SerGetOrderDetailByNo; //根据行李号,订单号,电话号码获取订单详细
             Get["/SerGetFlightList"] = SerGetFlightList; // 根据航班号获取航班时间列表
             Get["/ExpressInformation"] = ExpressInformation;//分拣完成后填写快递信息
             Get["/ReasonNoMessage"] = ReasonNoMessage;//根据航班号或者时间获取航班信息
@@ -35,6 +35,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/GetExpressCompany"] = GetExpressCompany;//获取所有快递公司记录
             Get["/SerGetPhone"] = SerGetPhone;//获取手机号码
             Get["/GetConNumberListByFNo"] = GetConNumberListByFNo;//根据航班号获取行李号列表
+            Get["/GetOrderLogisticsInfo"] = GetOrderLogisticsInfo;//根据行李号获取时间节点
         }
         private SmallProgramServerApiIBLL billServerApiBLL = new SmallProgramServerApiBLL();
         private OrderInquiryIBLL orderBll = new OrderInquiryBLL();
@@ -278,7 +279,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         }
 
         /// <summary>
-        /// 根据行李号获取订单详情
+        /// 根据行李号,订单号,电话号码获取订单详细
         /// </summary>
         /// <param name="_"></param>
         /// <returns></returns>
@@ -311,6 +312,26 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             var req = this.GetReqData().ToJObject(); //获取模板请求数据
             string FlightNumber = req["FlightNumber"].ToString(); //航班号
             var data = billServerApiBLL.SerGetFlightList(FlightNumber);
+            if (data.Count() > 0)
+            {
+                return Success(data);
+            }
+            else
+            {
+                return Fail("没有数据!");
+            }
+        }
+
+        /// <summary>
+        /// 根据行李号获取时间节点
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response GetOrderLogisticsInfo(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject(); //获取模板请求数据 
+            string ConsignmentNumber = req["ConsignmentNumber"].ToString(); //行李号
+            var data = billServerApiBLL.GetOrderLogisticsInfo(ConsignmentNumber);
             if (data.Count() > 0)
             {
                 return Success(data);
