@@ -107,11 +107,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         IEnumerable<GetFlightListByFNo> SerGetFlightList(string FlightNumber);
 
         /// <summary>
-        /// 根据行李号获取时间节点
+        /// 根据订单号获取时间节点
         /// </summary>
         /// <param name="_"></param>
         /// <returns></returns>
-        IEnumerable<OrderLogisticsInfo> GetOrderLogisticsInfo(string ConNumber);
+        IEnumerable<OrderLogisticsInfo> GetOrderLogisticsInfo(string OrderNo);
         /// <summary>
         /// 根据航班号或航班号+日期查询订单查询订单列表
         /// </summary>
