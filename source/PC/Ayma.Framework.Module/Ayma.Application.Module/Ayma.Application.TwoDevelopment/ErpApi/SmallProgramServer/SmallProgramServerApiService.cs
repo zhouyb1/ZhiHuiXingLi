@@ -120,21 +120,31 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                      this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
 
                      var State = "";
+                     var strUpdate = new StringBuilder();
                      if (status == "41" || status == "51")
                      {
                          State = status;              //如果行李号有异常，即把订单状态改为异常
+           
+                         strUpdate.Append(@"UPDATE T_OrderHead SET F_State=@F_State WHERE F_OrderNo=@F_OrderNo");
+                         var par = new DynamicParameters(new { });
+                         par.Add("@F_State", State);
+                         par.Add("@F_OrderNo", OrderNo);
+                         this.BaseRepository().ExecuteBySql(strUpdate.ToString(), par);
                      }
                      else
                      {
                          var list = this.BaseRepository().FindList<T_OrderBodyEntity>(c => c.F_OrderNo == OrderNo).OrderByDescending(c => c.FB_State);
                          State = list.Last().FB_State; //获取订单下最后一个行李号的状态
+                         if (!list.Any(c => c.FB_State == "41" || c.FB_State == "51"))    //如果不存在异常的行李号,将最后一个行李号的状态作为订单状态
+                         {
+                             strUpdate.Append(@"UPDATE T_OrderHead SET F_State=@F_State WHERE F_OrderNo=@F_OrderNo");
+                             var par = new DynamicParameters(new { });
+                             par.Add("@F_State", State);
+                             par.Add("@F_OrderNo", OrderNo);
+                             this.BaseRepository().ExecuteBySql(strUpdate.ToString(), par);
+                         }
                      }
-                     var strUpdate = new StringBuilder();
-                     strUpdate.Append(@"UPDATE T_OrderHead SET F_State=@F_State WHERE F_OrderNo=@F_OrderNo");
-                     var par = new DynamicParameters(new { });
-                     par.Add("@F_State", State);
-                     par.Add("@F_OrderNo", OrderNo);
-                     this.BaseRepository().ExecuteBySql(strUpdate.ToString(), par);
+
 
                  var StateDescribe="";
                  switch (State)
@@ -146,7 +156,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                          StateDescribe = "分拣中";
                          break;
                      case "3":
-                         StateDescribe = "行李号分拣完成";
+                         StateDescribe = "行李分拣完成";
                          break;
                      case"4":
                          StateDescribe="运输中";
@@ -397,6 +407,29 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             }
         }
 
+        public IEnumerable<ExpressNo> GetExpressNumberByNo(string OrderNo)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT F_ConsignmentNumber,F_ExpressNO,F_ExpressCompanyId,F_Amount FROM dbo.T_OrderPayMoney WHERE F_OrderNo=@OrderNo");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@OrderNo", OrderNo);
+                return this.BaseRepository().FindList<ExpressNo>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
         /// <summary>
         /// 获取所有快递公司记录
         /// </summary>
@@ -424,7 +457,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         }
 
         /// <summary>
-        /// 根据行李号获取订单详细
+        /// 根据行李号,订单号,电话号码获取订单详细
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <returns></returns>
@@ -435,11 +468,9 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 var strSql = new StringBuilder();
                 strSql.Append(@"SELECT DISTINCT F_FlightNumber,F_State,h.F_OrderNo,F_OrderDate,F_AirfieldFloor,F_CustomerName,
                                 (SELECT sum (F_Qty) FROM T_OrderBody WHERE F_OrderNo=h.F_OrderNo) F_Qty,
-                                F_CustomerPhone,F_CustomerAddress,F_Stype,F_IsUrgent,F_ExpressCompanyId,
-                                F_ExpressNO,F_PayType,F_Amount
+                                F_CustomerPhone,F_CustomerAddress,F_Stype,F_IsUrgent
                                 FROM dbo.T_OrderHead h
                                 LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo
-                                LEFT JOIN dbo.T_OrderPayMoney p ON p.F_OrderNo = h.F_OrderNo
                                 WHERE 1=1");
                  var dp = new DynamicParameters(new { });
                 if (!string.IsNullOrEmpty(ConsignmentNumber))
@@ -459,6 +490,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 }
                 var list = this.BaseRepository().FindList<SerOrderDetailModelApi>(strSql.ToString(), dp).ToList();
                 list.ForEach(c => c.CNumberList = GetConsignmentNumberByNo(c.F_OrderNo).ToList());
+                list.ForEach(c => c.ExpressNoList = GetExpressNumberByNo(c.F_OrderNo).ToList());
                 return list;
             }
             catch (Exception ex)
@@ -557,6 +589,41 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 var list = this.BaseRepository().FindList<GetFlightListByDate>(strSql.ToString(), dp).ToList();
                 list.ForEach(c => c.CNumberList = GetConsignmentNumberByNo(c.F_OrderNo).ToList());
                 return list;
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 根据行李号获取时间节点
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public IEnumerable<OrderLogisticsInfo> GetOrderLogisticsInfo(string ConsignmentNumber)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT  F_OrderNo ,
+                                        F_StateDescribe ,
+                                        F_LogState ,
+                                        F_StateDateTime ,
+                                        F_StateOperator
+                                FROM    dbo.T_OrderLogisticsInfo
+                                WHERE   F_OrderNo =@ConsignmentNumber");
+                strSql.Append(" ORDER BY F_StateDateTime  ");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@ConsignmentNumber", ConsignmentNumber);
+                return this.BaseRepository().FindList<OrderLogisticsInfo>(strSql.ToString(), dp);
             }
             catch (Exception ex)
             {
