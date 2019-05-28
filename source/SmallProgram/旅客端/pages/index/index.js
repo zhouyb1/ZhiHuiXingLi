@@ -1,8 +1,8 @@
 //index.js
 //获取应用实例
 const app = getApp()
-var QQMapWX = require('../../dist/map.js');
-var qqmapsdk;
+// var QQMapWX = require('../../dist/map.js');
+// var qqmapsdk;
 Page({
   data: {
     user_name: '',
@@ -32,47 +32,52 @@ Page({
       }
     ]
   },
-  onLoad: function() {
-    // 定位
-    qqmapsdk = new QQMapWX({
-      key: 'H76BZ-KV3KW-6GBRI-RP4EE-E4UM5-62BCM'
-    });
-    wx.getLocation({
-      type: 'wgs84',
-      success(res) {
-        var _this = this;
-        qqmapsdk.reverseGeocoder({
-          //位置坐标，默认获取当前位置，非必须参数
-          location: {
-            latitude: res.latitude,
-            longitude: res.longitude
-          } || '',
-          success: function(res) { //成功后的回调
+  onLoad: function(options) {
+    console.log(options)
+    // // 定位
+    // qqmapsdk = new QQMapWX({
+    //   key: 'H76BZ-KV3KW-6GBRI-RP4EE-E4UM5-62BCM'
+    // });
+    // wx.getLocation({
+    //   type: 'wgs84',
+    //   success(res) {
+    //     var _this = this;
+    //     qqmapsdk.reverseGeocoder({
+    //       //位置坐标，默认获取当前位置，非必须参数
+    //       location: {
+    //         latitude: res.latitude,
+    //         longitude: res.longitude
+    //       } || '',
+    //       success: function(res) { //成功后的回调
 
-            wx.setStorage({
-              key: 'city',
-              data: res.result.address_component.province + res.result.address_component.city
-            });
-            wx.setStorage({
-              key: 'location',
-              data: JSON.stringify(res.result.location)
-            });
-          },
-          fail: function(error) {
-            wx.setStorage({
-              key: 'city',
-              data: ''
-            });
-          },
-          complete: function(res) {
-            console.log(res);
-          }
-        })
-      },
-      fail(res) {
-        console.log("用户拒绝定位");
-      }
-    });
+    //         wx.setStorage({
+    //           key: 'city',
+    //           data: res.result.address_component.province + res.result.address_component.city
+    //         });
+    //         wx.setStorage({
+    //           key: 'location',
+    //           data: JSON.stringify(res.result.location)
+    //         });
+    //       },
+    //       fail: function(error) {
+    //         wx.setStorage({
+    //           key: 'city',
+    //           data: ''
+    //         });
+    //       },
+    //       complete: function(res) {
+    //         console.log(res);
+    //       }
+    //     })
+    //   },
+    //   fail(res) {
+    //     console.log("用户拒绝定位");
+    //     wx.showModal({
+    //       title: '温馨提示',
+    //       content: '请勿拒绝定位,如果想重新定位请删除小程序后重新进入即可'
+    //     });
+    //   }
+    // });
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -171,12 +176,21 @@ Page({
   onReachBottom: function() {
 
   },
-
-  /**
-   * 用户点击右上角分享
-   */
   onShareAppMessage: function() {
-
+    /**
+     * 用户点击右上角分享
+     */
+    return {
+      title: '智慧行李',
+      path: 'pages/index/index?openid=' + app.open('open').openId,
+      imageUrl: "../../image/2.jpg",
+      success: function(res) {
+        console.log("转发成功:" + JSON.stringify(res));
+      },
+      fail: function(res) {
+        console.log("转发失败:" + JSON.stringify(res));
+      }
+    };
   },
   getUserInfo: function(e) {
     console.log(e);
@@ -256,5 +270,3 @@ Page({
     });
   }
 })
-
-

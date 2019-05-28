@@ -47,10 +47,10 @@
 </view>
 <view class="text">其他信息</view>
 <view class='list'>
-  送达时间：加急件
+  送达时间：航班到达后2-3小时
 </view>
-<view class='list'>是否港内件：港内件
-</view>
+<!-- <view class='list'>是否港内件：港内件
+</view> -->
 <view class="text">物流信息</view>
 <view class="ems">
   <view class="text" wx:if="{{type===-1}}" style="background:#f4f4f5;color:#909399;">已取消</view>
@@ -112,8 +112,8 @@
     <view bindtap='close_order' style="background:#f56c6c;">取消订单</view>
   </view>
   <view class="order-type" wx:if="{{type===1 || type===4 || type===2}}">
-    <view style="background:#e6a23c;">
-      <text decode="true" space="true">催&nbsp;&nbsp;&nbsp;&nbsp;单：</text>
+    <view style="background:#e6a23c;" bindtap='Reminder'>
+      <text decode="true" space="true">催&nbsp;&nbsp;&nbsp;&nbsp;单</text>
     </view>
     <view bindtap='order_success' style="background:#409eff;">确定签收</view>
     <view bindtap='close_pay' style="background:#f56c6c;">申请退款</view>

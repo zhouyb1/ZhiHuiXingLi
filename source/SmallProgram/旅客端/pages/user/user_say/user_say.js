@@ -8,73 +8,8 @@ Page({
    */
   data: {
     say: "",
+    say_data:'',
     phone: "",
-    opneid: ''
-  },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function(options) {
-    var _this = this;
-    wx.getStorage({
-      key: 'open',
-      success(res) {
-        var d = JSON.parse(res.data);
-        _this.setData({
-          opneid: d.openId
-        })
-      }
-    })
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function() {
-
   },
   s(event) {
     this.setData({
@@ -87,22 +22,21 @@ Page({
     })
   },
   save() {
-    var other = this.data.say;
+    var _this = this;
     wx.getSystemInfo({
       success(res) {
-        other += "用户系统信息:" + JSON.stringify(res);
+        _this.setData({
+          say_data: _this.data.say + "---用户系统信息:" + JSON.stringify(res)
+        })
       }
     });
+    console.log(this.data)
     if (!this.data.say) {
       wx.showModal({
         title: '温馨提示',
         content: '请输入内容哦~'
       });
       return false;
-    } else {
-      this.setData({
-        say: other
-      });
     };
     if (!this.data.phone) {
       wx.showModal({
@@ -138,8 +72,8 @@ Page({
       title: '反馈中',
     });
     var d = {
-      OpenId: this.data.opneid,
-      Content: this.data.say,
+      OpenId: app.open("open").openId,
+      Content: this.data.say_data,
       ContactWay: this.data.phone
     };
     wx.request({
@@ -163,7 +97,8 @@ Page({
           });
           _this.setData({
             say: '',
-            phone: ''
+            phone: '',
+            say_data:''
           });
         } else {
           wx.showToast({

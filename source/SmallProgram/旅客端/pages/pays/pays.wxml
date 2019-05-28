@@ -72,7 +72,7 @@
     </i-switch>
   </view>
 </view> -->
-<view class='list' style="margin-bottom:150rpx;">
+<view class='list list-6plus' style="margin-bottom:300rpx;">
   <checkbox-group bindchange="checkboxChange" class="check">
     <label class="checkbox">
       <checkbox checked="{{checked}}" /> 阅读并接受
@@ -84,7 +84,7 @@
 <view class='footer'>
   <view class="goods_info">
     <view wx:if="{{data.Details.length>1}}">合计：￥{{totalFee}}</view>
-    <view wx:if="{{data.Details.length>1}}">已优惠24.50，第二件5折</view>
+    <view wx:if="{{data.Details.length>1}}">第二件6.5折，第三件及以上5折</view>
     <view wx:if="{{data.Details.length<=1 || !data.Details.length}}" style="height:100%;font-size:35rpx;color:#000;">合计：￥{{totalFee}}</view>
   </view>
   <view class="pay" bindtap='pays'>去支付</view>

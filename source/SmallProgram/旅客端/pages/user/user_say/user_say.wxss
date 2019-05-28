@@ -11,11 +11,11 @@ textarea {
 .save {
   position: fixed;
   left: 50%;
-  top:400rpx;
+  top: 450rpx;
   background-color: #3cb4ff;
   color: #fff;
   width: 308px;
-  margin-left:-155px;
+  margin-left: -155px;
 }
 
 input {
@@ -25,4 +25,16 @@ input {
   padding: 10rpx;
   font-size: 15px;
   border-radius: 10rpx;
+}
+
+@media screen and (max-width:320px) {
+  .save {
+    position: fixed;
+    left: 50%;
+    top: 500rpx;
+    background-color: #3cb4ff;
+    color: #fff;
+    width: 308px;
+    margin-left: -155px;
+  }
 }

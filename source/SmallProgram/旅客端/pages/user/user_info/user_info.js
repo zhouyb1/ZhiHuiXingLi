@@ -20,99 +20,41 @@ Page({
     var _this = this;
     wx.showLoading({
       title: '加载中',
-    })
-    wx.getStorage({
-      key: 'open',
-      success(res) {
-        res.data = JSON.parse(res.data);
-        _this.setData({
-          open: res.data
-        });
-        wx.request({
-          url: app.path(1) + "/pdaapi/getuserinfo",
-          data: {
-            sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify({ OpenId: res.data.openId })}`).toUpperCase(),
-            version: app.path(3),
-            data: {
-              OpenId: res.data.openId
-            }
-          },
-          header: {
-            'content-type': 'application/json'
-          },
-          method: "GET",
-          success(res) {
-            console.log(res.data)
-            if (res.data.code === 200) {
-              wx.hideLoading()
-              var d = JSON.parse(res.data.data);
-              _this.setData({
-                name: d.FullName,
-                phone: d.Phone,
-                card: d.IDCard
-              })
-            } else {
-              wx.hideLoading();
-              wx.showToast({
-                title: '获取失败',
-                image: "../../../image/error.png",
-                duration: 2000
-              });
-            };
-          }
-        })
-      }
     });
 
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function() {
-
+    wx.request({
+      url: app.path(1) + "/pdaapi/getuserinfo",
+      data: {
+        sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify({ OpenId: app.open('open').openId })}`).toUpperCase(),
+        version: app.path(3),
+        data: {
+          OpenId: app.open('open').openId
+        }
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      method: "GET",
+      success(res) {
+        console.log(res.data)
+        if (res.data.code === 200) {
+          wx.hideLoading()
+          var d = JSON.parse(res.data.data);
+          _this.setData({
+            name: d.FullName,
+            phone: d.Phone,
+            card: d.IDCard
+          })
+        } else {
+          wx.hideLoading();
+          wx.showToast({
+            title: '获取失败',
+            image: "../../../image/error.png",
+            duration: 2000
+          });
+        };
+      }
+    })
   },
   names(event) {
     this.setData({
@@ -167,7 +109,7 @@ Page({
       FullName: obj.name,
       Phone: obj.phone,
       IDCard: obj.id,
-      OpenId: d.open.openId
+      OpenId: app.open('open').openId
     };
     wx.showLoading({
       title: '修改中',
@@ -191,7 +133,7 @@ Page({
             icon: 'success',
             duration: 2000
           });
-        }else{
+        } else {
           wx.showToast({
             title: '修改失败',
             image: "../../../image/error.png",
@@ -214,7 +156,7 @@ Page({
         data: JSON.stringify({
           iv: e.detail.iv,
           encrytedData: e.detail.encryptedData,
-          sessionId: _this.data.open.sessionId,
+          sessionId: app.open('open').sessionId,
           errMsg: e.detail.errMsg,
         })
       },
@@ -228,7 +170,7 @@ Page({
           _this.setData({
             phone: res.data.data
           });
-        }else{
+        } else {
           wx.hideLoading();
           wx.showToast({
             title: '获取失败',

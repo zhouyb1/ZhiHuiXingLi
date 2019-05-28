@@ -108,5 +108,16 @@ App({
     num += '00';
     num = num.match(/\d+\.\d{2}/)[0];
     return num - 0;
+  },
+  open(obj) {
+    // 获取用户信息
+    try {
+      var value = wx.getStorageSync(obj)
+      if (value) {
+        return JSON.parse(value);
+      }
+    } catch (e) {
+      return e;
+    }
   }
 })

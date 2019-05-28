@@ -8,7 +8,6 @@ Page({
    */
   data: {
     addr: [],
-    open: '',
     actions: [{
       name: '删除',
       color: '#fff',
@@ -22,65 +21,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    var _this = this;
-    wx.getStorage({
-      key: 'open',
-      success(res) {
-        _this.setData({
-          open: JSON.parse(res.data)
-        });
-        _this.get_addr();
-      }
-    })
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function() {
-
+    this.get_addr();
   },
   del(index) {
     var i = index.currentTarget.dataset.id;
@@ -141,7 +82,7 @@ Page({
       title: '加载中',
     });
     var da = {
-      openId: this.data.open.openId
+      openId: app.open('open').openId
     };
     var _this = this;
     wx.request({

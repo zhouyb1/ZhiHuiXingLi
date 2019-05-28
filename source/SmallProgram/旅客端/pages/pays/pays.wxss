@@ -147,7 +147,16 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
-  background:#ff8d1a;
+  background: #ff8d1a;
   border-radius: 10rpx;
   font-size: 30rpx;
+}
+
+@media screen and (min-width:414px) {
+  .list-6plus {
+    height: 300rpx;
+    align-items: flex-start;
+    padding-top: 30rpx;
+    border: none;
+  }
 }

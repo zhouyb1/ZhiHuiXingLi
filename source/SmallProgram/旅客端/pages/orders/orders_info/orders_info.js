@@ -13,6 +13,7 @@ Page({
     num_list: '',
     num: '',
     price: '',
+    OrderNo: '',
   },
 
   /**
@@ -53,7 +54,8 @@ Page({
             num_list: d.orderbody,
             num: nums,
             type: d.orderhead[0].F_State - 0,
-            price: price
+            price: price,
+            OrderNo: d.orderhead[0].F_OrderNo
           });
         } else {
           wx.hideLoading();
@@ -65,55 +67,6 @@ Page({
         };
       }
     });
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function() {
-
   },
   pays() {
     wx.showToast({
@@ -156,6 +109,44 @@ Page({
         if (res.confirm) {
           _this.refund(5);
         };
+      }
+    });
+  },
+  Reminder() {
+    var num = this.data.OrderNo;
+    wx.getStorage({
+      key: 'order_arr',
+      success(res) {
+        var d = JSON.parse(res.data);
+        if (d.includes(num)) {
+          wx.showModal({
+            title: '温馨提示',
+            content: '请勿重复催单'
+          });
+        } else {
+          d.push(num)
+          wx.setStorage({
+            key: "order_arr",
+            data: JSON.stringify(d)
+          });
+          wx.showToast({
+            title: '催单成功',
+            icon: 'success',
+            duration: 2000
+          });
+        };
+      },
+      fail(res) {
+        var arr = [num]
+        wx.setStorage({
+          key: "order_arr",
+          data: JSON.stringify(arr)
+        });
+        wx.showToast({
+          title: '催单成功',
+          icon: 'success',
+          duration: 2000
+        });
       }
     });
   },
