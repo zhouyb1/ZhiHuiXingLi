@@ -78,7 +78,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         public string FB_State { get; set; }
     }
 
-        public class ExpressNo
+    public class ExpressNo
     {
         /// <summary>
         /// 行李号
@@ -99,4 +99,5 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         public decimal? F_Amount { get; set; }
 
     }
+
 }
