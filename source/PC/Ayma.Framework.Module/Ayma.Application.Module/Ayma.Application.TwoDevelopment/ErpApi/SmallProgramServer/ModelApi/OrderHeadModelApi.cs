@@ -261,4 +261,17 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// </summary>
         public int F_Fraction { get; set; }
     }
+
+    public class OrderLogisticsInfo
+    {
+        public string F_OrderNo { get; set; }
+
+        public string F_StateDescribe { get; set; }
+
+        public string F_LogState { get; set; }
+
+        public DateTime F_StateDateTime { get; set; }
+
+        public string F_StateOperator { get; set; }
+    }
 }
