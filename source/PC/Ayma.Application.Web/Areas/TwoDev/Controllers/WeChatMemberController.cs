@@ -34,6 +34,16 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
         {
              return View();
         }
+
+        /// <summary>
+        /// 订单列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult OrderList()
+        {
+            return View();
+        }
         #endregion
 
         #region 获取数据

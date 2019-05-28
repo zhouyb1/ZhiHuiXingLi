@@ -41,7 +41,8 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 t.F_Phone,
                 t.F_CreateTime,
                 t.F_IdCard,
-                t.F_Name
+                t.F_Name,
+                (select COUNT(*) from T_OrderHead where F_OpenId=t.F_Openid) OrderSum
                 ");
                 strSql.Append("  FROM T_CustomerInfo t ");
                 strSql.Append("  WHERE 1=1 ");

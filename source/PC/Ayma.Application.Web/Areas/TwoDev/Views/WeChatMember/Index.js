@@ -11,6 +11,7 @@ var bootstrap = function ($, ayma) {
         init: function () {
             page.initGird();
             page.bind();
+            page.doubleClick();
         },
         bind: function () {
             // 时间搜索框
@@ -91,14 +92,28 @@ var bootstrap = function ($, ayma) {
                     });
                 }
             });
+            
         },
         // 初始化列表
         initGird: function () {
             $('#girdtable').AuthorizeJfGrid({
                 url: top.$.rootUrl + '/TwoDev/WeChatMember/GetPageList',
                 headData: [
-                    //{ label: "标示", name: "F_Id", width: 160, align: "left"},
-                    //{ label: "微信OpenId", name: "F_Openid", width: 160, align: "left"},
+                    {
+                        label: "订单数", name: "OrderSum", width: 100, align: "center",
+                        
+                        formatter: function (cellvalue, options, rowObject) {
+                            //if (cellvalue > 0 && cellvalue != 0) {
+                            //    for (var i = 0; i <= cellvalue; i++) {
+                            //        $(".ordersumclick").click(function () {
+                            //            alert(cellvalue);
+                            //        })
+                            //        break;
+                            //    }
+                            //}
+                            return "<span class='label label-success ordersumclick'>" + cellvalue + "</span>";
+                        }
+                    },
                     { label: "微信名称", name: "F_Nickname", width: 160, align: "left" },
                     { label: "真实姓名", name: "F_Name", width: 160, align: "left" },
                     { label: "联系电话", name: "F_Phone", width: 160, align: "left" },
@@ -115,6 +130,24 @@ var bootstrap = function ($, ayma) {
                 reloadSelected: true,
                 isPage: true
             });
+        },
+        doubleClick:function(){
+            $("#girdtable").on("dblclick", function () {
+                var WxOpenid = $("#girdtable").jfGridValue("F_Openid");
+                if (ayma.checkrow(WxOpenid)) {
+                    ayma.layerForm({
+                        id: 'form',
+                        title: '订单列表',
+                        url: top.$.rootUrl + '/TwoDev/WeChatMember/OrderList?OpenId=' + WxOpenid,
+                        width: 1000,
+                        height: 600,
+                        maxmin: true,
+                        callBack: function (id) {
+                            return top[id].acceptClick(refreshGirdData);
+                        }
+                    });
+                }
+            }); 
         },
         search: function (param) {
             param = param || {};

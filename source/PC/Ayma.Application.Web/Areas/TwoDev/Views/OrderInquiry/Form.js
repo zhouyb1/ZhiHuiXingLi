@@ -12,16 +12,16 @@ var bootstrap = function ($, ayma) {
         },
         bind: function () {
             //根据状态值判断是否显示分拣/出港操作按钮
-            if (state == 41)
-            {
-                $("#am_sortingg").show();
-            } else if (state == 51)
-            {
-                $("#am_leaveportt").show();
-            } else if (state == -3)
-            {
-                $("#am_affirmrefundd").show();
-            }
+            //if (state == 41)
+            //{
+            //    $("#am_sortingg").show();
+            //} else if (state == 51)
+            //{
+            //    $("#am_leaveportt").show();
+            //} else if (state == -3)
+            //{
+            //    $("#am_affirmrefundd").show();
+            //}
 
             // 行李编辑
             $("#am_edit").on("click", function () {
@@ -104,15 +104,15 @@ var bootstrap = function ($, ayma) {
                             formatter: function (cellvalue, options, rowObject) {
                                 var colorcss = "";
                                 if (cellvalue == 1) {
-                                    colorcss = "label label-warning";
+                                    colorcss = "label label-success";
                                     cellvalue = "未分拣";
                                 }
                                 else if (cellvalue == 2) {
-                                    colorcss = "label label-warning";
+                                    colorcss = "label label-success";
                                     cellvalue = "分拣中";
                                 }
                                 else if (cellvalue == 3) {
-                                    colorcss = "label label-warning";
+                                    colorcss = "label label-success";
                                     cellvalue = "分拣完成";
                                 }
                                 else if (cellvalue == 4) {

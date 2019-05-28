@@ -2681,6 +2681,18 @@
     <File Include="Areas/TwoDev/Views/AirportMessage/Index.js">
       <publishTime>05/21/2019 15:00:50</publishTime>
     </File>
+    <File Include="Areas/TwoDev/Views/CustomerPayInfo/Form.cshtml">
+      <publishTime>05/23/2019 09:36:06</publishTime>
+    </File>
+    <File Include="Areas/TwoDev/Views/CustomerPayInfo/Form.js">
+      <publishTime>05/23/2019 09:32:22</publishTime>
+    </File>
+    <File Include="Areas/TwoDev/Views/CustomerPayInfo/Index.cshtml">
+      <publishTime>05/23/2019 09:32:22</publishTime>
+    </File>
+    <File Include="Areas/TwoDev/Views/CustomerPayInfo/Index.js">
+      <publishTime>05/23/2019 09:35:37</publishTime>
+    </File>
     <File Include="Areas/TwoDev/Views/ExpressageMessage/Form.cshtml">
       <publishTime>05/13/2019 15:33:19</publishTime>
     </File>
@@ -2694,10 +2706,10 @@
       <publishTime>05/21/2019 14:59:30</publishTime>
     </File>
     <File Include="Areas/TwoDev/Views/FlightNumberRecord/Form.cshtml">
-      <publishTime>05/21/2019 12:10:03</publishTime>
+      <publishTime>05/22/2019 15:32:32</publishTime>
     </File>
     <File Include="Areas/TwoDev/Views/FlightNumberRecord/Form.js">
-      <publishTime>05/21/2019 11:53:32</publishTime>
+      <publishTime>05/22/2019 14:59:22</publishTime>
     </File>
     <File Include="Areas/TwoDev/Views/FlightNumberRecord/Index.cshtml">
       <publishTime>05/21/2019 15:04:22</publishTime>
@@ -2706,31 +2718,49 @@
       <publishTime>05/21/2019 14:59:39</publishTime>
     </File>
     <File Include="Areas/TwoDev/Views/OrderInquiry/Form.cshtml">
-      <publishTime>05/21/2019 16:18:03</publishTime>
+      <publishTime>05/24/2019 21:27:36</publishTime>
     </File>
     <File Include="Areas/TwoDev/Views/OrderInquiry/Form.css">
       <publishTime>05/16/2019 15:09:41</publishTime>
     </File>
     <File Include="Areas/TwoDev/Views/OrderInquiry/Form.js">
-      <publishTime>05/21/2019 14:58:40</publishTime>
+      <publishTime>05/24/2019 21:42:42</publishTime>
     </File>
     <File Include="Areas/TwoDev/Views/OrderInquiry/Index.cshtml">
-      <publishTime>05/21/2019 14:17:48</publishTime>
+      <publishTime>05/24/2019 14:14:22</publishTime>
     </File>
     <File Include="Areas/TwoDev/Views/OrderInquiry/Index.js">
-      <publishTime>05/21/2019 17:35:21</publishTime>
+      <publishTime>05/24/2019 21:22:12</publishTime>
     </File>
     <File Include="Areas/TwoDev/Views/OrderInquiry/LogisticsForm.cshtml">
       <publishTime>05/16/2019 15:51:09</publishTime>
     </File>
     <File Include="Areas/TwoDev/Views/OrderInquiry/LogisticsForm.js">
-      <publishTime>05/20/2019 13:51:36</publishTime>
+      <publishTime>05/24/2019 14:00:46</publishTime>
     </File>
     <File Include="Areas/TwoDev/Views/OrderInquiry/PutpayMoney.cshtml">
       <publishTime>05/20/2019 17:26:25</publishTime>
     </File>
     <File Include="Areas/TwoDev/Views/OrderInquiry/PutpayMoney.js">
       <publishTime>05/20/2019 17:47:01</publishTime>
+    </File>
+    <File Include="Areas/TwoDev/Views/OrderInquiry/UpdateForm.cshtml">
+      <publishTime>05/24/2019 20:35:06</publishTime>
+    </File>
+    <File Include="Areas/TwoDev/Views/OrderInquiry/UpdateForm.js">
+      <publishTime>05/24/2019 20:24:58</publishTime>
+    </File>
+    <File Include="Areas/TwoDev/Views/OrderInquiry/UpdateLuggageForm.cshtml">
+      <publishTime>05/24/2019 20:42:48</publishTime>
+    </File>
+    <File Include="Areas/TwoDev/Views/OrderInquiry/UpdateLuggageForm.js">
+      <publishTime>05/24/2019 21:18:10</publishTime>
+    </File>
+    <File Include="Areas/TwoDev/Views/OrderSumReport/SynthesizeIndex.cshtml">
+      <publishTime>05/24/2019 15:03:04</publishTime>
+    </File>
+    <File Include="Areas/TwoDev/Views/OrderSumReport/SynthesizeIndex.js">
+      <publishTime>05/24/2019 15:35:22</publishTime>
     </File>
     <File Include="Areas/TwoDev/Views/Shared/_Layout.cshtml">
       <publishTime>05/14/2019 16:31:43</publishTime>
@@ -2772,85 +2802,85 @@
       <publishTime>08/16/2018 14:12:14</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>05/21/2019 17:38:15</publishTime>
+      <publishTime>05/24/2019 21:43:29</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>05/21/2019 17:38:14</publishTime>
+      <publishTime>05/24/2019 21:43:28</publishTime>
     </File>
     <File Include="bin/Ayma.Application.AppMagager.dll">
-      <publishTime>05/21/2019 17:37:58</publishTime>
+      <publishTime>05/24/2019 21:43:13</publishTime>
     </File>
     <File Include="bin/Ayma.Application.AppMagager.pdb">
       <publishTime>04/08/2019 11:54:57</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Base.dll">
-      <publishTime>05/21/2019 17:38:00</publishTime>
+      <publishTime>05/24/2019 21:43:14</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Base.pdb">
       <publishTime>04/08/2019 16:48:30</publishTime>
     </File>
     <File Include="bin/Ayma.Application.CRM.dll">
-      <publishTime>05/21/2019 17:37:58</publishTime>
+      <publishTime>05/24/2019 21:43:12</publishTime>
     </File>
     <File Include="bin/Ayma.Application.CRM.pdb">
       <publishTime>04/08/2019 11:54:56</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Excel.dll">
-      <publishTime>05/21/2019 17:38:01</publishTime>
+      <publishTime>05/24/2019 21:43:17</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Excel.pdb">
       <publishTime>04/08/2019 16:48:32</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Form.dll">
-      <publishTime>05/21/2019 17:38:02</publishTime>
+      <publishTime>05/24/2019 21:43:17</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Form.pdb">
       <publishTime>04/08/2019 16:48:32</publishTime>
     </File>
     <File Include="bin/Ayma.Application.IM.dll">
-      <publishTime>05/21/2019 17:37:58</publishTime>
+      <publishTime>05/24/2019 21:43:12</publishTime>
     </File>
     <File Include="bin/Ayma.Application.IM.pdb">
       <publishTime>04/08/2019 11:54:57</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Mapping.dll">
-      <publishTime>05/21/2019 17:38:05</publishTime>
+      <publishTime>05/24/2019 21:43:19</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Mapping.pdb">
       <publishTime>04/08/2019 16:48:35</publishTime>
     </File>
     <File Include="bin/Ayma.Application.OA.dll">
-      <publishTime>05/21/2019 17:37:59</publishTime>
+      <publishTime>05/24/2019 21:43:12</publishTime>
     </File>
     <File Include="bin/Ayma.Application.OA.pdb">
       <publishTime>04/08/2019 11:54:56</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Organization.dll">
-      <publishTime>05/21/2019 17:37:58</publishTime>
+      <publishTime>05/24/2019 21:43:13</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Organization.pdb">
       <publishTime>04/08/2019 11:54:58</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Report.dll">
-      <publishTime>05/21/2019 17:38:02</publishTime>
+      <publishTime>05/24/2019 21:43:17</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Report.pdb">
       <publishTime>04/08/2019 16:48:32</publishTime>
     </File>
     <File Include="bin/Ayma.Application.TwoDevelopment.dll">
-      <publishTime>05/21/2019 17:38:04</publishTime>
+      <publishTime>05/24/2019 21:43:18</publishTime>
     </File>
     <File Include="bin/Ayma.Application.TwoDevelopment.pdb">
       <publishTime>04/08/2019 16:48:34</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Web.dll">
-      <publishTime>05/21/2019 17:38:07</publishTime>
+      <publishTime>05/24/2019 21:43:21</publishTime>
     </File>
     <File Include="bin/Ayma.Application.Web.pdb">
       <publishTime>04/08/2019 16:48:39</publishTime>
     </File>
     <File Include="bin/Ayma.Application.WorkFlow.dll">
-      <publishTime>05/21/2019 17:38:03</publishTime>
+      <publishTime>05/24/2019 21:43:16</publishTime>
     </File>
     <File Include="bin/Ayma.Application.WorkFlow.pdb">
       <publishTime>04/08/2019 16:48:32</publishTime>
@@ -2862,28 +2892,28 @@
       <publishTime>04/08/2019 11:54:47</publishTime>
     </File>
     <File Include="bin/Ayma.Cache.Factory.dll">
-      <publishTime>05/21/2019 17:37:56</publishTime>
+      <publishTime>05/24/2019 21:43:09</publishTime>
     </File>
     <File Include="bin/Ayma.Cache.Factory.pdb">
       <publishTime>04/08/2019 11:54:54</publishTime>
     </File>
     <File Include="bin/Ayma.Cache.Redis.dll">
-      <publishTime>05/21/2019 17:37:55</publishTime>
+      <publishTime>05/24/2019 21:43:07</publishTime>
     </File>
     <File Include="bin/Ayma.Cache.Redis.pdb">
       <publishTime>04/08/2019 11:54:51</publishTime>
     </File>
     <File Include="bin/Ayma.DataBase.dll">
-      <publishTime>05/21/2019 17:37:54</publishTime>
+      <publishTime>05/24/2019 21:43:06</publishTime>
     </File>
     <File Include="bin/Ayma.DataBase.MySqlEx.dll">
-      <publishTime>05/21/2019 17:37:56</publishTime>
+      <publishTime>05/24/2019 21:43:08</publishTime>
     </File>
     <File Include="bin/Ayma.DataBase.MySqlEx.pdb">
       <publishTime>04/08/2019 11:54:54</publishTime>
     </File>
     <File Include="bin/Ayma.DataBase.Oracle.dll">
-      <publishTime>05/21/2019 17:37:57</publishTime>
+      <publishTime>05/24/2019 21:43:10</publishTime>
     </File>
     <File Include="bin/Ayma.DataBase.Oracle.pdb">
       <publishTime>04/08/2019 11:54:54</publishTime>
@@ -2892,13 +2922,13 @@
       <publishTime>04/08/2019 11:54:51</publishTime>
     </File>
     <File Include="bin/Ayma.DataBase.Repository.dll">
-      <publishTime>05/21/2019 17:37:56</publishTime>
+      <publishTime>05/24/2019 21:43:11</publishTime>
     </File>
     <File Include="bin/Ayma.DataBase.Repository.pdb">
       <publishTime>04/08/2019 11:54:54</publishTime>
     </File>
     <File Include="bin/Ayma.DataBase.SqlServer.dll">
-      <publishTime>05/21/2019 17:37:56</publishTime>
+      <publishTime>05/24/2019 21:43:09</publishTime>
     </File>
     <File Include="bin/Ayma.DataBase.SqlServer.pdb">
       <publishTime>04/08/2019 11:54:53</publishTime>
@@ -2916,10 +2946,10 @@
       <publishTime>04/08/2019 11:54:49</publishTime>
     </File>
     <File Include="bin/Ayma.Util.dll">
-      <publishTime>05/21/2019 17:37:53</publishTime>
+      <publishTime>05/24/2019 21:43:05</publishTime>
     </File>
     <File Include="bin/Ayma.Util.Operat.dll">
-      <publishTime>05/21/2019 17:38:02</publishTime>
+      <publishTime>05/24/2019 21:43:15</publishTime>
     </File>
     <File Include="bin/Ayma.Util.Operat.pdb">
       <publishTime>04/08/2019 16:48:31</publishTime>
@@ -7119,10 +7149,10 @@
       <publishTime>05/14/2019 16:31:39</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>05/21/2019 17:38:12</publishTime>
+      <publishTime>05/24/2019 21:43:26</publishTime>
     </File>
     <File Include="Properties/PublishProfiles/Ayma.pubxml.user">
-      <publishTime>05/14/2019 11:58:30</publishTime>
+      <publishTime>05/21/2019 17:38:32</publishTime>
     </File>
     <File Include="Properties/PublishProfiles/learunadms6.1.pubxml.user">
       <publishTime>05/13/2019 15:33:33</publishTime>
@@ -7257,7 +7287,7 @@
       <publishTime>05/13/2019 15:33:36</publishTime>
     </File>
     <File Include="Views/AM_Content/plugin/select/am-select.js">
-      <publishTime>05/21/2019 11:07:32</publishTime>
+      <publishTime>05/24/2019 19:45:19</publishTime>
     </File>
     <File Include="Views/AM_Content/plugin/timeline/am-timeline.css">
       <publishTime>05/13/2019 15:33:36</publishTime>
@@ -7530,7 +7560,7 @@
       <publishTime>05/21/2019 17:38:08</publishTime>
     </File>
     <File Include="XmlConfig/database.config">
-      <publishTime>05/15/2019 17:51:18</publishTime>
+      <publishTime>05/21/2019 17:57:11</publishTime>
     </File>
     <File Include="XmlConfig/ioc.config">
       <publishTime>05/13/2019 15:33:36</publishTime>

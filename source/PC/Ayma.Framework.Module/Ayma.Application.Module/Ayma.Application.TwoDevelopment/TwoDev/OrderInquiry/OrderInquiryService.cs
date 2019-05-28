@@ -47,6 +47,50 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
             }
         }
 
+        public IEnumerable<T_OrderHeadEntity> GetPageListOrder(string OpenId)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append("SELECT ");
+                strSql.Append(@"
+                t.F_Id,
+                t.F_AirfieldName,
+                t.F_AirfieldFloor,
+                t.F_FlightCompany,
+                t.F_FlightNumber,
+                t.F_OrderDate,
+                t.F_OrderNo,
+                t.F_CustomerName,
+                t.F_CustomerPhone,
+                t.F_CustomerAddress,
+                t.F_CustomerRemarks,
+                t.F_CreateStype,
+                t.F_State,
+                t.F_Stype,
+                t.F_CreateTime,
+                t.F_CreateUserName
+                ");
+                strSql.Append("  FROM T_OrderHead t ");
+                strSql.Append("  WHERE 1=1 ");
+                strSql.Append("  And F_OpenId='" + OpenId + "'");
+                // 虚拟参数
+                var dp = new DynamicParameters(new { });
+                return this.BaseRepository("LocalHost").FindList<T_OrderHeadEntity>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
         /// <summary>
         /// 获取页面显示列表数据
         /// </summary>

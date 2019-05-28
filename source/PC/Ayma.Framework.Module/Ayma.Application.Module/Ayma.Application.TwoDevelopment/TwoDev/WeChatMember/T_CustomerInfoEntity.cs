@@ -98,6 +98,9 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         }
         #endregion
         #region 扩展字段
+        /// <summary>
+        /// 客户订单数
+        public string OrderSum { get; set; }
         #endregion
     }
 }

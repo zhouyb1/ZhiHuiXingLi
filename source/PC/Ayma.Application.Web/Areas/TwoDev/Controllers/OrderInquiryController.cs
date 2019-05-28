@@ -92,7 +92,19 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
             var data = orderInquiryIBLL.GetList(queryJson);
             return Success(data);
         }
-
+        
+        /// <summary>
+        /// 根据OpenId获取订单列表
+        /// </summary>
+        /// <param name="OpenId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [AjaxOnly]
+        public ActionResult GetPageListOrder(string OpenId)
+        {
+            var data = orderInquiryIBLL.GetPageListOrder(OpenId);
+            return Success(data);
+        }
         /// <summary>
         /// 获取页面显示列表数据
         /// </summary>

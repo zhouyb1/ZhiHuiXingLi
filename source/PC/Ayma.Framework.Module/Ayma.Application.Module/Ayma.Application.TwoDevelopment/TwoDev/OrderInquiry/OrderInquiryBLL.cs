@@ -41,6 +41,30 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 }
             }
         }
+
+        /// <summary>
+        /// 根据OpenId获取订单详细
+        /// </summary>
+        /// <param name="OpenId"></param>
+        /// <returns></returns>
+        public IEnumerable<T_OrderHeadEntity> GetPageListOrder(string OpenId)
+        {
+            try
+            {
+                return orderInquiryService.GetPageListOrder(OpenId);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
         /// <summary>
         /// 获取页面显示列表数据
         /// </summary>

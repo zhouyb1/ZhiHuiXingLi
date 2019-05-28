@@ -19,6 +19,13 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// <param name="queryJson">查询参数</param>
         /// <returns></returns>
         IEnumerable<T_FlightNoInfoEntity> GetList(string queryJson);
+
+        /// <summary>
+        /// 根据OpenId获取订单列表
+        /// </summary>
+        /// <param name="OpenId"></param>
+        /// <returns></returns>
+        IEnumerable<T_OrderHeadEntity> GetPageListOrder(string OpenId);
         /// <summary>
         /// 获取页面显示列表数据
         /// </summary>
