@@ -58,6 +58,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/AddressToDo"] = AddressToDo; //地址管理
             Get["/GetFlightFloorById"] = GetFlightFloorById; //根据机场Id获取航站楼
             Get["/GetFlightMessage"] = GetFlightMessage;  // 根据航班号模糊查询航班信息
+            Get["/SubmitOrderIsUrgent"] = SubmitOrderIsUrgent; //计算是否加急订单运费
+            Get["/GetClientOrderLogisticsInfo"] = GetClientOrderLogisticsInfo; //根据订单号获取时间节点
             Post["/OnLogin"] = OnLogin;
             Post["/SaveUserInfo"] = SaveUserInfo;
             Post["/Register"] = Register;
@@ -313,6 +315,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
             totalFee = firstFee + secondFee + elsetotalFee;   //计算总运费
 
+            //更新订单详细里面的运费和距离
             for (int i = 1; i <=SubmitOrderModelApi.OrderDetails.Count; i++)
             {
                 if (i == 1)
@@ -335,6 +338,144 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             billClientApiBLL.SubmitOrder(SubmitOrderModelApi, orderNo, out errText);
             return Success("ok", new { orderNo = orderNo, totalFee = totalFee });
         }
+
+        /// <summary>
+        /// 计算是否加急订单运费
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response SubmitOrderIsUrgent(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject(); //获取模板请求数据
+            if (req["OrderNo"].IsEmpty())
+            {
+                return Fail("缺少参数OrderNo!");
+            }
+            if (req["IsUrgent"].IsEmpty())
+            {
+                return Fail("缺少参数IsUrgent!");
+            }
+            string OrderNo = req["OrderNo"].ToString();  //订单号
+            string IsUrgent = req["IsUrgent"].ToString();  //是否加急
+            T_OrderHeadEntity headEntity = billClientApiBLL.GetOrderHeadEntity(OrderNo);   //根据订单号获取订单头实体
+            var bodyEntity = billClientApiBLL.GetOrderBodyEntity(OrderNo);   //根据订单号获取订单详细实体
+            //两点之间的驾车距离计算(计算机场与寄件地址的距离)规则
+            var endStation = airportService.GetT_AirfieldInfoEntity(headEntity.F_AirfieldId);
+            var distance = CommonHelper.GetDistance(endStation.F_Longitude.ToDouble(),
+                endStation.F_Latitude.ToDouble(),
+                headEntity.F_Longitude.ToDouble(), headEntity.F_Latitude.ToDouble()).ToObject<Root>();
+
+            //获取机场运费计算规则
+            DataTable FeeRule = billClientApiBLL.GetFeeRule(headEntity.F_AirfieldId);
+            decimal F_NumberPice = Convert.ToDecimal(FeeRule.Rows[0]["F_NumberPice"]); //单件费用
+            decimal F_DistanceBaseQty = Convert.ToDecimal(FeeRule.Rows[0]["F_DistanceBaseQty"]);  //基础公里数
+            decimal F_DistancePrice = Convert.ToDecimal(FeeRule.Rows[0]["F_DistancePrice"]);  //每公里加价
+            decimal F_Discount1 = Convert.ToDecimal(FeeRule.Rows[0]["F_Discount1"]);     //折扣1
+            decimal F_Discount2 = Convert.ToDecimal(FeeRule.Rows[0]["F_Discount2"]);    //折扣2
+            decimal UrgentRatio = Convert.ToDecimal(FeeRule.Rows[0]["F_UrgentRatio"]);  //加急订单运费浮动比率
+
+            double km = Convert.ToDouble(distance.result.elements[0].distance) / 1000;   //两经纬度之间的距离
+            int RealKM = Convert.ToInt32(Math.Round(km, 1));
+
+            decimal firstFee = 0;   //第一件行李的运费
+            decimal secondFee = 0; //第二件行李的运费
+            decimal elseFee = 0;  //第三件及以后行李的运费
+            decimal elsetotalFee = 0; //第三件及以后行李的总运费
+            decimal totalFee = 0;  //总运费
+            int packagCount = bodyEntity.Count();   //获取行李数
+
+            if (IsUrgent == "普通" && headEntity.F_IsUrgent != IsUrgent)    //普通订单
+            {
+                if (packagCount == 1)   //计算第一件行李运费
+                {
+                    firstFee = BaseFee(headEntity.F_AirfieldId, RealKM);
+                }
+                else if (packagCount == 2)   //计算第二件行李运费
+                {
+                    firstFee = BaseFee(headEntity.F_AirfieldId, RealKM);
+                    secondFee = firstFee * F_Discount1;
+                }
+                else     //计算第三件及以后行李的总运费
+                {
+                    firstFee = BaseFee(headEntity.F_AirfieldId, RealKM);
+                    secondFee = firstFee * F_Discount1;
+                    elseFee = firstFee * F_Discount2;
+                    elsetotalFee = elseFee * (packagCount - 2);
+                }
+                totalFee = firstFee + secondFee + elsetotalFee;  //计算总运费
+
+                //更新订单详细里面的运费和距离
+                for (int i = 1; i <= bodyEntity.Count(); i++)
+                {
+                    if (i == 1)
+                    {
+                        bodyEntity.ToList()[i - 1].F_Price = Convert.ToDecimal(firstFee);
+                        bodyEntity.ToList()[i - 1].F_Distance = Convert.ToDecimal(RealKM);
+                    }
+                    else if (i == 2)
+                    {
+                        bodyEntity.ToList()[i - 1].F_Price = Convert.ToDecimal(secondFee);
+                        bodyEntity.ToList()[i - 1].F_Distance = Convert.ToDecimal(RealKM);
+                    }
+                    else
+                    {
+                        bodyEntity.ToList()[i - 1].F_Price = Convert.ToDecimal(elseFee);
+                        bodyEntity.ToList()[i - 1].F_Distance = Convert.ToDecimal(RealKM);
+                    }
+                    billClientApiBLL.UpdateOrderDetail(bodyEntity.ToList()[i - 1].F_Price.Value.ToDecimal(), bodyEntity.ToList()[i - 1].F_Distance.Value.ToDecimal(), bodyEntity.ToList()[i - 1].F_ConsignmentNumber);
+                }
+                billClientApiBLL.UpdateOrderType(IsUrgent, OrderNo);   //改变订单类型   加急/普通
+            }
+            else if (IsUrgent == "加急" && headEntity.F_IsUrgent != IsUrgent)    //加急订单
+            {
+                if (packagCount == 1)   //计算第一件行李运费
+                {
+                    firstFee = BaseFee(headEntity.F_AirfieldId, RealKM);
+                }
+                else if (packagCount == 2)   //计算第二件行李运费
+                {
+                    firstFee = BaseFee(headEntity.F_AirfieldId, RealKM);
+                    secondFee = firstFee * F_Discount1;
+                }
+                else     //计算第三件及以后行李的总运费
+                {
+                    firstFee = BaseFee(headEntity.F_AirfieldId, RealKM);
+                    secondFee = firstFee * F_Discount1;
+                    elseFee = firstFee * F_Discount2;
+                    elsetotalFee = elseFee * (packagCount - 2);
+                }
+                totalFee = (firstFee + secondFee + elsetotalFee) * (UrgentRatio / 100);   //计算总运费
+
+                //更新订单详细里面的运费和距离
+                for (int i = 1; i <= bodyEntity.Count(); i++)
+                {
+                    if (i == 1)
+                    {
+                        bodyEntity.ToList()[i - 1].F_Price = Convert.ToDecimal(firstFee * (UrgentRatio / 100));
+                        bodyEntity.ToList()[i - 1].F_Distance = Convert.ToDecimal(RealKM);
+                    }
+                    else if (i == 2)
+                    {
+                        bodyEntity.ToList()[i - 1].F_Price = Convert.ToDecimal(secondFee * (UrgentRatio / 100));
+                        bodyEntity.ToList()[i - 1].F_Distance = Convert.ToDecimal(RealKM);
+                    }
+                    else
+                    {
+                        bodyEntity.ToList()[i - 1].F_Price = Convert.ToDecimal(elseFee * (UrgentRatio / 100));
+                        bodyEntity.ToList()[i - 1].F_Distance = Convert.ToDecimal(RealKM);
+                    }
+                    billClientApiBLL.UpdateOrderDetail(bodyEntity.ToList()[i - 1].F_Price.Value.ToDecimal(), bodyEntity.ToList()[i - 1].F_Distance.Value.ToDecimal(), bodyEntity.ToList()[i - 1].F_ConsignmentNumber);
+                }
+                billClientApiBLL.UpdateOrderType(IsUrgent, OrderNo);   //改变订单类型   加急/普通
+            }
+            else
+            {
+                //页面金额不做调整
+                totalFee = -1;
+            }
+            return Success("ok", new { orderNo = OrderNo, totalFee = totalFee });
+        }
+
 
         /// <summary>
         /// 计算基础运费及第一件行李运费
@@ -362,6 +503,27 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
             return firstFee.ToDecimal();
         }
+
+        /// <summary>
+        /// 根据订单号获取时间节点
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response GetClientOrderLogisticsInfo(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject(); //获取模板请求数据 
+            string OrderNo = req["OrderNo"].ToString(); //订单号
+            var data = billClientApiBLL.GetClientOrderLogisticsInfo(OrderNo);
+            if (data.Count() > 0)
+            {
+                return Success(data);
+            }
+            else
+            {
+                return Fail("没有数据!");
+            }
+        }
+
 
         public Response testFee(dynamic _)
         {
