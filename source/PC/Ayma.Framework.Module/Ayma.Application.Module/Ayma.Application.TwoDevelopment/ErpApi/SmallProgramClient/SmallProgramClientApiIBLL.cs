@@ -1,4 +1,5 @@
 ﻿using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi;
+using Ayma.Application.TwoDevelopment.TwoDev;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -72,6 +73,13 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         IEnumerable<T_AirfieldFloor> GetFlightFloorById(string F_AirfieldId);
 
         /// <summary>
+        /// 根据订单号获取时间节点
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        IEnumerable<ClientOrderLogisticsInfo> GetClientOrderLogisticsInfo(string OrderNo);
+
+        /// <summary>
         /// 根据机场Id获取运费计算规则
         /// </summary>
         /// <param name="F_AirfieldId"></param>
@@ -87,6 +95,20 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         void SubmitOrder(BillMakeBaseModelAPi SubmitOrderModelApi, string OrderNo, out string errText);
 
         /// <summary>
+        /// 获取订单头实体
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        T_OrderHeadEntity GetOrderHeadEntity(string OrderNo);
+
+        /// <summary>
+        /// 获取订单详细实体
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        IEnumerable<T_OrderBodyEntity> GetOrderBodyEntity(string OrderNo);
+
+        /// <summary>
         /// 修改订单状态-旅客申请退款
         /// </summary>
         /// <param name="SubmitOrderModelApi"></param>
@@ -100,6 +122,19 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         /// <param name="F_Id"></param>
         /// <param name="errText"></param>
         void AddressToDo(string F_Id, out string errText);
+
+        /// <summary>
+        /// 更新订单详细的运费和距离
+        /// </summary>
+        /// <param name="bodyEntity"></param>
+        void UpdateOrderDetail(decimal F_Price, decimal F_Distance, string F_ConsignmentNumber);
+
+        /// <summary>
+        /// 改变订单类型   加急/普通
+        /// </summary>
+        /// <param name="IsUrgent"></param>
+        /// <param name="OrderNo"></param>
+        void UpdateOrderType(string IsUrgent, string OrderNo);
         
     }
 }
