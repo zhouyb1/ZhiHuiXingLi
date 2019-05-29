@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Common\ErpEnums.cs" />
     <Compile Include="ErpApi\SmallProgramClient\ModelApi\BillMakeBaseModelAPi.cs" />
+    <Compile Include="ErpApi\SmallProgramClient\ModelApi\MapApi.cs" />
     <Compile Include="ErpApi\SmallProgramClient\ModelApi\OrderDetailModelApi.cs" />
     <Compile Include="ErpApi\SmallProgramClient\ModelApi\OrderModelApi.cs" />
     <Compile Include="ErpApi\SmallProgramClient\ModelApi\T_AirfieldInfoModelApi.cs" />

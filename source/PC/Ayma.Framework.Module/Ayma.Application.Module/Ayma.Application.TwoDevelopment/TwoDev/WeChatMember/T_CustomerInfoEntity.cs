@@ -100,6 +100,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         #region 扩展字段
         /// <summary>
         /// 客户订单数
+        [NotMapped]
         public string OrderSum { get; set; }
         #endregion
     }
