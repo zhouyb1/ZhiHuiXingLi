@@ -137,7 +137,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             {
                 var strSql = new StringBuilder();
                 strSql.Append(@"SELECT    h.F_OrderNo ,
-                                        F_State ,
+                                        (case when F_State='41' then '3' when F_State='51'then '4' else F_State end)   F_State ,
                                         F_FlightNumber ,
                                         F_OrderDate ,
                                         ( SELECT    SUM(F_Qty)
