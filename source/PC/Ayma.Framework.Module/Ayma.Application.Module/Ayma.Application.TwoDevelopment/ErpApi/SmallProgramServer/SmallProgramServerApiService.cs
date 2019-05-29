@@ -172,6 +172,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                                 F_LogState,
                                                 F_StateDateTime ,
                                                 F_StateOperator ,
+                                                F_SorterCode,
                                                 F_CustomerOpen  
                                             )
                                     VALUES  ( @F_Id,
@@ -180,6 +181,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                                 @F_LogState,
                                                 @F_StateDateTime,
                                                 @F_StateOperator ,
+                                                @F_SorterCode,
                                                 @F_CustomerOpen
                                             )");
                     var param = new DynamicParameters(new { });
@@ -189,6 +191,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                     param.Add("@F_LogState", status);
                     param.Add("@F_StateDateTime", DateTime.Now.ToString());
                     param.Add("@F_StateOperator", F_Name);
+                    param.Add("@F_SorterCode", Operator);
                     param.Add("@F_CustomerOpen", "1");
                     this.BaseRepository().ExecuteBySql(InSql.ToString(), param);
                 }
@@ -280,6 +283,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                                 F_LogState,
                                                 F_StateDateTime ,
                                                 F_StateOperator ,
+                                                F_SorterCode,
                                                 F_CustomerOpen  
                                             )
                                     VALUES  ( @F_Id,
@@ -288,6 +292,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                                 @F_LogState,
                                                 @F_StateDateTime,
                                                 @F_StateOperator ,
+                                                @F_SorterCode,
                                                 @F_CustomerOpen
                                             )");
                     var param = new DynamicParameters(new { });
@@ -297,6 +302,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                     param.Add("@F_LogState", status);
                     param.Add("@F_StateDateTime", DateTime.Now.ToString());
                     param.Add("@F_StateOperator", F_Name);
+                    param.Add("@F_SorterCode", Operator);
                     param.Add("@F_CustomerOpen", "1");
                     this.BaseRepository().ExecuteBySql(InSql.ToString(), param);
                 }
