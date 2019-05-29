@@ -1,4 +1,5 @@
 ﻿using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi;
+using Ayma.Application.TwoDevelopment.TwoDev;
 using Ayma.Util;
 using System;
 using System.Collections.Generic;
@@ -204,6 +205,31 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 }
             }
         }
+
+        /// <summary>
+        /// 根据订单号获取时间节点
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public IEnumerable<ClientOrderLogisticsInfo> GetClientOrderLogisticsInfo(string OrderNo)
+        {
+            try
+            {
+                return billClientApiService.GetClientOrderLogisticsInfo(OrderNo);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
         /// <summary>
         /// 根据订单号获取订单详细
         /// </summary>
@@ -273,6 +299,54 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         }
 
         /// <summary>
+        /// 获取订单头实体
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        public T_OrderHeadEntity GetOrderHeadEntity(string OrderNo)
+        {
+            try
+            {
+                return billClientApiService.GetOrderHeadEntity(OrderNo);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取订单详细实体
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        public IEnumerable<T_OrderBodyEntity> GetOrderBodyEntity(string OrderNo)
+        {
+            try
+            {
+                return billClientApiService.GetOrderBodyEntity(OrderNo);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 修改订单状态-旅客申请退款
         /// </summary>
         /// <param name="OrderNo"></param>
@@ -321,5 +395,51 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             }
         }
 
+        /// <summary>
+        /// 更新订单详细的运费和距离
+        /// </summary>
+        /// <param name="bodyEntity"></param>
+        public void UpdateOrderDetail(decimal F_Price, decimal F_Distance, string F_ConsignmentNumber)
+        {
+            try
+            {
+                billClientApiService.UpdateOrderDetail(F_Price, F_Distance, F_ConsignmentNumber);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 改变订单类型   加急/普通
+        /// </summary>
+        /// <param name="IsUrgent"></param>
+        /// <param name="OrderNo"></param>
+        public void UpdateOrderType(string IsUrgent, string OrderNo)
+        {
+            try
+            {
+                billClientApiService.UpdateOrderType(IsUrgent, OrderNo);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
     }
 }
