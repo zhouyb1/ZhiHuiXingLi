@@ -381,7 +381,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
 
                 //保存地址到地址表
                 var InsAddress = new StringBuilder();
-                InsAddress.Append(@"INSERT INTO dbo.T_Address ( F_Id, F_Address, F_OpenId,F_Name,F_Phone ) VALUES (@F_Id, @F_Address, @F_OpenId,@F_Name,@F_Phone)");
+                InsAddress.Append(@"IF NOT EXISTS (select F_Name from T_Address where F_Address=@F_Address and F_OpenId=@F_OpenId and F_Name=@F_Name and F_Phone=@F_Phone)
+                Begin
+	                INSERT INTO dbo.T_Address ( F_Id, F_Address, F_OpenId,F_Name,F_Phone ) VALUES (@F_Id, @F_Address, @F_OpenId,@F_Name,@F_Phone)
+                END");
                 var ad = new DynamicParameters(new { });
                 ad.Add("@F_Id", Guid.NewGuid().ToString());
                 ad.Add("@F_Address", SubmitOrderModelApi.Head.F_CustomerAddress);
