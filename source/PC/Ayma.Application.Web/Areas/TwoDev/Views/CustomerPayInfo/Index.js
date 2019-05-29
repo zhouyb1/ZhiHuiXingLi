@@ -72,8 +72,9 @@ var bootstrap = function ($, ayma) {
                     { label: "基础公里数", name: "F_DistanceBaseQty", width: 160, align: "left"},
                     { label: "每公里加价", name: "F_DistancePrice", width: 160, align: "left"},
                     { label: "折扣1", name: "F_Discount1", width: 160, align: "left"},
-                    { label: "折扣2", name: "F_Discount2", width: 160, align: "left"}
-                    //{ label: "折扣3", name: "F_Discount3", width: 160, align: "left"},
+                    { label: "折扣2", name: "F_Discount2", width: 160, align: "left"},
+                    { label: "折扣3", name: "F_Discount3", width: 160, align: "left" },
+                    { label: "加急比例", name: "F_UrgentRatio", width: 160, align: "left" },
                 ],
                 mainId:'F_Id',
                 reloadSelected: true,

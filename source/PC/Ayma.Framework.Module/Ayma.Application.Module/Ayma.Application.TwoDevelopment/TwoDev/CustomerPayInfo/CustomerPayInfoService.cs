@@ -37,7 +37,8 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 t.F_DistancePrice,
                 t.F_Discount1,
                 t.F_Discount2,
-                t.F_Discount3
+                t.F_Discount3,
+                t.F_UrgentRatio
                 ");
                 strSql.Append("  FROM T_CustomerPayInfo t ");
                 strSql.Append("  WHERE 1=1 ");

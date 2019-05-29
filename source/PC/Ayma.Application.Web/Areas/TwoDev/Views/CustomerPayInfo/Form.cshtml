@@ -2,38 +2,43 @@
     ViewBag.Title = "运费设置";
     Layout = "~/Views/Shared/_Form.cshtml";
 }
+
 <div class="am-form-wrap" id="form">
     @*<div class="col-xs-12 am-form-item"  data-table="T_CustomerPayInfo" >
         <div class="am-form-item-title">机场Id</div>
         <input id="F_AirfieldId" type="text" class="form-control"  />
     </div>*@
-    <div class="col-xs-12 am-form-item"  data-table="T_CustomerPayInfo" >
+    <div class="col-xs-6 am-form-item"  data-table="T_CustomerPayInfo" >
         <div class="am-form-item-title">机场名称</div>
         <input id="F_AirfieldName" type="text" class="form-control"  />
     </div>
-    <div class="col-xs-12 am-form-item"  data-table="T_CustomerPayInfo" >
+    <div class="col-xs-6 am-form-item"  data-table="T_CustomerPayInfo" >
         <div class="am-form-item-title">单件费用</div>
         <input id="F_NumberPice" type="text" class="form-control"  />
     </div>
-    <div class="col-xs-12 am-form-item"  data-table="T_CustomerPayInfo" >
+    <div class="col-xs-6 am-form-item"  data-table="T_CustomerPayInfo" >
         <div class="am-form-item-title">基础公里数</div>
         <input id="F_DistanceBaseQty" type="text" class="form-control"  />
     </div>
-    <div class="col-xs-12 am-form-item"  data-table="T_CustomerPayInfo" >
+    <div class="col-xs-6 am-form-item"  data-table="T_CustomerPayInfo" >
         <div class="am-form-item-title">每公里加价</div>
         <input id="F_DistancePrice" type="text" class="form-control"  />
     </div>
-    <div class="col-xs-12 am-form-item"  data-table="T_CustomerPayInfo" >
+    <div class="col-xs-6 am-form-item"  data-table="T_CustomerPayInfo" >
         <div class="am-form-item-title">折扣1</div>
         <input id="F_Discount1" type="text" class="form-control"  />
     </div>
-    <div class="col-xs-12 am-form-item"  data-table="T_CustomerPayInfo" >
+    <div class="col-xs-6 am-form-item"  data-table="T_CustomerPayInfo" >
         <div class="am-form-item-title">折扣2</div>
         <input id="F_Discount2" type="text" class="form-control"  />
     </div>
-    @*<div class="col-xs-12 am-form-item"  data-table="T_CustomerPayInfo" >
+    <div class="col-xs-6 am-form-item"  data-table="T_CustomerPayInfo" >
         <div class="am-form-item-title">折扣3</div>
         <input id="F_Discount3" type="text" class="form-control"  />
-    </div>*@
+    </div>
+    <div class="col-xs-6 am-form-item" data-table="T_CustomerPayInfo">
+        <div class="am-form-item-title abc">加急比例(%)</div>
+        <input id="F_UrgentRatio" type="text" class="form-control"/>
+    </div>
 </div>
 @Html.AppendJsFile("/Areas/TwoDev/Views/CustomerPayInfo/Form.js")
