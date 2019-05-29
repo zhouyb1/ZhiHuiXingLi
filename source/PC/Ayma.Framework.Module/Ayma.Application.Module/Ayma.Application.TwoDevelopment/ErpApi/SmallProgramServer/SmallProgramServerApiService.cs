@@ -120,13 +120,23 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         {
             try
             {
+                T_EmployeeInfoEntity entity = this.BaseRepository().FindEntity<T_EmployeeInfoEntity>(c => c.F_Code == Operator);  //获取拣货员信息
+                var F_Name = "";
+                var F_Phone = "";
+                if (entity != null)
+                {
+                    F_Name = entity.F_Name;           //分拣员姓名
+                    F_Phone = entity.F_Phone;        //分拣员电话
+                }
                 foreach (var item in ConsignmentNumber)
                 {
                     var strSql = new StringBuilder();
-                    strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status WHERE F_ConsignmentNumber=@ConsignmentNumber");
+                    strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status,FB_Name=@FB_Name,FB_Phone=@FB_Phone WHERE F_ConsignmentNumber=@ConsignmentNumber");
                     var dp = new DynamicParameters(new { });
                     dp.Add("@ConsignmentNumber", item);
                     dp.Add("@Status", status);
+                    dp.Add("@FB_Name", F_Name);
+                    dp.Add("@FB_Phone", F_Phone);
                     this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
 
                     var StateDescribe = "";
@@ -178,7 +188,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                     param.Add("@F_StateDescribe", StateDescribe);
                     param.Add("@F_LogState", status);
                     param.Add("@F_StateDateTime", DateTime.Now.ToString());
-                    param.Add("@F_StateOperator", Operator);
+                    param.Add("@F_StateOperator", F_Name);
                     param.Add("@F_CustomerOpen", "1");
                     this.BaseRepository().ExecuteBySql(InSql.ToString(), param);
                 }
@@ -235,23 +245,24 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         {
             try
             {
+                T_EmployeeInfoEntity entity = this.BaseRepository().FindEntity<T_EmployeeInfoEntity>(c => c.F_Code == Operator);  //获取拣货员信息
+                var F_Name = "";
+                var F_Phone = "";
+                if (entity != null)
+                {
+                    F_Name = entity.F_Name;           //分拣员姓名
+                    F_Phone = entity.F_Phone;        //分拣员电话
+                }
                 foreach (var item in ConNumberList)
                 {
                     var strSql = new StringBuilder();
-                    strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status WHERE F_ConsignmentNumber=@ConsignmentNumber");
+                    strSql.Append(@"UPDATE T_OrderBody SET FB_State=@Status,FB_Name=@FB_Name,FB_Phone=@FB_Phone WHERE F_ConsignmentNumber=@ConsignmentNumber");
                     var dp = new DynamicParameters(new { });
                     dp.Add("@Status", status);
                     dp.Add("@ConsignmentNumber", item);
+                    dp.Add("@FB_Name", F_Name);
+                    dp.Add("@FB_Phone", F_Phone);
                     this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
-                }
-                foreach (var OrderNo in OrderList)
-                {
-                    var updateSql = new StringBuilder();
-                    updateSql.Append(@"UPDATE T_OrderHead SET F_State=@Status WHERE F_OrderNo=@OrderNo");
-                    var dp = new DynamicParameters(new { });
-                    dp.Add("@Status", status);
-                    dp.Add("@OrderNo", OrderNo);
-                    this.BaseRepository().ExecuteBySql(updateSql.ToString(), dp);
 
                     var StateDescribe = "";
                     switch (status)
@@ -281,13 +292,23 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                             )");
                     var param = new DynamicParameters(new { });
                     param.Add("@F_Id", Guid.NewGuid().ToString());
-                    param.Add("@F_OrderNo", OrderNo);
+                    param.Add("@F_OrderNo", item);
                     param.Add("@F_StateDescribe", StateDescribe);
                     param.Add("@F_LogState", status);
                     param.Add("@F_StateDateTime", DateTime.Now.ToString());
-                    param.Add("@F_StateOperator", Operator);
+                    param.Add("@F_StateOperator", F_Name);
                     param.Add("@F_CustomerOpen", "1");
                     this.BaseRepository().ExecuteBySql(InSql.ToString(), param);
+                }
+
+                foreach (var OrderNo in OrderList)
+                {
+                    var updateSql = new StringBuilder();
+                    updateSql.Append(@"UPDATE T_OrderHead SET F_State=@Status WHERE F_OrderNo=@OrderNo");
+                    var dp = new DynamicParameters(new { });
+                    dp.Add("@Status", status);
+                    dp.Add("@OrderNo", OrderNo);
+                    this.BaseRepository().ExecuteBySql(updateSql.ToString(), dp);
                 }
                 errText = "修改成功!";
             }
@@ -478,7 +499,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 var strSql = new StringBuilder();
                 strSql.Append(@"SELECT DISTINCT F_FlightNumber,F_State,h.F_OrderNo,F_OrderDate,F_AirfieldFloor,F_CustomerName,
                                 (SELECT sum (F_Qty) FROM T_OrderBody WHERE F_OrderNo=h.F_OrderNo) F_Qty,
-                                F_CustomerPhone,F_CustomerAddress,F_Stype,F_IsUrgent
+                                F_CustomerPhone,F_CustomerAddress,F_Stype,F_IsUrgent,b.FB_Name,b.FB_Phone
                                 FROM dbo.T_OrderHead h
                                 LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo
                                 WHERE 1=1 AND F_OrderDate BETWEEN @DateStart AND @DateEnd");
