@@ -164,7 +164,7 @@ SELECT
 								left join T_OrderLogisticsInfo t  on t.F_OrderNo=c2.F_ConsignmentNumber
 								 where  t.F_LogState ='3')/COUNT(distinct a.F_OrderNo) YFJTime
 							from T_EmployeeInfo e 
-							left join T_OrderLogisticsInfo f on e.F_Code=f.F_StateOperator
+							left join T_OrderLogisticsInfo f on e.F_Code=f.F_SorterCode
 							left join T_OrderBody b on b.F_ConsignmentNumber=f.F_OrderNo
 							left join T_OrderHead a on b.F_OrderNo=a.F_OrderNo
                             WHERE 1=1 
