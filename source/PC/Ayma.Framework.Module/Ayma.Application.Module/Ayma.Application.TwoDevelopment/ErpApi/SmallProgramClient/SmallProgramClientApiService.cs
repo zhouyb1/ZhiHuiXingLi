@@ -127,7 +127,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
 
 
         /// <summary>
-        /// 根据openId获取订单列表
+        /// 根据openId获取订单列表  按订单日期(F_OrderDate) 倒序
         /// </summary>
         /// <param name="openId"></param>
         /// <returns></returns>
@@ -152,7 +152,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 {
                     strSql.Append(" And F_State=@F_State");
                 }
-                strSql.Append("  GROUP BY  h.F_OrderNo , F_State ,F_FlightNumber , F_OrderDate");                    
+                strSql.Append("  GROUP BY  h.F_OrderNo , F_State ,F_FlightNumber , F_OrderDate order by F_OrderDate desc ");                    
                 var dp = new DynamicParameters(new { });
                 dp.Add("@OpenId",openId);
                 if (!string.IsNullOrEmpty(status))
@@ -255,7 +255,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT F_CustomerName,F_CustomerPhone,F_CustomerAddress,h.F_FlightNumber,F_OrderNo,F_State,AddressBegin,AddressEnd
+                strSql.Append(@"SELECT F_CustomerName,F_CustomerPhone,F_CustomerAddress,h.F_FlightNumber,F_OrderNo,F_State,AddressBegin,AddressEnd,F_IsUrgent
                             FROM dbo.T_OrderHead h
                             LEFT JOIN T_FlightNoInfo f ON f.F_FlightNumber = h.F_FlightNumber WHERE F_OrderNo=@OrderNo");
                 var dp = new DynamicParameters(new { });
