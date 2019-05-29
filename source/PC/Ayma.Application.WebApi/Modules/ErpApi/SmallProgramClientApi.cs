@@ -270,6 +270,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             var orderNo = new CodeRuleBLL().GetBillCode("10001", "System");
             new CodeRuleBLL().UseRuleSeed("10001", "System");
             string errText = "";
+
             //两点之间的驾车距离计算(计算机场与寄件地址的距离)规则
             var endStation = airportService.GetT_AirfieldInfoEntity(SubmitOrderModelApi.Head.F_AirfieldId);
             var distance = CommonHelper.GetDistance(endStation.F_Longitude.ToDouble(),
@@ -292,18 +293,18 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             decimal elseFee = 0;  //第三件及以后行李的运费
             decimal elsetotalFee = 0; //第三件及以后行李的总运费
             decimal totalFee = 0;  //总运费
-            int packagCount = SubmitOrderModelApi.OrderDetails.Count;
+            int packagCount = SubmitOrderModelApi.OrderDetails.Count;    //获取行李数
 
-            if (packagCount == 1)
+            if (packagCount == 1)   //计算第一件行李运费
             {
                 firstFee = BaseFee(SubmitOrderModelApi.Head.F_AirfieldId, RealKM);
             }
-            else if (packagCount == 2)
+            else if (packagCount == 2)   //计算第二件行李运费
             {
                 firstFee = BaseFee(SubmitOrderModelApi.Head.F_AirfieldId, RealKM);
                 secondFee = firstFee * F_Discount1;
             }
-            else
+            else     //计算第三件及以后行李的总运费
             {
                 firstFee = BaseFee(SubmitOrderModelApi.Head.F_AirfieldId, RealKM);
                 secondFee = firstFee * F_Discount1;
@@ -343,7 +344,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         /// <returns></returns>
         public decimal BaseFee(string F_AirfieldId, int RealKM)
         {
-            //string F_AirfieldId = "943C717C-9ED7-46ED-B3A2-0744740377B6";
             //获取机场运费计算规则
             DataTable FeeRule = billClientApiBLL.GetFeeRule(F_AirfieldId);
             decimal F_NumberPice = Convert.ToDecimal(FeeRule.Rows[0]["F_NumberPice"]);
