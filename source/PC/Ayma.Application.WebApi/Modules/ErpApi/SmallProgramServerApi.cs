@@ -324,15 +324,15 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         }
 
         /// <summary>
-        /// 根据行李号获取时间节点
+        /// 根据订单号获取时间节点
         /// </summary>
         /// <param name="_"></param>
         /// <returns></returns>
         public Response GetOrderLogisticsInfo(dynamic _)
         {
             var req = this.GetReqData().ToJObject(); //获取模板请求数据 
-            string ConNumber = req["ConsignmentNumber"].ToString(); //行李号
-            var data = billServerApiBLL.GetOrderLogisticsInfo(ConNumber);
+            string OrderNo = req["OrderNo"].ToString(); //行李号
+            var data = billServerApiBLL.GetOrderLogisticsInfo(OrderNo);
             if (data.Count() > 0)
             {
                 return Success(data);
