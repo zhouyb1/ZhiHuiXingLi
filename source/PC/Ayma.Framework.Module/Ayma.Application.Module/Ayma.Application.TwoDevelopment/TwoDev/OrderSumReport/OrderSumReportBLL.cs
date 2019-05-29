@@ -30,5 +30,43 @@ namespace Ayma.Application.TwoDevelopment.TwoDev.OrderSumReport
                 }
             }
         }
+        //财务数据报表
+        public IEnumerable<FinanceReportModel> GetFinanceReport(string queryJson)
+        {
+            try
+            {
+                return ordersumreportservice.GetFinanceReport(queryJson);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+        //分拣工作数据报表
+        public IEnumerable<SorterReportModel> GetSorterReport(string queryJson)
+        {
+            try
+            {
+                return ordersumreportservice.GetSorterReport(queryJson);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
     }
 }

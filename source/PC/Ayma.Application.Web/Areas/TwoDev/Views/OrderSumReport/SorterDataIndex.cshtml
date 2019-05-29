@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "业务综合数据查询";
+    ViewBag.Title = "分拣员工作数据查询";
     Layout = "~/Views/Shared/_Index.cshtml";
 }
 <div class="am-layout">
@@ -13,10 +13,6 @@
                     <div class="am-layout-tool-item">
                         <div id="multiple_condition_query">
                             <div class="am-query-formcontent">
-                                <div class="col-xs-12 am-form-item">
-                                    <div class="am-form-item-title">航空公司</div>
-                                    <input id="F_FlightCompany" type="text" class="form-control" placeholder="请输入航空公司">
-                                </div>
                                 <div class="col-xs-6 am-form-item">
                                     <div class="am-form-item-title">开始日期</div>
                                     <input id="StartTime" type="text" class="form-control am-input-wdatepicker" onfocus="WdatePicker({ onpicked: function () { $('#EndTime').trigger('change'); } })" value="@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")" isvalid="yes" checkexpession="NotNull" />
@@ -42,4 +38,4 @@
         </div>
     </div>
 </div>
-@Html.AppendJsFile("/Areas/TwoDev/Views/OrderSumReport/SynthesizeIndex.js")
+@Html.AppendJsFile("/Areas/TwoDev/Views/OrderSumReport/SorterDataIndex.js")

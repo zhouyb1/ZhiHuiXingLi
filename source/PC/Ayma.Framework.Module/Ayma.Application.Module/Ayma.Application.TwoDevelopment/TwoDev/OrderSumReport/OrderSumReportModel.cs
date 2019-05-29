@@ -29,4 +29,46 @@ namespace Ayma.Application.TwoDevelopment.TwoDev.OrderSumReport
         //快递至签收平均时间
         public string Kdzqs { get; set; }
     }
+
+    public class FinanceReportModel
+    {
+        //订单号
+        public string OrderNum { get; set; }
+
+        //行李数
+        public int ConsignmentNum { get; set; }
+        
+        //收费金额
+        public double? ChargeMoney { get; set; }
+        
+        //第三方费用
+        public double? ThirdMoney { get; set; }
+
+        //毛利润
+        public double? GrossProfit { get; set; }
+
+        //日期
+        public string OrderDate { get; set; }
+    }
+
+    public class SorterReportModel
+    {
+        //分拣员姓名
+        public string FJYName { get; set; }
+
+        //接单数量
+        public double? JDNum { get; set; }
+        
+        //行李数量
+        public double? XLNum { get; set; }
+
+        //异常行李数
+        public double? YCXLNum { get; set; }
+        
+        //被投诉数量
+        public double? TSNum { get; set; }
+
+        //ATA到已分拣平均时间
+        public string YFJTime { get; set; }
+    }
 }

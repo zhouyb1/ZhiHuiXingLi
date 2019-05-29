@@ -464,6 +464,8 @@
     <Content Include="Areas\TwoDev\Views\OrderInquiry\PutpayMoney.js" />
     <Content Include="Areas\TwoDev\Views\OrderInquiry\UpdateForm.js" />
     <Content Include="Areas\TwoDev\Views\OrderInquiry\UpdateLuggageForm.js" />
+    <Content Include="Areas\TwoDev\Views\OrderSumReport\FinanceDataIndex.js" />
+    <Content Include="Areas\TwoDev\Views\OrderSumReport\SorterDataIndex.js" />
     <Content Include="Areas\TwoDev\Views\OrderSumReport\SynthesizeIndex.js" />
     <Content Include="Areas\TwoDev\Views\WeChatMember\OrderList.js" />
     <Content Include="Content\bootstrap\bootstrap-theme.min.css" />
@@ -1801,6 +1803,8 @@
     <Content Include="Areas\TwoDev\Views\OrderInquiry\UpdateLuggageForm.cshtml" />
     <Content Include="Areas\TwoDev\Views\OrderSumReport\SynthesizeIndex.cshtml" />
     <Content Include="Areas\TwoDev\Views\WeChatMember\OrderList.cshtml" />
+    <Content Include="Areas\TwoDev\Views\OrderSumReport\FinanceDataIndex.cshtml" />
+    <Content Include="Areas\TwoDev\Views\OrderSumReport\SorterDataIndex.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
