@@ -49,6 +49,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
     public class GetFlightMessage
     {
         /// <summary>
+        /// 机场Id
+        /// </summary>
+        public string F_AirfieldId { get; set; }
+        /// <summary>
         /// 航班号
         /// </summary>
         public string F_FlightNumber { get; set; }
