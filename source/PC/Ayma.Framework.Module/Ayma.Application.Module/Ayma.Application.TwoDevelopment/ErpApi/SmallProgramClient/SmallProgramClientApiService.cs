@@ -101,6 +101,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             }
         }
 
+        /// <summary>
+        /// 根据航班号模糊查询航班信息
+        /// </summary>
+        /// <param name="FlightNumber"></param>
+        /// <returns></returns>
         public IEnumerable<GetFlightMessage> GetFlightMessage(string FlightNumber)
         {
             try
@@ -305,6 +310,71 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         }
 
         /// <summary>
+        /// 根据订单号获取时间节点
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public IEnumerable<ClientOrderLogisticsInfo> GetClientOrderLogisticsInfo(string OrderNo)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT  DISTINCT b.F_OrderNo        
+                                FROM    dbo.T_OrderLogisticsInfo a
+                                LEFT JOIN dbo.T_OrderBody b ON b.F_ConsignmentNumber=a.F_OrderNo
+                                WHERE   b.F_OrderNo=@OrderNo");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@OrderNo", OrderNo);
+                var list = this.BaseRepository().FindList<ClientOrderLogisticsInfo>(strSql.ToString(), dp).ToList();
+                list.ForEach(c => c.CliLogisticsInfo = GetLogisticsInfo(c.F_OrderNo).ToList());
+                return list;
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        public IEnumerable<ClientLogisticsInfo> GetLogisticsInfo(string OrderNo)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT DISTINCT
+                                        b.F_OrderNo ,
+                                        F_StateDescribe ,
+                                        F_LogState ,
+                                        F_StateDateTime ,
+                                        F_StateOperator
+                                FROM    dbo.T_OrderLogisticsInfo a
+                                        LEFT JOIN dbo.T_OrderBody b ON b.F_ConsignmentNumber = a.F_OrderNo
+                                WHERE   F_LogState NOT IN ( '41', '51' )
+                                        AND b.F_OrderNo =@OrderNo ");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@OrderNo", OrderNo);
+                return this.BaseRepository().FindList<ClientLogisticsInfo>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 根据机场Id获取运费计算规则
         /// </summary>
         /// <param name="F_AirfieldId"></param>
@@ -438,6 +508,54 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         }
 
         /// <summary>
+        /// 获取订单头实体
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        public T_OrderHeadEntity GetOrderHeadEntity(string OrderNo)
+        {
+            try
+            {
+                return this.BaseRepository().FindEntity<T_OrderHeadEntity>(c => c.F_OrderNo == OrderNo);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取订单详细实体
+        /// </summary>
+        /// <param name="OrderNo"></param>
+        /// <returns></returns>
+        public IEnumerable<T_OrderBodyEntity> GetOrderBodyEntity(string OrderNo)
+        {
+            try
+            {
+                return this.BaseRepository().FindList<T_OrderBodyEntity>(c => c.F_OrderNo == OrderNo);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 修改订单状态-旅客申请退款
         /// </summary>
         /// <param name="OrderNo"></param>
@@ -490,6 +608,69 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             catch (Exception ex)
             {
                 errText = "删除失败!";
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 更新订单详细的运费和距离
+        /// </summary>
+        /// <param name="bodyEntity"></param>
+        public void UpdateOrderDetail(decimal F_Price, decimal F_Distance, string F_ConsignmentNumber)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"UPDATE  T_OrderBody
+                                SET     F_Price = @F_Price ,
+                                        F_Distance = @F_Distance
+                                WHERE   F_ConsignmentNumber = @F_ConsignmentNumber");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@F_Price", F_Price);
+                dp.Add("@F_Distance", F_Distance);
+                dp.Add("@F_ConsignmentNumber", F_ConsignmentNumber);
+                this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 改变订单类型   加急/普通
+        /// </summary>
+        /// <param name="IsUrgent"></param>
+        /// <param name="OrderNo"></param>
+        public void UpdateOrderType(string IsUrgent, string OrderNo)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"UPDATE  dbo.T_OrderHead
+                                SET     F_IsUrgent =@IsUrgent
+                                WHERE   F_OrderNo = @OrderNo");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@IsUrgent", IsUrgent);
+                dp.Add("@OrderNo", OrderNo);
+                this.BaseRepository().ExecuteBySql(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
                 if (ex is ExceptionEx)
                 {
                     throw;
