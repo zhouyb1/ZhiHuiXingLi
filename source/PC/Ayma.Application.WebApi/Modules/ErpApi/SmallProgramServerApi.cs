@@ -331,7 +331,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         public Response GetOrderLogisticsInfo(dynamic _)
         {
             var req = this.GetReqData().ToJObject(); //获取模板请求数据 
-            string OrderNo = req["OrderNo"].ToString(); //行李号
+            string OrderNo = req["OrderNo"].ToString(); //订单号
             var data = billServerApiBLL.GetOrderLogisticsInfo(OrderNo);
             if (data.Count() > 0)
             {
