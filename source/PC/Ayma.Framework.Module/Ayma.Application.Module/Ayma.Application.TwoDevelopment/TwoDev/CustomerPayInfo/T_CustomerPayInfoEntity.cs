@@ -57,6 +57,11 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         [Column("F_DISCOUNT3")]
         public decimal? F_Discount3 { get; set; }
+        /// <summary>
+        /// 加急比例
+        /// </summary>
+        [Column("F_URGENTRATIO")]
+        public decimal? F_UrgentRatio { get; set; }
         #endregion
 
         #region 扩展操作
