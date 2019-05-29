@@ -49,6 +49,12 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         [Column("F_STATEOPERATOR")]
         public string F_StateOperator { get; set; }
         /// <summary>
+        /// 操作人工号
+        /// </summary>
+        /// <returns></returns>
+        [Column("F_SORTERCODE")]
+        public string F_SorterCode { get; set; }
+        /// <summary>
         /// 对客户开放  1、开放；0、不开放
         /// </summary>
         /// <returns></returns>
