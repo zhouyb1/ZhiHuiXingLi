@@ -106,7 +106,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT F_FlightNumber,F_AirfieldFloorBegin,AddressBegin,F_AirfieldBegin,F_AirfieldFloor,AddressEnd,F_AirfieldEnd,F_FlightCompany
+                strSql.Append(@"SELECT F_AirfieldId,F_FlightNumber,F_AirfieldFloorBegin,AddressBegin,F_AirfieldBegin,F_AirfieldFloor,AddressEnd,F_AirfieldEnd,F_FlightCompany
                                 FROM T_FlightNoInfo WHERE F_FlightNumber LIKE '%'+@FlightNumber+'%'");
                 var dp = new DynamicParameters(new { });
                 dp.Add("@FlightNumber", FlightNumber);
