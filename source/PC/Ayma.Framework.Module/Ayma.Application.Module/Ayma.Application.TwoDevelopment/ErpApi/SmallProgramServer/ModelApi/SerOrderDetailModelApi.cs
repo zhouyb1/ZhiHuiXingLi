@@ -59,6 +59,16 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         public string F_IsUrgent { get; set; }
 
         /// <summary>
+        /// 分拣员姓名
+        /// </summary>
+        public string FB_Name { get; set; }
+
+        /// <summary>
+        /// 分拣员电话
+        /// </summary>
+        public string FB_Phone { get; set; }
+
+        /// <summary>
         /// 是否港内
         /// </summary>
         public string F_Stype { get; set; }
