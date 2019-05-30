@@ -354,6 +354,12 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             ResParameter res = new ResParameter { code = ResponseCode.fail, info = info, data = new object { } };
             return Response.AsText(res.ToJson()).WithContentType("application/json");
         }
+        public Response FailString(string info, object data)
+        {
+            ResParameter res = new ResParameter { code = ResponseCode.fail, info = info, data = data };
+            return Response.AsText(res.ToJson()).WithContentType("application/json");
+        }
+
         /// <summary>
         /// 响应给微信服务器
         /// </summary>
