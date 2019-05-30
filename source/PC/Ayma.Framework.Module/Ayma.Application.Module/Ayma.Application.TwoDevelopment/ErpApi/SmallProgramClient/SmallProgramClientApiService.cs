@@ -579,6 +579,9 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                     var StateDescribe = "";
                     switch (status)
                     {
+                        case "-1":
+                            StateDescribe = "取消订单";
+                            break;
                         case "-3":
                             StateDescribe = "申请退款";
                             break;
