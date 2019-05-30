@@ -140,7 +140,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// <summary>
         /// 起飞时间
         /// </summary>
-        public DateTime DateTimeBegin { get; set; }
+        public DateTime DateTimeEndReality { get; set; }
 
         /// <summary>
         /// 到达时间
