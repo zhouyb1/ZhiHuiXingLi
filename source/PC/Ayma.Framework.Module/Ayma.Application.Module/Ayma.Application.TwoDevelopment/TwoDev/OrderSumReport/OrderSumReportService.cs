@@ -167,7 +167,7 @@ SELECT
 							left join T_OrderLogisticsInfo f on e.F_Code=f.F_SorterCode
 							left join T_OrderBody b on b.F_ConsignmentNumber=f.F_OrderNo
 							left join T_OrderHead a on b.F_OrderNo=a.F_OrderNo
-                            WHERE 1=1 
+                            WHERE 1=1 and f.F_SorterCode is not null
 							GROUP BY e.F_Name
         ";
                 var strParm = new StringBuilder();
