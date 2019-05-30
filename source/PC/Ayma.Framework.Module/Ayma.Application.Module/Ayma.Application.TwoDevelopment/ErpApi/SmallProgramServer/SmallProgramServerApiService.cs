@@ -467,6 +467,29 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             }
         }
 
+        public IEnumerable<Employee> GetEmployeeInfoByNo(string OrderNo)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT DISTINCT FB_Name,FB_Phone FROM T_OrderBody WHERE F_OrderNo=@OrderNo");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@OrderNo", OrderNo);
+                return this.BaseRepository().FindList<Employee>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
         /// <summary>
         /// 获取所有快递公司记录
         /// </summary>
@@ -505,7 +528,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 var strSql = new StringBuilder();
                 strSql.Append(@"SELECT DISTINCT F_FlightNumber,F_State,h.F_OrderNo,F_OrderDate,F_AirfieldFloor,F_CustomerName,
                                 (SELECT sum (F_Qty) FROM T_OrderBody WHERE F_OrderNo=h.F_OrderNo) F_Qty,
-                                F_CustomerPhone,F_CustomerAddress,F_Stype,F_IsUrgent,b.FB_Name,b.FB_Phone
+                                F_CustomerPhone,F_CustomerAddress,F_Stype,F_IsUrgent
                                 FROM dbo.T_OrderHead h
                                 LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo
                                 WHERE 1=1 AND F_OrderDate BETWEEN @DateStart AND @DateEnd");
@@ -530,6 +553,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 var list = this.BaseRepository().FindList<SerOrderDetailModelApi>(strSql.ToString(), dp).ToList();
                 list.ForEach(c => c.CNumberList = GetConsignmentNumberByNo(c.F_OrderNo).ToList());
                 list.ForEach(c => c.ExpressNoList = GetExpressNumberByNo(c.F_OrderNo).ToList());
+                list.ForEach(c => c.EmployeeInfo = GetEmployeeInfoByNo(c.F_OrderNo).ToList());
                 return list;
             }
             catch (Exception ex)
@@ -685,7 +709,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                         F_StateDateTime ,
                                         F_StateOperator
                                 FROM    T_OrderLogisticsInfo
-                                WHERE   F_OrderNo=@ConsignmentNumber");
+                                WHERE   F_LogState NOT IN('-1','-3','5') AND F_OrderNo=@ConsignmentNumber");
                 var dp = new DynamicParameters(new { });
                 dp.Add("@ConsignmentNumber", ConNumber);
                 return this.BaseRepository().FindList<LogisticsInfo>(strSql.ToString(), dp);
