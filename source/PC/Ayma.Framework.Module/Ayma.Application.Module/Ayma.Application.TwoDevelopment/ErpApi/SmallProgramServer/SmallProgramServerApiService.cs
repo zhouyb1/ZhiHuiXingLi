@@ -579,19 +579,25 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT F_FlightCompany,F_FlightNumber,AddressBegin,AddressEnd,
-                                DateTimeEnd,DateTimeEndReality,F_ConveyorNumber,F_Placement,SUM(F_Qty) TotalQty FROM      
-                                (SELECT h.F_FlightCompany,h.F_FlightNumber,h.F_OrderDate,f.AddressBegin,f.AddressEnd,
-                                f.DateTimeEnd,f.DateTimeEndReality,f.F_ConveyorNumber,f.F_Placement,
-                                F_Qty
-                                FROM T_OrderHead h
-                                LEFT JOIN dbo.T_OrderBody b
-                                ON b.F_OrderNo = h.F_OrderNo
-                                LEFT JOIN T_FlightNoInfo f 
-                                ON f.F_FlightNumber = h.F_FlightNumber 
-                                WHERE 1=1 AND h.F_FlightNumber=@F_FlightNumber AND h.F_OrderDate BETWEEN @StartTime AND @EndTime
-                                ) a");
-                strSql.Append(" GROUP BY a.F_FlightCompany,a.F_FlightNumber,AddressBegin,AddressEnd,DateTimeEnd,DateTimeEndReality,F_ConveyorNumber,F_Placement ");
+                strSql.Append(@"SELECT  h.F_FlightCompany ,
+                                        h.F_FlightNumber ,
+                                        f.AddressBegin ,
+                                        f.AddressEnd ,
+                                        f.DateTimeEnd ,
+                                        f.DateTimeEndReality ,
+                                        f.F_ConveyorNumber ,
+                                        f.F_Placement ,
+                                        SUM(F_Qty) TotalQty
+                                FROM    T_OrderHead h
+                                        LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo
+                                        LEFT JOIN T_FlightNoInfo f ON f.F_FlightNumber = h.F_FlightNumber
+                                WHERE   1 = 1");
+                if (!string.IsNullOrEmpty(FlightNumber))
+                {
+                    strSql.Append(" AND h.F_FlightNumber=@F_FlightNumber");
+                }
+                strSql.Append(" AND h.F_OrderDate BETWEEN @StartTime AND @EndTime");
+                strSql.Append(" GROUP BY h.F_FlightCompany,h.F_FlightNumber,AddressBegin,AddressEnd,DateTimeEnd,DateTimeEndReality,F_ConveyorNumber,F_Placement ");
                 strSql.Append(" ORDER BY DateTimeEnd DESC");
                 var dp = new DynamicParameters(new { });
                 dp.Add("@F_FlightNumber", FlightNumber);
