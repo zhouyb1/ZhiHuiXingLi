@@ -571,6 +571,52 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 dp.Add("@F_State", status);
                 dp.Add("@F_OrderNo", OrderNo);
                 db.ExecuteBySql(sql, dp);
+
+                //插入操作时间节点
+                var bodyEntity = this.BaseRepository().FindList<T_OrderBodyEntity>(c => c.F_OrderNo == OrderNo);
+                foreach (var item in bodyEntity)
+                {
+                    var StateDescribe = "";
+                    switch (status)
+                    {
+                        case "-3":
+                            StateDescribe = "申请退款";
+                            break;
+                        case "5":
+                            StateDescribe = "订单已完成";
+                            break;
+                    }
+                    var InSql = new StringBuilder();
+                    InSql.Append(@"INSERT  INTO dbo.T_OrderLogisticsInfo
+                                            ( F_Id ,
+                                                F_OrderNo ,
+                                                F_StateDescribe ,
+                                                F_LogState,
+                                                F_StateDateTime ,
+                                                F_StateOperator ,
+                                                F_SorterCode,
+                                                F_CustomerOpen  
+                                            )
+                                    VALUES  ( @F_Id,
+                                                @F_OrderNo,
+                                                @F_StateDescribe ,
+                                                @F_LogState,
+                                                @F_StateDateTime,
+                                                @F_StateOperator ,
+                                                @F_SorterCode,
+                                                @F_CustomerOpen
+                                            )");
+                    var param = new DynamicParameters(new { });
+                    param.Add("@F_Id", Guid.NewGuid().ToString());
+                    param.Add("@F_OrderNo", item.F_ConsignmentNumber);
+                    param.Add("@F_StateDescribe", StateDescribe);
+                    param.Add("@F_LogState", status);
+                    param.Add("@F_StateDateTime", DateTime.Now.ToString());
+                    param.Add("@F_StateOperator", "");
+                    param.Add("@F_SorterCode", "");
+                    param.Add("@F_CustomerOpen", "1");
+                    this.BaseRepository().ExecuteBySql(InSql.ToString(), param);
+                }
                 db.Commit();
                 errText = "修改成功!";
             }
