@@ -473,7 +473,14 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 //页面金额不做调整
                 totalFee = -1;
             }
+
+            if (totalFee == -1)
+            {
+                return FailString("fail", new { orderNo = OrderNo, totalFee = totalFee });
+            }
+            else{
             return Success("ok", new { orderNo = OrderNo, totalFee = totalFee });
+            }
         }
 
 
