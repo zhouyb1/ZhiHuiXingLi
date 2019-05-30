@@ -58,15 +58,6 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// </summary>
         public string F_IsUrgent { get; set; }
 
-        /// <summary>
-        /// 分拣员姓名
-        /// </summary>
-        public string FB_Name { get; set; }
-
-        /// <summary>
-        /// 分拣员电话
-        /// </summary>
-        public string FB_Phone { get; set; }
 
         /// <summary>
         /// 是否港内
@@ -75,6 +66,8 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
 
         public List<ConsignmentNumber> CNumberList { get; set; }
         public List<ExpressNo> ExpressNoList { get; set; }
+
+        public List<Employee> EmployeeInfo { get; set; }
     }
 
 
@@ -110,4 +103,16 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
 
     }
 
+    public class Employee
+    {
+        /// <summary>
+        /// 分拣员姓名
+        /// </summary>
+        public string FB_Name { get; set; }
+
+        /// <summary>
+        /// 分拣员电话
+        /// </summary>
+        public string FB_Phone { get; set; }
+    }
 }
