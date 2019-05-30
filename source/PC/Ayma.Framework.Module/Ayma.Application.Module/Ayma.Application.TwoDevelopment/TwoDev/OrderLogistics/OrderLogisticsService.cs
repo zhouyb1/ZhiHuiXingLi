@@ -46,15 +46,19 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
             {
                 var strSql = new StringBuilder();
                 strSql.Append(@"SELECT
-                    F_Id,
-                    F_OrderNo,
-                    F_StateDescribe,
-                    F_StateDateTime,
-                    F_StateOperator,
-                    F_CustomerOpen
-                    FROM    T_OrderLogisticsInfo
-                    WHERE   1 = 1");
-                strSql.Append(" And F_OrderNo='" + OrderNo + "'");
+                    t.F_Id,
+                    t.F_OrderNo,
+                    t.F_StateDescribe,
+                    t.F_StateDateTime,
+                    t.F_StateOperator,
+                    t.F_CustomerOpen
+                    FROM T_OrderHead a 
+                    left join T_OrderBody b on a.F_OrderNo=b.F_OrderNo
+                    left join T_OrderLogisticsInfo t on t.F_OrderNo=b.F_ConsignmentNumber
+                    WHERE   1 = 1 and t.F_OrderNo is not null
+                    ");
+                strSql.Append(" And a.F_OrderNo='" + OrderNo + "'");
+                strSql.Append(" Order By t.F_OrderNo");
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
                 //return this.BaseRepository().FindTable(strSql.ToString(), dp);
