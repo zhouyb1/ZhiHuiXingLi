@@ -60,6 +60,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
     public class OrderDetailsModelApi
     {
         /// <summary>
+        /// 订单号
+        /// </summary>
+        public string F_OrderNo { get; set; }
+        /// <summary>
         /// 托运单号
         /// </summary>
         public string F_ConsignmentNumber { get; set; }
@@ -73,5 +77,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
         /// 价格
         /// </summary>
         public decimal F_Price { get; set; }
+
+        /// <summary>
+        /// 快递单号
+        /// </summary>
+        public string F_ExpressNO { get; set; }
     }
 }
