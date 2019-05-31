@@ -115,6 +115,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
         /// 新增纬度2019年5月17日18:41:19
         /// </summary>
         public string F_Latitude { get; set; }
+
+        public string F_FareName { get; set; }
+
+        public string F_FarePhone { get; set; }
     }
 
     public class BillMakeTempBModelApi
