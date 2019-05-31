@@ -51,6 +51,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
         /// 到达地址
         /// </summary>
         public string AddressEnd { get; set; }
+        /// <summary>
+        /// 是否加急
+        /// </summary>
+        public string F_IsUrgent { get; set; }
     }
 
     public class OrderDetailsModelApi
