@@ -115,7 +115,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         {
             var req = this.GetReqData().ToJObject();// 获取模板请求数据
             string FlightNumber = req["FlightNumber"].ToString(); //航班号 
-            var data = billClientApiBLL.GetFlightMessage(FlightNumber);
+            string F_AirfieldId = req["F_AirfieldId"].ToString(); //机场Id
+            var data = billClientApiBLL.GetFlightMessage(F_AirfieldId, FlightNumber);
             if (data.Count() > 0)
             {
                 return Success(data);
