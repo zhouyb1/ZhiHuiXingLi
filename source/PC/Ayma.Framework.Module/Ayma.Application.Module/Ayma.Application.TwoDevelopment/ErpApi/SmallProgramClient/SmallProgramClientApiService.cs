@@ -290,9 +290,15 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT F_OrderNo, F_ConsignmentNumber,F_Qty,F_Price FROM T_OrderBody  WHERE 1=1");
-                strSql.Append(" AND F_OrderNo=@OrderNo");
-                strSql.Append(" ORDER BY F_ConsignmentNumber");
+                strSql.Append(@"SELECT  a.F_OrderNo ,
+                                        a.F_ConsignmentNumber ,
+                                        F_Qty ,
+                                        F_Price ,
+                                        b.F_ExpressNO
+                                FROM    T_OrderBody a
+                                        LEFT JOIN dbo.T_OrderPayMoney b ON b.F_ConsignmentNumber = a.F_ConsignmentNumber  WHERE 1=1");
+                strSql.Append(" AND a.F_OrderNo=@OrderNo");
+                strSql.Append(" ORDER BY a.F_ConsignmentNumber");
                 var dp = new DynamicParameters(new { });
                 dp.Add("@OrderNo", OrderNo);
                 return this.BaseRepository().FindList<OrderDetailsModelApi>(strSql.ToString(), dp);
@@ -438,7 +444,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 dp.Add("@F_CustomerAddress", SubmitOrderModelApi.Head.F_CustomerAddress);
                 dp.Add("@F_CustomerRemarks", SubmitOrderModelApi.Head.F_CustomerRemarks);
                 dp.Add("@F_CreateStype", SubmitOrderModelApi.Head.F_CreateStype);
-                dp.Add("@F_State", OrderStatus.待付款);
+                dp.Add("@F_State", OrderStatus.未分拣);
                 dp.Add("@F_Stype", SubmitOrderModelApi.Head.F_Stype);
                 dp.Add("@F_CreateTime", DateTime.Now);
                 dp.Add("@F_CreateUserName", "system");
