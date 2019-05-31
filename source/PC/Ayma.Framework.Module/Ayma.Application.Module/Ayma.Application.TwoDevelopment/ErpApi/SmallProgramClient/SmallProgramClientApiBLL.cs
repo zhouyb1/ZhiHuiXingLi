@@ -65,11 +65,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         /// </summary>
         /// <param name="FlightNumber"></param>
         /// <returns></returns>
-        public IEnumerable<GetFlightMessage> GetFlightMessage(string FlightNumber)
+        public IEnumerable<GetFlightMessage> GetFlightMessage(string F_AirfieldId, string FlightNumber)
         {
             try
             {
-                return billClientApiService.GetFlightMessage(FlightNumber);
+                return billClientApiService.GetFlightMessage(F_AirfieldId, FlightNumber);
             }
             catch (Exception ex)
             {
