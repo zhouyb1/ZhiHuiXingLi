@@ -106,14 +106,15 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         /// </summary>
         /// <param name="FlightNumber"></param>
         /// <returns></returns>
-        public IEnumerable<GetFlightMessage> GetFlightMessage(string FlightNumber)
+        public IEnumerable<GetFlightMessage> GetFlightMessage(string F_AirfieldId, string FlightNumber)
         {
             try
             {
                 var strSql = new StringBuilder();
                 strSql.Append(@"SELECT F_AirfieldId,F_FlightNumber,F_AirfieldFloorBegin,AddressBegin,F_AirfieldBegin,F_AirfieldFloor,AddressEnd,F_AirfieldEnd,F_FlightCompany
-                                FROM T_FlightNoInfo WHERE F_FlightNumber LIKE '%'+@FlightNumber+'%'");
+                                FROM T_FlightNoInfo WHERE F_AirfieldId=@F_AirfieldId AND F_FlightNumber LIKE '%'+@FlightNumber+'%'");
                 var dp = new DynamicParameters(new { });
+                dp.Add("@F_AirfieldId", F_AirfieldId);
                 dp.Add("@FlightNumber", FlightNumber);
                 return this.BaseRepository().FindList<GetFlightMessage>(strSql.ToString(), dp);
             }
