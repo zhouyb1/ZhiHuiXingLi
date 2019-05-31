@@ -419,9 +419,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 strSql.Append(
                     @"INSERT INTO dbo.T_OrderHead ( F_Id ,F_AirfieldId ,F_AirfieldName ,F_AirfieldFloor ,F_FlightCompany , F_FlightNumber ,F_OrderDate , F_OrderNo ,
                               F_CustomerName ,F_CustomerPhone , F_CustomerAddress ,F_CustomerRemarks ,F_CreateStype ,F_State ,F_Stype ,F_CreateTime ,F_CreateUserName ,
-                              F_StartStation,F_Longitude,F_Latitude,F_OpenId ,F_IsUrgent)
+                              F_StartStation,F_Longitude,F_Latitude,F_OpenId ,F_IsUrgent,F_FareName,F_FarePhone)
                               VALUES(@F_Id,@F_AirfieldId,@F_AirfieldName,@F_AirfieldFloor,@F_FlightCompany,@F_FlightNumber,@F_OrderDate,@F_OrderNo,@F_CustomerName,
-                              @F_CustomerPhone,@F_CustomerAddress,@F_CustomerRemarks,@F_CreateStype,@F_State,@F_Stype,@F_CreateTime,@F_CreateUserName,@F_StartStation,@F_Longitude,@F_Latitude,@F_OpenId,@F_IsUrgent)");
+                              @F_CustomerPhone,@F_CustomerAddress,@F_CustomerRemarks,@F_CreateStype,@F_State,@F_Stype,@F_CreateTime,@F_CreateUserName,@F_StartStation,
+                              @F_Longitude,@F_Latitude,@F_OpenId,@F_IsUrgent,@F_FareName,@F_FarePhone)");
                 var dp = new DynamicParameters(new {});
                 dp.Add("@F_Id", Guid.NewGuid().ToString());
                 dp.Add("@F_AirfieldId", SubmitOrderModelApi.Head.F_AirfieldId);
@@ -447,6 +448,8 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 //
                 dp.Add("@F_OpenId", SubmitOrderModelApi.Head.F_OpenId);
                 dp.Add("@F_IsUrgent", SubmitOrderModelApi.Head.F_IsUrgent);
+                dp.Add("@F_FareName", SubmitOrderModelApi.Head.F_FareName);
+                dp.Add("@F_FarePhone", SubmitOrderModelApi.Head.F_FarePhone);
                 db.ExecuteBySql(strSql.ToString(), dp);
 
                 //保存地址到地址表
