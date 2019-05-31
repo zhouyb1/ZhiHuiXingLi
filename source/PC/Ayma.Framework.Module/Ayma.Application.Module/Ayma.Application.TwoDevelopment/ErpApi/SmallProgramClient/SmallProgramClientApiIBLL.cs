@@ -42,7 +42,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         /// </summary>
         /// <param name="FlightNumber"></param>
         /// <returns></returns>
-        IEnumerable<GetFlightMessage> GetFlightMessage(string FlightNumber);
+        IEnumerable<GetFlightMessage> GetFlightMessage(string F_AirfieldId, string FlightNumber);
 
         /// <summary>
         /// 根据订单状态查询订单列表
