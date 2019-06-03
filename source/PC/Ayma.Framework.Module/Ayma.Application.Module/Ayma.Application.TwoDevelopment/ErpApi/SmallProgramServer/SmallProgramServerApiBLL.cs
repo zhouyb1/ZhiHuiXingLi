@@ -192,6 +192,30 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         }
 
         /// <summary>
+        /// 根据手机号获取订单列表
+        /// </summary>
+        /// <param name="Phone"></param>
+        /// <returns></returns>
+        public IEnumerable<OrderList> GetOrderListByPhone(string Phone)
+        {
+            try
+            {
+                return billServerApiService.GetOrderListByPhone(Phone);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 根据航班号获取行李号列表
         /// </summary>
         /// <param name="FlightNumber"></param>
