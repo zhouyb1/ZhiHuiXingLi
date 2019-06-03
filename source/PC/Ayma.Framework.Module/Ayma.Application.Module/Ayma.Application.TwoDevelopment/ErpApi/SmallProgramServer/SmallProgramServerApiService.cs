@@ -626,7 +626,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                         f.DateTimeEndReality ,
                                         f.F_ConveyorNumber ,
                                         f.F_Placement ,
-                                        SUM(F_Qty) TotalQty
+                                        SUM(F_Qty) TotalQty,
+                                        (SELECT COUNT(*) FROM dbo.T_OrderHead WHERE F_FlightNumber=@F_FlightNumber  
+                                         AND F_OrderDate BETWEEN @StartTime AND @EndTime
+                                         AND F_State NOT IN ('0','-1','-2','-3')) TotalOrder
                                 FROM    T_OrderHead h
                                         LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo
                                         LEFT JOIN T_FlightNoInfo f ON f.F_FlightNumber = h.F_FlightNumber
