@@ -757,6 +757,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                         F_StateOperator
                                 FROM    T_OrderLogisticsInfo
                                 WHERE   F_LogState NOT IN('-1','-3','5') AND F_OrderNo=@ConsignmentNumber");
+                strSql.Append(" ORDER BY F_StateDateTime DESC");
                 var dp = new DynamicParameters(new { });
                 dp.Add("@ConsignmentNumber", ConNumber);
                 return this.BaseRepository().FindList<LogisticsInfo>(strSql.ToString(), dp);
