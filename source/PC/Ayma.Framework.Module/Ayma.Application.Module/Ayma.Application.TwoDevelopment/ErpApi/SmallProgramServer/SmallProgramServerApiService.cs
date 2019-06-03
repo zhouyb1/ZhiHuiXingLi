@@ -630,7 +630,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                 FROM    T_OrderHead h
                                         LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo
                                         LEFT JOIN T_FlightNoInfo f ON f.F_FlightNumber = h.F_FlightNumber
-                                WHERE   1 = 1");
+                                WHERE   1 = 1 AND h.F_State NOT IN ('0','-1','-2','-3')");
                 if (!string.IsNullOrEmpty(FlightNumber))
                 {
                     strSql.Append(" AND h.F_FlightNumber=@F_FlightNumber");
