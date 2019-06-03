@@ -72,6 +72,13 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         IEnumerable<OrderList> GetOrderListByStatus(string status);
 
         /// <summary>
+        /// 根据手机号获取订单列表
+        /// </summary>
+        /// <param name="Phone"></param>
+        /// <returns></returns>
+        IEnumerable<OrderList> GetOrderListByPhone(string Phone);
+
+        /// <summary>
         /// 根据航班号获取行李号列表
         /// </summary>
         /// <param name="FlightNumber"></param>
