@@ -151,6 +151,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// 行李总件数
         /// </summary>
         public int TotalQty { get; set; }
+
+        /// <summary>
+        /// 订单总数
+        /// </summary>
+        public int TotalOrder { get; set; }
     }
 
     public class GetFlightListByDate
