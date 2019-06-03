@@ -380,6 +380,45 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         }
 
         /// <summary>
+        /// 根据手机号获取订单列表
+        /// </summary>
+        /// <param name="Phone"></param>
+        /// <returns></returns>
+        public IEnumerable<OrderList> GetOrderListByPhone(string Phone)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT DISTINCT h.F_FlightNumber,h.F_AirfieldFloor,h.F_OrderDate,F_State,h.F_OrderNo,
+                                DateTimeEnd,f.F_ConveyorNumber,
+                                F_FareName,F_FarePhone
+                                FROM dbo.T_OrderHead h 
+                                LEFT JOIN dbo.T_FlightNoInfo f ON f.F_AirfieldId = h.F_AirfieldId AND f.F_FlightCompany = h.F_FlightCompany AND f.F_FlightNumber = h.F_FlightNumber
+                                WHERE F_State IN ('1','2','3','4','5','41','51') And F_CustomerPhone=@Phone");
+                strSql.Append(" AND h.F_OrderDate BETWEEN @DateBegin AND @DateEnd");
+                strSql.Append(" ORDER BY h.F_OrderDate DESC");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@Phone", Phone);
+                dp.Add("@DateBegin", DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
+                dp.Add("@DateEnd", DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59");
+                var list = this.BaseRepository().FindList<OrderList>(strSql.ToString(), dp).ToList();
+                list.ForEach(c => c.CNumberList = GetConsignmentNumberByNo(c.F_OrderNo).ToList());
+                return list;
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 根据航班号获取行李号列表
         /// </summary>
         /// <param name="FlightNumber"></param>
