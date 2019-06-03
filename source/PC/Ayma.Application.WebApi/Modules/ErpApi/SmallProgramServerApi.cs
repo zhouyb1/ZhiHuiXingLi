@@ -25,17 +25,18 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Post["GetExpressNo"]=GetExpressNo;
             Post["/SubmitUpdateOrderState"] = SubmitUpdateOrderState; //提交车班补货单
             Post["/UpdateOrderStatus"] = UpdateOrderStatus; //修改订单状态
-            Post["/UpdateBatchOrderStatus"] = UpdateBatchOrderStatus;//批量修改订单状态（未分拣-分拣中）
+            Post["/UpdateBatchOrderStatus"] = UpdateBatchOrderStatus; //批量修改订单状态（未分拣-分拣中）
             Post["/ExpressInformations"] = ExpressInformations;  //分拣完成后填写快递信息
             Get["/GetOrderListByStatus"] = GetOrderListByStatus; //根据订单状态获取订单列表
             Get["/SerGetOrderDetailByNo"] = SerGetOrderDetailByNo; //根据行李号,订单号,电话号码获取订单详细
             Get["/SerGetFlightList"] = SerGetFlightList; // 根据航班号获取航班时间列表
-            Get["/ReasonNoMessage"] = ReasonNoMessage;//根据航班号或者时间获取航班信息
-            Get["/SorterLogin"] = SorterLogin;//分拣员登录  
-            Get["/GetExpressCompany"] = GetExpressCompany;//获取所有快递公司记录
-            Get["/SerGetPhone"] = SerGetPhone;//获取手机号码
-            Get["/GetConNumberListByFNo"] = GetConNumberListByFNo;//根据航班号获取行李号列表
-            Get["/GetOrderLogisticsInfo"] = GetOrderLogisticsInfo;//根据行李号获取时间节点
+            Get["/ReasonNoMessage"] = ReasonNoMessage; //根据航班号或者时间获取航班信息
+            Get["/SorterLogin"] = SorterLogin; //分拣员登录  
+            Get["/GetExpressCompany"] = GetExpressCompany; //获取所有快递公司记录
+            Get["/SerGetPhone"] = SerGetPhone; //获取手机号码
+            Get["/GetConNumberListByFNo"] = GetConNumberListByFNo; //根据航班号获取行李号列表
+            Get["/GetOrderLogisticsInfo"] = GetOrderLogisticsInfo; //根据行李号获取时间节点
+            Get["/GetOrderListByPhone"] = GetOrderListByPhone; //根据手机号获取订单列表
         }
         private SmallProgramServerApiIBLL billServerApiBLL = new SmallProgramServerApiBLL();
         private OrderInquiryIBLL orderBll = new OrderInquiryBLL();
@@ -254,6 +255,27 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 return Fail("没有数据!");
             }
         }
+
+        /// <summary>
+        /// 根据手机号查询订单列表
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response GetOrderListByPhone(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject(); //获取模板请求数据
+            string Phone = req["Phone"].ToString(); //手机号
+            var data = billServerApiBLL.GetOrderListByPhone(Phone);
+            if (data.Count() > 0)
+            {
+                return Success(data);
+            }
+            else
+            {
+                return Fail("没有数据!");
+            }
+        }
+
 
         public class ConsignmentNumber
         {
