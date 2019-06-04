@@ -694,7 +694,8 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
             try
             {
                 var strSql = new StringBuilder();
-                strSql.Append(@"SELECT  h.F_FlightCompany ,
+                strSql.Append(@"SELECT  h.F_AirfieldId,
+                                        h.F_FlightCompany ,
                                         h.F_FlightNumber ,
                                         f.AddressBegin ,
                                         f.AddressEnd ,
@@ -717,7 +718,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                     strSql.Append(" AND h.F_FlightNumber=@F_FlightNumber");
                 }
                 strSql.Append(" AND h.F_OrderDate BETWEEN @StartTime AND @EndTime");
-                strSql.Append(" GROUP BY h.F_FlightCompany,h.F_FlightNumber,AddressBegin,AddressEnd,DateTimeEnd,DateTimeEndReality,F_ConveyorNumber,F_Placement ");
+                strSql.Append(" GROUP BY h.F_AirfieldId,h.F_FlightCompany,h.F_FlightNumber,AddressBegin,AddressEnd,DateTimeEnd,DateTimeEndReality,F_ConveyorNumber,F_Placement ");
                 strSql.Append(" ORDER BY DateTimeEnd DESC");
                 var dp = new DynamicParameters(new { });
                 dp.Add("@F_FlightNumber", FlightNumber);
