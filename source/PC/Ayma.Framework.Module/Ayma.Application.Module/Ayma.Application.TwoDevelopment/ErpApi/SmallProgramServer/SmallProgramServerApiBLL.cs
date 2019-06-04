@@ -168,6 +168,30 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         }
 
         /// <summary>
+        /// 修改航班分拣口,机位信息
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public void ModifyFlightInfo(string AirfieldId, string FlightNumber, string ConveyorNumber, string Placement, string Operator, out string errText)
+        {
+            try
+            {
+                billServerApiService.ModifyFlightInfo(AirfieldId, FlightNumber, ConveyorNumber, Placement, Operator, out errText);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 根据订单状态查询订单列表
         /// </summary>
         /// <param name="status"></param>
