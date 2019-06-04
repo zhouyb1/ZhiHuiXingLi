@@ -125,5 +125,12 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         /// <param name="ConsignmentNumber"></param>
         /// <returns></returns>
         IEnumerable<GetFlightListByDate> ReasonNoMessage(string FlightNumber, string OrderDate);
+
+        /// <summary>
+        /// 修改航班分拣口,机位信息
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        void ModifyFlightInfo(string AirfieldId, string FlightNumber, string ConveyorNumber, string Placement, string Operator, out string errText);
     }
 }
