@@ -37,6 +37,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Get["/GetConNumberListByFNo"] = GetConNumberListByFNo; //根据航班号获取行李号列表
             Get["/GetOrderLogisticsInfo"] = GetOrderLogisticsInfo; //根据行李号获取时间节点
             Get["/GetOrderListByPhone"] = GetOrderListByPhone; //根据手机号获取订单列表
+            Get["/ModifyFlightInfo"] = ModifyFlightInfo;      // 修改航班分拣口,机位信息
         }
         private SmallProgramServerApiIBLL billServerApiBLL = new SmallProgramServerApiBLL();
         private OrderInquiryIBLL orderBll = new OrderInquiryBLL();
@@ -177,6 +178,36 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 billServerApiBLL.ExpressInformations(OrderNo, ConNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
             }
             billServerApiBLL.UpdateOrderStatus(OrderNo, ConNumber, status, Operator, out errText);
+            return Success(errText);
+        }
+
+        /// <summary>
+        /// 修改航班分拣口,机位信息
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public Response ModifyFlightInfo(dynamic _)
+        {
+            var req = this.GetReqData().ToJObject();// 获取模板请求数据
+            if (req["F_AirfieldId"].IsEmpty())
+            {
+                return Fail("机场Id不能为空!");
+            }
+            if (req["F_FlightNumber"].IsEmpty())
+            {
+                return Fail("航班号不能为空!");
+            }
+            string AirfieldId = req["F_AirfieldId"].ToString();  //机场Id
+            string FlightNumber = req["F_FlightNumber"].ToString(); //航班号
+            string ConveyorNumber = req["F_ConveyorNumber"].ToString(); //分拣口
+            string Placement = req["F_Placement"].ToString(); //机位
+            string Operator = req["Operator"].ToString(); //操作人
+            if (string.IsNullOrEmpty(ConveyorNumber) && string.IsNullOrEmpty(Placement))
+            {
+                return Fail("没有数据要修改!");
+            }
+            string errText = "";
+            billServerApiBLL.ModifyFlightInfo(AirfieldId, FlightNumber, ConveyorNumber, Placement, Operator, out errText);
             return Success(errText);
         }
 
