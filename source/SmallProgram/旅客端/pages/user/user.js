@@ -1,4 +1,5 @@
 // pages/user/user.js
+var app = getApp();
 Page({
 
   /**
@@ -6,7 +7,8 @@ Page({
    */
   data: {
     images: "",
-    name: ""
+    name: "",
+    type: false
   },
 
   /**
@@ -20,7 +22,8 @@ Page({
         var d = JSON.parse(res.data)
         _this.setData({
           images: d.avatarUrl,
-          name: d.nickName
+          name: d.nickName,
+          type: true
         })
       }
     });
@@ -33,6 +36,26 @@ Page({
   to_path(event) {
     wx.navigateTo({
       url: event.currentTarget.dataset.url,
+    });
+  },
+  getUserInfo: function(e) {
+    console.log(e);
+    app.globalData.userInfo = e.detail.userInfo
+    wx.setStorage({
+      key: 'user_info',
+      data: e.detail.rawData,
+    });
+    var _this = this;
+    wx.getStorage({
+      key: 'user_info',
+      success(res) {
+        var d = JSON.parse(res.data)
+        _this.setData({
+          images: d.avatarUrl,
+          name: d.nickName,
+          type: true
+        })
+      }
     });
   }
 })

@@ -7,13 +7,16 @@ Page({
    * 页面的初始数据
    */
   data: {
-    verticalCurrent: 5,
+    verticalCurrent: 0,
     type: 0,
     list: '',
     num_list: '',
     num: '',
     price: '',
     OrderNo: '',
+    info: '',
+    order_type: "",
+    express:[]
   },
 
   /**
@@ -27,6 +30,7 @@ Page({
     wx.showLoading({
       title: '加载中',
     });
+    this.get_type(d.OrderNo);
     wx.request({
       url: app.path(1) + "/pdaapi/GetOrderDetailByNo",
       data: {
@@ -42,20 +46,32 @@ Page({
         wx.hideLoading();
         var d = JSON.parse(res.data.data);
         console.log(d);
+        var info = {
+          OrderNo: d.orderhead[0].F_OrderNo,
+          ConsignmentNumber: [],
+          status: "",
+          Operator: app.open("open").openId
+        };
         if (res.data.code === 200) {
           var nums = 0;
           var price = 0;
+          var express = [];
           for (var i = 0; i < d.orderbody.length; i++) {
             nums += d.orderbody[i].F_Qty;
             price += (d.orderbody[i].F_Qty * d.orderbody[i].F_Price)
+            info.ConsignmentNumber.push(d.orderbody[i].F_ConsignmentNumber);
+            express.push(d.orderbody[i].F_ExpressNO);
           };
+          console.log(info)
           _this.setData({
             list: d.orderhead[0],
             num_list: d.orderbody,
             num: nums,
             type: d.orderhead[0].F_State - 0,
             price: price,
-            OrderNo: d.orderhead[0].F_OrderNo
+            OrderNo: d.orderhead[0].F_OrderNo,
+            order_type: info,
+            express:[...new Set(express)]
           });
         } else {
           wx.hideLoading();
@@ -178,6 +194,7 @@ Page({
           _this.setData({
             type: obj
           });
+          _this.get_type(d.OrderNo);
         } else {
           wx.showToast({
             title: '操作失败',
@@ -186,6 +203,51 @@ Page({
           });
         };
       }
+    });
+  },
+  get_type(obj) {
+    var _this = this;
+    wx.request({
+      url: app.path(1) + "/pdaapi/GetClientOrderLogisticsInfo",
+      data: {
+        sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify({OrderNo:obj})}`).toUpperCase(),
+        version: app.path(3),
+        data: JSON.stringify({
+          OrderNo: obj
+        })
+      },
+      method: "GET",
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      success(res) {
+        console.log(res.data)
+        if (res.data.code === 200) {
+          var d = JSON.parse(res.data.data);
+          var data = d[0].CliLogisticsInfo;
+          var len = data.length;
+          var da = [];
+          for (var i = len; i--;) {
+            da.push(data[i]);
+          };
+          _this.setData({
+            info: da,
+            verticalCurrent: len
+          });
+          console.log(da)
+        } else {
+          _this.setData({
+            info: [{
+              F_StateDescribe: "暂无物流信息"
+            }]
+          })
+        };
+      }
+    });
+  },
+  express_fun(event){
+    wx.navigateTo({
+      url: '/pages/express/express?num=' + event.currentTarget.dataset.num,
     });
   }
 })

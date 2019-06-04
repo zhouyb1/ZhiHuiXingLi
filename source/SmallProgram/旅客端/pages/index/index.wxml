@@ -1,7 +1,7 @@
 <!-- 授权登录 -->
-<view class="container" wx:if="{{!user_name && canIUse}}">
+<view class="container" wx:if="{{!hasUserInfo && canIUse}}">
   <view class="userinfo">
-    <button wx:if="{{!user_name && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 立即体验智慧行李 </button>
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 立即体验智慧行李 </button>
     <block wx:else>
       <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
       <text class="userinfo-nickname"> 欢迎 {{userInfo.nickName}}</text>

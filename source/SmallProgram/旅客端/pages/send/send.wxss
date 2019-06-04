@@ -441,7 +441,7 @@ checkbox {
   padding: 10rpx;
 }
 
-.flight_number_box {
+.flight_number_box, .en_city_box {
   position: fixed;
   top: 0%;
   left: 0%;
@@ -455,7 +455,7 @@ checkbox {
   overflow-y: auto;
 }
 
-.flight_number_box_active {
+.flight_number_box_active, .en_city_box_active {
   z-index: 999;
   opacity: 1;
 }
@@ -511,6 +511,18 @@ checkbox {
   padding: 0 1%;
   box-sizing: border-box;
   margin-top: 120rpx;
+}
+
+.flight_number_lists {
+  width: 100%;
+  height:120rpx;
+  background: #fff;
+  padding: 0 1%;
+  box-sizing: border-box;
+  margin-top: 120rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .flight_number_item {

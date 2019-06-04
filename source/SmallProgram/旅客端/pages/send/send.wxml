@@ -81,8 +81,18 @@
     </view> -->
 
     <view class="list">
+      <view class="list_ls">到达站</view>
+      <view class="list_l" style="font-size:26rpx;width:100%" bindtap='tab_flight_number' data-class="en_city_box_active" data-type="1">
+        <text style="font-size:25rpx" wx:if="{{!en_city_data.F_AirfieldName}}">请选择到达站</text>
+        <block wx:else>
+          <text style="font-size:25rpx">{{en_city_data.F_AirfieldName}}</text>
+        </block>
+      </view>
+    </view>
+
+    <view class="list" wx:if="{{en_city_data.F_AirfieldName}}">
       <view class="list_ls">航班号</view>
-      <view class="list_l" style="font-size:26rpx;width:100%" bindtap='tab_flight_number'>
+      <view class="list_l" style="font-size:26rpx;width:100%" bindtap='tab_flight_number' data-class="flight_number_box_active" data-type="0">
         <text style="font-size:25rpx" wx:if="{{!flight_number.F_FlightNumber}}">请选择航班号</text>
         <block wx:else>
           <text style="font-size:25rpx">{{flight_number.F_FlightNumber}}</text>
@@ -213,6 +223,35 @@
   </view>
 </view>
 
+
+
+<!-- 到达机场搜索 -->
+<view class="{{en_city_type}}">
+  <view class="search">
+    <input type="search" confirm-type="search" placeholder='请输入到达站关键字...' class='search-input' maxlength='10' bindinput='set_flight_number' data-type="1"></input>
+    <button class='search-btn' bindtap='seach_flight_number' wx:if="{{flight_number}}" data-type="1">
+      <i-icon type="search" size='25' />
+    </button>
+    <block wx:else>
+      <button class='search-btn' bindtap='close_flight_number' data-class="en_city_box" data-type="1">
+        <text style="font-size:30rpx;">取消</text>
+      </button>
+    </block>
+  </view>
+  <view class='flight_number_list'>
+    <view class='flight_number_item' wx:if="{{en_city_list.length}}" wx:for="{{en_city_list}}" wx:for-index="index" wx:key="index" bindtap='set_flight_number_text' data-id="{{index}}" data-type="1" data-class="en_city_box">
+      <view class="flight_number_item-t" style="height:100%;">{{item.F_AirfieldName}}</view>
+      <view class='left'>
+        <i-icon type="enter" />
+      </view>
+    </view>
+  </view>
+    <view class='flight_number_lists' wx:if="{{!en_city_list.length}}">
+    请更换关键字
+  </view>
+</view>
+
+
 <!-- 航班号搜索框 -->
 <view class="{{flight_number_type}}">
   <view class="search">
@@ -221,18 +260,21 @@
       <i-icon type="search" size='25' />
     </button>
     <block wx:else>
-      <button class='search-btn' bindtap='close_flight_number'>
-        <text style="font-size:30rpx;">取消</text>
+      <button class='search-btn' bindtap='close_flight_number' data-class="flight_number_box" data-type="0">
+        <text style="font-size:30rpx;" data-class="flight_number_box" data-type="0">取消</text>
       </button>
     </block>
   </view>
   <view class='flight_number_list'>
-    <view class='flight_number_item' wx:if="{{flight_number_list.length}}" wx:for="{{flight_number_list}}" wx:for-index="index" wx:key="index" bindtap='set_flight_number_text' data-id="{{index}}">
+    <view class='flight_number_item' wx:for="{{flight_number_list}}" wx:for-index="index" wx:key="index" bindtap='set_flight_number_text' data-id="{{index}}" data-class="flight_number_box" data-type="0">
       <view class="flight_number_item-t">{{item.F_FlightNumber}}</view>
       <view class="flight_number_item-b">{{item.AddressBegin}}{{item.F_AirfieldBegin}}{{item.F_AirfieldFloorBegin}} - {{item.AddressEnd}}{{item.F_AirfieldEnd}}{{item.F_AirfieldFloor}}</view>
       <view class='left'>
         <i-icon type="enter" />
       </view>
     </view>
+  </view>
+  <view class='flight_number_lists' wx:if="{{!flight_number_list.length && flight_number}}">
+    {{search_text}}
   </view>
 </view>

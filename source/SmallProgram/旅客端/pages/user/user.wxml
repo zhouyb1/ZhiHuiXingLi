@@ -1,5 +1,5 @@
 <!--pages/user/user.wxml-->
-<view class="user">
+<view class="user" wx:if="{{type}}">
   <view class="user_info">
     <view class="image">
       <image src="{{images}}"></image>
@@ -53,6 +53,11 @@
     </view>
   </view>
 </view>
+<block wx:else>
+  <view class="user user-flex">
+    <button class='user-flex-btn' open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击微信授权</button>
+  </view>
+</block>
 
 <view class="list">
   <i-cell-group>

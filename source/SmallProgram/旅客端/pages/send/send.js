@@ -32,7 +32,12 @@ Page({
     backfill: '', //选择索引地址
     flight_number: "", //航班号
     flight_number_list: [], //航班列表
-    flight_number_type: 'flight_number_box', //显示搜索航班的框框
+    flight_number_type: 'flight_number_box', //显示搜索航班class
+    en_city_data: '', //机场信息
+    en_city_list: "", //机场列表
+    en_city_list1: "", //机场列表
+    en_city_type: "en_city_box", //机场class
+    search_text:"搜索中",//搜索提示文字
   },
 
   /**
@@ -43,10 +48,31 @@ Page({
   },
   onShow: function() {
     //获取机场列表
-    // this.get_fly();
+    var _this = this;
+    wx.request({
+      url: app.path(1) + "/pdaapi/GetAirPort",
+      data: {
+        sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data={}`).toUpperCase(),
+        version: app.path(3),
+        data: {}
+      },
+      method: "GET",
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success(res) {
+        if (res.data.code === 200) {
+          console.log(JSON.parse(res.data.data));
+          _this.setData({
+            en_city_list: JSON.parse(res.data.data),
+            en_city_list1: JSON.parse(res.data.data)
+          })
+        };
+      }
+    })
     // this.get_addr("清华大学8号楼2楼201");
   },
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
     /**
      * 用户点击右上角分享
      */
@@ -54,10 +80,10 @@ Page({
       title: '智慧行李',
       path: 'pages/index/index?openid=' + app.open('open').openId,
       imageUrl: "../../image/2.jpg",
-      success: function (res) {
+      success: function(res) {
         console.log("转发成功:" + JSON.stringify(res));
       },
-      fail: function (res) {
+      fail: function(res) {
         console.log("转发失败:" + JSON.stringify(res));
       }
     };
@@ -126,11 +152,11 @@ Page({
     var _this = this;
     wx.showModal({
       title: '温馨提示',
-      content: '确定要导入信息吗？',
+      content: '确定要快速填写吗？',
       success(res) {
         if (res.confirm) {
           wx.showLoading({
-            title: '导入中',
+            title: '填写中',
           });
           wx.request({
             url: app.path(1) + "/pdaapi/getuserinfo",
@@ -146,13 +172,13 @@ Page({
             },
             method: "GET",
             success(res) {
+              wx.hideLoading();
               if (res.data.code === 200) {
                 wx.showToast({
                   title: '操作成功',
                   icon: 'success',
                   duration: 2000
                 });
-                wx.hideLoading();
                 var d = JSON.parse(res.data.data);
                 _this.setData({
                   name: d.FullName,
@@ -196,21 +222,36 @@ Page({
       }
     });
   },
-  tab_flight_number() {
+  tab_flight_number(event) {
     // 显示搜索框
-    this.setData({
-      flight_number_type: this.data.flight_number_type + " flight_number_box_active",
-      flight_number: ""
-    });
+    var t = event.currentTarget.dataset
+    if (t.type - 0) {
+      this.setData({
+        en_city_type: this.data.en_city_type + ' ' + t.class,
+      });
+    } else {
+      this.setData({
+        flight_number_type: this.data.flight_number_type + ' ' + t.class,
+        flight_number: ""
+      });
+    };
   },
-  close_flight_number() {
+  close_flight_number(event) {
     // 关闭搜索框
-    this.setData({
-      flight_number_type: "flight_number_box"
-    });
+    var t = event.currentTarget.dataset
+    if (t.type - 0) {
+      this.setData({
+        en_city_type: t.class
+      });
+    } else {
+      this.setData({
+        flight_number_type: t.class
+      });
+    };
   },
-  seach_flight_number() {
+  seach_flight_number(event) {
     // 点击搜索
+    console.log(event)
     var _this = this;
     if (!this.data.flight_number) {
       this.setData({
@@ -220,37 +261,68 @@ Page({
       this.get_flight_number(this.data.flight_number);
     };
   },
-  set_flight_number(e) {
+  set_flight_number(e, event) {
     // 输入搜索
+    var t = e.currentTarget.dataset;
     var val = e.detail.value;
     var _this = this;
-    _this.setData({
-      flight_number: val
-    });
-    if (!val) {
+    if (t.type - 0) {
+      var arr = [];
+      var len = this.data.en_city_list1.length;
+      for (var i = 0; i < len; i++) {
+        if (this.data.en_city_list1[i].F_AirfieldName.includes(val)) {
+          arr.push(this.data.en_city_list1[i]);
+        };
+      };
       this.setData({
-        flight_number_list: []
-      })
+        en_city_list: arr,
+        flight_number: val
+      });
+    } else {
+      _this.setData({
+        flight_number: val,
+        search_text: "搜索中"
+      });
+      if (!val) {
+        this.setData({
+          flight_number_list: [],
+          search_text: "搜索中"
+        })
+      };
+      this.get_flight_number(this.data.flight_number);
     };
-    this.get_flight_number(this.data.flight_number);
+
   },
   set_flight_number_text(event) {
     // 点击搜索结果
-    this.setData({
-      flight_number: this.data.flight_number_list[event.currentTarget.dataset.id],
-      flight_number_list: []
-    });
-    this.close_flight_number();
-    console.log(this.data.flight_number)
+    var t = event.currentTarget.dataset;
+    if (t.type - 0) {
+      this.setData({
+        en_city_data: this.data.en_city_list[t.id],
+        en_city_type: t.class
+      });
+    } else {
+      this.setData({
+        flight_number: this.data.flight_number_list[t.id],
+        flight_number_list: [],
+        flight_number_type: t.class
+      });
+      console.log(this.data.flight_number)
+    };
+
   },
   get_flight_number(obj) {
-    // 擦寻航班号接口
+    // 查询航班号接口
     var _this = this;
     if (!obj) {
       return false;
     };
+    wx.showLoading({
+      title: '搜索中',
+    });
     var da = {
-      FlightNumber: obj.toUpperCase()
+      FlightNumber: obj.toUpperCase(),
+      F_AirfieldId: this.data.en_city_data.F_Id
     };
     wx.request({
       url: app.path(1) + "/pdaapi/GetFlightMessage",
@@ -264,14 +336,17 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       success(res) {
+        wx.hideLoading();
         if (res.data.code === 200) {
           console.log(JSON.parse(res.data.data))
           _this.setData({
-            flight_number_list: JSON.parse(res.data.data)
+            flight_number_list: JSON.parse(res.data.data),
+            search_text:"搜索中"
           })
         } else {
           _this.setData({
-            flight_number_list: []
+            flight_number_list: [],
+            search_text:"抱歉,没有相关航班号,请更换关键字"
           })
         };
       }
@@ -335,11 +410,17 @@ Page({
     var n = /^[\u4e00-\u9fa5]{2,4}$/;
     var h = /^[a-zA-Z0-9]{6}$/;
     var len = d.can_list.length;
-
+    if (!d.en_city_data) {
+      wx.showModal({
+        title: '温馨提示',
+        content: '请选择达到站'
+      });
+      return false;
+    };
     if (!h.test(d.flight_number.F_FlightNumber)) {
       wx.showModal({
         title: '温馨提示',
-        content: '请填写正确的航班号，通常是数字加字母组合6个字符'
+        content: '请选择正确的航班号，通常是数字加字母组合6个字符'
       });
       return false;
     };
@@ -379,7 +460,7 @@ Page({
       return false;
     };
     da.head.F_AirfieldFloor = d.flight_number.F_AirfieldFloor; //航站楼
-    da.head.F_AirfieldId = null; //机场id
+    da.head.F_AirfieldId = d.en_city_data.F_Id; //机场id
     da.head.F_AirfieldName = d.flight_number.F_AirfieldEnd; //机场名
     da.head.F_StartStation = d.flight_number.AddressBegin + d.flight_number.F_AirfieldBegin + d.flight_number.F_AirfieldFloorBegin; //起始站
     da.head.F_Longitude = d.user_location.lng; //收货地址坐标
@@ -528,18 +609,31 @@ Page({
       page1: false,
       page2: false,
       citty_data_list: [],
-      flight_number: [],
-      flight_number_list: []
+      flight_number: "", //航班号
+      flight_number_list: [], //航班列表
+      flight_number_type: 'flight_number_box', //显示搜索航班的框框
+      en_city_data: '', //机场信息
+      en_city_list: "", //机场列表
+      en_city_list1: "", //机场列表
+      en_city_type: "en_city_box", //机场class
     });
   },
   fly_page() {
     var d = this.data;
     var h = /^[a-zA-Z0-9]{6}$/;
     var len = d.can_list.length;
+    console.log(d.en_city_data)
+    if (!d.en_city_data) {
+      wx.showModal({
+        title: '温馨提示',
+        content: '请选择到达站'
+      });
+      return false;
+    };
     if (!h.test(d.flight_number.F_FlightNumber)) {
       wx.showModal({
         title: '温馨提示',
-        content: '请填写正确的航班号，通常是数字加字母组合6个字符'
+        content: '请选择正确的航班号，通常是数字加字母组合6个字符'
       });
       return false;
     };

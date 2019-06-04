@@ -4,12 +4,13 @@
     "pages/send/send",
     "pages/pays/pays",
     "pages/user/user",
+    "pages/orders/orders",
     "pages/user/user_say/user_say",
     "pages/user/user_addr/user_addr",
     "pages/user/user_info/user_info",
-    "pages/orders/orders",
     "pages/orders/orders_info/orders_info",
     "pages/help/help",
+    "pages/express/express",
     "pages/logs/logs"
   ],
   "window": {

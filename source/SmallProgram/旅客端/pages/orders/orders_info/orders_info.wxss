@@ -61,7 +61,8 @@ page {
 
 .ems {
   width: 100%;
-  margin-bottom: 200rpx;
+  margin-bottom: 300rpx;
+  padding-bottom:200rpx;
 }
 
 .ems-top {
@@ -111,7 +112,11 @@ page {
 .order-type view view {
   text-align: right;
 }
-
+.express{
+  color:#3cb4ff;
+  /* font-weight: 300; */
+  text-decoration:underline;
+}
 /* .order-type view:nth-of-type(1) {
   background: #e6a23c;
 }

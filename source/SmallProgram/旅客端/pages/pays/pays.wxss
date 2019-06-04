@@ -152,11 +152,20 @@ page {
   font-size: 30rpx;
 }
 
-@media screen and (min-width:414px) {
+.list-b {
+  margin-bottom: 300rpx;
+  min-height: 300rpx;
+  padding-bottom: 300rpx;
+  padding-top: 30rpx;
+  align-items: flex-start;
+  border:none;
+}
+
+/* @media screen and (min-width:414px) {
   .list-6plus {
     height: 300rpx;
     align-items: flex-start;
     padding-top: 30rpx;
     border: none;
   }
-}
+} */
