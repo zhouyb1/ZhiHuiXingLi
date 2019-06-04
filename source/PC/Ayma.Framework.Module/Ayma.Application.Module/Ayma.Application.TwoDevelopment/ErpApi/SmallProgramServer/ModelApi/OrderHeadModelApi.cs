@@ -108,6 +108,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
     public class GetFlightListByFNo
     {
         /// <summary>
+        /// 机场Id
+        /// </summary>
+        public string F_AirfieldId { get; set; }
+        /// <summary>
         /// 航空公司
         /// </summary>
         public string F_FlightCompany { get; set; }
