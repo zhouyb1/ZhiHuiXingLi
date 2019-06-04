@@ -238,6 +238,82 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         }
 
         /// <summary>
+        /// 修改航班分拣口,机位信息
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
+        public void ModifyFlightInfo(string AirfieldId, string FlightNumber, string ConveyorNumber, string Placement, string Operator, out string errText)
+        {
+            try
+            {
+                T_EmployeeInfoEntity entity = this.BaseRepository().FindEntity<T_EmployeeInfoEntity>(c => c.F_Code == Operator);  //获取拣货员信息
+                var F_Name = "";
+                if (entity != null)
+                {
+                    F_Name = entity.F_Name;           //分拣员姓名
+                }
+     
+                if (!string.IsNullOrEmpty(ConveyorNumber))
+                {
+                    var strUpdate = new StringBuilder();
+                    strUpdate.Append(@"UPDATE T_FlightNoInfo SET F_ConveyorNumber=@ConveyorNumber WHERE F_AirfieldId=@AirfieldId AND F_FlightNumber=@FlightNumber");
+                    var par = new DynamicParameters(new { });
+                    par.Add("@ConveyorNumber", ConveyorNumber);
+                    par.Add("@AirfieldId", AirfieldId);
+                    par.Add("@FlightNumber", FlightNumber);
+                    this.BaseRepository().ExecuteBySql(strUpdate.ToString(), par);
+
+                    var strInsert = new StringBuilder();
+                    strInsert.Append(@"INSERT INTO T_ModifyLog(F_Id,F_Number,F_Describe,F_Operator,F_OperatorCode,F_ModifyTime)
+                                       VALUES(@F_Id,@F_Number,@F_Describe,@F_Operator,@F_OperatorCode,@F_ModifyTime)");
+                    var param = new DynamicParameters(new { });
+                    param.Add("@F_Id",Guid.NewGuid().ToString());
+                    param.Add("@F_Number",FlightNumber);
+                    param.Add("@F_Describe","修改分拣口:'"+ConveyorNumber+"'成功!");
+                    param.Add("@F_Operator",F_Name);
+                    param.Add("@F_OperatorCode",Operator);
+                    param.Add("@F_ModifyTime",DateTime.Now.ToString());
+                    this.BaseRepository().ExecuteBySql(strInsert.ToString(), param);
+                }
+                if(!string.IsNullOrEmpty(Placement))
+                {
+                    var strUpdate = new StringBuilder();
+                    strUpdate.Append(@"UPDATE T_FlightNoInfo SET F_Placement=@Placement WHERE F_AirfieldId=@AirfieldId AND F_FlightNumber=@FlightNumber");
+                    var par = new DynamicParameters(new { });
+                    par.Add("@Placement", Placement);
+                    par.Add("@AirfieldId", AirfieldId);
+                    par.Add("@FlightNumber", FlightNumber);
+                    this.BaseRepository().ExecuteBySql(strUpdate.ToString(), par);
+
+                    var strInsert = new StringBuilder();
+                    strInsert.Append(@"INSERT INTO T_ModifyLog(F_Id,F_Number,F_Describe,F_Operator,F_OperatorCode,F_ModifyTime)
+                                       VALUES(@F_Id,@F_Number,@F_Describe,@F_Operator,@F_OperatorCode,@F_ModifyTime)");
+                    var param = new DynamicParameters(new { });
+                    param.Add("@F_Id",Guid.NewGuid().ToString());
+                    param.Add("@F_Number",FlightNumber);
+                    param.Add("@F_Describe","修改机位口:'"+Placement+"'成功!");
+                    param.Add("@F_Operator",F_Name);
+                    param.Add("@F_OperatorCode",Operator);
+                    param.Add("@F_ModifyTime",DateTime.Now.ToString());
+                    this.BaseRepository().ExecuteBySql(strInsert.ToString(), param);
+                }
+                errText="修改成功!";
+            }
+            catch (Exception ex)
+            {
+                errText = "修改失败!";
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 批量修改订单状态（未分拣-分拣中）
         /// </summary>
         /// <param name="OrderNo"></param>
@@ -627,9 +703,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                         f.F_ConveyorNumber ,
                                         f.F_Placement ,
                                         SUM(F_Qty) TotalQty,
-                                        (SELECT COUNT(*) FROM dbo.T_OrderHead WHERE F_FlightNumber=@F_FlightNumber  
-                                         AND F_OrderDate BETWEEN @StartTime AND @EndTime
-                                         AND F_State NOT IN ('0','-1','-2','-3')) TotalOrder
+                                        (SELECT COUNT(*) FROM dbo.T_OrderHead d WHERE  
+                                         d.F_OrderDate BETWEEN @StartTime AND @EndTime
+                                         AND d.F_State NOT IN ('0','-1','-2','-3') AND d.F_FlightNumber =h.F_FlightNumber
+                                         GROUP BY  d.F_FlightNumber
+                                         ) TotalOrder
                                 FROM    T_OrderHead h
                                         LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo
                                         LEFT JOIN T_FlightNoInfo f ON f.F_FlightNumber = h.F_FlightNumber
