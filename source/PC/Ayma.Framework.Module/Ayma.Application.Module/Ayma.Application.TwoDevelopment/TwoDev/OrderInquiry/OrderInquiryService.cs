@@ -146,6 +146,16 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                     dp.Add("F_CustomerPhone", "%" + queryParam["F_CustomerPhone"].ToString() + "%", DbType.String);
                     strSql.Append(" AND t.F_CustomerPhone Like @F_CustomerPhone ");
                 }
+                if (!queryParam["F_FlightCompany"].IsEmpty())
+                {
+                    dp.Add("F_FlightCompany", "%" + queryParam["F_FlightCompany"].ToString() + "%", DbType.String);
+                    strSql.Append(" AND t.F_FlightCompany Like @F_FlightCompany ");
+                }
+                if (!queryParam["F_FlightNumber"].IsEmpty())
+                {
+                    dp.Add("F_FlightNumber", "%" + queryParam["F_FlightNumber"].ToString() + "%", DbType.String);
+                    strSql.Append(" AND t.F_FlightNumber Like @F_FlightNumber ");
+                }
                 return this.BaseRepository("LocalHost").FindList<T_OrderHeadEntity>(strSql.ToString(),dp, pagination);
             }
             catch (Exception ex)

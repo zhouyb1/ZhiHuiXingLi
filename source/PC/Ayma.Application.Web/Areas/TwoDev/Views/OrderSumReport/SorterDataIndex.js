@@ -31,7 +31,14 @@ var bootstrap = function ($, ayma) {
                     { label: "行李数量", name: "XLNum", width: 100, align: "left" },
                     { label: "异常行李数", name: "YCXLNum", width: 100, align: "left" },
                     { label: "被投诉数", name: "", width: 160, align: "left" },
-                    { label: "ATA到已分拣平均时间", name: "YFJTime", width: 160, align: "left" }
+                    {
+                        label: "ATA到已分拣平均时间", name: "YFJTime", width: 160, align: "left",
+                        formatter: function (cellvalue, options, rowObject) {
+                            var h = parseInt(cellvalue / 60);
+                            var m = cellvalue % 60;
+                            return cellvalue = h + "时" + m + "分";
+                        }
+                    }
                 ],
                 mainId: 'F_Id',
                 reloadSelected: true,

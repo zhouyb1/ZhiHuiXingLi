@@ -93,12 +93,12 @@ var bootstrap = function ($, ayma) {
             $('#girdtable').jfGrid({
                 headData:
                     [
-                        { label: '订单号', name: 'F_OrderNo', width: 130, align: 'left' },//,  hidden: true
+                        //{ label: '订单号', name: 'F_OrderNo', width: 130, align: 'left' },//,  hidden: true
                         { label: '行李号', name: 'F_ConsignmentNumber', width: 160, align: 'left' },
-                        { label: '重量(kg)', name: 'F_Weight', width: 90, align: 'left' },
-                        { label: '配送距离(km)', name: 'F_Distance', width: 90, align: 'left' },
+                        { label: '重量(kg)', name: 'F_Weight', width: 100, align: 'left' },
+                        { label: '配送距离(km)', name: 'F_Distance', width: 100, align: 'left' },
                         { label: '价格(元)', name: 'F_Price', width: 120, align: 'left' },
-                        { label: '数量', name: 'F_Qty', width: 80, align: 'left'},
+                        { label: '数量', name: 'F_Qty', width: 90, align: 'left'},
                         {
                             label: '订单状态', name: 'FB_State', width: 88, align: 'left',
                             formatter: function (cellvalue, options, rowObject) {
@@ -137,7 +137,7 @@ var bootstrap = function ($, ayma) {
                         { label: '分拣员', name: 'FB_Name', width: 120, align: 'left' },
                         { label: '联系电话', name: 'FB_Phone', width: 120, align: 'left' }
                     ],
-                isEidt: true,
+                isEidt: false,
                 footerrow: true,
                 height: 420,
                 isStatistics: true

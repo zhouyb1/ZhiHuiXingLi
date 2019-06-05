@@ -30,9 +30,30 @@ var bootstrap = function ($, ayma) {
                     { label: "行李件数", name: "ConsignmentNum", width: 100, align: "left" },
                     { label: "收入金额(元)", name: "Amount", width: 100, align: "left" },
                     { label: "客户数", name: "ClientNum", width: 100, align: "left" },
-                    { label: "ATA到签收平均时间(min)", name: "ATAzqs", width: 160, align: "left"},
-                    { label: "ATA到快递平均时间(min)", name: "ATAzkd", width: 160, align: "left" },
-                    { label: "快递到签收平均时间(min)", name: "Kdzqs", width: 160, align: "left" }
+                    {
+                        label: "ATA到签收平均时间", name: "ATAzqs", width: 160, align: "left",
+                        formatter: function (cellvalue, options, rowObject) {
+                            var h = parseInt(cellvalue / 60);
+                            var m = cellvalue % 60;
+                            return cellvalue = h + "时" + m + "分";
+                        }
+                    },
+                    {
+                        label: "ATA到快递平均时间", name: "ATAzkd", width: 160, align: "left",
+                        formatter: function (cellvalue, options, rowObject) {
+                            var h = parseInt(cellvalue / 60);
+                            var m = cellvalue % 60;
+                            return cellvalue = h + "时" + m + "分";
+                        }
+                    },
+                    {
+                        label: "快递到签收平均时间", name: "Kdzqs", width: 160, align: "left",
+                        formatter: function (cellvalue, options, rowObject) {
+                            var h = parseInt(cellvalue / 60);
+                            var m = cellvalue % 60;
+                            return cellvalue = h + "时" + m + "分";
+                        }
+                    }
                 ],
                 mainId: 'F_Id',
                 reloadSelected: true,
