@@ -7,7 +7,6 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    tipdata: "欢度国庆，国庆寄件第二件半价！",
   },
   onLoad: function(options) {
     console.log(options)

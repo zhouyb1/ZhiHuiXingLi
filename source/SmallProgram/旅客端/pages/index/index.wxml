@@ -11,10 +11,6 @@
 </view>
 <!-- 通过授权显示首页内容 -->
 <block wx:else>
-  <!-- 通知 -->
-  <i-notice-bar icon="systemprompt" loop closable wx:if="tipdata">
-    {{tipdata}}
-  </i-notice-bar>
   <view class="index-img">
     <image src='../../image/Top.jpg' class='index-img-top'></image>
     <image src="../../image/Top-1.jpg" class='index-img-b'></image>
@@ -27,11 +23,11 @@
       <image src='../../image/picturew1-2.png'></image>
     </view>
   </view>
-  <view class='hot'>
+  <!-- <view class='hot'>
     <i-cell-group>
       <i-cell title="热门兑换" value="more" is-link i-class="fonts"></i-cell>
     </i-cell-group>
-  </view>
+  </view> -->
   <view class='hot-goods'>
     <view class='hot-l'></view>
     <view class='hot-r'>

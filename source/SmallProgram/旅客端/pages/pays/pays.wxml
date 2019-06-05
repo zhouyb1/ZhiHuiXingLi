@@ -92,7 +92,7 @@
     <label class="checkbox">
       <checkbox checked="{{checked}}" /> 阅读并接受
     </label>
-    <text bindtap='go_help' data-type="1">《xxx用户协议》</text>
+    <text bindtap='go_help' data-type="1">《委托服务协议条款》</text>
   </checkbox-group>
 </view>
 <!-- 底部 -->
