@@ -646,10 +646,10 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                 F_CustomerPhone,F_CustomerAddress,F_Stype,F_IsUrgent
                                 FROM dbo.T_OrderHead h
                                 LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = h.F_OrderNo
-                                WHERE 1=1 AND F_OrderDate BETWEEN @DateStart AND @DateEnd");
+                                WHERE 1=1 ");
                  var dp = new DynamicParameters(new { });
-                 dp.Add("@DateStart", DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
-                 dp.Add("@DateEnd", DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59");
+                 //dp.Add("@DateStart", DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00");
+                 //dp.Add("@DateEnd", DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59");
                 if (!string.IsNullOrEmpty(ConsignmentNumber))
                 {
                     strSql.Append(" AND b.F_ConsignmentNumber=@ConsignmentNumber");
