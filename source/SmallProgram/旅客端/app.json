@@ -2,8 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/send/send",
-    "pages/pays/pays",
     "pages/user/user",
+    "pages/pays/pays",
     "pages/orders/orders",
     "pages/user/user_say/user_say",
     "pages/user/user_addr/user_addr",
@@ -15,14 +15,14 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#3cb4ff",
+    "navigationBarBackgroundColor": "#0984ac",
     "navigationBarTitleText": "智慧行李",
     "navigationBarTextStyle": "white"
   },
   "sitemapLocation": "sitemap.json",
   "tabBar": {
     "color": "#888",
-    "selectedColor": "#3cb4ff",
+    "selectedColor": "#0db3ea",
     "list": [
       {
         "iconPath": "./image/index.png",

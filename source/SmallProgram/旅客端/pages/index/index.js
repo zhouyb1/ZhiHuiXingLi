@@ -8,27 +8,6 @@ Page({
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     tipdata: "欢度国庆，国庆寄件第二件半价！",
-    imgUrls: [
-      '../../image/1.jpg',
-      '../../image/2.jpg',
-      '../../image/3.jpg'
-    ],
-    indicatorDots: true,
-    autoplay: true,
-    interval: 5000,
-    duration: 1000,
-    circular: true,
-    text_list: [{
-        id: 0,
-        name: "什么是智慧行李",
-        text: "什么是智慧行李"
-      },
-      {
-        id: 0,
-        name: "什么是智慧行李",
-        text: "什么是智慧行李"
-      }
-    ]
   },
   onLoad: function(options) {
     console.log(options)
@@ -161,7 +140,7 @@ Page({
     this.set_user_info();
   },
   paths(event) {
-    var href = event.currentTarget.dataset.url;
+    var href = event.currentTarget.dataset.link;
     if (href) {
       wx.switchTab({
         url: href,

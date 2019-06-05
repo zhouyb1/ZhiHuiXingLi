@@ -44,7 +44,7 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #3cb4ff;
+  color: #0db3ea;
   /* font-size: 15px; */
 }
 
@@ -73,6 +73,7 @@ page {
   padding-left: 20rpx;
   font-size: 30rpx;
   box-sizing: border-box;
+  color:#666;
 }
 
 .list_r {
@@ -91,6 +92,7 @@ page {
   padding-left: 20rpx;
   font-size: 30rpx;
   box-sizing: border-box;
+  color: #666;
 }
 
 .list_rs {
@@ -192,7 +194,7 @@ page {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #3cb4ff;
+  color: #0db3ea;
 }
 
 .phone_btn view:first-child {
@@ -244,7 +246,7 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #3cb4ff;
+  background: #0db3ea;
   color: #fff;
 }
 
@@ -279,7 +281,7 @@ page {
 }
 
 .footer view:first-child {
-  background: #3cb4ff;
+  background: #0db3ea;
 }
 
 .footer view:last-child {
@@ -292,7 +294,7 @@ page {
   right: 0rpx;
   width: 100rpx;
   height: 100rpx;
-  background: #3cb4ff;
+  background: #0db3ea;
   z-index: 999;
   color: #fff;
   font-size: 12px;
@@ -321,7 +323,7 @@ page {
 }
 
 .pages {
-  width: 90%;
+  width: 95%;
   background: #fff;
   overflow-y: auto;
 }
@@ -332,13 +334,14 @@ page {
 
 .page_title view:first-child {
   width: 100%;
-  height: 80rpx;
+  height: 100rpx;
   display: flex;
   align-items: center;
   font-size: 16px;
   padding: 15rpx;
   box-sizing: border-box;
   color: #000;
+  margin-bottom: 20rpx;
 }
 
 .page_title view:last-child {
@@ -346,12 +349,21 @@ page {
   height: 50rpx;
   display: flex;
   align-items: center;
-  font-size: 12px;
-  padding: 15rpx;
+  font-size: 30rpx;
+  padding: 15rpx 0 15rpx 15rpx;
   box-sizing: border-box;
-  color: #ccc;
+  color: #bfbfbf;
 }
-
+.page_title-color{
+  color:#e36c09;
+}
+.page_title-b{
+  font-size: 36px;
+}
+.page_title-s{
+  font-size: 24px;
+  margin-left: 10rpx;
+}
 .btn_page {
   display: flex;
   align-items: center;
@@ -369,7 +381,7 @@ page {
   height: 100rpx;
   margin: 20rpx;
   float: right;
-  background: #3cb4ff;
+  background: #0984ac;
   color: #fff;
   font-size: 15px;
   display: flex;
@@ -380,12 +392,12 @@ page {
 .test-l {
   font-size: 14px;
   padding: 10rpx 0;
-  color: #3cb4ff;
+  color: #0db3ea;
   text-decoration: underline;
 }
 
 .test {
-  font-size: 12px;
+  font-size: 15px;
   padding: 10rpx 0;
 }
 
@@ -431,7 +443,7 @@ checkbox {
   height: 70rpx;
   font-size: 30rpx;
   margin: 0 auto;
-  background: #3cb4ff;
+  background: #0db3ea;
   color: #fff;
 }
 
@@ -491,7 +503,7 @@ checkbox {
   position: absolute;
   top: 11rpx;
   right: 3%;
-  background: #409eff;
+  background: #0984ac;
   color: #fff;
   border-radius: 0;
   border-top-right-radius: 50rpx;

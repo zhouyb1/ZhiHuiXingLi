@@ -4,7 +4,7 @@
   position: fixed;
   left: 10%;
   top:30%;
-  background-color: #3cb4ff;
+  background-color: #0984ac;
   color: #fff;
   width: 80%;
 }
@@ -13,7 +13,7 @@
   position: absolute;
   top: 110rpx;
   right: 10px;
-  background-color: #3cb4ff;
+  background-color: #0984ac;
   color: #fff;
   font-size: 13px;
   z-index: 999;

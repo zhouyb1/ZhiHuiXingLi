@@ -12,7 +12,7 @@ textarea {
   position: fixed;
   left: 50%;
   top: 450rpx;
-  background-color: #3cb4ff;
+  background-color: #0984ac;
   color: #fff;
   width: 308px;
   margin-left: -155px;

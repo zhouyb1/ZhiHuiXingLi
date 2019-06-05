@@ -13,6 +13,7 @@ Page({
     totalFee: '--',
     totalFees: '--',
     flag: true,
+    alert_falg:false,
     OrderNo: ''
   },
 
@@ -129,8 +130,6 @@ Page({
     });
   },
   pays() {
-
-    // return false;
     var d = this.data.checked;
     if (!d) {
       wx.showModal({
@@ -139,22 +138,33 @@ Page({
       });
       return false;
     } else {
-      console.log(2)
-      wx.showModal({
-        title: '温馨提示',
-        content: '支付成功'
-      });
-      wx.navigateTo({
-        url: '../../pages/orders/orders',
-      });
+      // console.log(2)
+      // wx.showModal({
+      //   title: '温馨提示',
+      //   content: '支付成功'
+      // });
       this.setData({
-        flag: false
+        alert_falg: true
       });
     };
   },
-  go_index() {
-    wx.switchTab({
-      url: '/pages/index/index',
-    });
+  navigateTos(event) {
+    if (event.target.dataset.type - 0) {
+      this.setData({
+        flag: true,
+        alert_falg:false
+      });
+      wx.switchTab({
+        url: event.target.dataset.link,
+      });
+    } else {
+      this.setData({
+        flag: false,
+        alert_falg: false
+      });
+      wx.navigateTo({
+        url: event.target.dataset.link,
+      });
+    };
   }
 })

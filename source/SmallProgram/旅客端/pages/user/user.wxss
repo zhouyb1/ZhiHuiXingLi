@@ -7,7 +7,7 @@ page {
 .user {
   width: 100%;
   height: 380rpx;
-  background: linear-gradient(#3cb4ff, #eee);
+  background: linear-gradient(#0984ac, #eee);
   position: relative;
 }
 
