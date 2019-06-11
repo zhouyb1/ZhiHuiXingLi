@@ -817,10 +817,10 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 WXConfig wx = new WXConfig();
                 TenPayV3UnifiedorderRequestData xmlDataInfo = new TenPayV3UnifiedorderRequestData(wx.AppId, wx.MchId, "智慧行李",
         orderNo, 2, Net.Ip, wx.NotifyUrl, TenPayV3Type.JSAPI, openId, wx.Key, TenPayV3Util.GetNoncestr());
-                Logger.Info("统一下单xml:" + xmlDataInfo.PackageRequestHandler.GetAllParameters().ToJson());
+                //Logger.Info("统一下单xml:" + xmlDataInfo.PackageRequestHandler.GetAllParameters().ToJson());
                 //接收微信服务器传来的数据并进行二次加密
                 var result = TenPayV3.Unifiedorder(xmlDataInfo);
-                Logger.Info("微信服务器返回:"+result.ToJson());
+                //Logger.Info("微信服务器返回:"+result.ToJson());
                 if (result.result_code == "SUCCESS" && result.return_code == "SUCCESS")
                 {
                     Logger.Info("订单：" + order + "预支付申请成功");
@@ -832,6 +832,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                     jsApiParam.SetValue("nonceStr", result.nonce_str);
                     jsApiParam.SetValue("package", prepay_id);
                     jsApiParam.SetValue("signType", "MD5");
+                    jsApiParam.SetValue("appId", wx.AppId);
                     jsApiParam.SetValue("paySign", TenPayV3.GetJsPaySign(result.appid, timeStamp, result.nonce_str, prepay_id, Config.GetValue("PayKey")));
                     return Success("请求成功", jsApiParam.ToJson());
                 }
