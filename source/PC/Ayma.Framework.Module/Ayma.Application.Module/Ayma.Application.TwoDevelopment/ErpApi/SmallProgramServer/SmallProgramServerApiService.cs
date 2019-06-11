@@ -721,7 +721,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 strSql.Append(" GROUP BY h.F_AirfieldId,h.F_FlightCompany,h.F_FlightNumber,AddressBegin,AddressEnd,DateTimeEnd,DateTimeEndReality,F_ConveyorNumber,F_Placement ");
                 strSql.Append(" ORDER BY DateTimeEnd DESC");
                 var dp = new DynamicParameters(new { });
-                dp.Add("@F_FlightNumber", FlightNumber);
+                dp.Add("@F_FlightNumber", FlightNumber);    
                 dp.Add("@StartTime", DateTime.Now.ToString("yyyy-MM-dd")+" 00:00:00");
                 dp.Add("@EndTime", DateTime.Now.ToString("yyyy-MM-dd") + " 23:59:59");
                 return this.BaseRepository().FindList<GetFlightListByFNo>(strSql.ToString(), dp);
