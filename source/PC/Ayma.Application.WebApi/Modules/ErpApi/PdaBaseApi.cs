@@ -132,7 +132,9 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 "/pdaapi/register",
                 "/pdaapi/getphone",
                 "/pdaapi/notifyurl",
-                "/pdaapi/getexpressno"
+                "/pdaapi/getexpressno",
+                "/pdaapi/wxpay"
+
             };
 
             if (ReqSign.Contains(path.ToLower()))
