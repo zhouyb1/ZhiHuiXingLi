@@ -65,6 +65,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Post["/Register"] = Register;
             Post["/CancelOrder"] = CancelOrder;
             Get["/NotifyUrl"] = NotifyUrl;
+            Get["/WxPay"] = WxPay;
             Post["/GetPhone"] = GetPhone;
             Post["/SaveFeedBack"] = SaveFeedBack;
             Get["/testFee"] = testFee;
