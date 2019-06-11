@@ -64,7 +64,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Post["/SaveUserInfo"] = SaveUserInfo;
             Post["/Register"] = Register;
             Post["/CancelOrder"] = CancelOrder;
-            Get["/NotifyUrl"] = NotifyUrl;
+            Post["/NotifyUrl"] = NotifyUrl;
             Get["/WxPay"] = WxPay;
             Post["/GetPhone"] = GetPhone;
             Post["/SaveFeedBack"] = SaveFeedBack;
@@ -817,9 +817,10 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 WXConfig wx = new WXConfig();
                 TenPayV3UnifiedorderRequestData xmlDataInfo = new TenPayV3UnifiedorderRequestData(wx.AppId, wx.MchId, "智慧行李",
         orderNo, 2, Net.Ip, wx.NotifyUrl, TenPayV3Type.JSAPI, openId, wx.Key, TenPayV3Util.GetNoncestr());
-
+                Logger.Info("统一下单xml:" + xmlDataInfo.PackageRequestHandler.GetAllParameters().ToJson());
                 //接收微信服务器传来的数据并进行二次加密
                 var result = TenPayV3.Unifiedorder(xmlDataInfo);
+                Logger.Info("微信服务器返回:"+result.ToJson());
                 if (result.result_code == "SUCCESS" && result.return_code == "SUCCESS")
                 {
                     Logger.Info("订单：" + order + "预支付申请成功");
