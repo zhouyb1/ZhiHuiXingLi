@@ -496,7 +496,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                     para.Add("@F_Distance", item.F_Distance);
                     para.Add("@F_Price", item.F_Price);
                     para.Add("@F_Qty", item.F_Qty);
-                    para.Add("@FB_State", OrderStatus.未分拣);
+                    para.Add("@FB_State", OrderStatus.待付款);
                     db.ExecuteBySql(strInsert.ToString(), para);
                 }
                 db.Commit();
@@ -506,6 +506,39 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             {
                 db.Rollback();//回滚事务
                 errText = "订单提交失败!";
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 支付后改变订单状态
+        /// </summary>
+        /// <param name="orderNo"></param>
+        /// <param name="status"></param>
+        public void ModifyOrderStatus(string orderNo, OrderStatus status)
+        {
+            var db = this.BaseRepository().BeginTrans();
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"UPDATE dbo.T_OrderHead SET F_State =@F_State WHERE F_OrderNo =@F_OrderNo;");
+                strSql.Append(" UPDATE dbo.T_OrderBody SET FB_State=@F_State WHERE F_OrderNo =@F_OrderNo");
+                var dp = new DynamicParameters(new { });
+                dp.Add("F_State", ((int)status).ToString());
+                dp.Add("F_OrderNo", orderNo);
+                db.ExecuteBySql(strSql.ToString(), dp);
+                db.Commit();
+            }
+            catch (Exception ex)
+            {
+                db.Rollback();
                 if (ex is ExceptionEx)
                 {
                     throw;
