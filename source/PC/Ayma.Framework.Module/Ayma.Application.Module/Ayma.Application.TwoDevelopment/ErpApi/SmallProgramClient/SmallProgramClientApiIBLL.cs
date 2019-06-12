@@ -1,5 +1,6 @@
 ﻿using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi;
 using Ayma.Application.TwoDevelopment.TwoDev;
+using Ayma.Util;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -135,6 +136,13 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         /// <param name="IsUrgent"></param>
         /// <param name="OrderNo"></param>
         void UpdateOrderType(string IsUrgent, string OrderNo);
+
+        /// <summary>
+        /// 支付后改变订单状态
+        /// </summary>
+        /// <param name="orderNo"></param>
+        /// <param name="status"></param>
+        void ModifyOrderStatus(string orderNo, OrderStatus status);
         
     }
 }
