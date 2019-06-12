@@ -444,7 +444,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 dp.Add("@F_CustomerAddress", SubmitOrderModelApi.Head.F_CustomerAddress);
                 dp.Add("@F_CustomerRemarks", SubmitOrderModelApi.Head.F_CustomerRemarks);
                 dp.Add("@F_CreateStype", SubmitOrderModelApi.Head.F_CreateStype);
-                dp.Add("@F_State", OrderStatus.未分拣);
+                dp.Add("@F_State", OrderStatus.待付款);
                 dp.Add("@F_Stype", SubmitOrderModelApi.Head.F_Stype);
                 dp.Add("@F_CreateTime", DateTime.Now);
                 dp.Add("@F_CreateUserName", "system");
