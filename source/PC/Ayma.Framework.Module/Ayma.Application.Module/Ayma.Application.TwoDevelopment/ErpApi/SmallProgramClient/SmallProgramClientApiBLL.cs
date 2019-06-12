@@ -441,5 +441,30 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 }
             }
         }
+
+        /// <summary>
+        /// 支付后改变订单状态
+        /// </summary>
+        /// <param name="orderNo"></param>
+        /// <param name="status"></param>
+        public void ModifyOrderStatus(string orderNo, OrderStatus status)
+        {
+            try
+            {
+                billClientApiService.ModifyOrderStatus(orderNo, status);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
     }
 }
