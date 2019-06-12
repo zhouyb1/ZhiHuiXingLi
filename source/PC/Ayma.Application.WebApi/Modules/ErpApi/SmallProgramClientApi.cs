@@ -814,9 +814,18 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 {
                     return Fail("订单不存在");
                 }
+
+                //计算行李运费总额
+                decimal totalprice = 0;
+                var detailEntity = billClientApiBLL.GetOrderBodyEntity(orderNo);
+                if (detailEntity.Count() > 0)
+                {
+                    totalprice = Convert.ToDecimal(detailEntity.Sum(c => c.F_Price));
+                }
+
                 WXConfig wx = new WXConfig();
                 TenPayV3UnifiedorderRequestData xmlDataInfo = new TenPayV3UnifiedorderRequestData(wx.AppId, wx.MchId, "智慧行李",
-        orderNo, 2, Net.Ip, wx.NotifyUrl, TenPayV3Type.JSAPI, openId, wx.Key, TenPayV3Util.GetNoncestr());
+        orderNo, Convert.ToInt32(totalprice * 100), Net.Ip, wx.NotifyUrl, TenPayV3Type.JSAPI, openId, wx.Key, TenPayV3Util.GetNoncestr());
                 //Logger.Info("统一下单xml:" + xmlDataInfo.PackageRequestHandler.GetAllParameters().ToJson());
                 //接收微信服务器传来的数据并进行二次加密
                 var result = TenPayV3.Unifiedorder(xmlDataInfo);
