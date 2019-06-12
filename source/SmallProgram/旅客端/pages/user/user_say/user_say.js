@@ -44,7 +44,8 @@ Page({
         content: '确定不留下联系方式吗',
         success(res) {
           if (res.confirm) {
-            console.log('用户点击确定')
+            console.log('用户点击确定');
+            _this.set_say()
           };
         }
       });

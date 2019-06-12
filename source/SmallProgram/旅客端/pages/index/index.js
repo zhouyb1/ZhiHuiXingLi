@@ -115,7 +115,7 @@ Page({
     return {
       title: '智慧行李',
       path: 'pages/index/index?openid=' + app.open('open').openId,
-      imageUrl: "../../image/2.jpg",
+      imageUrl: "../../image/Top.jpg",
       success: function(res) {
         console.log("转发成功:" + JSON.stringify(res));
       },

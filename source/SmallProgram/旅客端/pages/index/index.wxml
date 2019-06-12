@@ -29,10 +29,16 @@
     </i-cell-group>
   </view> -->
   <view class='hot-goods'>
-    <view class='hot-l'></view>
+    <view class='hot-l'>
+      <image src="../../image/0.jpg"></image>
+    </view>
     <view class='hot-r'>
-      <view class='hot-r-item'></view>
-      <view class='hot-r-item'></view>
+      <view class='hot-r-item'>
+        <image src="../../image/0.jpg"></image>
+      </view>
+      <view class='hot-r-item'>
+        <image src="../../image/0.jpg"></image>
+      </view>
     </view>
   </view>
   <view class='btns'></view>

@@ -13,7 +13,7 @@ Page({
     totalFee: '--',
     totalFees: '--',
     flag: true,
-    alert_falg:false,
+    alert_falg: false,
     OrderNo: ''
   },
 
@@ -143,8 +143,49 @@ Page({
       //   title: '温馨提示',
       //   content: '支付成功'
       // });
-      this.setData({
-        alert_falg: true
+      var _this = this;
+      wx.showLoading({
+        title: '加载中',
+      });
+      wx.request({
+        url: app.path(1) + "/pdaapi/WxPay",
+        data: {
+          sign: md5(`version=${app.path(3)}&key=${app.path(2)}&data=${JSON.stringify({orderNo: _this.data.OrderNo, openId: app.open("open").openId })}`).toUpperCase(),
+          version: app.path(3),
+          data: JSON.stringify({
+            orderNo: _this.data.OrderNo,
+            openId: app.open("open").openId
+          })
+        },
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        method: "GET",
+        success(res) {
+          wx.hideLoading();
+          var d = JSON.parse(res.data.data);
+          wx.requestPayment({
+            timeStamp: d.timeStamp,
+            nonceStr: d.nonceStr,
+            package: d.package,
+            signType: d.signType,
+            paySign: d.paySign,
+            success(res) {
+              _this.setData({
+                alert_falg: true
+              });
+              console.log("支付成功")
+            },
+            fail(res) {
+              wx.showToast({
+                title: '支付失败',
+                image: "../../image/error.png",
+                duration: 2000
+              });
+              console.log("支付失败");
+            }
+          })
+        }
       });
     };
   },
@@ -152,7 +193,7 @@ Page({
     if (event.target.dataset.type - 0) {
       this.setData({
         flag: true,
-        alert_falg:false
+        alert_falg: false
       });
       wx.switchTab({
         url: event.target.dataset.link,
