@@ -853,8 +853,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         {
             try
             {
-
-                var resHandler = new Senparc.Weixin.TenPay.V3.ResponseHandler(null);
+                var resHandler = new ResponseHandler(null);
                 //获取微信服务器返回的所有数据
                 Logger.Info("异步通知返回xml数据：" + "\r\n" + resHandler.ParseXML(), Config.GetValue("isWriteLog").ToBool());
                 if (string.IsNullOrWhiteSpace(resHandler.GetParameter("transaction_id")))
@@ -878,10 +877,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 if (resHandler.IsTenpaySign() && return_code.ToUpper() == "SUCCESS")
                 {
                     Logger.Info("微信支付回调：1.订单号：" + orderNo + "2.微信支付订单号：" + transaction_id + "3.金额：" + total_fee);
-                    //正确的订单处理 改变订单状态
-                    //var orderData = order.GetT_OrderHeadEntity(orderNo);
-                    //orderData.F_State = "2";
-                    //order.UpdateOrder(orderNo, OrderStatus.未分拣);
                     billClientApiBLL.ModifyOrderStatus(orderNo, OrderStatus.未分拣);
                     paySuccess = true;
                 }
