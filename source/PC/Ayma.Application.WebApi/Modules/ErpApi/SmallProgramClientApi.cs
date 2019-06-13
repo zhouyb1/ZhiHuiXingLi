@@ -856,7 +856,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
 
                 var resHandler = new Senparc.Weixin.TenPay.V3.ResponseHandler(null);
                 //获取微信服务器返回的所有数据
-                Logger.Info("异步通知返回xml数据：" + "\r\n" + resHandler.ParseXML());
+                Logger.Info("异步通知返回xml数据：" + "\r\n" + resHandler.ParseXML(), Config.GetValue("isWriteLog").ToBool());
                 if (string.IsNullOrWhiteSpace(resHandler.GetParameter("transaction_id")))
                 {
                     var res = new WxPayData();
