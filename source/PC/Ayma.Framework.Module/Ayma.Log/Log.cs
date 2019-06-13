@@ -41,9 +41,12 @@ namespace Ayma.Loger
         /// 信息日志
         /// </summary>
         /// <param name="message">消息</param>
-        public void Info(object message)
+        public void Info(object message,bool isWrite=false)
         {
-            this.logger.Info(message);
+            if (isWrite)
+            {
+                this.logger.Info(message);
+            }
         }
         /// <summary>
         /// 警告日志
