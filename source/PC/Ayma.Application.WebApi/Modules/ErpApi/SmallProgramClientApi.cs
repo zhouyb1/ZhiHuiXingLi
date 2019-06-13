@@ -56,7 +56,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Post["/SaveUserInfo"] = SaveUserInfo;
             Post["/Register"] = Register;
             Post["/CancelOrder"] = CancelOrder;
-            Post["/NotifyUrl"] = NotifyUrl;
+            Get["/NotifyUrl"] = NotifyUrl;
             Get["/WxPay"] = WxPay;
             Post["/GetPhone"] = GetPhone;
             Post["/SaveFeedBack"] = SaveFeedBack;
@@ -864,7 +864,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                     res.SetValue("return_msg", "支付结果中微信订单号不存在");
                     return Content(res.ToXml());
                 }
-                var transaction_id = resHandler.GetParameter("transaction_id");
+                var transaction_id = resHandler.GetParameter("transaction_id");  
                 var return_code = resHandler.GetParameter("return_code");
                 var return_msg = resHandler.GetParameter("return_msg");
                 var orderNo = resHandler.GetParameter("out_trade_no");
@@ -879,8 +879,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 {
                     Logger.Info("微信支付回调：1.订单号：" + orderNo + "2.微信支付订单号：" + transaction_id + "3.金额：" + total_fee);
                     //正确的订单处理 改变订单状态
-                    var orderData = order.GetT_OrderHeadEntity(orderNo);
-                    orderData.F_State = "2";
+                    //var orderData = order.GetT_OrderHeadEntity(orderNo);
+                    //orderData.F_State = "2";
                     //order.UpdateOrder(orderNo, OrderStatus.未分拣);
                     billClientApiBLL.ModifyOrderStatus(orderNo, OrderStatus.未分拣);
                     paySuccess = true;
