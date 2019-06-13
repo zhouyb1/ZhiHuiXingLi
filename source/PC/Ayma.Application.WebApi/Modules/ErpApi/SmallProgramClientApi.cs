@@ -1,28 +1,19 @@
-﻿using System.Net;
-using System.Runtime.Remoting.Channels;
+﻿using System.Collections;
 using System.Text.RegularExpressions;
-using System.Web.UI.WebControls;
-using Ayma.Application.TwoDevelopment.ErpDev;
 using Ayma.Application.TwoDevelopment.TwoDev;
 using Ayma.Application.TwoDevelopment.TwoDev.OpinionFeedback;
 using Ayma.Util;
 using Ayma.Util.Payment;
 using Nancy;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Ayma.Util;
 using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient;
-using Senparc.CO2NET.HttpUtility;
-using Senparc.NeuChar.Helpers;
 using Senparc.Weixin.TenPay;
 using Senparc.Weixin.TenPay.V3;
-using Senparc.Weixin.WxOpen;
 using Senparc.Weixin.WxOpen.AdvancedAPIs.Sns;
 using Senparc.Weixin;
 using Config = Ayma.Util.Config;
-using Senparc.CO2NET.Helpers;
 using Ayma.Application.Base.SystemModule;
 using Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi;
 using System.Data;
@@ -35,6 +26,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
     public class SmallProgramClientApi
         : PdaBaseApi
     {
+        private Hashtable Parameters;
         private static string openId = string.Empty;
         private static string cellPhone = string.Empty;
         private OrderInquiryIBLL order = new OrderInquiryBLL();
@@ -861,6 +853,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         {
             try
             {
+
                 var resHandler = new Senparc.Weixin.TenPay.V3.ResponseHandler(null);
                 //获取微信服务器返回的所有数据
                 Logger.Info("异步通知返回xml数据：" + "\r\n" + resHandler.ParseXML());
@@ -880,7 +873,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 var err_code_des = resHandler.GetParameter("err_code_des"); //错误代码描述
                 var paySuccess = false;
 
-                resHandler.SetKey(Config.GetValue("key"));
+                resHandler.SetKey(Config.GetValue("PayKey"));
                 //验证请求是否从微信发过来（安全）
                 if (resHandler.IsTenpaySign() && return_code.ToUpper() == "SUCCESS")
                 {
@@ -919,6 +912,23 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
         }
 
+        /// <summary>
+        /// 设置参数值
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <param name="parameterValue"></param>
+        public void SetParameter(string parameter, string parameterValue)
+        {
+            if (parameter != null && parameter != "")
+            {
+                if (Parameters.Contains(parameter))
+                {
+                    Parameters.Remove(parameter);
+                }
+
+                Parameters.Add(parameter, parameterValue);
+            }
+        }
         /// <summary>
         /// 取消订单（退款）
         /// </summary>

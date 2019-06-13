@@ -102,6 +102,10 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             string path = ctx.ResolvedRoute.Description.Path;
            
             //验证登录状态
+            if (path.ToLower() == "/pdaapi/notifyurl")//屏蔽微信服务器推送异步通知时，拦截器里数据捕获报错
+            {
+                return null;
+            }
             ReqParameter<string> req = this.Bind<ReqParameter<string>>();
             this.WriteLog(ctx, req);//记录日志
 
@@ -113,8 +117,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 "/pdaapi/GetAirPort",
                 "/pdaapi/getemployeelist",
-                "/pdaapi/notifyurl"
- 
             };
             if (!ReqPath.Contains(path.ToLower()))
             {
@@ -131,10 +133,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 "/pdaapi/onlogin",
                 "/pdaapi/register",
                 "/pdaapi/getphone",
-                "/pdaapi/notifyurl",
                 "/pdaapi/getexpressno",
                 "/pdaapi/wxpay"
-
             };
 
             if (ReqSign.Contains(path.ToLower()))
