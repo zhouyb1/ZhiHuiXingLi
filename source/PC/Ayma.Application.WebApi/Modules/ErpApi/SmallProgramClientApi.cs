@@ -65,7 +65,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Post["/GetPhone"] = GetPhone;
             Post["/SaveFeedBack"] = SaveFeedBack;
             Get["/testFee"] = testFee;
-            Get["/SendMessage"] = SendMessage;
         }
         private SmallProgramClientApiBLL billClientApiBLL = new SmallProgramClientApiBLL();
         private AirportMessageBLL airportService = new AirportMessageBLL();
@@ -885,6 +884,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                     Logger.Info("微信支付回调：1.订单号：" + orderNo + "2.微信支付订单号：" + transaction_id + "3.金额：" + total_fee);
                     billClientApiBLL.ModifyOrderStatus(orderNo, OrderStatus.未分拣);
                     paySuccess = true;
+                    sendSms(orderNo); //发送短信通知
                 }
                 else
                 {
@@ -913,12 +913,12 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
         }
 
-        public Response SendMessage(dynamic _)
-        {
-            var orderNo = this.GetReqData().ToJObject()["orderNo"].ToString();
-            sendSms(orderNo);
-            return Fail("");
-        }
+
+        /// <summary>
+        /// 发送短信通知
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns></returns>
 
         //产品名称:云通信短信API产品,开发者无需替换
         const String product = "Dysmsapi";
@@ -928,7 +928,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         // TODO 此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)
         const String accessKeyId = "LTAIr0X34gXbCQKE";
         const String accessKeySecret = "UME00z7PeW0FLGFuRGAohBB5bc1A7t";
-        public SendSmsResponse sendSms(string orderNo)
+        public static SendSmsResponse sendSms(string orderNo)
         {
             IClientProfile profile = DefaultProfile.GetProfile("cn-hangzhou", accessKeyId, accessKeySecret);
             DefaultProfile.AddEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
@@ -946,7 +946,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 //必填:短信模板-可在短信控制台中找到
                 request.TemplateCode = "SMS_167971935";
                 //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
-                request.TemplateParam = "{\"customer\":\"123\"}";
+                request.TemplateParam = "{\"name\":\"" + orderData.F_FareName + "\",\"order\":\"" + orderData.F_OrderNo + "\"}";
                 //可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
                 request.OutId = "yourOutId";
                 //请求失败这里会抛ClientException异常
