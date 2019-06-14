@@ -9,6 +9,7 @@ Page({
   data: {
     times: false,
     checked: false,
+    radios: false,
     data: '',
     totalFee: '--',
     totalFees: '--',
@@ -131,6 +132,14 @@ Page({
   },
   pays() {
     var d = this.data.checked;
+    console.log(d, this.data.radios)
+    if (!this.data.radios) {
+      wx.showModal({
+        title: '温馨提示',
+        content: '请选择报价服务'
+      });
+      return false;
+    };
     if (!d) {
       wx.showModal({
         title: '温馨提示',
@@ -177,11 +186,23 @@ Page({
               console.log("支付成功")
             },
             fail(res) {
-              wx.showToast({
-                title: '支付失败',
-                image: "../../image/error.png",
-                duration: 2000
-              });
+              wx.showModal({
+                title: '温馨提示',
+                content: '支付失败了,是否重新支付？',
+                cancelText:"返回首页",
+                confirmText:"重新支付",
+                success(res) {
+                  if (res.confirm) {
+                    console.log('用户点击确定')
+                    _this.pays();
+                  } else if (res.cancel) {
+                    console.log('用户点击取消')
+                    wx.switchTab({
+                      url: '/pages/index/index'
+                    })
+                  }
+                }
+              })
               console.log("支付失败");
             }
           })
@@ -207,5 +228,11 @@ Page({
         url: event.target.dataset.link,
       });
     };
+  },
+  radioChange: function (e) {
+    console.log('radio发生change事件，携带value值为：', e.detail.value);
+    this.setData({
+      radios: e.detail.value
+    })
   }
 })

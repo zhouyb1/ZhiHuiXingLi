@@ -302,6 +302,9 @@ page {
 .pay-success-cont-order {
   margin: 10rpx 0;
 }
+.radio-group{
+  margin: 0 50rpx 0 20rpx;
+}
 
 /* @media screen and (min-width:414px) {
   .list-6plus {

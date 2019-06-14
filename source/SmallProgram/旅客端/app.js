@@ -86,7 +86,7 @@ App({
   },
   path(obj) {
     if (obj === 1) {
-      return "https://zhonghuijinxin.com:8011";
+      return "https://mp.zhonghuijinxin.com:8011";
     };
     if (obj === 2) {
       return "o6IgFIj7gJanSJyyg6ruaiq0PHRFpVd9";

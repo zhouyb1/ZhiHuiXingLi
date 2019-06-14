@@ -62,7 +62,7 @@ Page({
       } else {
         wx.showModal({
           title: '温馨提示',
-          content: '联系方式只能填入允许手机、微信、QQ、邮箱'
+          content: '联系方式只允许手机、微信、QQ、邮箱'
         });
       };
     };
