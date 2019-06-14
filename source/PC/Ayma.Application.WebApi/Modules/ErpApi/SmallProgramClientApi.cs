@@ -40,7 +40,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             : base("/pdaapi")
             //注册接口
         {
-            Post["/SubmitBillSaleOut"] = SubmitBillSaleOut; //提交车班补货单
             Get["/GetAirPort"] = GetAirPort; //获取机场
             Get["/GetFlightNoInfo"] = GetFlightNoInfo; //获取航班列表
             Get["/GetOrderList"] = GetOrderList; //获取航班列表
@@ -581,24 +580,6 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             else
             {
                 return Fail("没有数据!");
-            }
-        }
-
-        /// <summary>
-        /// 提交车班补货单
-        /// </summary>
-        /// <returns></returns>
-        public Response SubmitBillSaleOut(dynamic _)
-        {
-            int errCode = 0;
-            string errText = "";
-            if (errCode == 100)
-            {
-                return Success(errText);
-            }
-            else
-            {
-                return Fail(errText);
             }
         }
 
