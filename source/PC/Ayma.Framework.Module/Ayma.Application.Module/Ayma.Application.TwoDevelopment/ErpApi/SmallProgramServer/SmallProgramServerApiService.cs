@@ -346,8 +346,8 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                     var StateDescribe = "";
                     switch (status)
                     {
-                        case "3":
-                            StateDescribe = "行李分拣完成";
+                        case "2":
+                            StateDescribe = "分拣中";
                             break;
                     }
 
