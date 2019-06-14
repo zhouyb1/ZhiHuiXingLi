@@ -43,11 +43,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="aliyun-net-sdk-core, Version=1.3.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\aliyun-net-sdk-core.1.3.6\lib\net45\aliyun-net-sdk-core.dll</HintPath>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="aliyun-net-sdk-dysmsapi">
-      <HintPath>C:\Users\Administrator\Desktop\新建文件夹 (2)\net\api_demo\net2.0\aliyun-net-sdk-dysmsapi.dll</HintPath>
+    <Reference Include="aliyun-net-sdk-dysmsapi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\aliyun-net-sdk-core.1.3.6\lib\net45\aliyun-net-sdk-dysmsapi.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
