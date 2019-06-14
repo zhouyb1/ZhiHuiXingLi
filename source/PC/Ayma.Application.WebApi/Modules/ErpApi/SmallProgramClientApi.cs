@@ -925,7 +925,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 request.SignName = "智慧行李";
                 //必填:短信模板-可在短信控制台中找到
                 request.TemplateCode = "SMS_167971935";
-                //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
+                //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的订单为${order}"时,此处的值为
                 request.TemplateParam = "{\"name\":\"" + orderData.F_FareName + "\",\"order\":\"" + orderData.F_OrderNo + "\"}";
                 //可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
                 request.OutId = "yourOutId";
