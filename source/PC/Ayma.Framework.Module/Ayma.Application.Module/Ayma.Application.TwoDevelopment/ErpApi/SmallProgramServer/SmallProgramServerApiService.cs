@@ -506,7 +506,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                 var strSql = new StringBuilder();
                 strSql.Append(@"SELECT b.F_OrderNo,F_ConsignmentNumber,FB_State FROM dbo.T_OrderBody b
                                 LEFT JOIN dbo.T_OrderHead h ON h.F_OrderNo = b.F_OrderNo
-                                WHERE 1=1");
+                                WHERE 1=1 AND F_State IN ('1','2','3','4','5','41','51')");
                 if (!string.IsNullOrEmpty(FlightNumber))
                 {
                     strSql.Append(" AND F_FlightNumber=@FlightNumber");
