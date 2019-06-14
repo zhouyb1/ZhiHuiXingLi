@@ -56,7 +56,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             Post["/SaveUserInfo"] = SaveUserInfo;
             Post["/Register"] = Register;
             Post["/CancelOrder"] = CancelOrder;
-            Get["/NotifyUrl"] = NotifyUrl;
+            Post["/NotifyUrl"] = NotifyUrl;
             Get["/WxPay"] = WxPay;
             Post["/GetPhone"] = GetPhone;
             Post["/SaveFeedBack"] = SaveFeedBack;
@@ -816,7 +816,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 //Convert.ToInt32(totalprice * 100)
                 WXConfig wx = new WXConfig();
                 TenPayV3UnifiedorderRequestData xmlDataInfo = new TenPayV3UnifiedorderRequestData(wx.AppId, wx.MchId, "智慧行李",
-                orderNo, 2, Net.Ip, wx.NotifyUrl, TenPayV3Type.JSAPI, openId, wx.Key, TenPayV3Util.GetNoncestr());
+                orderNo, 1, Net.Ip, wx.NotifyUrl, TenPayV3Type.JSAPI, openId, wx.Key, TenPayV3Util.GetNoncestr());
                 //Logger.Info("统一下单xml:" + xmlDataInfo.PackageRequestHandler.GetAllParameters().ToJson());
                 //接收微信服务器传来的数据并进行二次加密
                 var result = TenPayV3.Unifiedorder(xmlDataInfo);
@@ -853,9 +853,10 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         {
             try
             {
+                Logger.Info("请求方式："+HttpContext.Current.Request.HttpMethod+" Nancy 获取到的请求方式："+Request.Method);
                 var resHandler = new ResponseHandler(null);
                 //获取微信服务器返回的所有数据
-                Logger.Info("异步通知返回xml数据：" + "\r\n" + resHandler.ParseXML(), Config.GetValue("isWriteLog").ToBool());
+                Logger.Info("异步通知返回xml数据：" + "\r\n" + resHandler.ParseXML());
                 if (string.IsNullOrWhiteSpace(resHandler.GetParameter("transaction_id")))
                 {
                     var res = new WxPayData();
