@@ -37,17 +37,16 @@ namespace Ayma.Loger
         {
             this.logger.Error(message);
         }
+
         /// <summary>
         /// 信息日志
         /// </summary>
         /// <param name="message">消息</param>
-        public void Info(object message,bool isWrite=false)
+        public void Info(object message)
         {
-            if (isWrite)
-            {
-                this.logger.Info(message);
-            }
+            this.logger.Info(message);
         }
+
         /// <summary>
         /// 警告日志
         /// </summary>
