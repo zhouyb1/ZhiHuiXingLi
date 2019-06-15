@@ -1,4 +1,5 @@
 // pages/help/help.js
+var app = getApp();
 Page({
 
   /**
@@ -36,7 +37,7 @@ Page({
     return {
       title: '智慧行李',
       path: 'pages/help/help?openid=' + app.open('open').openId + '&type=' + this.data.type,
-      imageUrl: "../../image/2.jpg",
+      imageUrl: "../../image/Top.jpg",
       success: function(res) {
         console.log("转发成功:" + JSON.stringify(res));
       },
