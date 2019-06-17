@@ -260,8 +260,9 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             var EmployeeEntity = billServerApiBLL.SorterLogin(Code, PassWord, out errText);
             if (EmployeeEntity!=null)
             {
-                var data = new { Status = "Login" };
-                return Success(data);
+                //var data = new { Status = "Login" };
+                //return Success(data);
+                return Success("登录成功!");
             }
             else {
                 return Fail("登录失败!");
