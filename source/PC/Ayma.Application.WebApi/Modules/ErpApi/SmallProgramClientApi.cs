@@ -864,7 +864,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                     Logger.Info("微信支付回调：1.订单号：" + orderNo + "2.微信支付订单号：" + transaction_id + "3.金额：" + total_fee);
                     billClientApiBLL.ModifyOrderStatus(orderNo, OrderStatus.未分拣);
                     paySuccess = true;
-                    sendSms(orderNo); //发送短信通知
+                    sendSms(orderNo); //下单成功发送短信通知
                 }
                 else
                 {
