@@ -124,20 +124,12 @@ var bootstrap = function ($, ayma) {
             $('#girdtable').AuthorizeJfGrid({
                 url: top.$.rootUrl + '/TwoDev/OrderInquiry/GetPageList',
                 headData: [
-                    { label: "机场名称", name: "F_AirfieldName", width: 160, align: "left" },
+                    { label: "机场名称", name: "F_AirfieldName", width: 160, align: "center" },
                     {
-                        label: "订单状态", name: "F_State", width: 160, align: "left",
+                        label: "订单状态", name: "F_State", width: 160, align: "center",
                         formatter: function (cellvalue, options, rowObject) {
                             var colorcss = "";
-                            if (cellvalue == 0) {
-                                colorcss = "label label-success";
-                                cellvalue = "待付款";
-                            }
-                            else if (cellvalue == 1) {
-                                colorcss = "label label-success";
-                                cellvalue = "已付款";
-                            }
-                            else if (cellvalue == -1) {
+                            if (cellvalue == -1) {
                                 colorcss = "label label-warning";
                                 cellvalue = "已取消";
                             } else if (cellvalue == -3) {
@@ -147,6 +139,10 @@ var bootstrap = function ($, ayma) {
                             else if (cellvalue == -2) {
                                 colorcss = "label label-warning";
                                 cellvalue = "已退款";
+                            }
+                           else if (cellvalue == 0) {
+                                colorcss = "label label-success";
+                                cellvalue = "待付款";
                             }
                             else if (cellvalue == 1) {
                                 colorcss = "label label-success";
