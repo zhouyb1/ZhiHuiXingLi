@@ -47,11 +47,11 @@ Page({
           })
         } else {
           wx.hideLoading();
-          wx.showToast({
-            title: '获取失败',
-            image: "../../../image/error.png",
-            duration: 2000
-          });
+          // wx.showToast({
+          //   title: '数据为空',
+          //   image: "../../../image/error.png",
+          //   duration: 2000
+          // });
         };
       }
     })
@@ -126,6 +126,7 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       success(res) {
+        console.log(res)
         wx.hideLoading();
         if (res.data.code === 200) {
           wx.showToast({
@@ -135,7 +136,7 @@ Page({
           });
         } else {
           wx.showToast({
-            title: '修改失败',
+            title: '系统异常',
             image: "../../../image/error.png",
             duration: 2000
           });
@@ -173,7 +174,7 @@ Page({
         } else {
           wx.hideLoading();
           wx.showToast({
-            title: '获取失败',
+            title: '系统异常',
             image: "../../../image/error.png",
             duration: 2000
           });
