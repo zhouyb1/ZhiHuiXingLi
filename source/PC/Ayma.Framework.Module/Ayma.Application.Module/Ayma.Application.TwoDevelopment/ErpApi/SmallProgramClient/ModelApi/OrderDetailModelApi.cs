@@ -79,6 +79,11 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient.ModelApi
         public decimal F_Price { get; set; }
 
         /// <summary>
+        /// 快递公司
+        /// </summary>
+        public string F_ExpressCompanyId { get; set; }
+
+        /// <summary>
         /// 快递单号
         /// </summary>
         public string F_ExpressNO { get; set; }
