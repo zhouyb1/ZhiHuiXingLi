@@ -179,7 +179,14 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
             var T_OrderCollectMoney = orderInquiryIBLL.GetT_OrderPayMoneyEntity(T_OrderHeadData.F_OrderNo);
             return Success(T_OrderCollectMoney);
         }
-        
+
+        [HttpGet]
+        [AjaxOnly]
+        public ActionResult GetOrderPayMoneyConNum(string orderNo, string ExpressNO)
+        {
+            var data = orderInquiryIBLL.GetOrderPayMoneyConNum(orderNo, ExpressNO);
+            return Success(data);
+        }
 
         /// <summary>
         /// 获取物流表单数据
