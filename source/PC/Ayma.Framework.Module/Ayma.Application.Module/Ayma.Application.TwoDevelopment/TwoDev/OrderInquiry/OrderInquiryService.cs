@@ -305,16 +305,15 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
             {
                 var strSql = new StringBuilder();
                 strSql.Append(@"SELECT
-                     F_Id,
                      F_OrderNo,
-                     F_ConsignmentNumber,
                      F_ExpressCompanyId,
                      F_ExpressNO,
                      F_PayType,
-                     F_Amount
+                     SUM(F_SingleAmount) F_Amount
                     FROM    T_OrderPayMoney
                     WHERE   1 = 1");
                 strSql.Append(" And F_OrderNo='" + keyValue + "'");
+                strSql.Append(" GROUP BY F_OrderNo,F_ExpressCompanyId,F_ExpressNO,F_PayType");
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
                 return this.BaseRepository().FindList<T_OrderPayMoneyEntity>(strSql.ToString(), dp);
@@ -377,6 +376,33 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 return this.BaseRepository()
                        .FindList<T_OrderBodyEntity>(c => c.F_OrderNo == orderNo)
                        .Select(c => new Details { ConsignmentNumber = c.F_ConsignmentNumber });
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        public IEnumerable<T_OrderPayMoneyEntity> GetOrderPayMoneyConNum(string orderNo, string ExpressNO)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT  F_ConsignmentNumber
+                                FROM    dbo.T_OrderPayMoney
+                                WHERE   F_OrderNo = @orderNo
+                                AND F_ExpressNO = @ExpressNO");
+                var dp = new DynamicParameters(new { });
+                dp.Add("@orderNo", orderNo);
+                dp.Add("@ExpressNO", ExpressNO);
+                return this.BaseRepository().FindList<T_OrderPayMoneyEntity>(strSql.ToString(), dp);
             }
             catch (Exception ex)
             {
