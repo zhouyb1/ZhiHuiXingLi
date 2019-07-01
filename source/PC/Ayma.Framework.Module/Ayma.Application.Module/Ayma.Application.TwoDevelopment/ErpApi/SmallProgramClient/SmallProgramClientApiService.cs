@@ -294,6 +294,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                                         a.F_ConsignmentNumber ,
                                         F_Qty ,
                                         F_Price ,
+                                        b.F_ExpressCompanyId,
                                         b.F_ExpressNO
                                 FROM    T_OrderBody a
                                         LEFT JOIN dbo.T_OrderPayMoney b ON b.F_ConsignmentNumber = a.F_ConsignmentNumber  WHERE 1=1");
@@ -551,6 +552,47 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         }
 
         /// <summary>
+        /// 订单收款记录
+        /// </summary>
+        /// <param name="orderNo"></param>
+        /// <param name="Amount"></param>
+        public void OrderCollectMoney(string orderNo, string Amount)
+        {
+            try
+            {
+                var InSql = new StringBuilder();
+                InSql.Append(@"INSERT INTO dbo.T_OrderCollectMoney ( 
+                                        F_Id ,
+                                        F_OrderNo ,
+                                        F_PayType ,
+                                        F_Amount )
+                                VALUES (
+                                        @F_Id ,
+                                        @F_OrderNo ,
+                                        @F_PayType ,
+                                        @F_Amount
+                                        )");
+                var param = new DynamicParameters(new { });
+                param.Add("@F_Id", Guid.NewGuid().ToString());
+                param.Add("@F_OrderNo", orderNo);
+                param.Add("@F_PayType", "微信支付");
+                param.Add("@F_Amount", Convert.ToDecimal(Amount)/100);
+                this.BaseRepository().ExecuteBySql(InSql.ToString(), param);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
         /// 获取订单头实体
         /// </summary>
         /// <param name="OrderNo"></param>
@@ -599,7 +641,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         }
 
         /// <summary>
-        /// 修改订单状态-旅客申请退款
+        /// 修改订单状态
         /// </summary>
         /// <param name="OrderNo"></param>
         /// <param name="status"></param>
@@ -609,11 +651,16 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             var db = this.BaseRepository().BeginTrans();
             try
             {
-                var sql = "UPDATE dbo.T_OrderHead SET F_State =@F_State WHERE F_OrderNo =@F_OrderNo ";
+                var strSql = new StringBuilder();
+                strSql.Append(@"UPDATE dbo.T_OrderHead SET F_State =@F_State WHERE F_OrderNo =@F_OrderNo;");
+                if (status == "5")
+                {
+                    strSql.Append(" UPDATE dbo.T_OrderBody SET FB_State=@F_State WHERE F_OrderNo =@F_OrderNo AND FB_State NOT IN('41','51')");
+                }
                 var dp = new DynamicParameters(new { });
                 dp.Add("@F_State", status);
                 dp.Add("@F_OrderNo", OrderNo);
-                db.ExecuteBySql(sql, dp);
+                db.ExecuteBySql(strSql.ToString(), dp);
 
                 //插入操作时间节点
                 var bodyEntity = this.BaseRepository().FindList<T_OrderBodyEntity>(c => c.F_OrderNo == OrderNo);
