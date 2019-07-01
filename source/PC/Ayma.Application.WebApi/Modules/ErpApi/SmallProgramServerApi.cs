@@ -57,39 +57,27 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         public Response ExpressInformations(dynamic _)
         {
             var req = this.GetReqData().ToJObject();//获取模板请求数据
-            if (req["OrderNo"].IsEmpty())
-            {
-                return Fail("订单号不能为空!");
-            }
-            if (req["ConsignmentNumber"].IsEmpty())
-            {
-                return Fail("行李号不能为空!");
-            }
-            if (req["ExpressCompanyId"].IsEmpty())
-            {
-                return Fail("快递公司不能为空!");
-            }
-            if (req["ExpressNO"].IsEmpty())
-            {
-                return Fail("快递单号不能为空!");
-            }
-            if (req["Amount"].IsEmpty())
-            {
-                return Fail("费用不能为空");
-            }
-            if (!Regex.IsMatch(req["Amount"].ToString(), @"^[0-9]*$"))
-            {
-                return Fail("费用只能为数字");
-            }
-            string OrderNo = req["OrderNo"].ToString();  //订单号
-            List<string> ConNumber = new List<string>();
-            ConNumber = req["ConsignmentNumber"].ToString().ToList<string>();//行李号
-            string ExpressCompanyId = req["ExpressCompanyId"].ToString();  //快递公司
-            string ExpressNO = req["ExpressNO"].ToString(); //快递单号
-            string PayType = req["PayType"].ToString(); //收款方式
-            string Amount = req["Amount"].ToString(); //快递费用
             string errText = "";
-            billServerApiBLL.ExpressInformations(OrderNo, ConNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
+            foreach (var item in req)
+            {
+                var data = item.Value;
+                string OrderNo = data[0]["OrderNo"].ToString();  //订单号
+                List<string> ConNumber = new List<string>();
+                ConNumber = data[0]["ConsignmentNumber"].ToString().ToList<string>();//行李号
+                string ExpressCompanyId = data[0]["ExpressCompanyId"].ToString();  //快递公司
+                string ExpressNO = data[0]["ExpressNO"].ToString(); //快递单号
+                string PayType = data[0]["PayType"].ToString(); //收款方式
+                string Amount = data[0]["Amount"].ToString(); //快递费用
+                if (string.IsNullOrEmpty(Amount))
+                {
+                    return Fail("运费不能为空");
+                }
+                if (!Regex.IsMatch(Amount, @"^[0-9]*$"))
+                {
+                    return Fail("运费只能为不小于0的数字");
+                }
+                billServerApiBLL.ExpressInformations(OrderNo, ConNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
+            }
             return Success(errText);
         }
 
