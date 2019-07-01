@@ -3,6 +3,7 @@
  * 描  述：收付款
  */
 var refreshGirdData;
+var $subgridTable;//子列表
 var keyValue = request('keyValue');
 
 var bootstrap = function ($, ayma) {
@@ -25,9 +26,9 @@ var bootstrap = function ($, ayma) {
                 url: top.$.rootUrl + '/TwoDev/OrderInquiry/GetOrderCollectMoney?keyValue=' + keyValue + '',
                 headData: [
                     //{ label: "ID", name: "F_Id", width: 160, align: "left", sort: true },
-                    { label: "订单号", name: "F_OrderNo", width: 160, align: "left", sort: true },
-                    { label: "收款方式", name: "F_PayType", width: 160, align: "left", sort: true },
-                    { label: "收款金额(元)", name: "F_Amount", width: 100, align: "left", sort: true }
+                    { label: "订单号", name: "F_OrderNo", width: 160, align: "center", sort: true },
+                    { label: "收款方式", name: "F_PayType", width: 160, align: "center", sort: true },
+                    { label: "收款金额(元)", name: "F_Amount", width: 100, align: "center", sort: true }
                 ],
                 mainId: 'F_Id',
                 reloadSelected: true
@@ -37,16 +38,29 @@ var bootstrap = function ($, ayma) {
             $('#girdtable_temp').jfGrid({
                 url: top.$.rootUrl + '/TwoDev/OrderInquiry/GetOrderPayMoney?keyValue=' + keyValue + '',
                 headData: [
-                    { label: "订单号", name: "F_OrderNo", width: 160, align: "left", sort: true },
-                    { label: "航班托运单号", name: "F_ConsignmentNumber", width: 160, align: "left", sort: true },
-                    { label: "快递公司", name: "F_ExpressCompanyId", width: 100, align: "left", sort: true },
-                    { label: "快递单号", name: "F_ExpressNO", width: 100, align: "left", sort: true },
-                    { label: "收款方式", name: "F_PayType", width: 160, align: "left", sort: true },
-                    { label: "收款金额(元)", name: "F_Amount", width: 80, align: "left", sort: true }
+                    { label: "订单号", name: "F_OrderNo", width: 160, align: "center", sort: true },
+                    { label: "快递公司", name: "F_ExpressCompanyId", width: 100, align: "center", sort: true },
+                    { label: "快递单号", name: "F_ExpressNO", width: 100, align: "center", sort: true },
+                    { label: "付款方式", name: "F_PayType", width: 160, align: "center", sort: true },
+                    { label: "付款金额(元)", name: "F_Amount", width: 80, align: "center", sort: true }
                 ],
                 mainId: 'F_Id',
-                reloadSelected: true
-                //isPage: true
+                reloadSelected: true,
+                isSubGrid: true,
+                subGridRowExpanded: function (subgridId, row) {
+                    var orderNo = row.F_OrderNo;
+                    var ExpressNO = row.F_ExpressNO;
+                    var subgridTableId = subgridId + "_t";
+                    $("#" + subgridId).html("<div class=\"am-layout-body\" id=\"" + subgridTableId + "\"></div>");
+                    $subgridTable = $("#" + subgridTableId);
+                    $subgridTable.jfGrid({
+                        url: top.$.rootUrl + '/TwoDev/OrderInquiry/GetOrderPayMoneyConNum?orderNo=' + orderNo + '&ExpressNO=' + ExpressNO,
+                        headData: [
+                           { label: "航班托运单号", name: "F_ConsignmentNumber", width: 160, align: "center" },
+                        ],
+                        reloadSelected: true
+                    }).jfGridSet("reload");
+                }
             });
         },
         search: function (param) {
