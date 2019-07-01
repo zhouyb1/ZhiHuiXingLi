@@ -232,6 +232,25 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
             }
         }
 
+        public IEnumerable<T_OrderPayMoneyEntity> GetOrderPayMoneyConNum(string orderNo, string ExpressNO)
+        {
+            try
+            {
+                return orderInquiryService.GetOrderPayMoneyConNum(orderNo, ExpressNO);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
         
 
         #endregion
