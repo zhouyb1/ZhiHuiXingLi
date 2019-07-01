@@ -83,6 +83,9 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
             {
                 FinanceReportModel sum = new FinanceReportModel();
                 sum.OrderNum = "合计";
+                //行李数
+                int ConsignmentNum = data.Sum(r => r.ConsignmentNum);
+                sum.ConsignmentNum = ConsignmentNum;
                 //收入金额
                 double? ChargeMoney = data.Sum(r => r.ChargeMoney);
                 sum.ChargeMoney = Math.Round(ChargeMoney.Value, 2);
