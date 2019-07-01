@@ -466,5 +466,29 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
             }
         }
 
+        /// <summary>
+        /// 订单收款记录
+        /// </summary>
+        /// <param name="orderNo"></param>
+        /// <param name="Amount"></param>
+        public void OrderCollectMoney(string orderNo, string Amount)
+        {
+            try
+            {
+                billClientApiService.OrderCollectMoney(orderNo, Amount);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
     }
 }
