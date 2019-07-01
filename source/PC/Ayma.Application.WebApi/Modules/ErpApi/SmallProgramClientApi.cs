@@ -799,8 +799,9 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                     totalprice = Convert.ToDecimal(detailEntity.Sum(c => c.F_Price));
                 }
                 WXConfig wx = new WXConfig();
+                //Convert.ToInt32(totalprice * 100)
                 TenPayV3UnifiedorderRequestData xmlDataInfo = new TenPayV3UnifiedorderRequestData(wx.AppId, wx.MchId, "智慧行李",
-                orderNo, Convert.ToInt32(totalprice * 100), Net.Ip, wx.NotifyUrl, TenPayV3Type.JSAPI, openId, wx.Key, TenPayV3Util.GetNoncestr());
+                orderNo, 1, Net.Ip, wx.NotifyUrl, TenPayV3Type.JSAPI, openId, wx.Key, TenPayV3Util.GetNoncestr());
                 //Logger.Info("统一下单xml:" + xmlDataInfo.PackageRequestHandler.GetAllParameters().ToJson());
                 //接收微信服务器传来的数据并进行二次加密
                 var result = TenPayV3.Unifiedorder(xmlDataInfo);
@@ -862,7 +863,8 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 if (resHandler.IsTenpaySign() && return_code.ToUpper() == "SUCCESS")
                 {
                     Logger.Info("微信支付回调：1.订单号：" + orderNo + "2.微信支付订单号：" + transaction_id + "3.金额：" + total_fee);
-                    billClientApiBLL.ModifyOrderStatus(orderNo, OrderStatus.未分拣);
+                    billClientApiBLL.ModifyOrderStatus(orderNo, OrderStatus.未分拣);  //支付完成改变订单状态
+                    billClientApiBLL.OrderCollectMoney(orderNo, total_fee);   //记录收款金额到收款表
                     paySuccess = true;
                     sendSms(orderNo); //下单成功发送短信通知
                 }
