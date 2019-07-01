@@ -143,6 +143,13 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
         /// <param name="orderNo"></param>
         /// <param name="status"></param>
         void ModifyOrderStatus(string orderNo, OrderStatus status);
+
+        /// <summary>
+        /// 订单收款记录
+        /// </summary>
+        /// <param name="orderNo"></param>
+        /// <param name="Amount"></param>
+        void OrderCollectMoney(string orderNo, string Amount);
         
     }
 }
