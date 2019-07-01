@@ -73,6 +73,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                                 F_ExpressCompanyId ,
                                                 F_ExpressNO ,
                                                 F_PayType,
+                                                F_SingleAmount,
                                                 F_Amount  
                                             )
                                     VALUES  ( @F_Id,
@@ -81,6 +82,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                                                 @F_ExpressCompanyId,
                                                 @F_ExpressNO ,
                                                 @F_PayType,
+                                                @F_SingleAmount,
                                                 @F_Amount
                                             )");
                     var param = new DynamicParameters(new { });
@@ -90,6 +92,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                     param.Add("@F_ExpressCompanyId", ExpressCompanyId);
                     param.Add("@F_ExpressNO", ExpressNO);
                     param.Add("@F_PayType", PayType);
+                    param.Add("@F_SingleAmount", Convert.ToDecimal(Amount) / ConNumber.Count);
                     param.Add("@F_Amount", Amount);
                     this.BaseRepository().ExecuteBySql(InSql.ToString(), param);
                 }
