@@ -69,6 +69,8 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// <returns></returns>
         OrderModel GetOrderInfoByNo(string orderNo);
 
+        IEnumerable<T_OrderPayMoneyEntity> GetOrderPayMoneyConNum(string orderNo, string ExpressNO);
+
          
         #endregion
 
