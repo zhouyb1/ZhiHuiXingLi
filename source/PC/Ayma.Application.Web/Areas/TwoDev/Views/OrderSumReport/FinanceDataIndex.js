@@ -26,12 +26,16 @@ var bootstrap = function ($, ayma) {
             $('#girdtable').jfGrid({
                 url: top.$.rootUrl + '/TwoDev/OrderSumReport/GetFinanceReport',
                 headData: [
-                    { label: "订单号", name: "OrderNum", width: 120, align: "left" },
-                    { label: "行李件数", name: "ConsignmentNum", width: 100, align: "left" },
-                    { label: "收入金额(元)", name: "ChargeMoney", width: 100, align: "left" },
-                    { label: "第三方费用", name: "ThirdMoney", width: 100, align: "left" },
-                    { label: "毛利润", name: "GrossProfit", width: 160, align: "left" },
-                    { label: "日期", name: "OrderDate", width: 160, align: "left" }
+                    { label: "订单号", name: "OrderNum", width: 120, align: "center" },
+                    { label: "行李件数", name: "ConsignmentNum", width: 100, align: "center" },
+                    { label: "收入金额(元)", name: "ChargeMoney", width: 100, align: "center" },
+                    { label: "第三方费用", name: "ThirdMoney", width: 100, align: "center" },
+                    { label: "毛利润", name: "GrossProfit", width: 160, align: "center" },
+                    {
+                        label: "订单日期", name: "OrderDate", width: 160, align: "center", formatter: function (cellvalue) {
+                            return ayma.formatDate(cellvalue, 'yyyy-MM-dd hh:mm:ss');
+                        }
+                    }
                 ],
                 mainId: 'F_Id',
                 reloadSelected: true,
