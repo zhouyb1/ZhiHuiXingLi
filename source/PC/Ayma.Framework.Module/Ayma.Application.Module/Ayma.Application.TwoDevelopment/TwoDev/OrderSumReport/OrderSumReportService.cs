@@ -97,25 +97,20 @@ SELECT
             try
             {
                 #region 查询语句
-                string sqlIn = @"
-                    SELECT 
-					a.F_OrderNo OrderNum,
-					COUNT(distinct b.F_ConsignmentNumber) ConsignmentNum,
-					SUM(b.F_Price) ChargeMoney,
-					SUM(p.F_Amount) ThirdMoney,
-					SUM(b.F_Price-p.F_Amount) GrossProfit,
-					a.F_CreateTime OrderDate
-					FROM T_OrderHead a 
-							left join T_OrderBody b on a.F_OrderNo=b.F_OrderNo 
-							left join T_FlightNoInfo c on a.F_AirfieldId=c.F_AirfieldId And a.F_FlightNumber=c.F_FlightNumber
-							left join T_OrderLogisticsInfo d on a.F_OrderNo=d.F_OrderNo And b.F_OrderNo=d.F_OrderNo
-							left join T_OrderPayMoney p on a.F_OrderNo=p.F_OrderNo
-
-					WHERE 
-					1=1 
-                    Group by a.F_OrderNo,a.F_CreateTime
-        ";
-                var strParm = new StringBuilder();
+                var sqlIn = new StringBuilder();
+                sqlIn.Append(@"SELECT OrderNum,ConsignmentNum,ISNULL(ChargeMoney,0)ChargeMoney,ISNULL(ThirdMoney,0)ThirdMoney,
+                                (ChargeMoney-ISNULL(ThirdMoney,0))GrossProfit,
+                                OrderDate FROM (
+                                SELECT 
+                                a.F_OrderNo OrderNum,
+                                COUNT(distinct b.F_ConsignmentNumber) ConsignmentNum,
+                                (SELECT SUM(F_Amount) FROM T_OrderCollectMoney WHERE F_OrderNo=a.F_OrderNo) ChargeMoney,
+                                (SELECT SUM(F_SingleAmount) FROM dbo.T_OrderPayMoney WHERE F_OrderNo=a.F_OrderNo)ThirdMoney,
+                                a.F_CreateTime OrderDate,a.F_FlightCompany
+                                FROM T_OrderHead a 
+                                left join T_OrderBody b on a.F_OrderNo=b.F_OrderNo
+                                left join T_FlightNoInfo c on a.F_AirfieldId=c.F_AirfieldId And a.F_FlightNumber=c.F_FlightNumber
+                                Group by a.F_OrderNo,a.F_CreateTime,a.F_FlightCompany) t WHERE 1=1");
                 var queryParam = queryJson.ToJObject();
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
@@ -123,15 +118,15 @@ SELECT
                 {
                     dp.Add("startTime", queryParam["StartTime"].ToDate(), DbType.DateTime);
                     dp.Add("endTime", queryParam["EndTime"].ToDate(), DbType.DateTime);
-                    strParm.Append(" AND ( a.F_CreateTime >= @startTime AND a.F_CreateTime <= @endTime ) ");
+                    sqlIn.Append(" AND (t.OrderDate >= @startTime AND t.OrderDate<= @endTime)");
                 }
                 if (!queryParam["F_FlightCompany"].IsEmpty())
                 {
-                    dp.Add("F_FlightCompany", queryParam["F_FlightCompany"].ToString(), DbType.String);
-                    strParm.Append(" AND a.F_FlightCompany LIKE '%@F_FlightCompany%' ");
+                    dp.Add("F_FlightCompany", "%" + queryParam["F_FlightCompany"].ToString() + "%", DbType.String);
+                    sqlIn.Append(" AND t.F_FlightCompany LIKE @F_FlightCompany ");
                 }
                 #endregion
-                var rows = this.BaseRepository().FindList<FinanceReportModel>(string.Format(sqlIn, strParm.ToString()), dp).ToList();
+                var rows = this.BaseRepository().FindList<FinanceReportModel>(sqlIn.ToString(), dp).ToList();
                 return rows;
             }
             catch (Exception ex)
