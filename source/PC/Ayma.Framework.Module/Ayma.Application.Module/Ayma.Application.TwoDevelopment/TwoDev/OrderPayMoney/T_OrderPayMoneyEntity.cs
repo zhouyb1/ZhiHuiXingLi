@@ -48,6 +48,13 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// <returns></returns>
         [Column("F_PAYTYPE")]
         public string F_PayType { get; set; }
+
+        /// <summary>
+        /// 单个行李运费
+        /// </summary>
+        [Column("F_SINGLEAMOUNT")]
+        public decimal? F_SingleAmount { get; set; }
+
         /// <summary>
         /// 收款金额
         /// </summary>
