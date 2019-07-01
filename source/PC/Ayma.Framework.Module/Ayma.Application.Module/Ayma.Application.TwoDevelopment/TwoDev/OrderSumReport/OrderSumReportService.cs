@@ -116,8 +116,10 @@ SELECT
                 var dp = new DynamicParameters(new { });
                 if (!queryParam["StartTime"].IsEmpty() && !queryParam["EndTime"].IsEmpty())
                 {
-                    dp.Add("startTime", queryParam["StartTime"].ToDate(), DbType.DateTime);
-                    dp.Add("endTime", queryParam["EndTime"].ToDate(), DbType.DateTime);
+                    var starttime = queryParam["StartTime"].ToDate().ToString("yyyy-MM-dd") + " 00:00:00";
+                    var endtime = queryParam["EndTime"].ToDate().ToString("yyyy-MM-dd") + " 23:59:59";
+                    dp.Add("startTime", starttime, DbType.String);
+                    dp.Add("endTime", endtime, DbType.String);
                     sqlIn.Append(" AND (t.OrderDate >= @startTime AND t.OrderDate<= @endTime)");
                 }
                 if (!queryParam["F_FlightCompany"].IsEmpty())
