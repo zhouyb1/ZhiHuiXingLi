@@ -24,10 +24,10 @@ namespace Ayma.Application.TwoDevelopment.TwoDev.OrderSumReport
                 #region 查询语句
                 string sqlIn = @"
 SELECT 
-					COUNT(distinct a.F_OrderNo) OrderNum,
-					COUNT(distinct b.F_ConsignmentNumber) ConsignmentNum ,
+					COUNT(DISTINCT a.F_OrderNo) OrderNum,
+					COUNT(DISTINCT b.F_ConsignmentNumber) ConsignmentNum ,
 					SUM(b.F_Price) Amount,
-					COUNT(distinct a.F_OpenId) ClientNum,
+					COUNT(DISTINCT a.F_OpenId) ClientNum,
 					(select SUM(DATEDIFF(mi,c1.DateTimeEndReality,t.F_StateDateTime)) from T_OrderHead t1  
 	left join T_FlightNoInfo c1 on c1.F_FlightNumber=t1.F_FlightNumber and c1.F_AirfieldId=t1.F_AirfieldId
 	left join T_OrderBody c2 on t1.F_OrderNo=c2.F_OrderNo
@@ -103,7 +103,7 @@ SELECT
                                 OrderDate FROM (
                                 SELECT 
                                 a.F_OrderNo OrderNum,
-                                COUNT(distinct b.F_ConsignmentNumber) ConsignmentNum,
+                                COUNT(DISTINCT b.F_ConsignmentNumber) ConsignmentNum,
                                 (SELECT SUM(F_Amount) FROM T_OrderCollectMoney WHERE F_OrderNo=a.F_OrderNo) ChargeMoney,
                                 (SELECT SUM(F_SingleAmount) FROM dbo.T_OrderPayMoney WHERE F_OrderNo=a.F_OrderNo)ThirdMoney,
                                 a.F_CreateTime OrderDate,a.F_FlightCompany
@@ -149,36 +149,61 @@ SELECT
             try
             {
                 #region 查询语句
-                string sqlIn = @"
-                            select 
-								distinct e.F_Name FJYName,
-								COUNT(a.F_OrderNo) JDNum,
-								COUNT(case when f.F_LogState!=41 then 51 end) XLNum,
-								COUNT(case when f.F_LogState =41 then 51 end) YCXLNum,
-								(select SUM(DATEDIFF(mi,c1.DateTimeEndReality,t.F_StateDateTime)) from T_OrderHead t1  
-								left join T_FlightNoInfo c1 on c1.F_FlightNumber=t1.F_FlightNumber and c1.F_AirfieldId=t1.F_AirfieldId
-								left join T_OrderBody c2 on t1.F_OrderNo=c2.F_OrderNo
-								left join T_OrderLogisticsInfo t  on t.F_OrderNo=c2.F_ConsignmentNumber
-								 where  t.F_LogState ='3')/COUNT(distinct a.F_OrderNo) YFJTime
-							from T_EmployeeInfo e 
-							left join T_OrderLogisticsInfo f on e.F_Code=f.F_SorterCode
-							left join T_OrderBody b on b.F_ConsignmentNumber=f.F_OrderNo
-							left join T_OrderHead a on b.F_OrderNo=a.F_OrderNo
-                            WHERE 1=1 and f.F_SorterCode is not null
-							GROUP BY e.F_Name
-        ";
+
+                #region
+//                string sqlIn = @"
+//                            select 
+//								distinct e.F_Name FJYName,
+//								COUNT(a.F_OrderNo) JDNum,
+//								COUNT(case when f.F_LogState!=41 then 51 end) XLNum,
+//								COUNT(case when f.F_LogState =41 then 51 end) YCXLNum,
+//								(select SUM(DATEDIFF(mi,c1.DateTimeEndReality,t.F_StateDateTime)) from T_OrderHead t1  
+//								left join T_FlightNoInfo c1 on c1.F_FlightNumber=t1.F_FlightNumber and c1.F_AirfieldId=t1.F_AirfieldId
+//								left join T_OrderBody c2 on t1.F_OrderNo=c2.F_OrderNo
+//								left join T_OrderLogisticsInfo t  on t.F_OrderNo=c2.F_ConsignmentNumber
+//								 where  t.F_LogState ='3')/COUNT(distinct a.F_OrderNo) YFJTime
+//							from T_EmployeeInfo e 
+//							left join T_OrderLogisticsInfo f on e.F_Code=f.F_SorterCode
+//							left join T_OrderBody b on b.F_ConsignmentNumber=f.F_OrderNo
+//							left join T_OrderHead a on b.F_OrderNo=a.F_OrderNo
+//                            WHERE 1=1 and f.F_SorterCode is not null
+//							GROUP BY e.F_Name
+//        ";
+                #endregion
+                var sqlIn = new StringBuilder();
+                sqlIn.Append(@"SELECT FJYName,JDNum,XLNum,YCXLNum,YFJTime FROM (
+                                SELECT (FB_Name) FJYName,COUNT(F_OrderNo)JDNum,SUM(Num)XLNum,SUM(YCNum)YCXLNum
+                                FROM (
+                                SELECT FB_Name,a.F_OrderNo,
+                                (SELECT COUNT(*) FROM dbo.T_OrderBody WHERE F_OrderNo=a.F_OrderNo)Num,
+                                (SELECT COUNT(*) FROM dbo.T_OrderBody WHERE F_OrderNo=a.F_OrderNo AND dbo.T_OrderBody.FB_State IN('41','51'))YCNum
+                                FROM dbo.T_OrderHead a
+                                LEFT JOIN dbo.T_OrderBody b ON a.F_OrderNo = b.F_OrderNo
+                                WHERE b.FB_Name IS NOT NULL AND a.F_CreateTime BETWEEN @startTime AND @endTime
+                                GROUP BY FB_Name,a.F_OrderNo) t
+                                GROUP BY FB_Name )tb1
+                                FULL JOIN
+                                (
+                                SELECT FB_Name,SUM(FJTime)/COUNT(*) YFJTime FROM (
+                                SELECT DISTINCT t1.F_OrderNo,c2.FB_Name, (DATEDIFF(mi,c1.DateTimeEndReality,t.F_StateDateTime)) FJTime FROM T_OrderHead t1 
+                                LEFT JOIN T_FlightNoInfo c1 ON c1.F_FlightNumber=t1.F_FlightNumber and c1.F_AirfieldId=t1.F_AirfieldId
+                                LEFT JOIN T_OrderBody c2 ON t1.F_OrderNo=c2.F_OrderNo
+                                LEFT JOIN T_OrderLogisticsInfo t ON t.F_OrderNo=c2.F_ConsignmentNumber AND t.F_StateOperator=c2.FB_Name
+                                WHERE t.F_LogState ='3' AND t1.F_CreateTime BETWEEN @startTime AND @endTime )k GROUP BY FB_Name) 
+                                tb2 ON tb1.FJYName=tb2.FB_Name");
                 var strParm = new StringBuilder();
                 var queryParam = queryJson.ToJObject();
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
                 if (!queryParam["StartTime"].IsEmpty() && !queryParam["EndTime"].IsEmpty())
                 {
-                    dp.Add("startTime", queryParam["StartTime"].ToDate(), DbType.DateTime);
-                    dp.Add("endTime", queryParam["EndTime"].ToDate(), DbType.DateTime);
-                    strParm.Append(" AND ( a.F_CreateTime >= @startTime AND a.F_CreateTime <= @endTime ) ");
+                    var starttime = queryParam["StartTime"].ToDate().ToString("yyyy-MM-dd") + " 00:00:00";
+                    var endtime = queryParam["EndTime"].ToDate().ToString("yyyy-MM-dd") + " 23:59:59";
+                    dp.Add("startTime", starttime, DbType.String);
+                    dp.Add("endTime", endtime, DbType.String);
                 }
                 #endregion
-                var rows = this.BaseRepository().FindList<SorterReportModel>(string.Format(sqlIn, strParm.ToString()), dp).ToList();
+                var rows = this.BaseRepository().FindList<SorterReportModel>(sqlIn.ToString(), dp).ToList();
                 return rows;
             }
             catch (Exception ex)
