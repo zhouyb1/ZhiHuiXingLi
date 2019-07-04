@@ -26,12 +26,12 @@ var bootstrap = function ($, ayma) {
             $('#girdtable').jfGrid({
                 url: top.$.rootUrl + '/TwoDev/OrderSumReport/GetSumReport',
                 headData: [
-                    { label: "订单数", name: "OrderNum", width: 100, align: "left" },
-                    { label: "行李件数", name: "ConsignmentNum", width: 100, align: "left" },
-                    { label: "收入金额(元)", name: "Amount", width: 100, align: "left" },
-                    { label: "客户数", name: "ClientNum", width: 100, align: "left" },
+                    { label: "订单数", name: "OrderNum", width: 100, align: "center" },
+                    { label: "行李件数", name: "ConsignmentNum", width: 100, align: "center" },
+                    { label: "收入金额(元)", name: "Amount", width: 100, align: "center" },
+                    { label: "客户数", name: "ClientNum", width: 100, align: "center" },
                     {
-                        label: "ATA到签收平均时间", name: "ATAzqs", width: 160, align: "left",
+                        label: "ATA到签收平均时间", name: "ATAzqs", width: 160, align: "center",
                         formatter: function (cellvalue, options, rowObject) {
                             var h = parseInt(cellvalue / 60);
                             var m = cellvalue % 60;
@@ -39,7 +39,7 @@ var bootstrap = function ($, ayma) {
                         }
                     },
                     {
-                        label: "ATA到快递平均时间", name: "ATAzkd", width: 160, align: "left",
+                        label: "ATA到快递平均时间", name: "ATAzkd", width: 160, align: "center",
                         formatter: function (cellvalue, options, rowObject) {
                             var h = parseInt(cellvalue / 60);
                             var m = cellvalue % 60;
@@ -47,7 +47,7 @@ var bootstrap = function ($, ayma) {
                         }
                     },
                     {
-                        label: "快递到签收平均时间", name: "Kdzqs", width: 160, align: "left",
+                        label: "快递到签收平均时间", name: "Kdzqs", width: 160, align: "center",
                         formatter: function (cellvalue, options, rowObject) {
                             var h = parseInt(cellvalue / 60);
                             var m = cellvalue % 60;
