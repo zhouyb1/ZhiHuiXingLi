@@ -127,7 +127,7 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
                 //异常行李数
                 double? YCXLNum = data.Sum(r => r.YCXLNum);
                 sum.YCXLNum = Math.Round(YCXLNum.Value, 2);
-
+                
                 returndatas.AddRange(data);
                 returndatas.Add(sum);
             }
