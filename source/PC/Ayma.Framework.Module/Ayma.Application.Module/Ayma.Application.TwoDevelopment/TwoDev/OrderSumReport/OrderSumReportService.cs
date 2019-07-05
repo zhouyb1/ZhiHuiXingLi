@@ -21,56 +21,103 @@ namespace Ayma.Application.TwoDevelopment.TwoDev.OrderSumReport
         {
             try
             {
-                #region 查询语句
-                string sqlIn = @"
-SELECT 
-					COUNT(DISTINCT a.F_OrderNo) OrderNum,
-					COUNT(DISTINCT b.F_ConsignmentNumber) ConsignmentNum ,
-					SUM(b.F_Price) Amount,
-					COUNT(DISTINCT a.F_OpenId) ClientNum,
-					(select SUM(DATEDIFF(mi,c1.DateTimeEndReality,t.F_StateDateTime)) from T_OrderHead t1  
-	left join T_FlightNoInfo c1 on c1.F_FlightNumber=t1.F_FlightNumber and c1.F_AirfieldId=t1.F_AirfieldId
-	left join T_OrderBody c2 on t1.F_OrderNo=c2.F_OrderNo
-	left join T_OrderLogisticsInfo t  on t.F_OrderNo=c2.F_ConsignmentNumber
-	 where  t.F_LogState ='5')/COUNT(distinct a.F_OrderNo) ATAzqs,
-	
-	(select SUM(DATEDIFF(mi,c1.DateTimeEndReality,t.F_StateDateTime)) from T_OrderHead t1  
-	left join T_FlightNoInfo c1 on c1.F_FlightNumber=t1.F_FlightNumber and c1.F_AirfieldId=t1.F_AirfieldId
-	left join T_OrderBody c2 on t1.F_OrderNo=c2.F_OrderNo
-	left join T_OrderLogisticsInfo t  on t.F_OrderNo=c2.F_ConsignmentNumber
-	 where  t.F_LogState ='4')/COUNT(distinct a.F_OrderNo) ATAzkd,
-	DATEDIFF(mi,
-	(select t.F_StateDateTime from T_OrderLogisticsInfo t 
-	where t.F_OrderNo=t.F_OrderNo And F_StateDescribe ='4'),
-	(select t.F_StateDateTime from T_OrderLogisticsInfo t
-	where t.F_OrderNo=t.F_OrderNo And F_StateDescribe ='5'))/COUNT(distinct a.F_OrderNo) Kdzqs	
-	
-					FROM T_OrderHead a 
-							left join T_OrderBody b on a.F_OrderNo=b.F_OrderNo 
-							left join T_FlightNoInfo c on a.F_AirfieldId=c.F_AirfieldId And a.F_FlightNumber=c.F_FlightNumber
-							--left join T_OrderLogisticsInfo t on t.F_OrderNo=a.F_OrderNo
-							left join T_OrderLogisticsInfo d on a.F_OrderNo=d.F_OrderNo And b.F_OrderNo=d.F_OrderNo
+                #region 查询语句(张)
+                //                string sqlIn = @"
+                //SELECT 
+                //					COUNT(DISTINCT a.F_OrderNo) OrderNum,
+                //					COUNT(DISTINCT b.F_ConsignmentNumber) ConsignmentNum ,
+                //					SUM(b.F_Price) Amount,
+                //					COUNT(DISTINCT a.F_OpenId) ClientNum,
+                //					(select SUM(DATEDIFF(mi,c1.DateTimeEndReality,t.F_StateDateTime)) from T_OrderHead t1  
+                //	left join T_FlightNoInfo c1 on c1.F_FlightNumber=t1.F_FlightNumber and c1.F_AirfieldId=t1.F_AirfieldId
+                //	left join T_OrderBody c2 on t1.F_OrderNo=c2.F_OrderNo
+                //	left join T_OrderLogisticsInfo t  on t.F_OrderNo=c2.F_ConsignmentNumber
+                //	 where  t.F_LogState ='5')/COUNT(distinct a.F_OrderNo) ATAzqs,
+                //	
+                //	(select SUM(DATEDIFF(mi,c1.DateTimeEndReality,t.F_StateDateTime)) from T_OrderHead t1  
+                //	left join T_FlightNoInfo c1 on c1.F_FlightNumber=t1.F_FlightNumber and c1.F_AirfieldId=t1.F_AirfieldId
+                //	left join T_OrderBody c2 on t1.F_OrderNo=c2.F_OrderNo
+                //	left join T_OrderLogisticsInfo t  on t.F_OrderNo=c2.F_ConsignmentNumber
+                //	 where  t.F_LogState ='4')/COUNT(distinct a.F_OrderNo) ATAzkd,
+                //	DATEDIFF(mi,
+                //	(select t.F_StateDateTime from T_OrderLogisticsInfo t 
+                //	where t.F_OrderNo=t.F_OrderNo And F_StateDescribe ='4'),
+                //	(select t.F_StateDateTime from T_OrderLogisticsInfo t
+                //	where t.F_OrderNo=t.F_OrderNo And F_StateDescribe ='5'))/COUNT(distinct a.F_OrderNo) Kdzqs	
+                //	
+                //					FROM T_OrderHead a 
+                //							left join T_OrderBody b on a.F_OrderNo=b.F_OrderNo 
+                //							left join T_FlightNoInfo c on a.F_AirfieldId=c.F_AirfieldId And a.F_FlightNumber=c.F_FlightNumber
+                //							--left join T_OrderLogisticsInfo t on t.F_OrderNo=a.F_OrderNo
+                //							left join T_OrderLogisticsInfo d on a.F_OrderNo=d.F_OrderNo And b.F_OrderNo=d.F_OrderNo
+                //
+                //					WHERE 
+                //					1=1 
+                //        ";
+                //                var strParm = new StringBuilder();
+                //                var queryParam = queryJson.ToJObject();
+                //                // 虚拟参数
+                //                var dp = new DynamicParameters(new { });
+                //                if (!queryParam["StartTime"].IsEmpty() && !queryParam["EndTime"].IsEmpty())
+                //                {
+                //                    dp.Add("startTime", queryParam["StartTime"].ToDate(), DbType.DateTime);
+                //                    dp.Add("endTime", queryParam["EndTime"].ToDate(), DbType.DateTime);
+                //                    strParm.Append(" AND ( a.F_CreateTime >= @startTime AND a.F_CreateTime <= @endTime ) ");
+                //                }
+                //                if (!queryParam["F_FlightCompany"].IsEmpty())
+                //                {
+                //                    dp.Add("F_FlightCompany", queryParam["F_FlightCompany"].ToString(), DbType.String);
+                //                    strParm.Append(" AND a.F_FlightCompany = @F_FlightCompany ");
+                //                }
+                #endregion
 
-					WHERE 
-					1=1 
-        ";
-                var strParm = new StringBuilder();
                 var queryParam = queryJson.ToJObject();
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
+                var sqlIn = new StringBuilder();
+                sqlIn.Append(@"SELECT COUNT(F_OrderNo)OrderNum,ISNULL(SUM(ConsignmentNum),0)ConsignmentNum,ISNULL(SUM(Amount),0) Amount,COUNT(DISTINCT F_OpenId) ClientNum,
+                                ISNULL(SUM(kdtime)/(CASE COUNT(F_OrderNo) WHEN 0 THEN 1 ELSE COUNT(F_OrderNo) END),0) ATAzkd,''ATAzqs,'' Kdzqs
+                                FROM (
+                                SELECT 
+                                a.F_OrderNo,
+                                COUNT(b.F_ConsignmentNumber) ConsignmentNum,
+                                (SELECT SUM(F_Amount) FROM T_OrderCollectMoney WHERE F_OrderNo=a.F_OrderNo) Amount,
+                                a.F_OpenId
+                                FROM dbo.T_OrderHead a 
+                                LEFT JOIN dbo.T_OrderBody b ON b.F_OrderNo = a.F_OrderNo
+                                WHERE 1=1 AND F_State IN ('4','5')");
                 if (!queryParam["StartTime"].IsEmpty() && !queryParam["EndTime"].IsEmpty())
                 {
-                    dp.Add("startTime", queryParam["StartTime"].ToDate(), DbType.DateTime);
-                    dp.Add("endTime", queryParam["EndTime"].ToDate(), DbType.DateTime);
-                    strParm.Append(" AND ( a.F_CreateTime >= @startTime AND a.F_CreateTime <= @endTime ) ");
+                    var starttime = queryParam["StartTime"].ToDate().ToString("yyyy-MM-dd") + " 00:00:00";
+                    var endtime = queryParam["EndTime"].ToDate().ToString("yyyy-MM-dd") + " 23:59:59";
+                    dp.Add("startTime", starttime, DbType.String);
+                    dp.Add("endTime", endtime, DbType.String);
+                    sqlIn.Append(" AND ( a.F_CreateTime BETWEEN @startTime AND @endTime )");
                 }
                 if (!queryParam["F_FlightCompany"].IsEmpty())
                 {
-                    dp.Add("F_FlightCompany", queryParam["F_FlightCompany"].ToString(), DbType.String);
-                    strParm.Append(" AND a.F_FlightCompany = @F_FlightCompany ");
+                    dp.Add("F_FlightCompany", "%" + queryParam["F_FlightCompany"].ToString() + "%", DbType.String);
+                    sqlIn.Append(" AND a.F_FlightCompany LIKE @F_FlightCompany ");
                 }
-                #endregion
-                var rows = this.BaseRepository().FindList<OrderSumReportModel>(string.Format(sqlIn, strParm.ToString()), dp).ToList();
+                sqlIn.Append(@" GROUP BY a.F_OrderNo,a.F_OpenId) t1
+                                FULL JOIN
+                                (
+                                SELECT DISTINCT a.F_OrderNo OrderNo,
+                                DATEDIFF(mi,f.DateTimeEndReality,t.F_StateDateTime) kdtime
+                                FROM dbo.T_OrderLogisticsInfo t LEFT JOIN dbo.T_OrderBody b ON b.F_ConsignmentNumber = t.F_OrderNo
+                                LEFT JOIN dbo.T_OrderHead a ON a.F_OrderNo = b.F_OrderNo
+                                LEFT JOIN dbo.T_FlightNoInfo f ON f.F_FlightNumber = a.F_FlightNumber AND f.F_AirfieldId = a.F_AirfieldId
+                                WHERE t.F_LogState='4'");
+                if (!queryParam["StartTime"].IsEmpty() && !queryParam["EndTime"].IsEmpty())
+                {
+                    var starttime = queryParam["StartTime"].ToDate().ToString("yyyy-MM-dd") + " 00:00:00";
+                    var endtime = queryParam["EndTime"].ToDate().ToString("yyyy-MM-dd") + " 23:59:59";
+                    dp.Add("startTime", starttime, DbType.String);
+                    dp.Add("endTime", endtime, DbType.String);
+                    sqlIn.Append(" AND ( a.F_CreateTime BETWEEN @startTime AND @endTime )");
+                }
+                sqlIn.Append(") t2 ON t2.OrderNo = t1.F_OrderNo");
+                var rows = this.BaseRepository().FindList<OrderSumReportModel>(sqlIn.ToString(), dp).ToList();
                 return rows;
             }
             catch (Exception ex)
