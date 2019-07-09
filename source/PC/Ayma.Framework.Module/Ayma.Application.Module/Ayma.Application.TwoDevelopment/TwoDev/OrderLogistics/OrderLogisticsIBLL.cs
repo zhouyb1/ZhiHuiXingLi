@@ -20,7 +20,9 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// <returns></returns>
         T_OrderLogisticsInfoEntity GetT_OrderLogisticsInfoEntity(string keyValue);
 
-        IEnumerable<T_OrderLogisticsInfoEntity> GetT_OrderLogisticsInfo(string OrderNo);
+        IEnumerable<T_OrderBodyEntity> GetT_OrderLogisticsInfo(string OrderNo);
+
+        IEnumerable<T_OrderLogisticsInfoEntity> GetLogisticsInfo(string F_ConsignmentNumber);
 
         #endregion
 
