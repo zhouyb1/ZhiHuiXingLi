@@ -47,7 +47,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
             }
         }
 
-        public IEnumerable<T_OrderHeadEntity> GetPageListOrder(string OpenId)
+        public IEnumerable<T_OrderHeadEntity> GetPageListOrder(string OpenId, string startTime, string endTime)
         {
             try
             {
@@ -73,9 +73,12 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 ");
                 strSql.Append("  FROM T_OrderHead t ");
                 strSql.Append("  WHERE 1=1 ");
-                strSql.Append("  And F_OpenId='" + OpenId + "'");
+                strSql.Append("  And F_OpenId=@OpenId AND F_CreateTime BETWEEN @startTime AND @endTime");
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
+                dp.Add("@OpenId", OpenId);
+                dp.Add("@startTime", startTime);
+                dp.Add("@endTime", endTime);
                 return this.BaseRepository("LocalHost").FindList<T_OrderHeadEntity>(strSql.ToString(), dp);
             }
             catch (Exception ex)
