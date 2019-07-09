@@ -2,7 +2,7 @@
 var OrderNoId = request('orderno');
 
 var refreshGirdData;
-
+var $subgridTable;//子列表
 var bootstrap = function ($, ayma) {
     "use strict";
     var page = {
@@ -20,12 +20,24 @@ var bootstrap = function ($, ayma) {
             $('#girdtable').jfGrid({
                 url: top.$.rootUrl + '/TwoDev/OrderInquiry/GetLogisticsFormData?keyValue=' + OrderNoId + '',
                 headData: [
-                        { label: '订单号', name: 'F_OrderNo', width: 160, align: 'left'},
-                        { label: '状态描述', name: 'F_StateDescribe', width: 100, align: 'left'},
-                        { label: '操作时间', name: 'F_StateDateTime', width: 160, align: 'left' },
-                        { label: '操作人', name: 'F_StateOperator', width: 160, align: 'left' },
+                        { label: '航班托运单号', name: 'F_ConsignmentNumber', width: 160, align: 'center' }
+                ],
+                mainId: 'F_Id',
+                reloadSelected: true,
+                isSubGrid: true,
+                subGridRowExpanded: function (subgridId, row) {
+                    var F_ConsignmentNumber = row.F_ConsignmentNumber;
+                    var subgridTableId = subgridId + "_t";
+                    $("#" + subgridId).html("<div class=\"am-layout-body\" id=\"" + subgridTableId + "\"></div>");
+                    $subgridTable = $("#" + subgridTableId);
+                    $subgridTable.jfGrid({
+                        url: top.$.rootUrl + '/TwoDev/OrderInquiry/GetLogisticsInfo?keyValue=' + F_ConsignmentNumber,
+                        headData: [
+                        { label: '状态描述', name: 'F_StateDescribe', width: 100, align: 'center' },
+                        { label: '操作时间', name: 'F_StateDateTime', width: 160, align: 'center' },
+                        { label: '操作人', name: 'F_StateOperator', width: 160, align: 'center' },
                         {
-                            label: '对客户开放', name: 'F_CustomerOpen', width: 100, align: 'left',
+                            label: '对客户开放', name: 'F_CustomerOpen', width: 100, align: 'center',
                             formatter: function (cellvalue, options, rowObject) {
                                 var colorcss = "";
                                 if (cellvalue == 0) {
@@ -37,10 +49,11 @@ var bootstrap = function ($, ayma) {
                                 }
                                 return "<span class='" + colorcss + "'>" + cellvalue + "</span>";
                             }
-                       }
-                ],
-                mainId: 'F_Id',
-                reloadSelected: true,
+                        }
+                        ],
+                        reloadSelected: true
+                    }).jfGridSet("reload");
+                }
             });
             page.search();
         },
