@@ -42,7 +42,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 t.F_CreateTime,
                 t.F_IdCard,
                 t.F_Name,
-                (select COUNT(*) from T_OrderHead where F_OpenId=t.F_Openid) OrderSum
+                (SELECT COUNT(*) FROM T_OrderHead WHERE F_OpenId=t.F_Openid AND F_CreateTime BETWEEN @startTime AND @endTime) OrderSum
                 ");
                 strSql.Append("  FROM T_CustomerInfo t ");
                 strSql.Append("  WHERE 1=1 ");
@@ -51,9 +51,10 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 var dp = new DynamicParameters(new { });
                 if (!queryParam["StartTime"].IsEmpty() && !queryParam["EndTime"].IsEmpty())
                 {
-                    dp.Add("startTime", queryParam["StartTime"].ToDate(), DbType.DateTime);
-                    dp.Add("endTime", queryParam["EndTime"].ToDate(), DbType.DateTime);
-                    strSql.Append(" AND ( t.F_CreateTime >= @startTime AND t.F_CreateTime <= @endTime ) ");
+                    var starttime = queryParam["StartTime"].ToDate().ToString("yyyy-MM-dd") + " 00:00:00";
+                    var endtime = queryParam["EndTime"].ToDate().ToString("yyyy-MM-dd") + " 23:59:59";
+                    dp.Add("startTime", starttime, DbType.String);
+                    dp.Add("endTime", endtime, DbType.String);
                 }
                 if (!queryParam["F_Name"].IsEmpty())
                 {
