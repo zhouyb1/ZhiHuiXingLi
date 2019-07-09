@@ -173,13 +173,14 @@ Page({
             method: "GET",
             success(res) {
               wx.hideLoading();
-              if (res.data.code === 200) {
+              console.log(res)
+              var d = JSON.parse(res.data.data);
+              if (res.data.code === 200 && d.Phone) {
                 wx.showToast({
-                  title: '操作成功',
+                  title: '填写成功',
                   icon: 'success',
                   duration: 2000
                 });
-                var d = JSON.parse(res.data.data);
                 _this.setData({
                   name: d.FullName,
                   phone: d.Phone,

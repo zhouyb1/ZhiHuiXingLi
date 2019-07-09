@@ -136,14 +136,14 @@ Page({
     if (!this.data.radios) {
       wx.showModal({
         title: '温馨提示',
-        content: '请选择报价服务'
+        content: '请选择保价服务'
       });
       return false;
     };
     if (!d) {
       wx.showModal({
         title: '温馨提示',
-        content: '请同意xxx'
+        content: '请同意委托服务协议条款'
       });
       return false;
     } else {

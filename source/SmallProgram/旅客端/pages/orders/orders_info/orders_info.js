@@ -280,7 +280,7 @@ Page({
             nums += d.orderbody[i].F_Qty;
             price += (d.orderbody[i].F_Qty * d.orderbody[i].F_Price)
             info.ConsignmentNumber.push(d.orderbody[i].F_ConsignmentNumber);
-            express.push(d.orderbody[i].F_ExpressNO);
+            express.push({ F_ExpressNO: d.orderbody[i].F_ExpressNO, F_ExpressCompanyId: d.orderbody[i].F_ExpressCompanyId});
           };
           console.log(info)
           _this.setData({

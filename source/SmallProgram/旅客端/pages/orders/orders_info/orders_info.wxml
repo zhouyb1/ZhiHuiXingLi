@@ -70,7 +70,7 @@
         <view slot="title" icon="coordinates_fill">
           {{item.F_StateDescribe}}
           <view class="express" wx:if="{{item.F_LogState==4}}">
-            <view wx:for="{{express}}" wx:key="item" data-num="{{item}}" bindtap='express_fun'>快递单号：{{item}}</view>
+            <view wx:for="{{express}}" wx:key="item" data-num="{{item}}" bindtap='express_fun'>{{item.F_ExpressCompanyId}}快递单号：{{item.F_ExpressNO}}</view>
           </view>
         </view>
         <view slot="content">

@@ -161,7 +161,7 @@ Page({
         customerInfo = {
           F_Openid: app.open('open').openId,
           F_City: obj.city,
-          F_Sex: obj.sex,
+          F_Sex: obj.gender,
           F_Country: obj.country,
           F_Name: obj.nickName,
           F_Phone: '',
