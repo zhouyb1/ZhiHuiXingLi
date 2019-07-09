@@ -55,8 +55,8 @@ var bootstrap = function ($, ayma) {
                         id: 'form',
                         title: '订单编辑',
                         url: top.$.rootUrl + '/TwoDev/OrderInquiry/UpdateForm?keyValue=' + keyValue +'',
-                        width: 500,
-                        height: 350,
+                        width: 800,
+                        height: 500,
                         maxmin: true,
                         callBack: function (id) {
                             return top[id].acceptClick(refreshGirdData);
@@ -109,8 +109,8 @@ var bootstrap = function ($, ayma) {
                         id: 'form',
                         title: '物流信息详情',
                         url: top.$.rootUrl + '/TwoDev/OrderInquiry/LogisticsForm?keyValue=' + keyValue + '&orderno=' + orderno + '',
-                        width: 700,
-                        height: 500,
+                        width: 900,
+                        height: 600,
                         maxmin: true,
                         callBack: function (id) {
                             return top[id].acceptClick(refreshGirdData);
@@ -124,9 +124,9 @@ var bootstrap = function ($, ayma) {
             $('#girdtable').AuthorizeJfGrid({
                 url: top.$.rootUrl + '/TwoDev/OrderInquiry/GetPageList',
                 headData: [
-                    { label: "机场名称", name: "F_AirfieldName", width: 160, align: "center" },
+                    { label: "订单号", name: "F_OrderNo", width: 160, align: "center" },
                     {
-                        label: "订单状态", name: "F_State", width: 160, align: "center",
+                        label: "订单状态", name: "F_State", width: 100, align: "center",
                         formatter: function (cellvalue, options, rowObject) {
                             var colorcss = "";
                             if (cellvalue == -1) {
@@ -175,19 +175,19 @@ var bootstrap = function ($, ayma) {
                             return "<span class='" + colorcss + "'>" + cellvalue + "</span>";
                         }
                     },
-                    { label: "航站楼", name: "F_AirfieldFloor", width: 160, align: "center" },
-                    { label: "航空公司", name: "F_FlightCompany", width: 160, align: "center" },
-                    { label: "航班号", name: "F_FlightNumber", width: 160, align: "center" },
+                    { label: "机场名称", name: "F_AirfieldName", width: 160, align: "center" },
+                    { label: "航站楼", name: "F_AirfieldFloor", width: 100, align: "center" },
+                    { label: "航空公司", name: "F_FlightCompany", width: 100, align: "center" },
+                    { label: "航班号", name: "F_FlightNumber", width: 100, align: "center" },
                     { label: "订单日期", name: "F_OrderDate", width: 160, align: "center" },
-                    { label: "订单号", name: "F_OrderNo", width: 160, align: "center" },
-                    { label: "客户姓名", name: "F_CustomerName", width: 160, align: "center" },
-                    { label: "联系电话", name: "F_CustomerPhone", width: 160, align: "center" },
+                    { label: "客户姓名", name: "F_CustomerName", width: 100, align: "center" },
+                    { label: "联系电话", name: "F_CustomerPhone", width: 100, align: "center" },
                     { label: "客户地址", name: "F_CustomerAddress", width: 220, align: "left" },
                     { label: "客户备注", name: "F_CustomerRemarks", width: 160, align: "center" },
-                    { label: "订单创建类型", name: "F_CreateStype", width: 160, align: "center" },
-                    { label: "订单类型", name: "F_Stype", width: 160, align: "center" },
+                    { label: "订单创建类型", name: "F_CreateStype", width: 100, align: "center" },
+                    { label: "订单类型", name: "F_Stype", width: 100, align: "center" },
                     { label: "订单创建日期", name: "F_CreateTime", width: 160, align: "center" },
-                    { label: "订单创建人", name: "F_CreateUserName", width: 160, align: "center" },
+                    //{ label: "订单创建人", name: "F_CreateUserName", width: 100, align: "center" },
                 ],
                 mainId: 'F_Id',
                 reloadSelected: true,
