@@ -32,8 +32,8 @@ var bootstrap = function ($, ayma) {
                         id: 'Form',
                         title: '行李信息编辑',
                         url: top.$.rootUrl + '/TwoDev/OrderInquiry/UpdateLuggageForm?keyValue=' + Fid + '&ConsignmentNumber=' + ConsignmentNumber,
-                        width: 500,
-                        height: 300,
+                        width: 600,
+                        height: 400,
                         maxmin: true,
                         callBack: function (id) {
                             return top[id].acceptClick(refreshGirdData);
