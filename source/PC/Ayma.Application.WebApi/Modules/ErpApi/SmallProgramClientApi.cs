@@ -672,7 +672,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 return Fail("用户标识为空!");
             }
-            string openId = req["openId"].ToString();  //订单号
+            string openId = req["openId"].ToString();  //openId
             var AddressData = billClientApiBLL.GetAddressById(openId);
             if (AddressData.Count() > 0)
             {
