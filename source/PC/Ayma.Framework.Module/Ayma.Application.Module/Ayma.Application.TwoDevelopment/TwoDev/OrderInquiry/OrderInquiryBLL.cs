@@ -47,11 +47,11 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         /// <param name="OpenId"></param>
         /// <returns></returns>
-        public IEnumerable<T_OrderHeadEntity> GetPageListOrder(string OpenId)
+        public IEnumerable<T_OrderHeadEntity> GetPageListOrder(string OpenId, string startTime, string endTime)
         {
             try
             {
-                return orderInquiryService.GetPageListOrder(OpenId);
+                return orderInquiryService.GetPageListOrder(OpenId, startTime, endTime);
             }
             catch (Exception ex)
             {
