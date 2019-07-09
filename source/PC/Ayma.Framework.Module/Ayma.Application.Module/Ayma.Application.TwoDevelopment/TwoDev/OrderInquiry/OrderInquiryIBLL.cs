@@ -25,7 +25,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         /// <param name="OpenId"></param>
         /// <returns></returns>
-        IEnumerable<T_OrderHeadEntity> GetPageListOrder(string OpenId);
+        IEnumerable<T_OrderHeadEntity> GetPageListOrder(string OpenId, string startTime, string endTime);
         /// <summary>
         /// 获取页面显示列表数据
         /// </summary>
