@@ -100,9 +100,9 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
         /// <returns></returns>
         [HttpGet]
         [AjaxOnly]
-        public ActionResult GetPageListOrder(string OpenId)
+        public ActionResult GetPageListOrder(string OpenId, string startTime, string endTime)
         {
-            var data = orderInquiryIBLL.GetPageListOrder(OpenId);
+            var data = orderInquiryIBLL.GetPageListOrder(OpenId, startTime, endTime);
             return Success(data);
         }
         /// <summary>
@@ -197,6 +197,13 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
         public ActionResult GetLogisticsFormData(string keyValue) 
         {
             var data = orderlogisticsIBLL.GetT_OrderLogisticsInfo(keyValue);
+            return Success(data);
+        }
+        [HttpGet]
+        [AjaxOnly]
+        public ActionResult GetLogisticsInfo(string keyValue)
+        {
+            var data = orderlogisticsIBLL.GetLogisticsInfo(keyValue);
             return Success(data);
         }
         #endregion
