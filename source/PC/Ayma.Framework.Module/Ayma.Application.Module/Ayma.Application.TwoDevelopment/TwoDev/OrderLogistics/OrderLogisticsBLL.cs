@@ -39,7 +39,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
             }
         }
 
-        public IEnumerable<T_OrderLogisticsInfoEntity> GetT_OrderLogisticsInfo(string OrderNo)
+        public IEnumerable<T_OrderBodyEntity> GetT_OrderLogisticsInfo(string OrderNo)
        {
            try
            {
@@ -58,7 +58,24 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
            }
        }
 
-        
+        public IEnumerable<T_OrderLogisticsInfoEntity> GetLogisticsInfo(string F_ConsignmentNumber)
+        {
+            try
+            {
+                return orderlogisticsService.GetLogisticsInfo(F_ConsignmentNumber);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        } 
 
 
     }
