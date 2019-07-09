@@ -68,8 +68,8 @@ var bootstrap = function ($, ayma) {
             $('#girdtable').AuthorizeJfGrid({
                 url: top.$.rootUrl + '/TwoDev/AirportMessage/GetPageList',
                 headData: [
-                    //{ label: "标示", name: "F_Id", width: 160, align: "left"},
-                    { label: "机场名称", name: "F_AirfieldName", width: 160, align: "left"},
+                    { label: "机场Id", name: "F_Id", width: 300, align: "left"},
+                    { label: "机场名称", name: "F_AirfieldName", width: 160, align: "center"},
                     //{ label: "排序", name: "F__OrderBy", width: 160, align: "left"},
                 ],
                 mainId:'F_Id',
