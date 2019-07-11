@@ -67,12 +67,13 @@ var bootstrap = function ($, ayma) {
             // 查看详情
             $('#am_detail').on('click', function () {
                 var keyValue = $('#girdtable').jfGridValue('F_Id');
+                var OrderNo = $('#girdtable').jfGridValue('F_OrderNo');
                 var state = $('#girdtable').jfGridValue('F_State');
                 if (ayma.checkrow(keyValue)) {
                     ayma.layerForm({
                         id: 'form',
                         title: '订单详情',
-                        url: top.$.rootUrl + '/TwoDev/OrderInquiry/Form?keyValue=' + keyValue + '&state=' + state,
+                        url: top.$.rootUrl + '/TwoDev/OrderInquiry/Form?keyValue=' + keyValue + '&state=' + state + '&OrderNo=' + OrderNo,
                         width: 1000,
                         height: 950,
                         maxmin: true,
