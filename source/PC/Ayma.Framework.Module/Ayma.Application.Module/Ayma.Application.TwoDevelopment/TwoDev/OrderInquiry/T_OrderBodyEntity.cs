@@ -52,6 +52,8 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// </summary>
         [Column("FB_STATE")]
         public string FB_State { get; set; }
+
+        public int F_IsDel { get; set; }
         #endregion
 
         #region 扩展操作
