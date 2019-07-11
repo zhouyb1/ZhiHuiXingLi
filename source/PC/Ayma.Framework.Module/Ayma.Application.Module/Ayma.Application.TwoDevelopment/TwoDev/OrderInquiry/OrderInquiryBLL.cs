@@ -302,6 +302,29 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                     throw ExceptionEx.ThrowBusinessException(ex);
                 }
             }
+        }
+
+        /// <summary>
+        /// 删除订单明细
+        /// </summary>
+        /// <param name="keyValue"></param>
+        public void DeleteData(string keyValue)
+        {
+            try
+            {
+                orderInquiryService.DeleteData(keyValue);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
         } 
 
             /// <summary>
