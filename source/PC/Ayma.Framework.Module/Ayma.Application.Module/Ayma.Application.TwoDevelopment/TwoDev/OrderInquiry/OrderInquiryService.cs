@@ -220,7 +220,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                     A.FB_Name,
                     A.FB_Phone
                     FROM    T_OrderBody A
-                    WHERE   1 = 1");
+                    WHERE   1 = 1 And A.F_IsDel=0");
                 strSql.Append(" And A.F_OrderNo='" + keyValue + "'");
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
@@ -467,6 +467,50 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                     var dp = new DynamicParameters(new { });
                     dp.Add("F_Id", keyValue);
                     db.ExecuteBySql("UPDATE T_OrderHead SET F_State='4' WHERE F_Id=@F_Id", dp);
+                    db.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Rollback();
+                    if (ex is ExceptionEx)
+                    {
+                        throw;
+                    }
+                    else
+                    {
+                        throw ExceptionEx.ThrowServiceException(ex);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 删除订单明细
+        /// </summary>
+        /// <param name="keyValue"></param>
+        public void DeleteData(string keyValue)
+        {
+            try
+            {
+                var db = this.BaseRepository().BeginTrans();
+                try
+                {
+                    var strSql = new StringBuilder();
+                    strSql.Append(@"UPDATE T_OrderBody SET F_IsDel='1' WHERE F_Id=@F_Id");
+                    var dp = new DynamicParameters(new { });
+                    dp.Add("F_Id", keyValue);
+                    db.ExecuteBySql(strSql.ToString(), dp);
                     db.Commit();
                 }
                 catch (Exception ex)
