@@ -269,6 +269,17 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
         }
 
         /// <summary>
+        /// 删除订单明细
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <returns></returns>
+        public ActionResult DeleteData(string keyValue)
+        {
+            orderInquiryIBLL.DeleteData(keyValue);
+            return Success("删除成功！");
+        }
+
+        /// <summary>
         /// 修改订单分拣异常状态
         /// </summary>
         /// <param name="keyValue"></param>
