@@ -89,6 +89,12 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         void UpdateSorting(string keyValue);
 
         /// <summary>
+        /// 删除订单明细
+        /// </summary>
+        /// <param name="keyValue"></param>
+        void DeleteData(string keyValue);
+
+        /// <summary>
         /// 修改出港状态
         /// </summary>
         /// <param name="keyValue"></param>
