@@ -486,8 +486,8 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                 {
                     var strInsert = new StringBuilder();
                     strInsert.Append(
-                        @"INSERT INTO dbo.T_OrderBody ( F_Id ,F_OrderNo , F_ConsignmentNumber ,F_Weight ,F_Distance ,F_Price ,F_Qty,FB_State )
-                                    VALUES ( @F_Id ,@F_OrderNo , @F_ConsignmentNumber ,@F_Weight ,@F_Distance ,@F_Price ,@F_Qty ,@FB_State)
+                        @"INSERT INTO dbo.T_OrderBody ( F_Id ,F_OrderNo , F_ConsignmentNumber ,F_Weight ,F_Distance ,F_Price ,F_Qty,FB_State,F_IsDel )
+                                    VALUES ( @F_Id ,@F_OrderNo , @F_ConsignmentNumber ,@F_Weight ,@F_Distance ,@F_Price ,@F_Qty ,@FB_State,@F_IsDel)
                                     ");
                     var para = new DynamicParameters(new {});
                     para.Add("@F_Id", Guid.NewGuid().ToString());
@@ -498,6 +498,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramClient
                     para.Add("@F_Price", item.F_Price);
                     para.Add("@F_Qty", item.F_Qty);
                     para.Add("@FB_State", OrderStatus.待付款);
+                    para.Add("@F_IsDel", 0);
                     db.ExecuteBySql(strInsert.ToString(), para);
                 }
                 db.Commit();
