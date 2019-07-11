@@ -1,5 +1,6 @@
 ﻿var keyValue = request('keyValue');
 var state = request('state');
+var OrderNo = request('OrderNo');
 var refreshGirdData;
 
 var bootstrap = function ($, ayma) {
@@ -41,7 +42,19 @@ var bootstrap = function ($, ayma) {
                     });
                 }
             });
-
+            // 删除
+            $('#am_delete').on('click', function () {
+                var F_Id = $('#girdtable').jfGridValue('F_Id');
+                if (ayma.checkrow(F_Id)) {
+                    ayma.layerConfirm('是否确认删除该项！', function (res) {
+                        if (res) {
+                            ayma.deleteForm(top.$.rootUrl + '/TwoDev/OrderInquiry/DeleteData', { keyValue: F_Id }, function () {
+                                page.initData();
+                            });
+                        }
+                    });
+                }
+            });
             //订单分拣操作
             $('#am_sorting').on('click', function () {
                 if (ayma.checkrow(keyValue)) {
@@ -94,13 +107,14 @@ var bootstrap = function ($, ayma) {
                 headData:
                     [
                         //{ label: '订单号', name: 'F_OrderNo', width: 130, align: 'left' },//,  hidden: true
-                        { label: '行李号', name: 'F_ConsignmentNumber', width: 160, align: 'left' },
-                        { label: '重量(kg)', name: 'F_Weight', width: 100, align: 'left' },
-                        { label: '配送距离(km)', name: 'F_Distance', width: 100, align: 'left' },
-                        { label: '价格(元)', name: 'F_Price', width: 120, align: 'left' },
-                        { label: '数量', name: 'F_Qty', width: 90, align: 'left'},
+                        { label: 'Id', name: 'F_Id', width: 100, align: 'center',hidden:'true' },
+                        { label: '行李号', name: 'F_ConsignmentNumber', width: 160, align: 'center' },
+                        { label: '重量(kg)', name: 'F_Weight', width: 100, align: 'center' },
+                        { label: '配送距离(km)', name: 'F_Distance', width: 100, align: 'center' },
+                        { label: '价格(元)', name: 'F_Price', width: 120, align: 'center' },
+                        { label: '数量', name: 'F_Qty', width: 90, align: 'center' },
                         {
-                            label: '订单状态', name: 'FB_State', width: 88, align: 'left',
+                            label: '订单状态', name: 'FB_State', width: 88, align: 'center',
                             formatter: function (cellvalue, options, rowObject) {
                                 var colorcss = "";
                                 if (cellvalue == 1) {
@@ -134,8 +148,8 @@ var bootstrap = function ($, ayma) {
                                 return "<span class='" + colorcss + "'>" + cellvalue + "</span>";
                             }
                         },
-                        { label: '分拣员', name: 'FB_Name', width: 120, align: 'left' },
-                        { label: '联系电话', name: 'FB_Phone', width: 120, align: 'left' }
+                        { label: '分拣员', name: 'FB_Name', width: 120, align: 'center' },
+                        { label: '联系电话', name: 'FB_Phone', width: 120, align: 'center' }
                     ],
                 isEidt: false,
                 footerrow: true,
@@ -160,7 +174,9 @@ var bootstrap = function ($, ayma) {
         },
         search: function (param) {
             param = param || {};
-            param.F_OrderNo = keyValue;
+            param.keyValue = keyValue;
+            var a = JSON.stringify(param);
+            console.log(a);
             $('#girdtable').jfGridSet('reload', { param: { queryJson: JSON.stringify(param) } });
        }
     };
