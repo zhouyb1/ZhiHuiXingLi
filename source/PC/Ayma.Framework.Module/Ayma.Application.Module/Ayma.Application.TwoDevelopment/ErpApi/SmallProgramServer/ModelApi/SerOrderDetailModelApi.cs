@@ -86,7 +86,7 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer.ModelApi
         /// <summary>
         /// 行李号
         /// </summary>
-        public string F_ConsignmentNumber { get; set; }
+        public Array F_ConsignmentNumber { get; set; }
         /// <summary>
         /// 快递单号
         /// </summary>
