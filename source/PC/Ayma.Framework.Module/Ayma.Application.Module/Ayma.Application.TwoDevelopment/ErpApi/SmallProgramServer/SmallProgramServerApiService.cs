@@ -566,11 +566,40 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
         {
             try
             {
-                var strSql = new StringBuilder();
-                strSql.Append(@"SELECT F_ConsignmentNumber,F_ExpressNO,F_ExpressCompanyId,F_Amount FROM dbo.T_OrderPayMoney WHERE F_OrderNo=@OrderNo");
-                var dp = new DynamicParameters(new { });
-                dp.Add("@OrderNo", OrderNo);
-                return this.BaseRepository().FindList<ExpressNo>(strSql.ToString(), dp);
+                var sql = "SELECT DISTINCT F_OrderNo,F_ExpressNO FROM dbo.T_OrderPayMoney WHERE F_OrderNo='" + OrderNo + "'";
+                var table = this.BaseRepository().FindTable(sql.ToString());
+                List<ExpressNo> list = new List<ExpressNo>();
+                for (int i = 0; i < table.Rows.Count; i++)
+                {
+                    var strSql = new StringBuilder();
+                    strSql.Append(@"SELECT DISTINCT F_ExpressNO,F_ExpressCompanyId,F_Amount FROM dbo.T_OrderPayMoney WHERE F_OrderNo=@OrderNo AND F_ExpressNO=@ExpressNo");
+                    var dp = new DynamicParameters(new { });
+                    dp.Add("@OrderNo", table.Rows[i]["F_OrderNo"].ToString());
+                    dp.Add("@ExpressNo", table.Rows[i]["F_ExpressNO"].ToString());
+                    var data = this.BaseRepository().FindList<ExpressNo>(strSql.ToString(), dp).ToList();
+                    foreach (var item in data)
+                    {
+                        var sqlstr = new StringBuilder();
+                        sqlstr.Append(@"SELECT F_ConsignmentNumber FROM T_OrderPayMoney WHERE F_ExpressNO=@ExpressNO");
+                        var param = new DynamicParameters(new { });
+                        param.Add("@ExpressNO", table.Rows[i]["F_ExpressNO"].ToString());
+                        var dt = this.BaseRepository().FindTable(sqlstr.ToString(), param);
+
+                        string[] arr = new string[dt.Rows.Count];
+                        for (int k = 0; k < dt.Rows.Count; k++)
+                        {
+                            arr[k] = dt.Rows[k]["F_ConsignmentNumber"].ToString();
+                        }
+                        item.F_ConsignmentNumber = arr;
+                    }
+                    list.AddRange(data);
+                }
+                return list;
+                //var strSql = new StringBuilder();
+                //strSql.Append(@"SELECT F_ConsignmentNumber,F_ExpressNO,F_ExpressCompanyId,F_Amount FROM dbo.T_OrderPayMoney WHERE F_OrderNo=@OrderNo");
+                //var dp = new DynamicParameters(new { });
+                //dp.Add("@OrderNo", OrderNo);
+                //return this.BaseRepository().FindList<ExpressNo>(strSql.ToString(), dp);
             }
             catch (Exception ex)
             {
