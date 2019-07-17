@@ -49,7 +49,7 @@ var bootstrap = function ($, ayma) {
                     ayma.layerConfirm('是否确认删除该项！', function (res) {
                         if (res) {
                             ayma.deleteForm(top.$.rootUrl + '/TwoDev/OrderInquiry/DeleteData', { keyValue: F_Id }, function () {
-                                page.initData();
+                                location.reload();
                             });
                         }
                     });
@@ -175,8 +175,6 @@ var bootstrap = function ($, ayma) {
         search: function (param) {
             param = param || {};
             param.keyValue = keyValue;
-            var a = JSON.stringify(param);
-            console.log(a);
             $('#girdtable').jfGridSet('reload', { param: { queryJson: JSON.stringify(param) } });
        }
     };
