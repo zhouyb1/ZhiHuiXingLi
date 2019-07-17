@@ -1764,7 +1764,6 @@
         }
         var dfop = $self[0].dfop;
 
-
         if (!dfop) {
             return null;
         }
