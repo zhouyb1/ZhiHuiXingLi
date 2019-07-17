@@ -141,30 +141,32 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             string status = req["status"].ToString();  //订单状态
             string Operator = req["Operator"].ToString(); //操作人
             string errText = "";
-            if (status == "4")   //行李号状态为运输中,插入快递公司数据
-            {
-                if (req["ExpressCompanyId"].IsEmpty())
-                {
-                    return Fail("快递公司不能为空!");
-                }
-                if (req["ExpressNO"].IsEmpty())
-                {
-                    return Fail("快递单号不能为空!");
-                }
-                if (req["Amount"].IsEmpty())
-                {
-                    return Fail("运费不能为空");
-                }
-                if (!Regex.IsMatch(req["Amount"].ToString(), @"^[0-9]*$"))
-                {
-                    return Fail("运费只能为数字");
-                }
-                string ExpressCompanyId = req["ExpressCompanyId"].ToString();  //快递公司
-                string ExpressNO = req["ExpressNO"].ToString(); //快递单号
-                string PayType = req["PayType"].ToString(); //收款方式
-                string Amount = req["Amount"].ToString(); //快递费用
-                billServerApiBLL.ExpressInformations(OrderNo, ConNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
-            }
+            #region
+            //if (status == "4")   //行李号状态为运输中,插入快递公司数据
+            //{
+                //if (req["ExpressCompanyId"].IsEmpty())
+                //{
+                //    return Fail("快递公司不能为空!");
+                //}
+                //if (req["ExpressNO"].IsEmpty())
+                //{
+                //    return Fail("快递单号不能为空!");
+                //}
+                //if (req["Amount"].IsEmpty())
+                //{
+                //    return Fail("运费不能为空");
+                //}
+                //if (!Regex.IsMatch(req["Amount"].ToString(), @"^[0-9]*$"))
+                //{
+                //    return Fail("运费只能为数字");
+                //}
+                //string ExpressCompanyId = req["ExpressCompanyId"].ToString();  //快递公司
+                //string ExpressNO = req["ExpressNO"].ToString(); //快递单号
+                //string PayType = req["PayType"].ToString(); //收款方式
+                //string Amount = req["Amount"].ToString(); //快递费用
+                //billServerApiBLL.ExpressInformations(OrderNo, ConNumber, ExpressCompanyId, ExpressNO, PayType, Amount, out errText);
+            //}
+            #endregion
             billServerApiBLL.UpdateOrderStatus(OrderNo, ConNumber, status, Operator, out errText);
             return Success(errText);
         }
