@@ -163,6 +163,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 serverSign = "version=" + version + "&key=" + pdakey + "&data=" + data;// 签名模式，data+version+&key=pdakey
             }
+            
             string md5 = Md5Helper.MD5(serverSign, 32).ToUpper();
             if (md5 != req.sign.ToUpper())
             {
