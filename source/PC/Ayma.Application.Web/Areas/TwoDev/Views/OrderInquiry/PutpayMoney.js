@@ -62,11 +62,24 @@ var bootstrap = function ($, ayma) {
                     }).jfGridSet("reload");
                 }
             });
+            //退款
+            $('#girdtable_refund').jfGrid({
+                url: top.$.rootUrl + '/TwoDev/OrderInquiry/GetOrderRefundMoney?keyValue=' + keyValue + '',
+                headData: [
+                    //{ label: "ID", name: "F_Id", width: 160, align: "left", sort: true,hidden:true },
+                    { label: "订单号", name: "F_OrderNo", width: 160, align: "center", sort: true },
+                    { label: "微信退款单号", name: "F_RefundId", width: 250, align: "center", sort: true },
+                    { label: "退款款金额(元)", name: "F_Amount", width: 100, align: "center", sort: true }
+                ],
+                mainId: 'F_Id',
+                reloadSelected: true
+            });
         },
         search: function (param) {
             param = param || {};
             $('#girdtable_formal').jfGridSet('reload', { param: { queryJson: JSON.stringify(param) } });
             $('#girdtable_temp').jfGridSet('reload', { param: { queryJson: JSON.stringify(param) } });
+            $('#girdtable_refund').jfGridSet('reload', { param: { queryJson: JSON.stringify(param) } });
         }
 
     };
