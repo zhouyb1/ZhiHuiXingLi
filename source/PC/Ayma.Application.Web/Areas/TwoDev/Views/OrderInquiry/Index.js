@@ -90,7 +90,7 @@ var bootstrap = function ($, ayma) {
                 if (ayma.checkrow(keyValue)) {
                     ayma.layerForm({
                         id: 'form',
-                        title: '订单收付款',
+                        title: '订单收付退款记录',
                         url: top.$.rootUrl + '/TwoDev/OrderInquiry/PutpayMoney?keyValue=' + keyValue + '',
                         width: 900,
                         height: 610,
