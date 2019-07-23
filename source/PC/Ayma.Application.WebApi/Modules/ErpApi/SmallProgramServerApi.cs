@@ -219,8 +219,16 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             }
             List<string> OrderList = new List<string>();
             OrderList = req["OrderNo"].ToString().ToList<string>(); //订单号
+            if (OrderList.Count < 1)
+            {
+                return Fail("订单号不能为空!");
+            }
             List<string> ConNumberList = new List<string>();
             ConNumberList = req["ConsignmentNumber"].ToString().ToList<string>();//行李号
+            if (ConNumberList.Count < 1)
+            {
+                return Fail("行李号不能为空!");
+            }
             string status = req["status"].ToString();  //订单状态  
             string Operator = req["Operator"].ToString();  //操作人
             string errText = "";
