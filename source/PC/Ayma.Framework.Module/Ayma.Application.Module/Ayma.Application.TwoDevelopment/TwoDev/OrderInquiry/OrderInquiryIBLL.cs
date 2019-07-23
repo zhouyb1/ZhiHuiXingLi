@@ -56,12 +56,21 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
         /// <param name="keyValue">主键</param>
         /// <returns></returns>
         IEnumerable<T_OrderCollectMoneyEntity> GetT_OrderCollectMoneyEntity(string keyValue);
+
+        T_OrderCollectMoneyEntity GetOrderCollectMoneyEntity(string keyValue);
         /// <summary>
         /// 获取付款表实体数据
         /// </summary>
         /// <param name="keyValue">主键</param>
         /// <returns></returns>
         IEnumerable<T_OrderPayMoneyEntity> GetT_OrderPayMoneyEntity(string keyValue);
+
+        /// <summary>
+        /// 获取退款表实体数据
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <returns></returns>
+        IEnumerable<T_OrderRefundEntity> GetT_OrderRefundMoneyEntity(string keyValue);
         /// <summary>
         /// 根据订单号获取订单
         /// </summary>
