@@ -121,6 +121,10 @@
     <Compile Include="TwoDev\CustomerPayInfo\CustomerPayInfoBLL.cs" />
     <Compile Include="TwoDev\CustomerPayInfo\CustomerPayInfoIBLL.cs" />
     <Compile Include="TwoDev\AirfieldFloor\T_AirfieldFloorEntity.cs" />
+    <Compile Include="TwoDev\OrderRefund\T_OrderRefundEntity.cs" />
+    <Compile Include="TwoDev\OrderRefund\OrderRefundService.cs" />
+    <Compile Include="TwoDev\OrderRefund\OrderRefundBLL.cs" />
+    <Compile Include="TwoDev\OrderRefund\OrderRefundIBLL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Ayma.Application.Organization\Ayma.Application.Organization.csproj">
