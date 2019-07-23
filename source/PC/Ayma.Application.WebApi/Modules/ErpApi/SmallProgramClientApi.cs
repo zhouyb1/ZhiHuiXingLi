@@ -34,6 +34,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
         private static string openId = string.Empty;
         private static string cellPhone = string.Empty;
         private static OrderInquiryIBLL order = new OrderInquiryBLL();
+        private static OrderRefundIBLL refundbll = new OrderRefundBLL();
         private T_OpinionFeedbackIBLL feedbackIbll = new T_OpinionFeedbackBLL();
      
         public SmallProgramClientApi()
@@ -975,41 +976,60 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 return Fail("订单号为空");
             }
-           
             var entity = order.GetT_OrderHeadEntity(orderNo);
-            var tmpStatus = new[] { "-1", "-2" };//-1 已取消，-2 已退款
+            var tmpStatus = new[] { "-1", "-2","-3" };//-1 已取消，-2 已退款,-3 退款中
+            var startStatus = new[] { "0" };//0 待付款
+            var middleStatus = new[] { "2", "3", "4","41","51" }; //2 分拣中,3 分拣完成,4 运输中,41 分拣异常,51 出港异常
+            var endStatus = new[] { "5" }; //5 订单已完成
             if (entity==null)
             {
                 return Fail("订单不存在！");
             }
-            if (entity.F_State.ToInt() >= 3)
-            {
-                return  Fail("订单正在处理中，不能取消！");
-            }
             if (tmpStatus.Contains(entity.F_State))
             {
-                return  Fail("订单已完成，请勿重复操作！");
+                return  Fail("订单已退款,请勿重复操作！");
+            }
+            if (startStatus.Contains(entity.F_State))
+            {
+                return Fail("订单未支付,不能做此操作！");
+            }
+            if (middleStatus.Contains(entity.F_State))
+            {
+                return Fail("订单正在处理中,不能取消！");
+            }
+            if (endStatus.Contains(entity.F_State))
+            {
+                return Fail("订单已配送完成，不能做此操作！");
             }
             var nonceStr = TenPayV3Util.GetNoncestr();
             //发起退款申请
             WXConfig config = new WXConfig();
             //获取订单总金额
-            var orderAmount =order.GetT_OrderBodyEntity(orderNo).Sum(c=>c.F_Price*c.F_Qty);
-            TenPayV3RefundRequestData data = new TenPayV3RefundRequestData(config.AppId,
-                config.MchId, config.Key, null, nonceStr, null, orderNo, orderNo, orderAmount.ToInt(), orderAmount.ToInt(), config.MchId, "REFUND_SOURCE_RECHARGE_FUNDS");
-            //获取服务器证书目录
-            var certPath = @"D:\Ayma_File\HTTPS证书\1533655241_20190517_cert";
-            var result = TenPayV3.Refund(data, certPath, Config.GetValue("Mchid"));
+            var OrderCollectMoneyEntity = order.GetOrderCollectMoneyEntity(orderNo);
+            var orderAmount = OrderCollectMoneyEntity.F_Amount;
+            TenPayV3RefundRequestData data = new TenPayV3RefundRequestData(config.AppId, config.MchId, config.Key, null, nonceStr, null, orderNo, orderNo, Convert.ToInt32(orderAmount * 100), Convert.ToInt32(orderAmount * 100), config.MchId, "REFUND_SOURCE_RECHARGE_FUNDS");
 
+            //获取服务器证书目录
+            var certPath = @"D:\Ayma_File\HTTPS证书\1533655241_20190517_cert\apiclient_cert.p12";
+            var result = TenPayV3.Refund(data, certPath, Config.GetValue("Mchid"));
             Logger.Info("订单"+orderNo+ "微信退款返回xml"+ result.ResultXml);  //记录日志
-            if (result.result_code.ToUpper()=="SUCCESSS")
+            if (result.result_code == "SUCCESS")
             {
-                Logger.Info("退款记录：1.订单"+orderNo+"；2.退款金额"+result.refund_fee);
+                Logger.Info("退款记录：1.订单" + orderNo + "；2.退款金额" + result.refund_fee);
+                //添加退款记录
+                T_OrderRefundEntity refundentity=new T_OrderRefundEntity();
+                refundentity.F_OrderNo=orderNo;
+                refundentity.F_RefundId=result.refund_id;
+                refundentity.F_Amount = Convert.ToDecimal(result.refund_fee) / 100;
+                refundbll.SaveEntity("", refundentity);
                 //修改订单状态为已退款
-                order.UpdateOrder(orderNo,OrderStatus.已退款);
+                order.UpdateOrder(orderNo, OrderStatus.已退款);
                 return Success("订单退款成功！");
             }
-            return Fail(result.err_code_des);
+            else
+            {
+                return Fail(result.err_code_des);
+            }
         }
 
         /// <summary>
