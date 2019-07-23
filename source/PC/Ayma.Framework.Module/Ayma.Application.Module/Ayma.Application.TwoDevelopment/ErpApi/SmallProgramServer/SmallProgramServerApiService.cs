@@ -595,11 +595,13 @@ namespace Ayma.Application.TwoDevelopment.ErpApi.SmallProgramServer
                     list.AddRange(data);
                 }
                 return list;
+                #region
                 //var strSql = new StringBuilder();
                 //strSql.Append(@"SELECT F_ConsignmentNumber,F_ExpressNO,F_ExpressCompanyId,F_Amount FROM dbo.T_OrderPayMoney WHERE F_OrderNo=@OrderNo");
                 //var dp = new DynamicParameters(new { });
                 //dp.Add("@OrderNo", OrderNo);
                 //return this.BaseRepository().FindList<ExpressNo>(strSql.ToString(), dp);
+                #endregion
             }
             catch (Exception ex)
             {
