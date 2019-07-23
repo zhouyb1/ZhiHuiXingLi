@@ -184,6 +184,25 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
             }
         }
 
+        public T_OrderCollectMoneyEntity GetOrderCollectMoneyEntity(string keyValue)
+        {
+            try
+            {
+                return orderInquiryService.GetOrderCollectMoneyEntity(keyValue);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
         /// <summary>
         /// 获取付款表实体数据
         /// </summary>
@@ -194,6 +213,30 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
             try
             {
                 return orderInquiryService.GetT_OrderPayMoneyEntity(keyValue);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowBusinessException(ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取退款表数据实体
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <returns></returns>
+        public IEnumerable<T_OrderRefundEntity> GetT_OrderRefundMoneyEntity(string keyValue)
+        {
+            try
+            {
+                return orderInquiryService.GetT_OrderRefundMoneyEntity(keyValue);
             }
             catch (Exception ex)
             {
