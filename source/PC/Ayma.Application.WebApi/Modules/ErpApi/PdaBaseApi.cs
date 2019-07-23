@@ -106,6 +106,10 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
             {
                 return null;
             }
+            if (path.ToLower() == "/pdaapi/cancelorder")
+            {
+                return null;
+            }
             ReqParameter<string> req = this.Bind<ReqParameter<string>>();
             this.WriteLog(ctx, req);//记录日志
 
@@ -135,6 +139,7 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 "/pdaapi/getphone",
                 "/pdaapi/getexpressno",
                 "/pdaapi/wxpay",
+                "/pdaapi/cancelorder",
                 "/pdaapi/sendmessage"
             };
 
