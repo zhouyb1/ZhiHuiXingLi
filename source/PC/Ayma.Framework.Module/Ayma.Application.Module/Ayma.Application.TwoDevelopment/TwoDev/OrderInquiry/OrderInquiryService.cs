@@ -297,6 +297,25 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
             }
         }
 
+        public T_OrderCollectMoneyEntity GetOrderCollectMoneyEntity(string keyValue)
+        {
+            try
+            {
+                return this.BaseRepository("BaseDb").FindEntity<T_OrderCollectMoneyEntity>(c => c.F_OrderNo == keyValue);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
         /// <summary>
         /// 获取付款表实体数据
         /// </summary>
@@ -333,6 +352,43 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                 }
             }
         }
+
+        /// <summary>
+        /// 获取退款表实体数据
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <returns></returns>
+        public IEnumerable<T_OrderRefundEntity> GetT_OrderRefundMoneyEntity(string keyValue)
+        {
+            try
+            {
+                var strSql = new StringBuilder();
+                strSql.Append(@"SELECT  F_Id ,
+                                        F_OrderNo ,
+                                        F_TransactionId,
+                                        F_RefundId ,
+                                        F_Amount
+                                FROM    dbo.T_OrderRefund 
+                                WHERE 1=1");
+                strSql.Append(" And F_OrderNo=@OrderNo");
+                // 虚拟参数
+                var dp = new DynamicParameters(new { });
+                dp.Add("@OrderNo", keyValue);
+                return this.BaseRepository().FindList<T_OrderRefundEntity>(strSql.ToString(), dp);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ExceptionEx)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw ExceptionEx.ThrowServiceException(ex);
+                }
+            }
+        }
+
 
         /// <summary>
         /// 根据订单号获取订单 edit by Yabo,Zhou
