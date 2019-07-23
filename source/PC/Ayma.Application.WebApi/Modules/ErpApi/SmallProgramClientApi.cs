@@ -1018,9 +1018,10 @@ namespace Ayma.Application.WebApi.Modules.ErpApi
                 Logger.Info("退款记录：1.订单" + orderNo + "；2.退款金额" + result.refund_fee);
                 //添加退款记录
                 T_OrderRefundEntity refundentity=new T_OrderRefundEntity();
-                refundentity.F_OrderNo=orderNo;
-                refundentity.F_RefundId=result.refund_id;
-                refundentity.F_Amount = Convert.ToDecimal(result.refund_fee) / 100;
+                refundentity.F_OrderNo=orderNo; //订单号
+                refundentity.F_TransactionId = result.transaction_id; //微信订单号
+                refundentity.F_RefundId=result.refund_id; //微信退款单号
+                refundentity.F_Amount = Convert.ToDecimal(result.refund_fee) / 100; //退款金额
                 refundbll.SaveEntity("", refundentity);
                 //修改订单状态为已退款
                 order.UpdateOrder(orderNo, OrderStatus.已退款);
