@@ -19,10 +19,11 @@ var bootstrap = function ($, ayma) {
             //} else if (state == 51)
             //{
             //    $("#am_leaveportt").show();
-            //} else if (state == -3)
-            //{
-            //    $("#am_affirmrefundd").show();
-            //}
+            //} else 
+            if (state == -3)
+            {
+                $("#am_affirmrefundd").show();
+            }
 
             // 行李编辑
             $("#am_edit").on("click", function () {
@@ -116,8 +117,9 @@ var bootstrap = function ($, ayma) {
                         {
                             label: '订单状态', name: 'FB_State', width: 88, align: 'center',
                             formatter: function (cellvalue, options, rowObject) {
+                                
                                 var colorcss = "";
-                                if (cellvalue == 1) {
+                                if (cellvalue == 1 || cellvalue == 0) {
                                     colorcss = "label label-success";
                                     cellvalue = "未分拣";
                                 }
@@ -155,10 +157,15 @@ var bootstrap = function ($, ayma) {
                 footerrow: true,
                 height: 420,
                 isStatistics: true
-                //isMultiselect: true
             });
         },
         initData: function () {
+            page.search();
+        },
+        search: function (param) {
+            //param = param || {};
+            //param.keyValue = keyValue;
+            //$('#girdtable').jfGridSet('reload', { param: { queryJson: JSON.stringify(param) } });
             if (!!keyValue) {
                 $.SetForm(top.$.rootUrl + '/TwoDev/OrderInquiry/GetFormData?keyValue=' + keyValue, function (data) {
                     for (var id in data) {
@@ -171,14 +178,10 @@ var bootstrap = function ($, ayma) {
                     }
                 });
             }
-        },
-        search: function (param) {
-            param = param || {};
-            param.keyValue = keyValue;
-            $('#girdtable').jfGridSet('reload', { param: { queryJson: JSON.stringify(param) } });
        }
     };
     refreshGirdData = function () {
+        
         page.search();
     };
     page.init();

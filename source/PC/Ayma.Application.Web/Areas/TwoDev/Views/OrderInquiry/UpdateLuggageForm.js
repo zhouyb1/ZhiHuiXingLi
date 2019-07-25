@@ -15,6 +15,7 @@ var bootstrap = function ($, ayma) {
             page.initData();
         },
         bind: function () {
+            console.log($("#FB_State").attr("value"));
             $('#FB_State').DataItemSelect({ code: "OrderDetailsState" });
         },
         initData: function () {
@@ -33,6 +34,7 @@ var bootstrap = function ($, ayma) {
     };
     // 保存数据
     acceptClick = function (callBack) {
+        debugger;
         if (!$('body').Validform()) {
             return false;
         }
@@ -42,7 +44,7 @@ var bootstrap = function ($, ayma) {
         $.SaveForm(top.$.rootUrl + '/TwoDev/OrderInquiry/SaveBodyForm?keyValue=' + keyValue, postData, function (res) {
             // 保存成功后才回调
             if (!!callBack) {
-                callBack();
+                callBack(postData);
             }
         });
     };
