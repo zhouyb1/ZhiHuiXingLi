@@ -47,6 +47,7 @@ var bootstrap = function ($, ayma) {
                 mainId: 'F_Id',
                 reloadSelected: true,
                 isSubGrid: true,
+                subGridHeight:200,
                 subGridRowExpanded: function (subgridId, row) {
                     var orderNo = row.F_OrderNo;
                     var ExpressNO = row.F_ExpressNO;
@@ -58,7 +59,7 @@ var bootstrap = function ($, ayma) {
                         headData: [
                            { label: "航班托运单号", name: "F_ConsignmentNumber", width: 160, align: "center" },
                         ],
-                        reloadSelected: true
+                        reloadSelected: true,
                     }).jfGridSet("reload");
                 }
             });
@@ -68,8 +69,9 @@ var bootstrap = function ($, ayma) {
                 headData: [
                     //{ label: "ID", name: "F_Id", width: 160, align: "left", sort: true,hidden:true },
                     { label: "订单号", name: "F_OrderNo", width: 160, align: "center", sort: true },
+                    { label: "微信订单号", name:"F_TransactionId",width:250,align:"center"},
                     { label: "微信退款单号", name: "F_RefundId", width: 250, align: "center", sort: true },
-                    { label: "退款款金额(元)", name: "F_Amount", width: 100, align: "center", sort: true }
+                    { label: "退款金额(元)", name: "F_Amount", width: 100, align: "center", sort: true }
                 ],
                 mainId: 'F_Id',
                 reloadSelected: true
