@@ -180,6 +180,20 @@ namespace Ayma.Application.Web.Areas.TwoDev.Controllers
             return Success(T_OrderCollectMoney);
         }
 
+        /// <summary>
+        /// 获取退款表数据
+        /// </summary>
+        /// <param name="keyValue"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [AjaxOnly]
+        public ActionResult GetOrderRefundMoney(string keyValue)
+        {
+            var T_OrderHeadData = orderInquiryIBLL.GetT_OrderHeadEntity(keyValue);
+            var T_OrderRefundMoney = orderInquiryIBLL.GetT_OrderRefundMoneyEntity(T_OrderHeadData.F_OrderNo);
+            return Success(T_OrderRefundMoney);
+        }
+
         [HttpGet]
         [AjaxOnly]
         public ActionResult GetOrderPayMoneyConNum(string orderNo, string ExpressNO)
