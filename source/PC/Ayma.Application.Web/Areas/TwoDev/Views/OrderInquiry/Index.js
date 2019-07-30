@@ -71,7 +71,7 @@ var bootstrap = function ($, ayma) {
                 var state = $('#girdtable').jfGridValue('F_State');
                 if (ayma.checkrow(keyValue)) {
                     ayma.layerForm({
-                        id: 'form',
+                        id: 'Form',
                         title: '订单详情',
                         url: top.$.rootUrl + '/TwoDev/OrderInquiry/Form?keyValue=' + keyValue + '&state=' + state + '&OrderNo=' + OrderNo,
                         width: 1000,
@@ -80,6 +80,39 @@ var bootstrap = function ($, ayma) {
                         btn: null,
                         callBack: function (id) {
                             return top[id].acceptClick(refreshGirdData);
+                        }
+                    });
+                }
+            });
+            //退款
+            $('#am_refund').on('click', function () {
+                var keyValue = $('#girdtable').jfGridValue('F_OrderNo');
+                var url = "https://mp.zhonghuijinxin.com:8011/pdaapi/CancelOrder";
+                if (ayma.checkrow(keyValue)) {
+                    ayma.layerConfirm('是否确认给订单：' + keyValue + ' 退款？', function (res) {
+                        if (res) {
+                            top.layer.close(top.layer.index);  //执行关闭当前询问窗口
+                            //ayma.layerClose('', top.layer.index);
+                            var para = JSON.stringify({
+                                "orderNo": keyValue
+                            });
+                            $.ajax({
+                                type: 'POST',
+                                url: url,
+                                dataType: 'json',
+                                data: {
+                                    "data": para
+                                },
+                                success: function (result) {
+                                    if (result.code == 200) {
+                                        ayma.alert.success(result.info);
+                                        refreshGirdData();
+                                    }
+                                    else {
+                                        ayma.alert.error(result.info);
+                                    }
+                                }
+                            });
                         }
                     });
                 }
@@ -125,7 +158,7 @@ var bootstrap = function ($, ayma) {
             $('#girdtable').AuthorizeJfGrid({
                 url: top.$.rootUrl + '/TwoDev/OrderInquiry/GetPageList',
                 headData: [
-                    { label: "订单号", name: "F_OrderNo", width: 160, align: "center" },
+                    { label: "订单号", name: "F_OrderNo", width: 160, align: "center",sort:true },
                     {
                         label: "订单状态", name: "F_State", width: 100, align: "center",
                         formatter: function (cellvalue, options, rowObject) {
@@ -192,6 +225,7 @@ var bootstrap = function ($, ayma) {
                 ],
                 mainId: 'F_Id',
                 reloadSelected: true,
+                sidx:'F_OrderNo',
                 isPage: true
             });
         },
