@@ -159,7 +159,7 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                     dp.Add("F_FlightNumber", "%" + queryParam["F_FlightNumber"].ToString() + "%", DbType.String);
                     strSql.Append(" AND t.F_FlightNumber Like @F_FlightNumber ");
                 }
-                return this.BaseRepository("LocalHost").FindList<T_OrderHeadEntity>(strSql.ToString(),dp, pagination);
+                return this.BaseRepository().FindList<T_OrderHeadEntity>(strSql.ToString(),dp, pagination);
             }
             catch (Exception ex)
             {
@@ -221,9 +221,11 @@ namespace Ayma.Application.TwoDevelopment.TwoDev
                     A.FB_Phone
                     FROM    T_OrderBody A
                     WHERE   1 = 1 And A.F_IsDel=0");
-                strSql.Append(" And A.F_OrderNo='" + keyValue + "'");
+                strSql.Append(" And A.F_OrderNo=@OrderNo");
+                strSql.Append(" ORDER BY A.F_Price DESC");
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
+                dp.Add("@OrderNo", keyValue);
                 return this.BaseRepository().FindList<T_GetBodyNameEntity>(strSql.ToString(), dp);
             }
             catch (Exception ex)
