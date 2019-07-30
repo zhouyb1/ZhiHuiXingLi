@@ -31,13 +31,14 @@ var bootstrap = function ($, ayma) {
                 var Fid = $('#girdtable').jfGridValue('F_Id');
                 if (ayma.checkrow(ConsignmentNumber)) {
                     ayma.layerForm({
-                        id: 'Form',
+                        id: 'UpdateLuggageForm',
                         title: '行李信息编辑',
-                        url: top.$.rootUrl + '/TwoDev/OrderInquiry/UpdateLuggageForm?keyValue=' + Fid + '&ConsignmentNumber=' + ConsignmentNumber,
+                        url: top.$.rootUrl + '/TwoDev/OrderInquiry/UpdateLuggageForm?keyValue='+ Fid + '&ConsignmentNumber=' + ConsignmentNumber,
                         width: 600,
                         height: 400,
                         maxmin: true,
                         callBack: function (id) {
+                            console.log(id);
                             return top[id].acceptClick(refreshGirdData);
                         }
                     });
@@ -110,7 +111,7 @@ var bootstrap = function ($, ayma) {
                         //{ label: '订单号', name: 'F_OrderNo', width: 130, align: 'left' },//,  hidden: true
                         { label: 'Id', name: 'F_Id', width: 100, align: 'center',hidden:'true' },
                         { label: '行李号', name: 'F_ConsignmentNumber', width: 160, align: 'center' },
-                        { label: '重量(kg)', name: 'F_Weight', width: 100, align: 'center' },
+                        //{ label: '重量(kg)', name: 'F_Weight', width: 100, align: 'center' },
                         { label: '配送距离(km)', name: 'F_Distance', width: 100, align: 'center' },
                         { label: '价格(元)', name: 'F_Price', width: 120, align: 'center' },
                         { label: '数量', name: 'F_Qty', width: 90, align: 'center' },
