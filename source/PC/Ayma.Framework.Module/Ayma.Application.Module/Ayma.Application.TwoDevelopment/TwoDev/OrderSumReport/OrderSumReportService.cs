@@ -155,9 +155,10 @@ namespace Ayma.Application.TwoDevelopment.TwoDev.OrderSumReport
                                 (SELECT SUM(F_SingleAmount) FROM dbo.T_OrderPayMoney WHERE F_OrderNo=a.F_OrderNo)ThirdMoney,
                                 a.F_CreateTime OrderDate,a.F_FlightCompany
                                 FROM T_OrderHead a 
-                                left join T_OrderBody b on a.F_OrderNo=b.F_OrderNo
-                                left join T_FlightNoInfo c on a.F_AirfieldId=c.F_AirfieldId And a.F_FlightNumber=c.F_FlightNumber
-                                Group by a.F_OrderNo,a.F_CreateTime,a.F_FlightCompany) t WHERE 1=1");
+                                LEFT JOIN T_OrderBody b ON a.F_OrderNo=b.F_OrderNo
+                                LEFT JOIN T_FlightNoInfo c ON a.F_AirfieldId=c.F_AirfieldId And a.F_FlightNumber=c.F_FlightNumber
+                                WHERE a.F_State NOT IN ('0','-1','-2','-3')
+                                Group BY a.F_OrderNo,a.F_CreateTime,a.F_FlightCompany) t WHERE 1=1");
                 var queryParam = queryJson.ToJObject();
                 // 虚拟参数
                 var dp = new DynamicParameters(new { });
