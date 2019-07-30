@@ -45,7 +45,7 @@ var bootstrap = function ($, ayma) {
                             label: '行李状态', name: 'FB_State', width: 120, align: 'center',
                             formatter: function (cellvalue, options, rowObject) {
                                 var colorcss = "";
-                                if (cellvalue == 1) {
+                                if (cellvalue == 0||cellvalue==1) {
                                     colorcss = "label label-success";
                                     cellvalue = "未分拣";
                                 }
