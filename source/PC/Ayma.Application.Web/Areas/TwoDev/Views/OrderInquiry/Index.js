@@ -225,7 +225,7 @@ var bootstrap = function ($, ayma) {
                 ],
                 mainId: 'F_Id',
                 reloadSelected: true,
-                sidx:'F_OrderNo',
+                sidx: 'F_OrderNo',
                 isPage: true
             });
         },
