@@ -461,6 +461,7 @@
     <Content Include="Areas\AM_WorkFlowModule\Views\WfSystemDemo\DemoLeaveIndex.js" />
     <Content Include="Areas\TwoDev\Views\OrderInquiry\Form.css" />
     <Content Include="Areas\TwoDev\Views\OrderInquiry\LogisticsForm.js" />
+    <Content Include="Areas\TwoDev\Views\OrderInquiry\PackageForm.js" />
     <Content Include="Areas\TwoDev\Views\OrderInquiry\PutpayMoney.js" />
     <Content Include="Areas\TwoDev\Views\OrderInquiry\UpdateForm.js" />
     <Content Include="Areas\TwoDev\Views\OrderInquiry\UpdateLuggageForm.js" />
@@ -2325,7 +2326,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>20472</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
