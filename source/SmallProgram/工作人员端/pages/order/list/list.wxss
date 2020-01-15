@@ -1,0 +1,244 @@
+/* pages/order/list/list.wxss */
+
+.page {
+  width: 100%;
+}
+.search_box {
+  background: #f5f5f5;
+  width: 100%;
+}
+
+.bg_left, .bg_right {
+  /* font-weight: 600; */
+  text-align: left;
+}
+.search_btn {
+  background: #3fa1e0;
+  background: linear-gradient(to right, #3FA1E0, #A5D3F0);
+  color: #fff;
+  padding: 10rpx 30rpx;
+  /* border-radius: 10rpx; */
+  border-radius: 50rpx;
+}
+
+.list_box {
+  background: #fff;
+  border-radius: 8rpx;
+  padding:5rpx;
+}
+
+.page .weui-cell:before {
+  border-top: none;
+}
+
+.page .weui-cell {
+  padding: 10rpx 20rpx;
+}
+.name {
+  color:#999;
+}
+
+.tel {
+  box-shadow: #eee 0px 0px 3px; 
+  /* background: #88f; */
+}
+.bg_center {
+  text-align: center;
+}
+.xl_pad {
+  padding-left:25rpx;
+}
+.swiper-tab {
+  width: 100%;
+
+  border-bottom: 1rpx solid #eee;
+}
+
+.head {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+
+}
+
+.swiper-tab-list {
+  text-align: center;
+  line-height: 80rpx;
+  font-size: 30rpx;
+  display: inline-block;
+  width: 16.66%;
+  color: #777;
+  /* margin-top: 88rpx; */
+  background: #fff;
+}
+
+.on {
+  color: #3fa1e0;
+  border-bottom: 5rpx solid #3fa1e0;
+}
+
+.content {
+  margin: 20rpx;
+  z-index: -11;
+}
+.xlh_length_box {
+  width:80%;
+  word-wrap:break-word;
+
+}
+.content:last-child{
+  padding-bottom: 300rpx;
+ 
+}
+
+.swiper-box {
+  display: block;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  z-index: -99;
+}
+
+.color_text {
+  color: #3fa1e0;
+}
+.all {
+  text-align: center;
+  padding:10rpx 0 200rpx 0;
+  font-size:25rpx;
+  color:#999;
+}
+
+.all_nu {
+  text-align: center;
+  padding:10rpx 0 0rpx 0;
+  font-size:25rpx;
+  color:#999;
+}
+
+.state_tex {
+  color: #999;
+  /* background: #00b26a; */
+  /* padding: 0 10rpx; */
+  /* border-radius: 10rpx; */
+  /* height:100rpx; */
+  /* position: absolute; */
+}
+
+.state_yc {
+  /* background: #e21918; */
+  color: #999;
+  /* padding: 0 10rpx; */
+  border-radius: 10rpx;
+  /* margin: 0 10rpx; */
+}
+
+.btn_box {
+  margin: 80rpx 0;
+  padding-bottom: 150rpx;
+}
+
+.state_btn {
+  background: #3FA1E0;
+  color: #fff;
+  width: 95%;
+  font-size: 30rpx;
+  padding:10rpx 0;
+  border-radius: 50rpx;
+}
+
+.all_list{
+ z-index: -99;
+ position: absolute;
+ width: 100%;
+ top: 170rpx;
+}
+.all_list .weui-cell__bd.color_text{
+  flex: 1;
+  text-align: center
+}
+
+.all_list .weui-cell__ft {
+  text-align: right;
+  flex: 1;
+  z-index:9999;
+  width:80%;
+  word-wrap: break-word;
+}
+.checkbox:after {
+  display: block;
+  clear: both;
+  content:'';
+}
+.acti {
+  float:left;
+  line-height: 350rpx;
+  padding-left:15rpx;
+}
+
+/* 未选中的 背景样式 */
+.checkbox .wx-checkbox-input{
+    border-radius: 50%;/* 圆角 */
+    width: 40rpx; /* 背景的宽 */
+    height: 40rpx; /* 背景的高 */
+}
+ 
+/* 选中后的样式 （可根据设计稿需求自己修改） */
+.checkbox .wx-checkbox-input.wx-checkbox-input-checked{
+    background: #2facff;
+    border-color: #2facff;
+}
+ 
+.checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
+    border-radius: 50%;
+    width: 46rpx;
+    height: 46rpx;
+    line-height: 46rpx;
+    text-align: center;
+    font-size: 28rpx; /* 对勾大小 28rpx */
+    color: #fff; /* 对勾颜色 白色 */
+    background: transparent;
+    transform: translate(-50%, -50%) scale(1);
+    -webkit-transform: translate(-50%, -50%) scale(1);
+}
+
+.quanxuan {
+ padding-left:15rpx;
+}
+.w_col {
+  /* background: rgb(90,228,34,.3); */
+  padding:2rpx 0rpx 0 0rpx;
+  /* color:#fff; */
+  /* background: linear-gradient(to right, #BFE5FC, #D6EDFA, #D6EDFA); */
+  font-size: 30rpx;
+  /* position: relative; */
+}
+/* .w_col:before{
+  content: '';
+  position: absolute;
+  left: -20rpx;
+  top: -20rpx;
+  width: 0;
+  height: 1%;
+  border: 20rpx solid transparent;
+  border-bottom-color: #3FA1E0;
+  transform: rotate(-45deg);
+} */
+
+
+
+/* 无订单信息 */
+.none_order {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  position: absolute;
+  top:200rpx;
+}
+
+
+
+
+
+

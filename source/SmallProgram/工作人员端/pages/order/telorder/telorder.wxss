@@ -1,0 +1,10 @@
+/* pages/order/telorder/telorder.wxss */
+
+@import"../../order/list/list.wxss";
+
+.telorder {
+  font-size: 40rpx;
+  color:#555;
+  padding-left:20rpx;
+  padding-top:10rpx;
+}

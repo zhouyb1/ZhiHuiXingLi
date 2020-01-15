@@ -1,0 +1,286 @@
+<!--pages/order/list/list.wxml-->
+<view class="page">
+  <!-- <view style="padding:15rpx;font-size：10rpx;">*选择航班号和日期查询订单</view> -->
+  <view class="state" hidden='{{!hidshown}}' wx-if="{{orderlist.length > 0}}">
+    <view class="swiper-tab">
+      <view class="head">
+        <view class="search_box">
+          <view class="weui-cell">
+            <view class="weui-cell__bd bg_left">
+              <picker bindchange="bindCasPickerChange" value="{{casIndex}}" range="{{flightlist}}">
+                <image src="/images/_bianjie_feiji.png" style="margin-right: 5px;margin-left:10rpx;vertical-align: middle;width:20px; height: 20px;"></image>
+                <text>{{flightlist[casIndex]}}</text>
+              </picker>
+            </view>
+            <view class="weui-cell__bd bg_right" catchtap="openCalendar1">
+              <picker mode="date" value="" start="2015-09-01" end="2090-09-01" bindchange="bindDateChange">
+                <text class="iconfont icon-riliriqi2" style='font-size:40rpx;color:#999;margin-right:10rpx;'></text>
+                <text class="picker">{{date}}</text>
+              </picker>
+            </view>
+
+            <view class="weui-cell__ft">
+              <view class="search_btn" catchtap='searlist'>查询</view>
+            </view>
+          </view>
+        </view>
+        <view class="swiper-tab-list {{currentTab==0 ? 'on' : ''}}" data-current="0" catchtap="clickTab">全部</view>
+        <view class="swiper-tab-list {{currentTab==1 ? 'on' : ''}}" data-current="1" catchtap="clickTab">未分拣</view>
+        <view class="swiper-tab-list {{currentTab==2 ? 'on' : ''}}" data-current="2" catchtap="clickTab">分拣中</view>
+        <view class="swiper-tab-list {{currentTab==3 ? 'on' : ''}}" data-current="3" catchtap="clickTab">运输中</view>
+        <view class="swiper-tab-list {{currentTab==4 ? 'on' : ''}}" data-current="4" catchtap="clickTab">已完成</view>
+        <view class="swiper-tab-list {{currentTab==5 ? 'on' : ''}}" data-current="5" catchtap="clickTab">异常</view>
+      </view>
+
+      <view class="all_list">
+        <swiper current="{{currentTab}}" duration="300" bindanimationfinish="swiperTab" style="height: {{clientHeight?clientHeight+'px':'auto'}}" class='videoSwiper'>
+          <!-- 全部 -->
+          <swiper-item>
+            <scroll-view scroll-y="{{true}}" style="height: {{clientHeight?clientHeight+'px':'auto'}}" >
+              <!-- 没有订单数据时显示 -->
+              <view class="none_order" wx:if="{{orderlist.length < 0}}">
+                <text class="iconfont icon-dingdan1" style='font-size:150rpx;color:#999;'></text>
+                <view>暂无相关订单！</view>
+              </view>
+              <view style="position:relative;">
+                <view class="content" wx:for="{{orderlist}}" wx:for-item="item" wx:key="index" wx:if="{{item.F_State == 1 || item.F_State == 2 || item.F_State == 3 || item.F_State == 4 || item.F_State == 5 || item.F_State == 41}}">
+                  <view class="list_box" style="background:{{bgColor}}" catchtap='go_detail' data-ddh="{{item.F_OrderNo}}">
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">
+                        <image src="/images/_bianjie_feiji.png" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;"></image>
+                        <text>{{item.F_FlightNumber}}</text>
+                      </view>
+                      <view class="weui-cell__bd bg_left color_text">航站楼/{{item.F_AirfieldFloor}}</view>
+                      <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 1}}"><text class="w_col" style="color:#008C25;">未分拣</text></view>
+                      <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 2}}"><text class="w_col" style="color:#DA9100;">分拣中</text></view>
+                      <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 3}}"><text class="w_col" style="color:#FF4600;">分拣完成</text></view>
+                      <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 4}}"><text class="w_col" style="color:#244D5D;">运输中</text></view>
+                      <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 5}}"><text class="w_col" style="color:#3FA1E0;">已完成</text></view>
+                      <view class="weui-cell__ft bg_left state_yc" wx:if="{{item.F_State == 41}}"><text class="w_col" style="color:#C50003;">异常</text></view>
+                    </view>
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">订单号</view>
+                      <view class="weui-cell__ft">{{item.F_OrderNo}}</view>
+                    </view>
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">行李号</view>
+                      <view class="weui-cell__ft xlh_length_box">
+                        <text class="xl_pad" wx:for="{{item.CNumberList}}" wx:for-item="ite" wx:key="index">{{ite.F_ConsignmentNumber}}</text>
+                      </view>
+                    </view>
+
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">分拣口</view>
+                      <view class="weui-cell__ft">{{item.F_ConveyorNumber}}</view>
+                    </view>
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">到达时间</view>
+                      <view class="weui-cell__ft">{{item.time}}</view>
+                    </view>
+                  </view>
+                </view>
+
+                <!-- <view class="all" hidden='{{!orderlistnull}}'>已加载全部</view> -->
+              </view>
+
+            </scroll-view>
+          </swiper-item>
+          <!-- 未分拣 -->
+          <swiper-item>
+            <scroll-view scroll-y="{{true}}" style="height: {{clientHeight?clientHeight+'px':'auto'}}" >
+               <!-- 没有订单数据时显示 -->
+                <view class="none_order" hidden="{{hid1}}">
+                    <text class="iconfont icon-dingdan1" style='font-size:150rpx;color:#999;'></text>
+                    <view>暂无相关订单！</view>
+                  </view>
+               
+                <view class="content" wx:for="{{orderlist}}" wx:for-item="item" wx:key="index" wx:if="{{item.F_State == 1}}">
+                  <view class="list_box " catchtap='go_detail' data-item="{{item.F_ConsignmentNumber}}" data-ddh="{{item.F_OrderNo}}">
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">
+                        <image src="/images/_bianjie_feiji.png" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;"></image>
+                        <text>{{item.F_FlightNumber}}</text>
+                      </view>
+                      <view class="weui-cell__bd bg_left color_text">航站楼/{{item.F_AirfieldFloor}}</view>
+                        <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 1}}"><text class="w_col" style="color:#008C25;">未分拣</text></view>
+                    </view>
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">订单号</view>
+                      <view class="weui-cell__ft">{{item.F_OrderNo}}</view>
+                    </view>
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">行李号</view>
+                      <view class="weui-cell__ft">
+                        <text class="xl_pad" wx:for="{{item.CNumberList}}" wx:for-item="ite" wx:key="index">{{ite.F_ConsignmentNumber}}</text>
+                      </view>
+                    </view>
+
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">分拣口</view>
+                      <view class="weui-cell__ft">{{item.F_ConveyorNumber}}</view>
+                    </view>
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">到达时间</view>
+                      <view class="weui-cell__ft">{{item.time}}</view>
+                    </view>
+                  </view>
+                  
+              </view>
+                <view class="btn_box"   hidden="{{!hid1}}">
+                  <button class="weui-btn state_btn" catchtap='allfenjianzhong'>分拣中</button>
+                </view>
+               
+            </scroll-view>
+          </swiper-item>
+          <!-- 分拣中 -->
+          <swiper-item>
+            <scroll-view scroll-y="{{true}}" style="height: {{clientHeight?clientHeight+'px':'auto'}}" >
+              <!-- 没有订单数据时显示 -->
+              <view class="none_order" hidden="{{hid2}}">
+                <text class="iconfont icon-dingdan1" style='font-size:150rpx;color:#999;'></text>
+                <view>暂无相关订单！</view>
+              </view>
+               
+              <view class="content"  wx:for="{{orderlist}}" wx:for-item="item" wx:key="index" wx:if="{{item.F_State == 2}}">
+                <view class="list_box" catchtap='go_detail' data-item="{{item.F_ConsignmentNumber}}" data-ddh="{{item.F_OrderNo}}">
+                  <view class="weui-cell">
+                    <view class="weui-cell__bd bg_left">
+                       <image src="/images/_bianjie_feiji.png" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;"></image>
+                      <text>{{item.F_FlightNumber}}</text>
+                    </view>
+                    <view class="weui-cell__bd bg_left color_text">航站楼/{{item.F_AirfieldFloor}}</view>
+                    <!-- <view class="weui-cell__ft state_yc">异常</view> -->
+                   <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 2}}"><text class="w_col" style="color:#DA9100;">分拣中</text></view>
+                      <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 3}}"><text class="w_col" style="color:#FF4600;">分拣完成</text></view>
+                  </view>
+                  <view class="weui-cell">
+                    <view class="weui-cell__bd bg_left">订单号</view>
+                    <view class="weui-cell__ft">{{item.F_OrderNo}}</view>
+                  </view>
+                  <view class="weui-cell">
+                    <view class="weui-cell__bd bg_left">行李号</view>
+                    <view class="weui-cell__ft">
+                      <text class="xl_pad" wx:for="{{item.CNumberList}}" wx:for-item="ite" wx:key="index">{{ite.F_ConsignmentNumber}}</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <!-- <view class="all" hidden="{{!thesortingnull}}">已加载全部</view> -->
+            </scroll-view>
+          </swiper-item>
+          <!-- 运输中 -->
+          <swiper-item>
+            <scroll-view scroll-y="{{true}}" style="height: {{clientHeight?clientHeight+'px':'auto'}}" >
+              <!-- 没有订单数据时显示 -->
+               <view class="none_order" hidden="{{hid4}}">
+                <text class="iconfont icon-dingdan1" style='font-size:150rpx;color:#999;'></text>
+                <view>暂无相关订单！</view>
+              </view>
+               
+
+              <view class="content"  wx:for="{{orderlist}}" wx:for-item="item" wx:key="index" wx:if="{{item.F_State == 4}}">
+                <view class="list_box" catchtap='go_detail' data-item="{{item.F_ConsignmentNumber}}" data-ddh="{{item.F_OrderNo}}">
+                  <view class="weui-cell">
+                    <view class="weui-cell__bd bg_left">
+                      <image src="/images/_bianjie_feiji.png" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;"></image>
+                      <text>{{item.F_FlightNumber}}</text>
+                    </view>
+                    <view class="weui-cell__bd bg_left color_text">航站楼/{{item.F_AirfieldFloor}}</view>
+                    <!-- <view class="weui-cell__ft state_yc">异常</view> -->
+                    <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 4}}"><text class="w_col" style="color:#244D5D;">运输中</text></view>
+                  </view>
+                  <view class="weui-cell">
+                    <view class="weui-cell__bd bg_left">订单号</view>
+                    <view class="weui-cell__ft">{{item.F_OrderNo}}</view>
+                  </view>
+                  <view class="weui-cell">
+                    <view class="weui-cell__bd bg_left">行李号</view>
+                    <view class="weui-cell__ft">
+                      <text class="xl_pad" wx:for="{{item.CNumberList}}" wx:for-item="ite" wx:key="index">{{ite.F_ConsignmentNumber}}</text>
+                    </view>
+                  </view>
+                </view>
+                <!-- <view class="all" hidden="{{!intransitnull}}">已加载全部</view> -->
+              </view>
+            </scroll-view>
+          </swiper-item>
+          <!-- 已完成 -->
+          <swiper-item>
+            <scroll-view scroll-y="{{true}}" style="height: {{clientHeight?clientHeight+'px':'auto'}}" >
+              <!-- 没有订单数据时显示 -->
+              <view class="none_order"hidden="{{hid5}}">
+                <text class="iconfont icon-dingdan1" style='font-size:150rpx;color:#999;'></text>
+                <view>暂无相关订单！</view>
+              </view>
+              <view>
+                <view class="content"  wx:for="{{orderlist}}" wx:for-item="item" wx:key="index" wx:if="{{item.F_State == 5}}">
+                  <view class="list_box" catchtap='go_detail' data-item="{{item.F_ConsignmentNumber}}" data-ddh="{{item.F_OrderNo}}">
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">
+                        <image src="/images/_bianjie_feiji.png" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;"></image>
+                        <text>{{item.F_FlightNumber}}</text>
+                      </view>
+                      <view class="weui-cell__bd bg_left color_text">航站楼/{{item.F_AirfieldFloor}}</view>
+                      <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 5}}"><text class="w_col" style="color:#3FA1E0;">已完成</text></view>
+                    </view>
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">订单号</view>
+                      <view class="weui-cell__ft">{{item.F_OrderNo}}</view>
+                    </view>
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">行李号</view>
+                      <view class="weui-cell__ft">
+                        <text class="xl_pad" wx:for="{{item.CNumberList}}" wx:for-item="ite" wx:key="index">{{ite.F_ConsignmentNumber}}</text>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+                <!-- <view class="all" hidden='{{!finshinull}}'>已加载全部</view> -->
+              </view>
+            </scroll-view>
+          </swiper-item>
+          <!-- 异常 -->
+          <swiper-item>
+            <scroll-view scroll-y="{{true}}" style="height: {{clientHeight?clientHeight+'px':'auto'}}" >
+              <!-- 没有订单数据时显示 -->
+              <view class="none_order" hidden='{{hid41}}'>
+                <text class="iconfont icon-dingdan1" style='font-size:150rpx;color:#999;'></text>
+                <view>暂无相关订单！</view>
+              </view>
+              <view>
+                <view class="content"  wx:for="{{orderlist}}" wx:for-item="item" wx:key="index" wx:if="{{item.F_State == 41}}">
+                  <view class="list_box" catchtap='go_detail' data-item="{{item.F_ConsignmentNumber}}" data-ddh="{{item.F_OrderNo}}">
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">
+                        <image src="/images/_bianjie_feiji.png" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;"></image>
+                        <text>{{item.F_FlightNumber}}</text>
+                      </view>
+                      <view class="weui-cell__bd bg_left color_text">航站楼/{{item.F_AirfieldFloor}}</view>
+                      <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 41}}"><text class="w_col" style="color:#C50003;">异常</text></view>
+                    </view>
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">订单号</view>
+                      <view class="weui-cell__ft">{{item.F_OrderNo}}</view>
+                    </view>
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">行李号</view>
+                      <view class="weui-cell__ft">
+                        <text class="xl_pad" wx:for="{{item.CNumberList}}" wx:for-item="ite" wx:key="index">{{ite.F_ConsignmentNumber}}</text>
+                      </view>
+                    </view>
+                  </view>
+                  <!-- <view class="all" hidden='{{!abnormalnull}}'>已加载全部</view> -->
+                </view>
+              </view>
+            </scroll-view>
+          </swiper-item>
+        </swiper>
+      </view>
+    </view>
+  </view>
+
+  <view class="none_order" hidden='{{hidshown}}'>
+    <text class="iconfont icon-dingdan1" style='font-size:150rpx;color:#999;'></text>
+    <view>暂无相关订单！</view>
+  </view>
+</view>

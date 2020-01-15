@@ -1,0 +1,76 @@
+<!--pages/login/login.wxml-->
+<!-- <view class="login_bg" style="background:url('http://39.98.228.251/ImageUrl/Login.png') no-repeat;background-size:100% 100%;z-index:-999;">
+  <view class="login_box">
+    <view class="login_info_box">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">
+            <text class="iconfont icon-xinxi ac_icon"></text>
+          </view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input ac_input" placeholder-class="phcolor" value="{{account}}" type="text" focus="{{focus}}" bindinput="getpAccount" placeholder="请输入账号......" />
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">
+            <text class="iconfont icon-mimaffffffpx ac_icon"></text>
+          </view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input ac_input" placeholder-class="phcolor" type="text" value="{{password}}" bindinput="getpPassword" focus="{{focus}}" placeholder="请输入密码......" />
+        </view>
+      </view>
+    </view>
+    <button class="login_btn" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" >登录</button >
+
+  </view>
+
+</view> -->
+
+
+<!-- 登录页面 -->
+<view class="page" hidden="{{hidlogin}}" style="background:{{bgColor}}">
+  <view class="login_head">
+    <view class="ol_btn">登录</view>
+  </view>
+
+  <view class="text_box">
+    <view class="in_put">
+      <view class="alsl">
+        <wux-cell hover-class="none">
+          <wux-input placeholder="请输入账号" value="{{ account }}" controlled type="text" bind:change="getpAccount">
+            <text class="iconfont icon-xinxi ac_icon" style="font-size:60rpx;padding-right:20rpx;"></text>
+          </wux-input>
+        </wux-cell>
+
+        <wux-cell hover-class="none">
+          <wux-input placeholder="请输入密码" password value="{{password}}" type="text" bind:change="getpPassword">
+            <text class="iconfont icon-mimaffffffpx ac_icon" style="font-size:60rpx;padding-right:20rpx;"></text>
+          </wux-input>
+        </wux-cell>
+      </view>
+    </view>
+    <button class="lo_button" bindtap='login'>登录</button>
+  </view>
+</view>
+
+
+<!-- 授权登录 -->
+
+<view class="page" hidden="{{hiduserinfo}}" style="background:{{bgColor}}">
+  <view class="title">智慧行李管家</view>
+
+  <view class="user_box">
+
+    <view class="logo_img">
+      <image src="/images/logo-.png"></image>
+    </view>
+
+    <button class="user_btn" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">微信授权</button>
+
+  </view>
+
+
+</view>

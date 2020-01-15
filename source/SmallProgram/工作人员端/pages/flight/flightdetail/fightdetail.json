@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "航班信息",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 50,
+  "backgroundColor": "#f7f7f7",
+  "backgroundTextStyle": "dark",
+  "usingComponents": {
+    "wux-card": "../../../dist/card/index",
+    "wux-wing-blank": "../../../dist/wing-blank/index",
+    "wux-row": "../../../dist/row/index",
+    "wux-col": "../../../dist/col/index"
+  }
+}

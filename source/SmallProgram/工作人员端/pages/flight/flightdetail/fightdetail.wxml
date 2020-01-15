@@ -1,0 +1,44 @@
+<!--pages/flight/flightdetail/fightdetail.wxml-->
+<view class="page">
+  <wux-wing-blank size="default">
+  <view class="xlnum_all">
+  <view>订单共:{{xingdanshu}}单</view>
+  <view>行李共:{{xinglishu}}件</view>
+  
+  </view>
+    <wux-card bordered="{{ false }}" title="{{hangbanhao}}" extra="" thumb="/images/_bianjie_feiji.png">
+      <view slot="body">
+        <view slot="body">
+          <view class="weui-flex">
+            <view class="weui-flex__item">
+              <view class="placeholder title">订单号</view>
+              <view class="list" wx:for="{{detalilist}}" wx:for-item="item" wx:key="index">
+                <view class="placeholder">{{item.F_OrderNo}}</view>
+              </view>
+            </view>
+            <view class="weui-flex__item">
+              <view class="placeholder title">行李号</view>
+              <view class="list" wx:for="{{detalilist}}" wx:for-item="item" wx:key="index">
+                <view class="placeholder">{{item.F_ConsignmentNumber}}</view>
+              </view>
+            </view>
+            <view class="weui-flex__item">
+              <view class="placeholder title">状态</view>
+              <view class="list" wx:for="{{detalilist}}" wx:for-item="item" wx:key="index">
+                <view class="placeholder" wx:if="{{item.FB_State == 1}}">未分拣</view>
+                <view class="placeholder" wx:if="{{item.FB_State == 2}}">分拣中</view>
+                <view class="placeholder" wx:if="{{item.FB_State == 3}}">分拣完成</view>
+                <view class="placeholder" wx:if="{{item.FB_State == 4}}">运输中</view>
+                <view class="placeholder" wx:if="{{item.FB_State == 5}}">已完成</view>
+                <view class="placeholder" wx:if="{{item.FB_State == 41}}">异常</view>
+              </view>
+            </view>
+          </view>
+
+        </view>
+
+      </view>
+    </wux-card>
+  </wux-wing-blank>
+
+</view>

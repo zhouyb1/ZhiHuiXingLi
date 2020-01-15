@@ -1,0 +1,207 @@
+/* pages/login/login.wxss */
+
+page {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+ 
+
+}
+.page {
+    width: 100%;
+  height: 100%;
+   background: linear-gradient( #3FA1E0 ,#FFFFFF);
+}
+
+/* .login_bg{
+  width:100%;
+  height:100%;
+}
+
+.login_box {
+  width:100%;
+  position: absolute;
+  top: 36%;
+}
+.login_box .login_info_box{
+  width:80%;
+  margin: 0 auto;
+  border-radius:15rpx;
+  background: rgba(255,255,255,.5);
+  margin-bottom:100rpx;
+}
+.account {
+  display: flex;
+}
+.ac_icon {
+  font-size:70rpx;
+  color:#3797D3;
+}
+.ac_input{
+  color: #fff;
+  font-size: 35rpx;
+}
+.phcolor {
+  color:#fff;
+  font-size:33rpx;
+  font-weight: 600;
+}
+.login_btn {
+  width: 80%;
+  margin: 0 auto;
+  border-radius:10rpx;
+  text-align: center;
+  background: #3797D3;
+  color:#fff;
+}
+
+.login_bg .weui-label {
+  width:50px;
+  text-align:center;
+  color:#fff;
+
+} */
+
+.login_head {
+  padding: 30rpx;
+  height: 150rpx;
+  /* background: #3fa1e0; */
+}
+
+.login_head .ol_btn {
+  /* background: #fff;
+  width: 150rpx;
+  padding: 10rpx;
+  text-align: center;
+  border-radius: 30rpx; */
+  font-size: 50rpx;
+  color:#fff;
+
+}
+
+.text_box {
+  width: 100%;
+    position: absolute;
+   top: 150rpx;
+  z-index: 999;
+}
+
+.in_put {
+  width: 95%;
+  background: #fff;
+  border-radius: 20rpx;
+  box-shadow:0px 30rpx 20rpx -30rpx #ccc;
+  margin: 0 auto;
+}
+
+.alsl {
+  padding: 30rpx 30rpx 150rpx 30rpx;
+}
+
+.lo_button {
+  background: #3fa1e0;
+  color:#fff;
+  border-radius: 50rpx;
+  margin: 0 80rpx;
+  margin-top:-30rpx;
+  text-align: center;
+  box-shadow:0px 30rpx 20rpx -30rpx #000;
+}
+
+.text_box .wux-cell  {
+  line-height: 40rpx;
+  padding: 30rpx 20rpx;
+}
+
+.text_box .wux-input__item{
+  font-size: 30rpx;
+}
+
+
+/* 用户授权 */
+.user_box {
+  margin:  0 auto;
+  width: 100%;
+}
+
+.title {
+  color:#fff;
+  font-size: 90rpx;
+  text-align: center;
+  padding:50rpx 20rpx;
+  font-family: "KaiTi";
+  font-weight: 700;
+  /* box-shadow:0rpx 30rpx 20rpx -30rpx #000; */
+}
+
+.logo_img {
+  width: 200rpx;
+  height:200rpx;
+  margin:  0 auto;
+  margin-top:10rpx;
+}
+
+.logo_img image{
+  width: 100%;
+  height:100%;
+  display: block;
+}
+
+.user_btn {
+  background: #ffffff;
+  width: 90%;
+  color:#555;
+  margin-top:100rpx;
+  box-shadow: 0px 30rpx 20rpx -30rpx #000;
+  border-radius:50rpx;
+}
+
+.bg_img{
+  height:300rpx;
+  position: relative;
+  /* background: #3FA1E0; */
+  margin:20rpx;
+  /* background: #000000 url('/images/bg.jpg') no-repeat center; */
+}
+
+.bg_img .bgimg{
+  width: 100%;
+  height:100%;
+  display:block;
+
+}
+
+/* page{
+  height:100%;
+  background-color: #3FA1E0; 
+}
+
+page .bgimg{
+   width: 100%;
+  height:100%;
+} */
+
+
+
+/**index.wxss**/
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 200px;
+}

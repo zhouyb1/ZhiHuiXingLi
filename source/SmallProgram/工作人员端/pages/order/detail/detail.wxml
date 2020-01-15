@@ -1,0 +1,301 @@
+<!--pages/order/detail/detail.wxml-->
+<view class="pages">
+  <view hidden='{{!showndetail}}' wx-if="{{detaillist.length > 0}}">
+    <view class="cli">
+      <view class="order_box" wx:for="{{detaillist}}" wx:for-item="item" wx:key="index">
+        <view class="weui-cell line">
+          <view class="weui-cell__hd">
+            <image src="/images/_bianjie_feiji.png" style="margin-right: 5px;vertical-align: middle;width:25px; height: 25px;"></image>
+          </view>
+          <view class="weui-cell__bd name">{{item.F_FlightNumber}}</view>
+          <view class="weui-cell__ft yet" wx:if="{{item.F_State == 1}}">未分拣</view>
+          <view class="weui-cell__ft yet" wx:if="{{item.F_State == 2}}">分拣中</view>
+          <view class="weui-cell__ft yet" wx:if="{{item.F_State == 3}}">分拣完成</view>
+          <view class="weui-cell__ft yet" wx:if="{{item.F_State == 4}}">运输中</view>
+          <view class="weui-cell__ft yet" wx:elif="{{item.F_State == 5}}">已完成</view>
+          <view class="weui-cell__ft yet" wx:elif="{{item.F_State == 41}}">异常</view>
+        </view>
+
+        <view class="weui-flex or_num_box">
+          <view class="border_right">
+            <view class="placeholder">行李号</view>
+            <checkbox-group bindchange="checkboxChange">
+              <label class="checkbox" wx:for="{{item.CNumberList}}" wx:for-item="ite" wx:key="index">
+                <view class="checkbox_box" wx:if="{{item.F_State == 1}}">
+                  <checkbox class="checkbox_btn" wx:if="{{ite.FB_State == 1}}" value="{{ite.F_ConsignmentNumber}}" checked="{{checked}}" disabled="{{flase}}" />
+                  <checkbox class="checkbox_btn" wx:if="{{ite.FB_State == 2}}" value="{{ite.F_ConsignmentNumber}}" checked="{{checked}}" disabled="{{true}}" />
+                </view>
+
+                <view class="checkbox_box" wx:if="{{item.F_State == 2}}">
+                  <checkbox class="checkbox_btn" wx:if="{{ite.FB_State == 2}}" value="{{ite.F_ConsignmentNumber}}" checked="{{checked}}" disabled="{{flase}}" />
+                  <checkbox class="checkbox_btn" wx:if="{{ite.FB_State == 3}}" value="{{ite.F_ConsignmentNumber}}" checked="{{checked}}" disabled="{{true}}" />
+                  <checkbox class="checkbox_btn" wx:if="{{ite.FB_State == 41}}" value="{{ite.F_ConsignmentNumber}}" checked="{{checked}}" disabled="{{true}}" />
+                </view>
+
+                <view class="checkbox_box" wx:if="{{item.F_State == 3}}">
+                  <checkbox class="checkbox_btn" wx:if="{{ite.FB_State == 4 || ite.FB_State == 3}}" value="{{ite.F_ConsignmentNumber}}" checked="{{checked}}" disabled="{{!istrue}}" />
+                  <checkbox class="checkbox_btn" wx:if="{{ite.FB_State == 2}}" value="{{ite.F_ConsignmentNumber}}" checked="{{checked}}" disabled="{{istrue}}" />
+                    <!-- <checkbox class="checkbox_btn" wx:if="{{item.CNumberList.length == 1}}" value="{{ite.F_ConsignmentNumber}}" checked="{{checked}}" disabled="{{istrue}}" /> -->
+                </view>
+
+                <view class="checkbox_box" wx:if="{{item.F_State == 5}}">
+                  <checkbox class="checkbox_btn" value="{{ite.F_ConsignmentNumber}}" checked="{{checked}}" disabled="{{true}}" />
+                </view>
+
+                <view class="checkbox_box" wx:if="{{item.F_State == 4}}">
+                  <checkbox class="checkbox_btn" value="{{ite.F_ConsignmentNumber}}" checked="{{checked}}" disabled="{{true}}" />
+                </view>
+
+                <view class="checkbox_box" wx:if="{{item.F_State == 41}}">
+                  <checkbox class="checkbox_btn" wx:if="{{ite.FB_State == 41}}" value="{{ite.F_ConsignmentNumber}}" checked="{{checked}}" disabled="{{true}}" />
+                  <checkbox class="checkbox_btn" wx:if="{{ite.FB_State == 2}}" value="{{ite.F_ConsignmentNumber}}" checked="{{checked}}" disabled="{{false}}" />
+                  <checkbox class="checkbox_btn" wx:if="{{ite.FB_State == 3}}" value="{{ite.F_ConsignmentNumber}}" checked="{{checked}}" disabled="{{true}}" />
+                  <checkbox class="checkbox_btn" wx:if="{{ite.FB_State == 4}}" value="{{ite.F_ConsignmentNumber}}" checked="{{checked}}" disabled="{{true}}" />
+                  <checkbox class="checkbox_btn" wx:if="{{ite.FB_State == 5}}" value="{{ite.F_ConsignmentNumber}}" checked="{{checked}}" disabled="{{true}}" />
+                </view>
+
+                <view class="sth_box" wx:if="{{item.F_State == 1 && ite.FB_State == 1 || item.F_State == 1 && ite.FB_State == 2 || item.F_State == 1 && ite.FB_State == 4}}">
+                  <text class="righ" wx:if="{{ite.FB_State == 1}}">{{ite.F_ConsignmentNumber}}</text>
+                  <text class="righ xlh_fi" wx:if="{{ite.FB_State == 2}}">{{ite.F_ConsignmentNumber}}</text>
+                  <text class="status_btn" wx:if="{{ite.FB_State == 1}}">未分拣</text>
+                  <text class="status_fenjian" wx:if="{{ite.FB_State == 2}}">未分拣</text>
+                </view>
+
+                <view class="sth_box" wx:if="{{item.F_State == 2 && ite.FB_State == 2 || item.F_State == 2 && ite.FB_State == 41 || item.F_State == 2 && ite.FB_State == 3}}">
+                  <text class="righ" wx:if="{{ite.FB_State == 2}}">{{ite.F_ConsignmentNumber}}</text>
+                  <text class="righ xlh_fi" wx:if="{{ite.FB_State == 3 || ite.FB_State == 41}}">{{ite.F_ConsignmentNumber}}</text>
+
+                  <text class="sty_btn" wx:if="{{ite.FB_State == 2}}">异常</text>
+                  <text class="status_btn" wx:if="{{ite.FB_State == 2}}">已完成</text>
+                  <text class="status_fenjian" wx:if="{{ite.FB_State == 41}}">异常</text>
+                  <text class="status_fenjian" wx:if="{{ite.FB_State == 3}}">分拣完成</text>
+                </view>
+
+                <view class="sth_box" wx:if="{{item.F_State == 3}}">
+                  <text class="righ" wx:if="{{ite.FB_State == 2 || ite.FB_State == 3}}">{{ite.F_ConsignmentNumber}}</text> 
+                  <text class="righ xlh_fi" wx:if="{{ite.FB_State == 4 }}">{{ite.F_ConsignmentNumber}}</text>
+                  <text class="righ xlh_fi" wx:if="{{ite.FB_State == 41 || ite.FB_State == 5}}">{{ite.F_ConsignmentNumber}}</text>
+                  <text class="sty_btn" wx:if="{{ite.FB_State == 2}}">异常</text>
+                  <text class="status_btn" wx:if="{{ite.FB_State == 2}}">已完成</text>
+                  <text class="status_fenjian" wx:if="{{ite.FB_State == 41}}">异常</text>
+                  <text class="status_btn" wx:if="{{ite.FB_State == 3}}">分拣完成</text>
+                   <text class="status_fenjian" wx:if="{{ite.FB_State == 4}}">运输中</text>
+                  <text class="status_fenjian" wx:if="{{ite.FB_State == 5}}">已完成</text>
+                </view>
+
+                <view class="sth_box" wx:if="{{item.F_State == 4}}">
+                  <text class="righ xlh_fi" wx:if="{{ite.FB_State == 4 || ite.FB_State == 5}}">{{ite.F_ConsignmentNumber}}</text>
+                  <text class="status_fenjian" wx:if="{{ite.FB_State == 4}}">运输中</text>
+                  <text class="status_fenjian" wx:if="{{ite.FB_State == 5}}">已完成</text>
+                </view>
+
+                <view class="sth_box" wx:if="{{item.F_State == 5}}">
+                  <text class="righ xlh_fi">{{ite.F_ConsignmentNumber}}</text>
+                  <text class="status_fenjian">已完成</text>
+                </view>
+
+                <view class="sth_box" wx:if="{{(item.F_State == 41 && ite.FB_State == 41) || (item.F_State == 41 && ite.FB_State == 2) || (item.F_State == 41 && ite.FB_State == 3) || (item.F_State == 41 && ite.FB_State == 4) || (item.F_State == 41 && ite.FB_State == 5)}}">
+                  <text class="righ" wx:if="{{ite.FB_State == 2}}">{{ite.F_ConsignmentNumber}}</text>
+                  <text class="righ xlh_fi" wx:if="{{ite.FB_State == 3 || ite.FB_State == 4 || ite.FB_State == 5 || ite.FB_State == 41}}">{{ite.F_ConsignmentNumber}}</text>
+                  <text class="sty_btn yichang yic" wx:if="{{ite.FB_State == 41}}">异常</text>
+                  <text class="sty_btn" wx:if="{{ite.FB_State == 2}}">异常</text>
+                  <text class="status_btn" wx:if="{{ite.FB_State == 2}}">已完成</text>
+                  <text class="status_fenjian" wx:if="{{ite.FB_State == 3}}">分拣完成</text>
+                  <text class="status_fenjian" wx:if="{{ite.FB_State == 4}}">运输中</text>
+                  <text class="status_fenjian" wx:if="{{ite.FB_State == 5}}">已完成</text>
+                </view>
+
+              </label>
+            </checkbox-group>
+          </view>
+
+          <view class="weui-flex__item">
+            <view class="placeholder">订单号</view>
+            <view class="num_bts">{{item.F_OrderNo}}</view>
+            <view class="placeholder">下单时间</view>
+            <view class="num_bts">{{item.F_OrderDate}}</view>
+          </view>
+        </view>
+      </view>
+
+      <view class="order_info" wx:for="{{detaillist}}" wx:for-item="item" wx:key="index" wx:if="{{item.F_State == 1 || item.F_State == 2 || item.F_State == 3 || item.F_State == 4 || item.F_State == 5 || item.F_State == 41}}">
+        <wux-cell-group>
+          <wux-cell title="姓名" extra="{{item.F_CustomerName}}"></wux-cell>
+          <wux-cell title="行李数量" extra="{{item.F_Qty}}"></wux-cell>
+          <wux-cell title="手机号码" extra="{{item.F_CustomerPhone}}"></wux-cell>
+          <wux-cell title="航站楼" extra="{{item.F_AirfieldFloor}}"></wux-cell>
+          <wux-cell title="是否加急" extra="{{item.F_IsUrgent}}"></wux-cell>
+          <view class="adderss">
+            <view class="left">地址</view>
+            <view class="right">{{item.F_CustomerAddress}}</view>
+          </view>
+        </wux-cell-group>
+      </view>
+      <!-- 快递信息填写 -->
+      <view class="kx_box">
+        <view class="weui-cell" bindtap="open1" style="border-bottom:2rpx dashed rgba(0, 0, 0, 0.2);" wx:for="{{detaillist}}" wx:for-item="item" wx:key="index" hidden="{{ express_information }}">
+          <view class="weui-cell__bd">快递信息</view>
+          <view class="weui-cell__ft" style="color:#f00;">{{kdtext}}</view>
+        </view>
+        <view  wx:for="{{detaillist}}" wx:for-item="item" wx:key="index" wx:if="{{item.F_State == 3 || item.F_State == 4 || item.F_State == 5 || item.F_State == 41}}">
+        <view class="send_box" style="margin:0;" wx:for="{{item.ExpressNoList}}" wx:for-item="ite" wx:key="index">
+          <wux-accordion-group>
+            <wux-accordion title="行李号： {{ite.F_ConsignmentNumber}}">
+              <view class="weui-cell">
+                <view class="weui-cell__bd">快递公司</view>
+                <view class="weui-cell__ft" style="padding-right:25rpx;">{{ite.F_ExpressCompanyId}}</view>
+              </view>
+              <view class="weui-cell">
+                <view class="weui-cell__bd">快递费用(元)</view>
+                <view class="weui-cell__ft" style="padding-right:25rpx;">{{ite.F_Amount}}</view>
+              </view>
+              <view class="weui-cell" style="padding-bottom:10rpx;">
+                <view class="weui-cell__bd">快递单号</view>
+                <view class="weui-cell__ft" style="padding-right:25rpx;">{{ite.F_ExpressNO}}</view>
+              </view>
+
+            </wux-accordion>
+          </wux-accordion-group>
+
+        </view>
+      </view>
+      
+        <wux-popup closable visible="{{ visible1 }}" title="快递信息填写" bind:close="onClose1" bind:closed="onClosed1">
+          <view class="pop_box">
+            <view class="flex_box">
+              <view class="flex_left ">行李号</view>
+              <view class="flex_right both_icon">{{finshxlh}}</view>
+            </view>
+              <view class="flex_box">
+              <view class="flex_left">快递公司</view>
+              <view class="flex_right">
+                <picker bindchange="bindPickerChange" value="{{index}}" range="{{expressage}}">
+                  <view class="expressage kudi">
+                    {{expressage[index]}}
+                  </view>
+                </picker>
+              </view>
+            </view>
+            <view class="flex_box">
+              <view class="flex_left">快递费用</view>
+              <view class="flex_right both_icon">
+                <input class="input_right" bindinput="tracking_price" type="number" placeholder="请填写快递费用" value="{{tracking_price}}" />
+                <text class="iconfont icon-tianxie sysa"></text>
+              </view>
+            </view>
+            <view class="flex_box">
+              <view class="flex_left">快递单号</view>
+              <view class="flex_right both_icon">
+                <input class="input_right" placeholder="请填写快递单号" bindinput="tracking_number" value="{{tracking_number}}" />
+                <text class="iconfont icon-saoyisao1 sys" bindtap='getScancode'></text>
+              </view>
+            </view>
+
+          </view>
+
+          <view slot="footer" class="popup__button" bindtap="close1" style="width:50%;background:#95D1F2;color:#fff;border-right:2rpx solid #eee;">取消</view>
+          <view slot="footer" class="popup__button" bindtap="submit" style="width:50%;background:#3fa1e0;color:#fff;">保存</view>
+        </wux-popup>
+      </view>
+
+
+      <!-- 操作员显示 -->
+      <view class="fenjianyuan" wx:for="{{detaillist}}" wx:for-item="item" wx:key="index" wx:if="{{item.F_State == 2 || item.F_State == 3 || item.F_State == 4 || item.F_State == 5 || item.F_State == 41}}">
+        <view class="weui-cell" wx:for="{{item.EmployeeInfo}}" wx:for-item="ite" wx:key="index">
+          <view class="weui-cell__bd">分拣员：{{ite.FB_Name}}</view>
+          <view class="weui-cell__ft" bindtap="Tel" data-tel="{{ite.FB_Phone}}">
+            <text class="fen_tel">{{ite.FB_Phone}}</text>
+          </view>
+        </view>
+      </view>
+      <!-- 分拣员操作记录 -->
+      <view class="record">
+        <wux-accordion-group>
+          <wux-accordion thumb="/images/qianyuejilu.png" title="操作记录">
+            <view class="listview-container" wx:for="{{operator}}" wx:if="{{ operator != ''}}" wx:for-item="item" wx:key="index">
+              <view class="xlh">行李号:{{item.F_OrderNo}}</view>
+              <block wx:for="{{item.LogisticsInfo}}" wx:for-item="ite" wx:key="index">
+                <view class="playlog-item" bindtap="itemTapped">
+                  <view class="dotline">
+                    <!-- 竖线 -->
+                    <view class="line"></view>
+                    <!-- 圆点 -->
+                    <view class="dot"></view>
+                    <!-- 时间戳 -->
+                  </view>
+                  <view class="content">
+                    <view class="course">
+                      <text class="l_text">{{ite.F_StateDescribe}}</text>
+                      <text class="r_text">[ {{ite.F_StateOperator}} ]</text>
+                      <text class="r_text">{{ite.F_StateDateTime}}</text>
+                    </view>
+
+                  </view>
+                </view>
+                <ad unit-id="adunit-5abb45645905fc90" wx:if="{{index % 5 == 4}}"></ad>
+              </block>
+            </view>
+
+            <wux-timeline-item wx:if="{{operator.length == 0}}">
+              <view>暂无操作记录，请开始分拣！</view>
+            </wux-timeline-item>
+
+          </wux-accordion>
+        </wux-accordion-group>
+      </view>
+
+      <view class="btn_box" wx:for="{{detaillist}}" wx:for-item="item" wx:key="index">
+        <wux-button block type="calm" class="btn" wx:if="{{item.F_State == 1}}" bindtap='fenjianzhong'>分拣中</wux-button>
+        <view wx:if="{{item.F_State == 2}}" class="btn_to">
+          <view class="btn_one">
+            <wux-button block type="assertive" class="btn" bindtap='yichang'>异常</wux-button>
+          </view>
+          <view class="btn_two" wx:if="{{item.F_State == 2}}">
+            <wux-button block type="calm" class="btn" bindtap='xiywc'>分拣完成</wux-button>
+          </view>
+        </view>
+
+        <view class="btn_to" wx:if="{{item.F_State == 3}}">
+          <wux-button block type="calm" class="btn" bindtap='yunshuzhong'>运输中</wux-button>
+        </view>
+
+        <view class="btn_to" hidden="{{yunshuing}}" >
+          <wux-button block type="calm" class="btn" bindtap='yunshuzhong'>运输中</wux-button>
+        </view>
+
+        <view hidden="{{isyunsuing}}">
+          <wux-button block type="disabled" class="btn">该订单正在运输中</wux-button>
+        </view>
+
+        <view wx:if="{{(item.F_State == 41 && xlhstatus == 2)}}" class="btn_to">
+          <view class="btn_one">
+            <wux-button block type="assertive" class="btn" bindtap='yichang'>异常</wux-button>
+          </view>
+          <view class="btn_two">
+            <wux-button block type="calm" class="btn" bindtap='xiywc'>分拣完成</wux-button>
+          </view>
+        </view>
+
+        <!-- 单个行李号异常 -->
+        <view hidden="{{hiddenyichang}}" wx:if="{{item.F_State == 41}}">
+          <wux-button block type="disabled" class="btn">该订单异常</wux-button>
+        </view>
+
+        <view hidden="isfinshbtn">
+          <wux-button block type="disabled" class="btn">该订单已完成</wux-button>
+        </view>
+
+        <wux-button block type="disabled" class="btn" wx:if="{{item.F_State == 5}}">该订单已完成</wux-button>
+      </view>
+    </view>
+  </view>
+
+
+  <view class="none_order" hidden='{{showndetail}}'>
+    <text class="iconfont icon-dingdan1" style='font-size:150rpx;color:#999;'></text>
+    <view>没有相关订单详情</view>
+  </view>
+
+
+
+</view>

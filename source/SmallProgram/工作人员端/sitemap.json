@@ -1,0 +1,12 @@
+{
+  "rules": [
+    {
+      "action": "allow",
+      "page": "pages/flight/flight"
+    },
+    {
+      "action": "disallow",
+      "page": "*"
+    }
+  ]
+}

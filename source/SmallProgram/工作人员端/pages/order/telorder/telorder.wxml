@@ -1,0 +1,66 @@
+<!--pages/order/telorder/telorder.wxml-->
+<view class="page">
+<view class="telorder" wx:if="{{orderlist.length > 0}}">* 相关手机号订单</view>
+  <view style="position:relative;">
+    <view class="content" wx:for="{{orderlist}}" wx:for-item="item" wx:key="index" wx:if="{{item.F_State == 1 || item.F_State == 2 || item.F_State == 3 || item.F_State == 4 || item.F_State == 5 || item.F_State == 41}}">
+      <!-- <view class="content" wx:for="{{orderlist}}" wx:for-item="item" wx:key="index"> -->
+      <view class="list_box" style="background:{{bgColor}}" catchtap='go_detail' data-ddh="{{item.F_OrderNo}}">
+        <view class="weui-cell">
+          <view class="weui-cell__bd bg_left">
+            <image src="/images/_bianjie_feiji.png" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;"></image>
+            <text>{{item.F_FlightNumber}}</text>
+          </view>
+          <view class="weui-cell__bd bg_left color_text">航站楼/{{item.F_AirfieldFloor}}</view>
+          <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 1}}">
+            <text class="w_col" style="color:#008C25;">未分拣</text>
+          </view>
+          <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 2}}">
+            <text class="w_col" style="color:#DA9100;">分拣中</text>
+          </view>
+          <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 3}}">
+            <text class="w_col" style="color:#FF4600;">分拣完成</text>
+          </view>
+          <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 4}}">
+            <text class="w_col" style="color:#244D5D;">运输中</text>
+          </view>
+          <view class="weui-cell__ft bg_left state_tex" wx:if="{{item.F_State == 5}}">
+            <text class="w_col" style="color:#3FA1E0;">已完成</text>
+          </view>
+          <view class="weui-cell__ft bg_left state_yc" wx:if="{{item.F_State == 41}}">
+            <text class="w_col" style="color:#C50003;">异常</text>
+          </view>
+        </view>
+        <view class="weui-cell">
+          <view class="weui-cell__bd bg_left">订单号</view>
+          <view class="weui-cell__ft">{{item.F_OrderNo}}</view>
+        </view>
+        <view class="weui-cell">
+          <view class="weui-cell__bd bg_left">行李号</view>
+          <view class="weui-cell__ft xlh_length_box">
+            <text class="xl_pad" wx:for="{{item.CNumberList}}" wx:for-item="ite" wx:key="index">{{ite.F_ConsignmentNumber}}</text>
+          </view>
+        </view>
+
+        <view class="weui-cell">
+          <view class="weui-cell__bd bg_left">分拣口</view>
+          <view class="weui-cell__ft">{{item.F_ConveyorNumber}}</view>
+        </view>
+        <view class="weui-cell">
+          <view class="weui-cell__bd bg_left">到达时间</view>
+          <view class="weui-cell__ft">{{item.time}}</view>
+        </view>
+        <!-- <view class="weui-cell">
+                      <view class="weui-cell__bd bg_left">
+                          <text>分拣员</text>
+                      </view>
+                      <view class="weui-cell__bd bg_center ">
+                          <text class="name">张三</text>
+                      </view>
+                      <view class="weui-cell__ft" catchtap='call_tel' data-tel='125666788765'><text class="tel" >125666788765</text></view>
+                    </view> -->
+      </view>
+    </view>
+
+    <!-- <view class="all" hidden='{{!orderlistnull}}'>已加载全部</view> -->
+  </view>
+</view>

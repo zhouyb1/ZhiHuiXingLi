@@ -1,0 +1,17 @@
+<!--pages/center/personal/personal.wxml-->
+<view class="page">
+  <view class="tx_box">
+    <view class="tx_name">头像</view>
+    <view class="tx_img"><open-data type="userAvatarUrl"></open-data></view>
+  </view>
+  <wux-cell-group>
+    <!-- <wux-cell title="昵称" extra="我是蜘蛛侠"></wux-cell> -->
+    <wux-cell title="账号" extra="{{zhanghao}}"></wux-cell>
+    <!-- <wux-cell title="密码" extra="修改密码"></wux-cell> -->
+    <!-- <wux-cell title="真实姓名" extra="丁蓉蓉"></wux-cell> -->
+    <!-- <wux-cell title="性别" extra="女"></wux-cell> -->
+    <wux-cell title="手机号码" extra="{{phone}}"></wux-cell>
+  </wux-cell-group>
+
+  <view class="cut" bindtap='cut_login'>切换账号</view>
+</view>

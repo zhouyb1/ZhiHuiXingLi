@@ -1,0 +1,118 @@
+<!--pages/flight/flight.wxml-->
+
+<view class="page">
+  <!-- 没有航班数据时显示 -->
+  <view class="none_order" hidden="{{shownlist}}">
+    <text class="iconfont icon-zhifeiji1" style='font-size:150rpx;color:#999;'></text>
+    <view>暂无相关航班！</view>
+  </view>
+
+  <view hidden="{{!shownlist}}" wx-if="{{flightlist.length > 0}}">
+    <view class="weui-search-bar">
+      <view class="weui-search-bar__form">
+        <view class="weui-search-bar__box">
+          <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
+          <input type="text" class="weui-search-bar__input" placeholder="输入航班，例如：MU6768" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" />
+          <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" catchtap="clearInput">
+            <icon type="clear" size="14"></icon>
+          </view>
+        </view>
+        <label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
+          <icon class="weui-icon-search" type="search" size="14"></icon>
+          <view class="weui-search-bar__text">输入航班，例如：MU6768</view>
+        </label>
+      </view>
+      <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="searchbtn">搜索</view>
+    </view>
+
+    <view class="flight_baaer">
+      <view class="tips">*可输入行李号/订单号/手机号查看订单详情</view>
+
+      <!-- 航班机位修改提示框 -->
+      <modal hidden="{{hiddenmodalput}}" title="修改航班机位" confirm-text="提交" cancel-text="取消" bindcancel="cancelM" bindconfirm="confirmM">
+        <input bindinput='iName' type='text' value='{{jiwei}}' placeholder="请输入航班机位..." focus/>
+      </modal>
+
+
+      <!-- 航班分拣口修改提示框 -->
+      <modal hidden="{{hiddenmodalput2}}" title="修改分拣口" confirm-text="提交" cancel-text="取消" bindcancel="cancelM2" bindconfirm="confirmM2">
+        <input bindinput='iName2' type='text' value="{{fenjiankou}}" placeholder="请输入航班分拣口..." focus/>
+      </modal>
+
+      <view class="list_box">
+        <view class="flight_box" wx:for="{{flightlist}}" wx:for-item="item" wx:key="index" bindtap='go_fightdetail' data-hbh="{{item.F_FlightNumber}}" data-xls="{{item.TotalQty}}" data-dds="{{item.TotalOrder}}">
+          <view class="weui-cell line">
+            <view class="weui-cell__hd">
+              <image src="/images/_bianjie_feiji.png" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;"></image>
+            </view>
+            <view class="weui-cell__bd name">{{item.F_FlightCompany}}{{item.F_FlightNumber}}</view>
+            <view class="weui-cell__ft luggage">
+              <view>订单共：{{item.TotalOrder}}单</view>
+              <view>行李共：{{item.TotalQty}}件</view>
+            </view>
+          </view>
+          <view class="weui-flex begin_end">
+            <view class="weui-flex__item">
+              <view class="placeholder addr">{{item.AddressBegin}}</view>
+            </view>
+            <view class="weui-flex__item">
+              <view class="placeholder line_box">
+                <view class="go">到达</view>
+                <image src="/images/list-arrow1.png" mode="aspectFit"></image>
+              </view>
+            </view>
+            <view class="weui-flex__item">
+              <view class="placeholder addr">{{item.AddressEnd}}</view>
+            </view>
+          </view>
+          <view class="weui-flex time_info">
+            <view class="weui-flex__item ">
+              <view class="placeholder">计划到达</view>
+            </view>
+            <view class="weui-flex__item">
+              <view class="placeholder"></view>
+            </view>
+            <view class="weui-flex__item">
+              <view class="placeholder ">{{item.time1}}</view>
+            </view>
+          </view>
+          <view class="weui-flex time_info">
+            <view class="weui-flex__item ">
+              <view class="placeholder">实际到达</view>
+            </view>
+            <view class="weui-flex__item">
+              <view class="placeholder"></view>
+            </view>
+            <view class="weui-flex__item">
+              <view class="placeholder ">{{item.time2}}</view>
+            </view>
+          </view>
+          <view class="weui-flex time_info">
+            <view class="weui-flex__item ">
+              <view class="placeholder">航班机位</view>
+            </view>
+            <view class="weui-flex__item">
+              <view class="placeholder"></view>
+            </view>
+            <view class="weui-flex__item" catchtap='amend_hbjw' data-fit_num="{{item.F_FlightNumber}}" data-id="{{item.F_AirfieldId}}">
+              <view class="placeholder bd_font">{{item.F_Placement}}</view>
+            </view>
+          </view>
+          <view class="weui-flex time_info">
+            <view class="weui-flex__item ">
+              <view class="placeholder">分拣口</view>
+            </view>
+            <view class="weui-flex__item">
+              <view class="placeholder"></view>
+            </view>
+            <view class="weui-flex__item" catchtap='amend_fjk' data-fit_num="{{item.F_FlightNumber}}" data-id="{{item.F_AirfieldId}}">
+              <view class="placeholder bd_font">{{item.F_ConveyorNumber}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+  </view>
+</view>

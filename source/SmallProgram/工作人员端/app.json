@@ -1,0 +1,50 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/order/list/list",
+    "pages/order/detail/detail",
+    "pages/flight/flight",
+    "pages/center/personal/personal",
+    "pages/center/my_center/my_center",
+    "pages/order/telorder/telorder",
+    "pages/flight/flightdetail/fightdetail"
+
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#3FA1E0",
+    "navigationBarTitleText": "智慧行李管家",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#a9b7b7",
+    "selectedColor": "#3797D3",
+    "borderStyle": "black",
+    "list": [
+      {
+        "selectedIconPath": "/images/feiji.png",
+        "iconPath": "/images/feijia.png",
+        "pagePath": "pages/flight/flight",
+        "text": "航班查询"
+      },
+      {
+        "selectedIconPath": "/images/dingdan.png",
+        "iconPath": "/images/dingdana.png",
+        "pagePath": "pages/order/list/list",
+        "text": "订单查询"
+      },
+      {
+        "selectedIconPath": "/images/gerenzhongxin.png",
+        "iconPath": "/images/gerenzhongxina.png",
+        "pagePath": "pages/center/my_center/my_center",
+        "text": "个人中心"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true,
+  "sitemapLocation": "sitemap.json"
+}

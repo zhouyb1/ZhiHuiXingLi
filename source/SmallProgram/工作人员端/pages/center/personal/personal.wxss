@@ -1,0 +1,46 @@
+/* pages/center/personal/personal.wxss */
+
+.page {
+  padding:20rpx;
+  position: relative;
+}
+.tx_box {
+  position: relative;
+  /* height: 110rpx;*/
+  line-height: 120rpx; 
+  background: #fff;
+  width: 100%;
+}
+.tx_box::after{
+  content:'';
+  display:block;
+  clear: both;
+}
+.tx_name{
+  float: left;
+  padding-left:30rpx;
+}
+.tx_img {
+  margin-right:30rpx;
+  width:100rpx;
+  height:100rpx;
+  float: right;
+  border-radius: 50%;
+  display:block; 
+  overflow:hidden;
+  line-height: 120rpx; 
+  margin-top:10rpx;
+}
+
+.page .wux-cell:after,.page .wux-cell-group__bd:after {
+  height: 0rpx; 
+  border-bottom: none;
+  border:none;
+}
+
+.cut {
+  background: #fff;
+  padding:20rpx;
+  text-align: center;
+  margin-top: 30rpx;
+}
