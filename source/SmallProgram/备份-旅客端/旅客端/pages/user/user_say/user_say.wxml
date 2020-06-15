@@ -1,0 +1,22 @@
+<!--pages/user/user_say/user_say.wxml-->
+<view>
+  <!-- <text>反馈意见</text> -->
+  <van-cell-group>
+    <van-cell title="{{title}}" bind:click="shows" is-link arrow-direction="down" />
+  </van-cell-group>
+  <van-popup show="{{ show }}" position="bottom" custom-style="height: 50%;" bind:close="onClose">
+    <van-picker show-toolbar title="标题" columns="{{ columns }}" bind:cancel="onCancel" bind:confirm="onConfirm" />
+  </van-popup>
+
+
+  <van-cell-group>
+    <textarea auto-focus="true" style="height: 8em" placeholder="请输入建议" value="{{say}}" bindinput='s' />
+  </van-cell-group>
+
+  <van-cell-group>
+    <van-field value="{{ phone }}" placeholder="请输入联系方式" bind:input="p" />
+  </van-cell-group>
+
+  <van-button type="info" bind:click="save" block>提交</van-button>
+
+</view>

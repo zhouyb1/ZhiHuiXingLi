@@ -1,0 +1,96 @@
+<!--pages/pays/pays.wxml-->
+<view class="text">航班信息</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">航班号：</text>
+  </view>
+  <view class='list-cont'> {{data.F_FlightNumber}}</view>
+</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">航&nbsp;&nbsp;&nbsp;程：</text>
+  </view>
+  <view class='list-cont'> {{data.F_StartStation}}-{{data.F_AirfieldName}}</view>
+</view>
+
+<view class="text">旅客信息</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">姓&nbsp;&nbsp;&nbsp;名：</text>
+  </view>
+  <view class='list-cont'> {{data.F_CustomerName}}</view>
+</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">手&nbsp;&nbsp;&nbsp;机：</text>
+  </view>
+  <view class='list-cont'> {{data.F_CustomerPhone}}</view>
+</view>
+<view class='list'>
+  <view class='list-title'>
+    <text decode="true" space="true">地&nbsp;&nbsp;&nbsp;址：</text>
+  </view>
+  <view class='list-cont'> {{data.F_CustomerAddress}}</view>
+</view>
+
+<view class="text">行李信息</view>
+<view class='list' wx:for="{{data.Details}}" wx:key="{{item}}">托运单号：{{item.ConsignmentNumber}} X1</view>
+<view class='lists'>
+  <text>合计:{{data.Details.length}}件</text>
+  <text class="lists-right">￥ {{totalFee}} 起</text>
+</view>
+
+<view class="text">其他信息</view>
+<view class='list'>
+  送达时间：
+  <view wx:if="{{!times}}">
+    4-6小时
+  </view>
+  <block wx:else>
+    2-3小时
+  </block>
+  <view class="help" bindtap='go_help' data-type="2">
+    <image src='../../image/helps.png'></image>
+    对送达时间疑问？
+  </view>
+  <view class='timers'>
+    <i-switch value="{{times}}" size="large" bind:change="onChange" slot="footer">
+      <view slot="open">加急</view>
+      <view slot="close">普通</view>
+    </i-switch>
+  </view>
+</view>
+<!-- <view class='list'>是否港内件
+  <view class="help" bindtap='handleText'>
+    <image src='../../image/helps.png'></image>
+    什么是港内件
+  </view>
+  <view class='timers'>
+    <i-switch value="{{ems}}" size="large" bind:change="onChange1" slot="footer">
+      <view slot="open">港内</view>
+      <view slot="close">港外</view>
+    </i-switch>
+  </view>
+</view> -->
+<view class='list list-6plus' style="margin-bottom:300rpx;">
+  <checkbox-group bindchange="checkboxChange" class="check">
+    <label class="checkbox">
+      <checkbox checked="{{checked}}" /> 阅读并接受
+    </label>
+    <text bindtap='go_help' data-type="1">《xxx用户协议》</text>
+  </checkbox-group>
+</view>
+<!-- 底部 -->
+<view class='footer'>
+  <view class="goods_info">
+    <view wx:if="{{data.Details.length>1}}">合计：￥{{totalFee}}</view>
+    <view wx:if="{{data.Details.length>1}}">第二件6.5折，第三件及以上5折</view>
+    <view wx:if="{{data.Details.length<=1 || !data.Details.length}}" style="height:100%;font-size:35rpx;color:#000;">合计：￥{{totalFee}}</view>
+  </view>
+  <view class="pay" bindtap='pays'>去支付</view>
+</view>
+<!-- <i-toast id="toast" /> -->
+
+<view class='go-index' wx:if="{{!flag}}">
+  <view class='go-index-btn' bindtap='go_index'>返回首页</view>
+</view>

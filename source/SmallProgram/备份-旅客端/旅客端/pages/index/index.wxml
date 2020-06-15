@@ -1,0 +1,45 @@
+<!-- 授权登录 -->
+<view class="container" wx:if="{{!hasUserInfo && canIUse}}">
+  <view class="userinfo">
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 立即体验智慧行李 </button>
+    <block wx:else>
+      <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <text class="userinfo-nickname"> 欢迎 {{userInfo.nickName}}</text>
+    </block>
+  </view>
+  <image src='../../image/welcome.jpg' class='welcomes'></image>
+</view>
+<!-- 通过授权显示首页内容 -->
+<block wx:else>
+  <view class="index-img">
+    <image src='../../image/Top.jpg' class='index-img-top'></image>
+    <image src="../../image/Top-1.jpg" class='index-img-b'></image>
+  </view>
+  <view class='nav'>
+    <view class="nav-l" bindtap='paths' data-link="/pages/send/send">
+      <image src='../../image/picturew1-1.png'></image>
+    </view>
+    <view class="nav-r" bindtap='paths' data-link="">
+      <image src='../../image/picturew1-2.png'></image>
+    </view>
+  </view>
+  <!-- <view class='hot'>
+    <i-cell-group>
+      <i-cell title="热门兑换" value="more" is-link i-class="fonts"></i-cell>
+    </i-cell-group>
+  </view> -->
+  <view class='hot-goods'>
+    <view class='hot-l'>
+      <image src="../../image/0.jpg"></image>
+    </view>
+    <view class='hot-r'>
+      <view class='hot-r-item'>
+        <image src="../../image/0.jpg"></image>
+      </view>
+      <view class='hot-r-item'>
+        <image src="../../image/0.jpg"></image>
+      </view>
+    </view>
+  </view>
+  <view class='btns'></view>
+</block>

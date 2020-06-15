@@ -1,0 +1,60 @@
+<!-- 授权登录 -->
+<view class="container" wx:if="{{!user_name && canIUse}}">
+  <view class="userinfo">
+    <button wx:if="{{!user_name && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 立即体验智慧行李 </button>
+    <block wx:else>
+      <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <text class="userinfo-nickname"> 欢迎 {{userInfo.nickName}}</text>
+    </block>
+  </view>
+  <image src='../../image/welcome.jpg' class='welcomes'></image>
+</view>
+<!-- 通过授权显示首页内容 -->
+<block wx:else>
+  <!-- 通知 -->
+  <i-notice-bar icon="systemprompt" loop closable wx:if="tipdata">
+    {{tipdata}}
+  </i-notice-bar>
+  <!-- 轮播图 -->
+  <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="{{circular}}">
+    <block wx:for="{{imgUrls}}" wx:key="item">
+      <swiper-item>
+        <image src="{{item}}" class="slide-image" width="100%" height="150" />
+      </swiper-item>
+    </block>
+  </swiper>
+  <!-- 九宫格 -->
+  <i-grid>
+    <i-grid-item bindtap="paths" data-url="/pages/send/send">
+      <i-grid-icon>
+        <image src="../../image/orders.png" />
+      </i-grid-icon>
+      <i-grid-label>我要寄件</i-grid-label>
+    </i-grid-item>
+    <!-- <i-grid-item bindtap="paths" data-url="/pages/pays/pays">
+      <i-grid-icon>
+        <image src="../../image/sends.png" />
+      </i-grid-icon>
+      <i-grid-label>我要寄件</i-grid-label>
+    </i-grid-item> -->
+    <i-grid-item  bindtap="paths">
+      <i-grid-icon>
+        <image src="../../image/private.png" />
+      </i-grid-icon>
+      <i-grid-label>私人定制</i-grid-label>
+    </i-grid-item>
+  </i-grid>
+  <!-- 使用介绍 -->
+  <view class="help">
+    <view class="help_text">使用介绍</view>
+    <view class="caption-wrap">
+      <i-collapse i-class="help_text_icon">
+        <i-collapse-item title="{{item.name}}" name="{{item.id}}" i-class="help_texts" wx:for="{{text_list}}" wx:key="item.id">
+          <view slot="content">
+            {{item.text}}
+          </view>
+        </i-collapse-item>
+      </i-collapse>
+    </view>
+  </view>
+</block>

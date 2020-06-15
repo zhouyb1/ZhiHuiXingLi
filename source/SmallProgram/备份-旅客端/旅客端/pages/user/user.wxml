@@ -1,0 +1,79 @@
+<!--pages/user/user.wxml-->
+<view class="user" wx:if="{{type}}">
+  <view class="user_info">
+    <view class="image">
+      <image src="{{images}}"></image>
+    </view>
+    <view class='name'>{{name}}</view>
+  </view>
+  <view class="order" wx:if="{{false}}">
+    <view bindtap='to_path' data-url="/pages/orders/orders?id=0">
+      <view>
+        <image src='../../image/all.png'></image>
+      </view>
+      <view>
+        <text>全部订单</text>
+      </view>
+    </view>
+
+    <view bindtap='to_path' data-url="/pages/orders/orders?id=1">
+      <view>
+        <image src='../../image/suss.png'></image>
+      </view>
+      <view>
+        <text>已完成</text>
+      </view>
+    </view>
+
+    <view bindtap='to_path' data-url="/pages/orders/orders?id=2">
+      <view>
+        <image src='../../image/pay.png'></image>
+      </view>
+      <view>
+        <text>待付款</text>
+      </view>
+    </view>
+
+    <view bindtap='to_path' data-url="/pages/orders/orders?id=3">
+      <view>
+        <image src='../../image/load.png'></image>
+      </view>
+      <view>
+        <text>派送中</text>
+      </view>
+    </view>
+
+    <view bindtap='to_path' data-url="/pages/orders/orders?id=4">
+      <view>
+        <image src='../../image/fail.png'></image>
+      </view>
+      <view>
+        <text>已取消</text>
+      </view>
+    </view>
+  </view>
+</view>
+<block wx:else>
+  <view class="user user-flex">
+    <button class='user-flex-btn' open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击微信授权</button>
+  </view>
+</block>
+
+<view class="list">
+<van-cell-group>
+  <van-cell title="我的服务" border="{{ false }}" />
+</van-cell-group>
+<van-grid column-num="{{num}}">
+  <van-grid-item icon="{{item.icon}}" bind:click="{{item.fun}}"  url="{{item.url}}" text="{{item.name}}" wx:for="{{ list }}" wx:key="id" />
+</van-grid>
+  <!-- <i-cell-group>
+    <i-cell title="我的订单" is-link url="/pages/orders/orders"></i-cell>
+    <i-cell title="修改资料" is-link url="/pages/user/user_info/user_info"></i-cell>
+    <i-cell title="地址管理" is-link url="/pages/user/user_addr/user_addr"></i-cell>
+    <i-cell title="意见反馈" is-link url="/pages/user/user_say/user_say"></i-cell>
+    <i-cell title="关于我们" is-link bind:click='phones'></i-cell>
+    <i-cell title="清除缓存" is-link bind:click='storages'></i-cell>
+    <i-cell title="联系客服" is-link bind:click='phones'></i-cell>
+  </i-cell-group> -->
+  <view class="ver">版本号:{{version}}</view>
+</view>

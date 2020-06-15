@@ -1,0 +1,589 @@
+/* pages/send/send.wxss */
+
+.image-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -10;
+}
+
+.img-cont {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+page {
+  color: #888;
+  font-size: 30rpx;
+}
+
+.text {
+  width: 100%;
+  height: 80rpx;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #ccc;
+  padding-left: 10rpx;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.text-help {
+  height: 100%;
+  width: auto;
+  right: 20rpx;
+  top: 0;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0984ac;
+  /* font-size: 15px; */
+}
+
+.text-help image {
+  width: 45rpx;
+  height: 45rpx;
+}
+
+.list {
+  width: 100%;
+  height: 100rpx;
+  display: flex;
+  font-size: 30rpx;
+  border-bottom: solid 1px #f5f5f5;
+}
+
+/* .list input{
+    width: 80%;
+} */
+
+.list_l {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 20rpx;
+  font-size: 30rpx;
+  box-sizing: border-box;
+  color:#666;
+}
+
+.list_r {
+  width: 80%;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.list_ls {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 20rpx;
+  font-size: 30rpx;
+  box-sizing: border-box;
+  color: #666;
+}
+
+.list_rs {
+  width: 80%;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  font-size: 12px;
+  position: relative;
+}
+
+.list_l_num {
+  width: 80%;
+  display: flex;
+  height: 100%;
+  /* justify-content: center; */
+  padding-left: 20rpx;
+  align-items: center;
+  box-sizing: border-box;
+  font-size: 12px;
+}
+
+.list_r_num {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding-left: 20rpx;
+  font-size: 14px;
+}
+
+.e_city {
+  width: 47%;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+
+.s_city {
+  width: 47%;
+  height: 80%;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  font-size: 12px;
+  /* background: red; */
+}
+
+.s_city .picke, .e_city .picke {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lines {
+  width: 6%;
+  height: 1px;
+  background: #ccc;
+}
+
+.filght_num {
+  width: 100%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  position: relative;
+}
+
+.filght_num > picker {
+  width: 100%;
+  height: 100%;
+  line-height: 100rpx;
+  margin-top: -20rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.phone_btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 100rpx;
+  top: -2rpx;
+}
+
+.phone_btn view:last-child {
+  width: 100%;
+  height: 30%;
+  font-size: 20rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #0984ac;
+}
+
+.phone_btn view:first-child {
+  width: 100%;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.images {
+  width: 70%;
+  height: 90%;
+}
+
+.phone_btn image {
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.code_box {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200rpx;
+  height: 100%;
+  /* background: red; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.codes {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.codes image {
+  width: 50%;
+  height: 50%;
+}
+
+.save_code {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0984ac;
+  color: #fff;
+}
+
+.list_r_num view {
+  width: 50%;
+  height: 60%;
+  font-size: 12px;
+  background: red;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10rpx;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100rpx;
+  display: flex;
+}
+
+.footer view {
+  width: 50%;
+  height: 100%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer view:first-child {
+  background: #0984ac;
+}
+
+.footer view:last-child {
+  background: #ff8d1a;
+}
+
+.city_type {
+  position: absolute;
+  top: -12rpx;
+  right: 0rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background: #0984ac;
+  z-index: 999;
+  color: #fff;
+  font-size: 12px;
+}
+
+.city_type view {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page_box {
+  /* position: fixed;
+  top: 0;
+  left: 0; */
+  width: 95%;
+  height: 100%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2.5% auto 100rpx auto;
+  border-radius: 10rpx;
+}
+
+.pages {
+  width: 95%;
+  height: 100vh;
+  background: #fff;
+  overflow-y: auto;
+}
+
+.page_title {
+  border-bottom: 1px solid #ccc;
+}
+
+.page_title view:first-child {
+  width: 100%;
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  padding: 15rpx;
+  box-sizing: border-box;
+  color: #000;
+  margin-bottom: 20rpx;
+}
+
+.page_title view:last-child {
+  width: 100%;
+  height: 50rpx;
+  display: flex;
+  align-items: center;
+  font-size: 30rpx;
+  padding: 15rpx 0 15rpx 15rpx;
+  box-sizing: border-box;
+  color: #bfbfbf;
+}
+.page_title-color{
+  color:#e36c09;
+}
+.page_title-b{
+  font-size: 36px;
+}
+.page_title-s{
+  font-size: 24px;
+  margin-left: 10rpx;
+}
+.btn_page {
+  display: flex;
+  align-items: center;
+}
+
+.pre {
+  width: 80%;
+  text-align: right;
+  padding-right: 20rpx;
+  font-size: 13px;
+}
+
+.nexts {
+  width: 360rpx;
+  height: 100rpx;
+  margin: 20rpx;
+  float: right;
+  background: #0984ac;
+  color: #fff;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.test-l {
+  font-size: 14px;
+  padding: 10rpx 0;
+  color: #0984ac;
+  text-decoration: underline;
+}
+
+.test {
+  font-size: 15px;
+  padding: 10rpx 0;
+}
+
+.test-s {
+  margin-top: 30rpx;
+}
+
+checkbox {
+  width: 60rpx;
+  height: 60rpx;
+}
+
+.citys {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.citys input {
+  width: 100%;
+  height: 100%;
+}
+
+.city_list {
+  position: absolute;
+  top: 100rpx;
+  left: 0;
+  width: 100%;
+  height: 500rpx;
+  background: #f5f5f5;
+  color: #000;
+  z-index: 999;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.close_addrs {
+  /* position: absolute; */
+  bottom: 20rpx;
+  right: 20rpx;
+  width: 180rpx;
+  height: 70rpx;
+  font-size: 30rpx;
+  margin: 15rpx auto;
+  background: #0984ac;
+  color: #fff;
+}
+
+.citty-item {
+  width: 100%;
+  height: 100rpx;
+  padding: 10rpx;
+  margin-bottom: 10rpx;
+}
+
+.citty-name > view:first-child{
+  font-size: 32rpx;
+  font-weight: 800;
+}
+
+.citty-name> view:last-child{
+  font-size: 25rpx;
+  color:#ccc;
+  margin-top:5rpx;
+}
+
+.flight_number_box, .en_city_box {
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  z-index: -999;
+  opacity: 0;
+  transition: all 0.5s;
+  font-size: 30rpx;
+  overflow-y: auto;
+}
+
+.flight_number_box_active, .en_city_box_active {
+  z-index: 999;
+  opacity: 1;
+}
+
+.search {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120rpx;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  z-index: 999;
+  padding: 0 1%;
+}
+
+.search-input {
+  width: 79%;
+  height: 100rpx;
+  border-radius: 50rpx;
+  padding-left: 15rpx;
+  box-sizing: border-box;
+  font-size: 30rpx;
+  background: #fff;
+  border-top-right-radius: 0rpx;
+  border-bottom-right-radius: 0rpx;
+}
+
+.search-btn {
+  width: 18%;
+  height: 100rpx;
+  position: absolute;
+  top: 11rpx;
+  right: 3%;
+  background: #0984ac;
+  color: #fff;
+  border-radius: 0;
+  border-top-right-radius: 50rpx;
+  border-bottom-right-radius: 50rpx;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.flight_number_list {
+  width: 100%;
+  /* height:auto; */
+  background: #fff;
+  padding: 0 1%;
+  box-sizing: border-box;
+  margin-top: 120rpx;
+}
+
+.flight_number_lists {
+  width: 100%;
+  height:120rpx;
+  background: #fff;
+  padding: 0 1%;
+  box-sizing: border-box;
+  margin-top: 120rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flight_number_item {
+  position: relative;
+  width: 100%;
+  height: 100rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #f5f5f5;
+  padding: 10rpx;
+  box-sizing: border-box;
+}
+
+.flight_number_item-t {
+  width: 100%;
+  height: 60%;
+  display: flex;
+  align-items: center;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.flight_number_item-b {
+  width: 100%;
+  height: 40%;
+  display: flex;
+  align-items: center;
+  font-size: 23rpx;
+}
+
+.left {
+  position: absolute;
+  width: 60rpx;
+  height: 60rpx;
+  overflow: hidden;
+  top: 50%;
+  right: 20rpx;
+  margin-top: -20rpx;
+}

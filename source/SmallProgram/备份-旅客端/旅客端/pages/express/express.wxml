@@ -1,0 +1,2 @@
+<!--pages/express/express.wxml-->
+<web-view src="https://m.kuaidi100.com/result.jsp?nu={{num}}"></web-view>

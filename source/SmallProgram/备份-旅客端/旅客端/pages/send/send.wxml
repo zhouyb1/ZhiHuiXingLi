@@ -1,0 +1,291 @@
+<!--pages/send/send.wxml-->
+<!-- <view class='image-box'>
+  <image src="../../image/3.jpg" class="img-cont"></image>
+</view> -->
+<!-- 乘机人信息 -->
+<view class='page_box' wx:if="{{page_index===1}}">
+  <view class="pages">
+    <view class='page_title'>
+      <view class='page_title-box'>
+        <text class='page_title-color page_title-b'>①</text>
+        <text class='page_title-color page_title-s'>身份证信息验证</text>
+      </view>
+      <view>为防止您的行李丢失,请检查您的个人信息</view>
+    </view>
+    <!-- 姓名 -->
+    <view class="list">
+      <view class="list_l">姓名</view>
+      <view class="list_rs">
+        <input type='text' placeholder='请输入姓名' value="{{name1}}" bindinput='name_fun' data-type="1"></input>
+        <view class="phone_btn" bindtap='get_info'>
+          <view>
+            <image src='../../image/phone.png'></image>
+          </view>
+          <view>快速填写</view>
+        </view>
+      </view>
+    </view>
+    <!-- 手机号码 -->
+    <view class="list">
+      <view class="list_l">手机</view>
+      <view class="list_rs">
+        <input type='number' placeholder='请输入手机号码' maxlength='11' value="{{phone1}}" bindinput='phone_fun' data-type="1"></input>
+      </view>
+    </view>
+    <!-- 其他信息 -->
+    <view class="test-l" bindtap='go_help' data-type="1">委托服务协议条款</view>
+    <view class="test">
+      <checkbox-group bindchange="page2_fun">
+        <label class="checkbox">
+          <checkbox value="委托服务协议条款" checked="{{page2}}" /> 我已阅读并同意委托服务协议条款的内容
+        </label>
+      </checkbox-group>
+    </view>
+    <button class="nexts" bindtap='nexts' data-type="2">下一步</button>
+  </view>
+</view>
+
+<!-- 航班信息 -->
+<view class='page_box' wx:if="{{page_index===2}}">
+  <view class="pages">
+    <view class='page_title'>
+      <view class='page_title-box'>
+        <text class='page_title-color page_title-b'>②</text>
+        <text class='page_title-color page_title-s'>航班及行李信息</text>
+      </view>
+      <view>为防止您的行李丢失,请检查您的航班及行李信息</view>
+    </view>
+    <!-- <view class="list">
+      <view class="list_l">航程</view>
+      <view class="list_r">
+        <view class="s_city">
+          <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
+            <view class="picker" wx:if="{{multiArray[1][multiIndex[1]]}}">
+              {{multiArray[0][multiIndex[0]]}}{{multiArray[1][multiIndex[1]]}}
+            </view>
+            <block wx:else>
+              <view class="picker">
+                {{multiArray[0][multiIndex[0]]}}
+              </view>
+            </block>
+          </picker>
+        </view>
+        <view class='lines'></view>
+        <view class="e_city">
+          <picker mode="multiSelector" bindchange="bindMultiPickerChange1" bindcolumnchange="bindMultiPickerColumnChange1" value="{{multiIndex1}}" range="{{multiArray1}}">
+            <view class="picker" wx:if="{{multiArray1[1][multiIndex[1]]}}">
+              {{multiArray1[0][multiIndex1[0]]}}{{multiArray1[1][multiIndex1[1]]}}
+            </view>
+            <block wx:else>
+              <view class="picker">
+                {{multiArray1[0][multiIndex1[0]]}}
+              </view>
+            </block>
+          </picker>
+        </view>
+      </view>
+    </view> -->
+
+    <view class="list">
+      <view class="list_ls">到达站</view>
+      <view class="list_l" style="font-size:26rpx;width:100%" bindtap='tab_flight_number' data-class="en_city_box_active" data-type="1">
+        <text style="font-size:25rpx" wx:if="{{!en_city_data.F_AirfieldName}}">请选择到达站</text>
+        <block wx:else>
+          <text style="font-size:25rpx">{{en_city_data.F_AirfieldName}}</text>
+        </block>
+      </view>
+    </view>
+
+    <view class="list" wx:if="{{en_city_data.F_AirfieldName}}">
+      <view class="list_ls">航班号</view>
+      <view class="list_l" style="font-size:26rpx;width:100%" bindtap='tab_flight_number' data-class="flight_number_box_active" data-type="0">
+        <text style="font-size:25rpx" wx:if="{{!flight_number.F_FlightNumber}}">请选择航班号</text>
+        <block wx:else>
+          <text style="font-size:25rpx">{{flight_number.F_FlightNumber}}</text>
+        </block>
+      </view>
+    </view>
+    <view class="list" wx:if="{{flight_number.F_FlightNumber}}">
+      <view class="list_l">航程</view>
+      <view class="list_rs">
+        {{flight_number.AddressBegin}}{{flight_number.F_AirfieldBegin}}{{flight_number.F_AirfieldFloorBegin}} - {{flight_number.AddressEnd}}{{flight_number.F_AirfieldEnd}}{{flight_number.F_AirfieldFloor}}
+      </view>
+    </view>
+    <view class="list">
+      <view class="list_ls" bindtap='tab_flight_number'>托运行李号</view>
+      <view class="list_rs">
+        <input type='number' placeholder='请输入托运行李号后六位' value="{{can_value}}" bindinput='can_numbers' maxlength='6'></input>
+        <view class='code_box'>
+          <view class="codes" bindtap='cans'>
+            <image src='../../image/can.png'></image>
+          </view>
+          <view class='save_code' bindtap='save_cans'>保存</view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{can_list.length}}" style="margin-bottom:100rpx;">
+      <view class="list" wx:for="{{can_list}}" wx:for-index="index" wx:key="index">
+        <view class="list_l_num">托运行李号:{{item}}</view>
+        <view class="list_r_num">
+          <view bindtap='del_num' data-id="{{index}}">删除</view>
+        </view>
+      </view>
+    </view>
+    <!-- 其他信息 -->
+    <view class="test test-s">
+      <checkbox-group bindchange="page1_fun">
+        <label class="checkbox">
+          <checkbox value="行李内无贵重、易碎、违禁物品" checked="{{page1}}" /> 行李内无贵重、易碎、违禁物品
+        </label>
+      </checkbox-group>
+    </view>
+    <view class="test" style="font-size:12px;">温馨提示：为避免损失、贵重物品、易碎物品请勿托运</view>
+    <view class='btn_page'>
+      <text class='pre' bindtap='user_pre' data-type="1">上一步</text>
+      <button class="nexts" bindtap='fly_page'>下一步</button>
+    </view>
+  </view>
+</view>
+
+<!-- 收件人信息 -->
+<view class='page_box' wx:if="{{page_index===3}}">
+  <view class="pages">
+    <view class='page_title'>
+      <view class='page_title-box'>
+        <text class='page_title-color page_title-b'>③</text>
+        <text class='page_title-color page_title-s'>收货信息</text>
+      </view>
+      <view>请填写或选择收货信息</view>
+    </view>
+    <!-- 姓名 -->
+    <view class="list">
+      <view class="list_ls">收货人</view>
+      <view class="list_rs">
+        <input type='text' placeholder='请输入收件人' value="{{name}}" bindinput='name_fun'></input>
+        <view class="phone_btn" bindtap='get_info'>
+          <view>
+            <image src='../../image/phone.png'></image>
+          </view>
+          <view>快速填写</view>
+        </view>
+      </view>
+    </view>
+    <!-- 手机号码 -->
+    <view class="list">
+      <view class="list_ls">联系电话</view>
+      <view class="list_rs">
+        <input type='number' placeholder='请输入收件人手机号码' maxlength='11' value="{{phone}}" bindinput='phone_fun'></input>
+      </view>
+    </view>
+    <!-- 地址 -->
+    <view class="list" wx:if="{{citty_data_list.length}}">
+      <view class="list_ls">收货地址</view>
+      <view class="list_rs">
+        <view class="filght_num">
+          <view class="city_type" bindtap='city_types'>
+            <view>手动</view>
+            <view>填写</view>
+          </view>
+          <picker bindchange="city_data" value="{{city_data_index}}" range="{{citty_data_list}}">
+            <view class="picker">
+              {{citty_data_list[city_data_index]}}
+            </view>
+          </picker>
+        </view>
+      </view>
+    </view>
+    <block wx:else>
+      <view class="list">
+        <view class="list_l">地址</view>
+        <view class="list_rs">
+
+          <view class="citys">
+            <input data-type="1" bindinput="getsuggest"  value="{{backfill}}" placeholder='请输入地址'></input>
+            <!--关键词输入提示列表渲染  -->
+
+            <view class='city_list' wx:if="{{suggestion.length}}">
+              <view wx:for="{{suggestion}}" wx:key="index" class="citty-item" >
+                <view bindtap="backfill" id="{{index}}" class="citty-name">
+                  <view>{{item.title}}</view>
+                  <view>{{item.addr}}</view>
+                </view>
+              </view>
+              <button class="close_addrs" data-type="2" bindtap='close_addr'>关闭</button>
+            </view>
+
+          </view>
+
+        </view>
+      </view>
+    </block>
+    <!-- 其他信息
+    <view class="test-l" bindtap='go_help' data-type="1">委托服务协议条款</view>
+    <view class="test">
+      <checkbox-group bindchange="page2_fun">
+        <label class="checkbox">
+          <checkbox value="委托服务协议条款" checked="{{page2}}" /> 我已阅读并同意委托服务协议条款的内容
+        </label>
+      </checkbox-group>
+    </view> -->
+    <view class='btn_page'>
+      <text class='pre' bindtap='user_pre' data-type="2">上一步</text>
+      <button class="nexts" bindtap='user_page'>立即寄件</button>
+    </view>
+  </view>
+</view>
+
+
+
+<!-- 到达机场搜索 -->
+<view class="{{en_city_type}}">
+  <view class="search">
+    <input type="search" confirm-type="search" placeholder='请输入到达站关键字...' class='search-input' maxlength='10' bindinput='set_flight_number' data-type="1"></input>
+    <button class='search-btn' bindtap='seach_flight_number' wx:if="{{flight_number}}" data-type="1">
+      <i-icon type="search" size='25' />
+    </button>
+    <block wx:else>
+      <button class='search-btn' bindtap='close_flight_number' data-class="en_city_box" data-type="1">
+        <text style="font-size:30rpx;">取消</text>
+      </button>
+    </block>
+  </view>
+  <view class='flight_number_list'>
+    <view class='flight_number_item' wx:if="{{en_city_list.length}}" wx:for="{{en_city_list}}" wx:for-index="index" wx:key="index" bindtap='set_flight_number_text' data-id="{{index}}" data-type="1" data-class="en_city_box">
+      <view class="flight_number_item-t" style="height:100%;">{{item.F_AirfieldName}}</view>
+      <view class='left'>
+        <i-icon type="enter" />
+      </view>
+    </view>
+  </view>
+  <view class='flight_number_lists' wx:if="{{!en_city_list.length}}">
+    请更换关键字
+  </view>
+</view>
+
+
+<!-- 航班号搜索框 -->
+<view class="{{flight_number_type}}">
+  <view class="search">
+    <input type="search" confirm-type="search" placeholder='请输入航班号关键字...' class='search-input' maxlength='6' bindinput='set_flight_number' value="{{flight_number}}"></input>
+    <button class='search-btn' bindtap='seach_flight_number' wx:if="{{flight_number}}">
+      <i-icon type="search" size='25' />
+    </button>
+    <block wx:else>
+      <button class='search-btn' bindtap='close_flight_number' data-class="flight_number_box" data-type="0">
+        <text style="font-size:30rpx;" data-class="flight_number_box" data-type="0">取消</text>
+      </button>
+    </block>
+  </view>
+  <view class='flight_number_list'>
+    <view class='flight_number_item' wx:for="{{flight_number_list}}" wx:for-index="index" wx:key="index" bindtap='set_flight_number_text' data-id="{{index}}" data-class="flight_number_box" data-type="0">
+      <view class="flight_number_item-t">{{item.F_FlightNumber}}</view>
+      <view class="flight_number_item-b">{{item.AddressBegin}}{{item.F_AirfieldBegin}}{{item.F_AirfieldFloorBegin}} - {{item.AddressEnd}}{{item.F_AirfieldEnd}}{{item.F_AirfieldFloor}}</view>
+      <view class='left'>
+        <i-icon type="enter" />
+      </view>
+    </view>
+  </view>
+  <view class='flight_number_lists' wx:if="{{!flight_number_list.length && flight_number}}">
+    {{search_text}}
+  </view>
+</view>

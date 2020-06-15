@@ -1,0 +1,16 @@
+<!--pages/user/user_addr/user_addr.wxml-->
+<view wx:for="{{addr}}" wx:key="{{item.F_Id}}" wx:if="{{addr.length}}" wx:for-index="index">
+  <i-swipeout i-class="i-swipeout-demo-item" actions="{{actions}}" bind:change="del" data-id="{{index}}" data-f_id="{{item.F_Id}}">
+    <view slot="content">
+      <i-cell i-class="i-cell-padding">
+        <view class="t1">{{item.F_Name}} {{item.F_Phone}}</view>
+        <view class="t2">{{item.F_Address}}</view>
+      </i-cell>
+    </view>
+  </i-swipeout>
+</view>
+<view wx:if="{{!addr.length}}" class='adds'>
+  啥都没有~
+  快去下单吧！我们会自动保存您下单的地址。
+  无需您东填写，下次下单可直接使用。
+</view>

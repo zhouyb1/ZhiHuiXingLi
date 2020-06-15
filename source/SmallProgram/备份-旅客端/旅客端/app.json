@@ -1,0 +1,52 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/send/send",
+    "pages/user/user",
+    "pages/pays/pays",
+    "pages/orders/orders",
+    "pages/user/user_say/user_say",
+    "pages/user/user_addr/user_addr",
+    "pages/user/user_info/user_info",
+    "pages/orders/orders_info/orders_info",
+    "pages/help/help",
+    "pages/express/express",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#0984ac",
+    "navigationBarTitleText": "智慧行李",
+    "navigationBarTextStyle": "white"
+  },
+  "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "color": "#888",
+    "selectedColor": "#0984ac",
+    "list": [
+      {
+        "iconPath": "./image/index.png",
+        "selectedIconPath": "./image/index-active.png",
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "iconPath": "./image/send.png",
+        "selectedIconPath": "./image/send-active.png",
+        "pagePath": "pages/send/send",
+        "text": "寄件"
+      },
+      {
+        "iconPath": "./image/user.png",
+        "selectedIconPath": "./image/user-active.png",
+        "pagePath": "pages/user/user",
+        "text": "我的"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  }
+}

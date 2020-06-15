@@ -1,0 +1,8 @@
+<!--pages/user/user_say/user_say.wxml-->
+<view>
+  <!-- <text>反馈意见</text> -->
+  <textarea auto-focus="true" style="height: 8em"  placeholder="请输入建议" value="{{say}}" bindinput='s'/>
+</view>
+<input placeholder="请输入联系方式" value="{{phone}}" bindinput='p'></input>
+
+<button class="save" bindtap='save'>提交</button>
